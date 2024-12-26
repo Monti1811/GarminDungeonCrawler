@@ -4,15 +4,6 @@ import Toybox.WatchUi;
 
 class DCPlayerDetailsAttributesChangerDelegate extends WatchUi.Menu2InputDelegate {
 
-    private const symbol_to_string = {
-        :strength => "Strength",
-        :constitution => "Constitution",
-        :dexterity => "Dexterity",
-        :intelligence => "Intelligence",
-        :wisdom => "Wisdom",
-        :charisma => "Charisma",
-        :luck => "Luck"
-    };
     private var _view as WatchUi.Menu2;
     private var _delegate as DCPlayerDetailsAttributesDelegate;
 
@@ -24,27 +15,21 @@ class DCPlayerDetailsAttributesChangerDelegate extends WatchUi.Menu2InputDelegat
 
     function onSelect(item as MenuItem) as Void {
         var player = getApp().getPlayer();
-        var free_attribute_points = player.getAttributePoints();
         var changed_attributes = _delegate.changed_attributes;
         var attribute_type = item.getId() as Symbol;
-        var changeMenu = new WatchUi.Menu2({:title=>"Change " + symbol_to_string[attribute_type] + " (" + free_attribute_points + " points)"});
-        changeMenu.addItem(new WatchUi.MenuItem("Current " + symbol_to_string[attribute_type] + ": " + player.getAttribute(attribute_type), null, :none, null));
+        var att_string = Constants.ATT_SYMBOL_TO_STR[attribute_type];
+        var changeMenu = new WatchUi.Menu2({:title=>"Change " + att_string + " (" + changed_attributes[:available] + " points)"});
+        changeMenu.addItem(new WatchUi.MenuItem(att_string + ": " + changed_attributes[attribute_type], null, :none, null));
         if (changed_attributes[:available] > 0 && changed_attributes[:total_used] < changed_attributes[:available]) {
-            changeMenu.addItem(new WatchUi.MenuItem("Increase", "Increase " + symbol_to_string[attribute_type], attribute_type, null));
+            changeMenu.addItem(new WatchUi.MenuItem("Increase", "Increase " + att_string, attribute_type, null));
         }
         if (player.getAttribute(attribute_type) < changed_attributes[attribute_type]) {
-            changeMenu.addItem(new WatchUi.MenuItem("Decrease", "Decrease " + symbol_to_string[attribute_type], attribute_type, null));
+            changeMenu.addItem(new WatchUi.MenuItem("Decrease", "Decrease " + att_string, attribute_type, null));
         }
-        WatchUi.pushView(changeMenu, new DCPlayerDetailsAttributesChanger2Delegate(_view, _delegate), WatchUi.SLIDE_UP);
+        WatchUi.pushView(changeMenu, new DCPlayerDetailsAttributesChanger2Delegate(self, changeMenu, _delegate), WatchUi.SLIDE_UP);
     }
 
-    function onBack() as Void {
-        WatchUi.popView(WatchUi.SLIDE_DOWN);
-        updateMenu();
-    }
-
-    function updateMenu() as Void {
-        var player = getApp().getPlayer();
+    public function updateMenu() as Void {
         var changed_attributes = _delegate.changed_attributes;
         var points_available = changed_attributes[:available] - changed_attributes[:total_used];
         _view.setTitle("Change Attributes (" + points_available + " points)");
@@ -57,26 +42,38 @@ class DCPlayerDetailsAttributesChangerDelegate extends WatchUi.Menu2InputDelegat
         _view.updateItem(new WatchUi.MenuItem("Luck: " + changed_attributes[:luck], null, :luck, null), 6);
     }
 
+    public function onBack() as Void {
+        showConfirmation();
+    }
+
+    function showConfirmation() {
+        var message = "Do you want to use set the chosen attributes?";
+        var dialog = new WatchUi.Confirmation(message);
+        WatchUi.pushView(
+            dialog,
+            new DCConfirmSetAttributes(getApp().getPlayer(), _delegate.changed_attributes),
+            WatchUi.SLIDE_IMMEDIATE
+        );
+    }
+
 }
 
 class DCPlayerDetailsAttributesChanger2Delegate extends WatchUi.Menu2InputDelegate {
 
-    private const symbol_to_string = {
-        :strength => "Strength",
-        :constitution => "Constitution",
-        :dexterity => "Dexterity",
-        :intelligence => "Intelligence",
-        :wisdom => "Wisdom",
-        :charisma => "Charisma",
-        :luck => "Luck"
-    };
-    private var _parent as WatchUi.Menu2;
+    private var _view as WatchUi.Menu2;
+    private var _parent as DCPlayerDetailsAttributesChangerDelegate;
     private var _delegate as DCPlayerDetailsAttributesDelegate;
 
-    function initialize(parent as WatchUi.Menu2, delegate as DCPlayerDetailsAttributesDelegate) {
+    function initialize(parent as DCPlayerDetailsAttributesChangerDelegate, view as WatchUi.Menu2, delegate as DCPlayerDetailsAttributesDelegate) {
         Menu2InputDelegate.initialize();
-        _parent = parent;
+        _view = view;
         _delegate = delegate;
+        _parent = parent;
+    }
+
+    function onBack() as Void {
+        WatchUi.popView(WatchUi.SLIDE_DOWN);
+        _parent.updateMenu();
     }
 
     function onSelect(item as MenuItem) as Void {
@@ -96,10 +93,71 @@ class DCPlayerDetailsAttributesChanger2Delegate extends WatchUi.Menu2InputDelega
             changed_attributes[attribute_type] -= 1;
         }
         var points_available = changed_attributes[:available] - changed_attributes[:total_used];
-        _parent.setTitle("Change " + symbol_to_string[attribute_type] + " (" + points_available + " points)");
-        var updated_item = new WatchUi.MenuItem(symbol_to_string[attribute_type] + ": " + changed_attributes[attribute_type], null, attribute_type, null);
-        _parent.updateItem(updated_item, 1);
+        var att_string = Constants.ATT_SYMBOL_TO_STR[attribute_type];
+        _view.setTitle("Change " + att_string + " (" + points_available + " points)");
+        var updated_item = new WatchUi.MenuItem(att_string + ": " + changed_attributes[attribute_type], null, attribute_type, null);
+        _view.updateItem(updated_item, 0);
+        if (changed_attributes[attribute_type] == getApp().getPlayer().getAttribute(attribute_type)) {
+            _view.deleteItem(2);
+        } else if (_view.getItem(2) == null && _view.getItem(1).getLabel().equals("Increase")) {
+            _view.addItem(new WatchUi.MenuItem("Decrease", "Decrease " + att_string, attribute_type, null));
+        }
+        if (changed_attributes[:total_used] == changed_attributes[:available]) {
+            _view.deleteItem(1);
+        } else if (_view.getItem(2) == null && _view.getItem(1).getLabel().equals("Decrease")) {
+            _view.addItem(new WatchUi.MenuItem("Increase", "Increase " + att_string, attribute_type, null));
+            var decrease = _view.getItem(1);
+            _view.deleteItem(1);
+            _view.addItem(decrease);
+        }
         WatchUi.requestUpdate();
+    }
+
+}
+
+
+
+
+//! Input handler for the confirmation dialog
+class DCConfirmSetAttributes extends WatchUi.ConfirmationDelegate {
+
+    private var _player as Player;
+    private var _changed_attributes as Dictionary<Symbol, Number>;
+
+    //! Constructor
+    //! @param view The app view
+    public function initialize(player as Player, changed_attributes as Dictionary<Symbol, Number>) {
+        ConfirmationDelegate.initialize();
+        _player = player;
+        _changed_attributes = changed_attributes;
+    }
+
+    //! Handle a confirmation selection
+    //! @param value The confirmation value
+    //! @return true if handled, false otherwise
+    public function onResponse(value as Confirm) as Boolean {
+        WatchUi.popView(WatchUi.SLIDE_DOWN);
+        if (value == WatchUi.CONFIRM_YES) {
+            _player.setAttribute(:strength, _changed_attributes[:strength]);
+            _player.setAttribute(:constitution, _changed_attributes[:constitution]);
+            _player.setAttribute(:dexterity, _changed_attributes[:dexterity]);
+            _player.setAttribute(:intelligence, _changed_attributes[:intelligence]);
+            _player.setAttribute(:wisdom, _changed_attributes[:wisdom]);
+            _player.setAttribute(:charisma, _changed_attributes[:charisma]);
+            _player.setAttribute(:luck, _changed_attributes[:luck]);
+            _player.setAttributePoints(_changed_attributes[:available] - _changed_attributes[:total_used]);
+            WatchUi.requestUpdate();
+        } else {
+            _changed_attributes[:total_used] = 0;
+            _changed_attributes[:strength] = _player.getAttribute(:strength);
+            _changed_attributes[:constitution] = _player.getAttribute(:constitution);
+            _changed_attributes[:dexterity] = _player.getAttribute(:dexterity);
+            _changed_attributes[:intelligence] = _player.getAttribute(:intelligence);
+            _changed_attributes[:wisdom] = _player.getAttribute(:wisdom);
+            _changed_attributes[:charisma] = _player.getAttribute(:charisma);
+            _changed_attributes[:luck] = _player.getAttribute(:luck);
+        }
+        return true;
     }
 
 }

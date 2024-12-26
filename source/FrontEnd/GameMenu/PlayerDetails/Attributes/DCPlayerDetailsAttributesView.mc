@@ -5,7 +5,6 @@ import Toybox.Graphics;
 class DCPlayerDetailsAttributesView extends WatchUi.View {
 	
 	private var _player as Player;
-	private var _playerIcon as BitmapReference;
 
 	private const x_axis as Number = 85;
 	private const value_x_axis as Number = 240;
@@ -23,7 +22,6 @@ class DCPlayerDetailsAttributesView extends WatchUi.View {
 	function initialize(player as Player) {
 		View.initialize();
 		_player = player;
-		_playerIcon = WatchUi.loadResource(_player.getSprite());
 
 		actionMenuHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.actionMenu, :locX=>-30, :locY=>290});
 	}
