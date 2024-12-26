@@ -16,4 +16,26 @@ module Constants {
 	public const COORDINATES_KNIGHT = [220, 120] as Array<Number>;
 
 	public const TILE_SIZE = 16;
+
+	public const ATT_SYMBOL_TO_STR = {
+        :strength => "Strength",
+        :constitution => "Constitution",
+        :dexterity => "Dexterity",
+        :intelligence => "Intelligence",
+        :wisdom => "Wisdom",
+        :charisma => "Charisma",
+        :luck => "Luck"
+    };
+
+	public const EQUIPSLOT_TO_STR as Dictionary<ItemSlot, String> = {
+		HEAD => "Head",
+		CHEST => "Chest",
+		BACK => "Back",
+		LEGS => "Legs",
+		FEET => "Feet",
+		LEFT_HAND => "Left Hand",
+		RIGHT_HAND => "Right Hand",
+		ACCESSORY => "Accessory",
+		NONE => "None"
+	}
 }

@@ -171,6 +171,10 @@ class Player extends Entity {
 
 	}
 
+	function setAttribute(attribute as Symbol, amount as Number) as Void {
+		attributes[attribute] = amount;
+	}
+
 	function getAttribute(attribute as Symbol) as Number {
 		return attributes[attribute];
 	}
