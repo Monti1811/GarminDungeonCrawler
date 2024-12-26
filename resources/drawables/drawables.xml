@@ -1,0 +1,15 @@
+<drawables>
+    <bitmap id="LauncherIcon" filename="launcher_icon.png" />
+    <bitmap id="Player" filename="player.png" />
+    <bitmap id="Axe" filename="axe.png" />
+    <bitmap id="Helmet" filename="helmet.png" />
+    <bitmap id="Frog" filename="frog.png" />
+    <!-- Right low hint -->
+    <bitmap id="rightLow" personality="
+            system_icon_light__hint_button_right_bottom
+            system_loc__hint_button_right_bottom" />
+    <bitmap id="warningToastIcon" personality="
+        system_icon_destructive__warning
+        system_size__toast_icon
+    "/>
+</drawables>

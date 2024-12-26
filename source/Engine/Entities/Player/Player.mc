@@ -1,0 +1,232 @@
+import Toybox.Lang;
+
+class Player extends Entity {
+
+	var current_health as Number = 100;
+	var maxHealth as Number = 100;
+	var name as String = "Player";
+	var level as Number = 1;
+	var experience as Number = 0;
+	var next_level_experience as Number = 100;
+	var attributes as Dictionary<Symbol, Number> = {
+		:strength=> 0,
+		:constitution=> 0,
+		:dexterity=> 0,
+		:intelligence=> 0,
+		:wisdom=> 0,
+		:charisma=> 0,
+		:luck=> 0
+	};
+	var inventory as Array<Item> = [];
+	var inventory_space as Number = 10;
+	var equipped as Dictionary<ItemSlot, Item> = {
+		HEAD => null,
+		CHEST => null,
+		BACK => null,
+		LEGS => null,
+		FEET => null,
+		LEFT_HAND => null,
+		RIGHT_HAND => null
+	};
+
+	var sprite as ResourceId?;
+
+	function initialize() {
+		Entity.initialize();
+	}
+
+	function equipItem(item as Item, slot as ItemSlot) as Boolean {
+		if (equipped[slot] == null) {
+			equipped[slot] = item;
+			item.onEquipItem(me);
+			return true;
+		}
+		return false;
+	}
+
+	function unequipItem(item as Item, slot as ItemSlot) as Boolean {
+		if (equipped[slot] != null && inventory.size() < inventory_space) {
+			equipped[slot].onUnequipItem(me);
+			equipped.remove(slot);
+			inventory.add(item);
+			return true;
+		}
+		return false;
+	}
+
+	function onPickupItem(item as Item) as Boolean {
+		if (inventory.size() < inventory_space && item.canBePickedUp(me)) {
+			item.onPickupItem(me);
+			if (equipped[item.slot] == null) {
+				equipItem(item, item.slot);
+			} else {
+				inventory.add(item);
+			}
+			return true;
+		}
+		
+		return true;
+	}
+
+	function addInventoryItem(item as Item) as Boolean {
+		if (inventory.size() < inventory_space) {
+			inventory.add(item);
+			return true;
+		}
+		return false;
+	}
+
+	function removeInventoryItem(item as Item) as Boolean {
+		return inventory.remove(item);
+	}
+
+	function getInventory() as Array<Item> {
+		return inventory;
+	}
+
+	function onUseItem(item as Item) as Boolean {
+		if (item.canBeUsed(me)) {
+			item.onUseItem(me);
+			return true;
+		}
+		return false;
+	}
+
+	function onDropItem(item as Item) as Boolean {
+		item.onDropItem(me);
+		return true;
+	}
+
+	function onLevelUp() as Void {
+		level++;
+	}
+
+	function getLevel() as Number {
+		return level;
+	}
+
+	function onDeath() as Void {
+
+	}
+
+	function onRevive() as Void {
+
+	}
+
+	function onGainExperience(amount as Number) as Void {
+		experience += amount;
+	}
+
+	function onLoseExperience(amount as Number) as Void {
+		experience -= amount;
+	}
+
+	function getExperience() as Number {
+		return experience;
+	}
+
+	function getExperienceToNextLevel() as Number {
+		return next_level_experience - experience;
+	}
+
+	function onGainHealth(amount as Number) as Void {
+		current_health = MathUtil.floor(current_health + amount, maxHealth);
+	}
+
+	function onLoseHealth(amount as Number) as Void {
+		current_health = MathUtil.ceil(current_health - amount, 0);
+		if (current_health == 0) {
+			onDeath();
+		}
+	}
+
+	function addToAttribute(attribute as Symbol, amount as Number) as Void {
+		attributes[attribute] = MathUtil.floor(attributes[attribute] + amount, Constants.MAX_ATTRIBUTE_POINTS);
+		onGainAttribute(attribute, amount);
+	}
+
+	function removeFromAttribute(attribute as Symbol, amount as Number) as Void {
+		attributes[attribute] = MathUtil.ceil(attributes[attribute] - amount, Constants.MIN_ATTRIBUTE_POINTS);
+		onLoseAttribute(attribute, amount);
+	}
+
+	function onGainAttribute(attribute as Symbol, amount as Number) as Void {
+
+	}
+
+	function onLoseAttribute(attribute as Symbol, amount as Number) as Void {
+
+	}
+
+
+	function save(saveData as SaveData) {
+		return saveData;
+	}
+
+	function load(saveData as SaveData) {
+		return saveData;
+	}
+
+	function getSprite() as ResourceId {
+		return sprite;
+	}
+
+	function setSprite(sprite as ResourceId) as Void {
+		self.sprite = sprite;
+	}
+
+	function getAttack() as Number {
+		var base_attack = attributes[:strength];
+		var weapon_left = equipped[LEFT_HAND] as WeaponItem?;
+		var weapon_right = equipped[RIGHT_HAND] as WeaponItem?;
+		if (weapon_left != null) {
+			base_attack += weapon_left.getAttack();
+		}
+		if (weapon_right != null) {
+			base_attack += weapon_right.getAttack();
+		}
+		return base_attack;
+	}
+
+	function getDefense() as Number {
+		var base_defense = attributes[:constitution];
+		var armor_head = equipped[HEAD] as ArmorItem?;
+		var armor_chest = equipped[CHEST] as ArmorItem?;
+		var armor_back = equipped[BACK] as ArmorItem?;
+		var armor_legs = equipped[LEGS] as ArmorItem?;
+		var armor_feet = equipped[FEET] as ArmorItem?;
+
+		if (armor_head != null) {
+			base_defense += armor_head.getDefense();
+		}
+		if (armor_chest != null) {
+			base_defense += armor_chest.getDefense();
+		}
+		if (armor_back != null) {
+			base_defense += armor_back.getDefense();
+		}
+		if (armor_legs != null) {
+			base_defense += armor_legs.getDefense();
+		}
+		if (armor_feet != null) {
+			base_defense += armor_feet.getDefense();
+		}
+
+		return base_defense;
+	}
+
+	function takeDamage(damage as Number) as Boolean {
+		var defense = getDefense();
+		var damage_taken = damage - defense;
+		if (damage_taken < 0) {
+			damage_taken = 0;
+		}
+		onLoseHealth(damage_taken);
+		if (current_health == 0) {
+			onDeath();
+			return true;
+		}
+		return false;
+	}
+
+}

@@ -1,0 +1,217 @@
+import Toybox.Graphics;
+import Toybox.WatchUi;
+import Toybox.Lang;
+import Toybox.Timer;
+
+class DCGameView extends WatchUi.View {
+
+    public var _map_data as Dictionary?;
+    private var _dungeon as Dungeon;
+
+	private var _player as Player;
+	private var _player_sprite as Bitmap;
+    private var _player_pos as Point2D = [0,0];
+
+	private var _timer as Timer.Timer;
+    private var bg_layer as Layer;
+    private var fg_layer as Layer;
+
+	private var is_moving as Boolean = false;
+
+    private var rightLowHint as Bitmap;
+
+    private var damage_texts as Array<Text> = [];
+
+    function initialize(player as Player, dungeon as Dungeon, options as Dictionary?) {
+        View.initialize();
+		_player = player;
+		_dungeon = dungeon;
+		_map_data = dungeon.getMapData();
+        _player_pos = _map_data[:start_pos];
+
+		_timer = new Timer.Timer();
+        
+        if (options != null) {
+            // Load options
+
+        }
+        rightLowHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightLow, :locX=>-30, :locY=>290});
+
+		bg_layer = new Layer({:locX=>0, :locY=>0, :width=>360, :height=>360});
+        fg_layer = new Layer({:locX=>0, :locY=>0, :width=>360, :height=>360});
+		
+		_player_sprite = new WatchUi.Bitmap({:rezId=>_player.getSprite(), :locX=>_player_pos[0] * _map_data[:tile_width], :locY=>_player_pos[1] * _map_data[:tile_height]});
+
+        // Add player position to map
+        var map = _map_data[:map] as Array<Array<Object?>>;
+        map[_player_pos[0]][_player_pos[1]] = _player;
+    }
+
+    // Load your resources here
+    function onLayout(dc as Dc) as Void {
+		addLayer(bg_layer);
+        addLayer(fg_layer);
+    }
+
+    // Called when this View is brought to the foreground. Restore
+    // the state of this View and prepare it to be shown. This includes
+    // loading resources into memory.
+    function onShow() as Void {
+    }
+
+    // Update the view
+    function onUpdate(dc as Dc) as Void {
+        // Call the parent onUpdate function to redraw the layout
+
+        dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_BLACK);
+        dc.clear();
+
+		var bg_dc = bg_layer.getDc();
+		var fg_dc = fg_layer.getDc();
+
+        _dungeon.draw(dc);
+		rightLowHint.draw(dc);
+
+        bg_dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+		bg_dc.clear();
+        _dungeon.drawItems(bg_dc);
+        _dungeon.drawEnemies(bg_dc);
+		
+		fg_dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+		fg_dc.clear();
+		_player_sprite.locX = _player_pos[0] * _map_data[:tile_width];
+		_player_sprite.locY = _player_pos[1] * _map_data[:tile_height];
+		_player_sprite.draw(fg_dc);
+
+        for (var i = 0; i < damage_texts.size(); i++) {
+            damage_texts[i].draw(fg_dc);
+        }
+    }
+
+    // Called when this View is removed from the screen. Save the
+    // state of this View here. This includes freeing resources from
+    // memory.
+    function onHide() as Void {
+    }
+
+    function removeDamageTexts() as Void {
+        damage_texts = [];
+        WatchUi.requestUpdate();
+    }
+
+	function doTurn(direction as WalkDirection) as Void {
+		if (is_moving) {
+            return;
+        }
+        System.println("Moving " + direction);
+        var new_pos = _player_pos;
+        switch (direction) {
+            case UP:
+                new_pos = [_player_pos[0], _player_pos[1] - 1];
+                break;
+            case DOWN:
+                new_pos = [_player_pos[0], _player_pos[1] + 1];
+                break;
+            case LEFT:
+                new_pos = [_player_pos[0] - 1, _player_pos[1]];
+                break;
+            case RIGHT:
+                new_pos = [_player_pos[0] + 1, _player_pos[1]];
+                break;
+            case STANDING:
+                new_pos = _player_pos;
+                break;
+        }
+
+        var map = _map_data[:map] as Array<Array<Object?>>;
+        var map_element = map[new_pos[0]][new_pos[1]] as Object?;
+        
+		if ((map_element != null) && (map_element instanceof Wall)) {
+			return;
+		}
+        if (new_pos[0] < 0 || new_pos[0] >= _map_data[:size_x] || new_pos[1] < 0 || new_pos[1] >= _map_data[:size_y]) {
+            return;
+        }
+
+        var enemy_in_pos = false;   
+
+        if (map_element != null) {
+            if (map_element instanceof Item) {
+                _player.onPickupItem(map_element as Item);
+                _dungeon.removeItem(map_element as Item);
+            } else if (map_element instanceof Enemy) {
+                enemy_in_pos = true;
+            }
+        }
+
+		// System.println("Old pos: " + _player_pos);
+        // System.println("New pos: " + new_pos);
+
+        var has_moved = false;
+        // Move player
+        if (!enemy_in_pos && _player_pos != new_pos) {
+            movePlayer(map, new_pos);
+            has_moved = true;
+        }
+        // Move enemies
+        _dungeon.moveEnemies(new_pos);
+
+        // Remove esxisting damage texts
+        removeDamageTexts();
+
+        // Check if enemy is still there, if not move to position
+        if (enemy_in_pos) {
+            map_element = map[new_pos[0]][new_pos[1]] as Object?;
+            if (!(map_element instanceof Enemy)) {
+                movePlayer(map, new_pos);
+                has_moved = true;
+            }
+        }
+
+        // Check for enemy collision and attack
+        map_element = map[new_pos[0]][new_pos[1]] as Object?;
+        if (!has_moved && map_element instanceof Enemy) {
+            if (map_element.getPos() == map_element.getNextPos()) {
+                var defeated = Battle.attackEnemy(self, _player, map_element as Enemy);
+                if (defeated) {
+                    _player.onGainExperience(map_element.getKillExperience());
+                    _dungeon.dropLoot(map_element as Enemy);
+                    _dungeon.removeEnemy(map_element as Enemy);
+                }
+                new_pos = _player_pos;
+            }
+        }
+        // Check for enemy collision and attack
+        _dungeon.enemiesAttack(self, new_pos);
+        _timer.start(method(:removeDamageTexts), 1000, false);
+
+
+		WatchUi.requestUpdate();
+	}
+
+    function movePlayer(map as Array<Array<Object?>>, new_pos as Point2D) as Void {
+        map[_player_pos[0]][_player_pos[1]] = null;
+        map[new_pos[0]][new_pos[1]] = _player;
+        _player_pos = new_pos;
+    }
+
+    function addDamageText(amount as Number, pos as Point2D) as Void {
+        if (amount <= 0) {
+            return;
+        }
+        var damage_text = new WatchUi.Text({
+            :text=>"-" + amount, 
+            :locX=>pos[0] * _map_data[:tile_width], 
+            :locY=>pos[1] * _map_data[:tile_height] - _map_data[:tile_height] / 2, :size=>20,
+            :color=>Graphics.COLOR_RED,
+            :font=>Graphics.FONT_XTINY
+        });
+        damage_texts.add(damage_text);
+    }
+
+    function getPlayer() as Player {
+        return _player;
+    }
+
+
+}
