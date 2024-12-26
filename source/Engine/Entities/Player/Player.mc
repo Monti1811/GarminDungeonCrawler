@@ -17,6 +17,7 @@ class Player extends Entity {
 		:charisma=> 0,
 		:luck=> 0
 	};
+	var attribute_points as Number = 5;
 	var inventory as Array<Item> = [];
 	var inventory_space as Number = 10;
 	var equipped as Dictionary<ItemSlot, Item> = {
@@ -28,7 +29,7 @@ class Player extends Entity {
 		LEFT_HAND => null,
 		RIGHT_HAND => null
 	};
-
+	var gold as Number = 0;
 	var sprite as ResourceId?;
 
 	function initialize() {
@@ -125,6 +126,10 @@ class Player extends Entity {
 		return experience;
 	}
 
+	function getNextLevelExperience() as Number {
+		return next_level_experience;
+	}
+
 	function getExperienceToNextLevel() as Number {
 		return next_level_experience - experience;
 	}
@@ -138,6 +143,14 @@ class Player extends Entity {
 		if (current_health == 0) {
 			onDeath();
 		}
+	}
+
+	function getHealth() as Number {
+		return current_health;
+	}
+
+	function getMaxHealth() as Number {
+		return maxHealth;
 	}
 
 	function addToAttribute(attribute as Symbol, amount as Number) as Void {
@@ -156,6 +169,18 @@ class Player extends Entity {
 
 	function onLoseAttribute(attribute as Symbol, amount as Number) as Void {
 
+	}
+
+	function getAttribute(attribute as Symbol) as Number {
+		return attributes[attribute];
+	}
+
+	function getAttributePoints() as Number {
+		return attribute_points;
+	}
+
+	function setAttributePoints(points as Number) as Void {
+		attribute_points = points;
 	}
 
 
@@ -228,5 +253,9 @@ class Player extends Entity {
 		}
 		return false;
 	}
+
+	function getGold() as Number {
+		return gold;
+	}	
 
 }

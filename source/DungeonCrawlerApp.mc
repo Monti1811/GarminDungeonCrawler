@@ -29,12 +29,15 @@ class DungeonCrawlerApp extends Application.AppBase {
 
     // Return the initial view of your application here
     function getInitialView() as [Views] or [Views, InputDelegates] {
-        ///*
+         var factory = new DCPlayerDetailsFactory(_player);
+        var viewLoop = new WatchUi.ViewLoop(factory, {:wrap => true});
+        return [viewLoop, new DCPlayerDetailsDelegate(viewLoop)];
+        /*
         var dungeon = new Dungeon1(tile_width, tile_height, {:width => 360, :height => 360});
         var dungeon1View = new DCGameView(_player, dungeon, null);
         var dungeon1Delegate = new DCGameDelegate(dungeon1View);
         return [ dungeon1View, dungeon1Delegate ];
-        //*/
+        */
 
         /*var factory = new DCGameMenuItemInfoFactory(new Axe());
         var viewLoop = new WatchUi.ViewLoop(factory, {:wrap => true});

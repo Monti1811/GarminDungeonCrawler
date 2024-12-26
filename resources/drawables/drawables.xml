@@ -12,4 +12,8 @@
         system_icon_destructive__warning
         system_size__toast_icon
     "/>
+    <!-- ActionMenu hint -->
+    <bitmap id="actionMenu" personality="
+        system_icon_dark__hint_action_menu
+        system_loc__hint_action_menu" />
 </drawables>

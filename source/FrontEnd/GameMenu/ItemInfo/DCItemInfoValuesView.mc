@@ -47,18 +47,21 @@ class DCItemInfoValuesView extends WatchUi.View {
 	function showArmorStats(dc) {
 		var armor = _item as ArmorItem;
 		drawText(dc, "Defense: " + armor.getDefense(), 0);
-
+		drawText(dc, "Equip Slot: " + armor.getItemSlot(), 1);
+		drawText(dc, "Value: " + armor.getValue(), 2);
 	}
 
 	function showConsumableStats(dc) {
 		var consumable = _item as ConsumableItem;
-		
+		drawText(dc, "Effect: " + consumable.getEffectDescription(), 0);
+		drawText(dc, "Value: " + consumable.getValue(), 1);
 
 	}
 
 	function showKeyStats(dc) {
-		var key = _item as QuestItem;
-		
+		var questItem = _item as QuestItem;
+		drawText(dc, "Key Item " + questItem.getName(), 0);
+
 
 	}
 

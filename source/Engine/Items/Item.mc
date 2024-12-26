@@ -63,4 +63,7 @@ class Item {
 		return value;
 	}
 	
+	function getAmount() as Number {
+		return amount;
+	}
 }

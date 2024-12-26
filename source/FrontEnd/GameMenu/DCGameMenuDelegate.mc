@@ -14,7 +14,7 @@ class DCGameMenuDelegate extends WatchUi.Menu2InputDelegate {
 
     function onSelect(item as MenuItem) as Void {
         var label = item.getId() as Symbol;
-        if (label == :details) {
+        if (label == :player) {
             openPlayerDetails();
         } else if (label == :inventory) {
             openInventory();
@@ -50,7 +50,8 @@ class DCGameMenuDelegate extends WatchUi.Menu2InputDelegate {
         var inventory = player.getInventory();
         for (var i = 0; i < inventory.size(); i++) {
             var item = inventory[i] as Item;
-            inventoryMenu.addItem(new WatchUi.MenuItem(item.getName(), item.getDescription(), item, {:icon=>item.getSprite()}));
+            var amount = item.getAmount();
+            inventoryMenu.addItem(new WatchUi.MenuItem(item.getName() + " x" + amount, item.getDescription(), item, {:icon=>item.getSprite()}));
         }
         WatchUi.pushView(inventoryMenu, new DCInventoryDelegate(_view), WatchUi.SLIDE_UP);
     }
