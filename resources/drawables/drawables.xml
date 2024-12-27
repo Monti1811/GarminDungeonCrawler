@@ -4,7 +4,7 @@
     <bitmap id="Axe" filename="axe.png" />
     <bitmap id="Helmet" filename="helmet.png" />
     <bitmap id="Frog" filename="frog.png" />
-    <!-- Right low hint -->
+    <!-- Right low hint :locX => 290, :locY => 220--> 
     <bitmap id="rightLow" personality="
             system_icon_light__hint_button_right_bottom
             system_loc__hint_button_right_bottom" />
@@ -16,4 +16,9 @@
     <bitmap id="actionMenu" personality="
         system_icon_dark__hint_action_menu
         system_loc__hint_action_menu" />
+
+    <!-- Left top hint -->
+    <bitmap id="rightTop" personality="
+            system_icon_light__hint_button_right_top
+            system_loc__hint_button_right_top" />
 </drawables>

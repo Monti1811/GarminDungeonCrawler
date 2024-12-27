@@ -43,7 +43,11 @@ class DCPlayerDetailsAttributesChangerDelegate extends WatchUi.Menu2InputDelegat
     }
 
     public function onBack() as Void {
-        showConfirmation();
+        if (_delegate.changed_attributes[:total_used] > 0) {
+            showConfirmation();
+        } else {
+            WatchUi.popView(WatchUi.SLIDE_DOWN);
+        }
     }
 
     function showConfirmation() {

@@ -4,8 +4,6 @@ module Constants {
 
 	public const MAX_INT = 65535;
 
-
-
 	public const MAX_ATTRIBUTE_POINTS = 500;
 	public const MIN_ATTRIBUTE_POINTS = 0;
 
@@ -37,5 +35,5 @@ module Constants {
 		RIGHT_HAND => "Right Hand",
 		ACCESSORY => "Accessory",
 		NONE => "None"
-	}
+	};
 }
