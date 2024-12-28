@@ -122,10 +122,10 @@ class DCOptionsDelegate extends WatchUi.Menu2InputDelegate {
                 getApp().getPlayer().equipItem(_item, _item.getItemSlot());
                 break;
             case :drop:
-                showConfirmation(_item, :drop);
+                showConfirmation("Do you want to drop " + item.getName() + "?",_item, :drop);
                 break;
             case :use:
-                showConfirmation(_item, :use);
+                showConfirmation("Do you want to use " + item.getName() + "?", _item, :use);
                 break;
             case :info:
                 showInfo(_item);
@@ -133,8 +133,7 @@ class DCOptionsDelegate extends WatchUi.Menu2InputDelegate {
         }
     }
 
-    function showConfirmation(item as Item, action as Symbol) {
-        var message = "Do you want to use " + item.getName() + "?";
+    function showConfirmation(message as String, item as Item, action as Symbol) {
         var dialog = new WatchUi.Confirmation(message);
         WatchUi.pushView(
             dialog,
@@ -176,6 +175,9 @@ class DCConfirmUseItem extends WatchUi.ConfirmationDelegate {
                     _player.onUseItem(_item);
                     break;
                 case :drop:
+                    if (_item.isEquipped()) {
+                        _player.unequipItem(_item, _item.getItemSlot());
+                    }
                     _player.onDropItem(_item);
                     break;
             }

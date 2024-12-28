@@ -9,15 +9,15 @@ enum ItemType {
 }
 
 enum ItemSlot {
-	HEAD = "head",
-	CHEST = "chest",
-	BACK = "back",
-	LEGS = "legs",
-	FEET = "feet",
-	LEFT_HAND = "left_hand",
-	RIGHT_HAND = "right_hand",
-	ACCESSORY = "accessory",
-	NONE = "none"
+	HEAD = 0,
+	CHEST = 1,
+	BACK = 2,
+	LEGS = 3,
+	FEET = 4,
+	LEFT_HAND = 5,
+	RIGHT_HAND = 6,
+	ACCESSORY = 7,
+	NONE = 8
 }
 
 /*

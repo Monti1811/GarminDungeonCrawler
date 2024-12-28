@@ -10,10 +10,15 @@ class Item {
 	var amount as Number = 1;
 	var weight as Number = 1;
 	var pos as Point2D = [0, 0];
+	var equipped as Boolean = false;
 
 	function initialize();
-	function onEquipItem(player as Player) as Void;
-	function onUnequipItem(player as Player) as Void;
+	function onEquipItem(player as Player) as Void {
+		self.equipped = true;
+	}
+	function onUnequipItem(player as Player) as Void {
+		self.equipped = false;
+	}
 	function canBeUsed(player as Player) as Boolean {
 		return true;
 	}
@@ -65,5 +70,9 @@ class Item {
 	
 	function getAmount() as Number {
 		return amount;
+	}
+
+	function isEquipped() as Boolean {
+		return equipped;
 	}
 }

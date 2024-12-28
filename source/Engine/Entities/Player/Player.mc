@@ -55,6 +55,10 @@ class Player extends Entity {
 		return false;
 	}
 
+	function getEquip(slot as ItemSlot) as Item? {
+		return equipped[slot];
+	}
+
 	function onPickupItem(item as Item) as Boolean {
 		if (inventory.size() < inventory_space && item.canBePickedUp(me)) {
 			item.onPickupItem(me);
