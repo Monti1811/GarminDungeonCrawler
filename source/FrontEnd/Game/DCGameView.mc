@@ -134,13 +134,17 @@ class DCGameView extends WatchUi.View {
         }
 
         var enemy_in_pos = false;   
+        var enemy = null as Enemy?;
 
         if (map_element != null) {
             if (map_element instanceof Item) {
                 _player.pickupItem(map_element as Item);
                 _dungeon.removeItem(map_element as Item);
-            } else if (map_element instanceof Enemy) {
-                enemy_in_pos = true;
+            } else {
+                enemy = MapUtil.getEnemyInRange(map, _player_pos, _player.getRange(), direction);
+                if (enemy != null) {
+                    enemy_in_pos = true;
+                }
             }
         }
 
@@ -156,30 +160,25 @@ class DCGameView extends WatchUi.View {
         // Move enemies
         _dungeon.moveEnemies(new_pos);
 
-        // Remove esxisting damage texts
+        // Remove existing damage texts
         removeDamageTexts();
 
         // Check if enemy is still there, if not move to position
-        if (enemy_in_pos) {
-            map_element = map[new_pos[0]][new_pos[1]] as Object?;
-            if (!(map_element instanceof Enemy)) {
-                movePlayer(map, new_pos);
-                has_moved = true;
-            }
+        enemy = MapUtil.getEnemyInRange(map, _player_pos, _player.getRange(), direction);
+        if (enemy_in_pos && enemy == null) {
+            movePlayer(map, new_pos);
+            has_moved = true;
         }
 
         // Check for enemy collision and attack
-        map_element = map[new_pos[0]][new_pos[1]] as Object?;
-        if (!has_moved && map_element instanceof Enemy) {
-            if (map_element.getPos() == map_element.getNextPos()) {
-                var defeated = Battle.attackEnemy(self, _player, map_element as Enemy);
-                if (defeated) {
-                    _player.onGainExperience(map_element.getKillExperience());
-                    _dungeon.dropLoot(map_element as Enemy);
-                    _dungeon.removeEnemy(map_element as Enemy);
-                }
-                new_pos = _player_pos;
+        if (!has_moved && enemy != null) {
+            var defeated = Battle.attackEnemy(self, _player, enemy);
+            if (defeated) {
+                _player.onGainExperience(enemy.getKillExperience());
+                _dungeon.dropLoot(enemy);
+                _dungeon.removeEnemy(enemy);
             }
+            new_pos = _player_pos;
         }
         // Check for enemy collision and attack
         _dungeon.enemiesAttack(self, new_pos);

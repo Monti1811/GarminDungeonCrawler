@@ -48,7 +48,7 @@ class Dungeon extends WatchUi.Drawable {
         for (var i = 0; i < _size_x; i++) {
             _map[i] = new Array<Object?>[_size_y];
         }
-        _map_drawing = options[:map];
+        _map_drawing = options[:map] as Dictionary;
         // Add walls to map
         var a_wall = new Wall();
         var walls = _map_drawing[:walls] as Dictionary<Symbol, Dictionary>;

@@ -24,6 +24,13 @@ module MathUtil {
 		return min + Math.rand() % (max - min + 1);
 	}
 
+	function max(value1 as Number, value2 as Number) as Number {
+		if (value1 > value2) {
+			return value1;
+		}
+		return value2;
+	}
+
 	//! Function to see if a tap falls within a given touch area
 	//! @param x X coord of tap
 	//! @param y Y coord of tap

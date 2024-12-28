@@ -10,6 +10,7 @@ class WeaponItem extends EquippableItem {
 	var value as Number = 10;
 	var weight as Number = 20;
 	var attack as Number = 10;
+	var range as Numeric = 1;
 
 	function initialize() {
 		EquippableItem.initialize();
@@ -43,6 +44,10 @@ class WeaponItem extends EquippableItem {
 
 	function getAttack() as Number {
 		return attack;
+	}
+
+	function getRange() as Number {
+		return range;
 	}
 	
 

@@ -82,7 +82,7 @@ class DCPlayerDetailsEquipmentOptionsDelegate extends WatchUi.Menu2InputDelegate
         var type = item.getId() as Symbol;
         switch (type) {
             case :equip:
-                openInventoryForSlot(item.getSubLabel());
+                openInventoryForSlot(item.getSubLabel() as String);
                 break;
             case :unequip:
                 getApp().getPlayer().unequipItem(_item, _item.getItemSlot());

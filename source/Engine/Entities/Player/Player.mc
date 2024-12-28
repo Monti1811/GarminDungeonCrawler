@@ -281,4 +281,18 @@ class Player extends Entity {
 		return gold;
 	}	
 
+	function getRange() as Numeric {
+		var weapon_left = equipped[LEFT_HAND] as WeaponItem?;
+		var weapon_right = equipped[RIGHT_HAND] as WeaponItem?;
+		var range_left = 1;
+		var range_right = 1;
+		if (weapon_left != null) {
+			range_left = weapon_left.getRange();
+		}
+		if (weapon_right != null) {
+			range_right = weapon_right.getRange();
+		}
+		return MathUtil.max(range_left, range_right);
+	}
+
 }

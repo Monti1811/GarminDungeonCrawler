@@ -58,6 +58,7 @@ class Axe extends WeaponItem {
 		axe.equipped = equipped;
 		axe.in_inventory = in_inventory;
 		axe.attack = attack;
+		axe.range = range;
 		return axe;
 	}
 
