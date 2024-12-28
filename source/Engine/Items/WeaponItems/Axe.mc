@@ -15,6 +15,7 @@ class Axe extends WeaponItem {
 	function initialize() {
 		WeaponItem.initialize();
 		attack = 10;
+		range = 1.5;
 	}
 
 	function onEquipItem(player as Player) as Void {

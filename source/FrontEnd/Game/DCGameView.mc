@@ -136,20 +136,18 @@ class DCGameView extends WatchUi.View {
         var enemy_in_pos = false;   
         var enemy = null as Enemy?;
 
-        if (map_element != null) {
-            if (map_element instanceof Item) {
-                _player.pickupItem(map_element as Item);
-                _dungeon.removeItem(map_element as Item);
-            } else {
-                enemy = MapUtil.getEnemyInRange(map, _player_pos, _player.getRange(), direction);
-                if (enemy != null) {
-                    enemy_in_pos = true;
-                }
+        if (map_element != null && map_element instanceof Item) {
+            _player.pickupItem(map_element as Item);
+            _dungeon.removeItem(map_element as Item);
+        } else {
+            enemy = MapUtil.getEnemyInRange(map, _player_pos, _player.getRange(), direction);
+            if (enemy != null) {
+                enemy_in_pos = true;
             }
         }
 
-		// System.println("Old pos: " + _player_pos);
-        // System.println("New pos: " + new_pos);
+		System.println("Old pos: " + _player_pos);
+        System.println("New pos: " + new_pos);
 
         var has_moved = false;
         // Move player
