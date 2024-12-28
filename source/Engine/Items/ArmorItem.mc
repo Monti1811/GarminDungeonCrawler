@@ -1,42 +1,43 @@
 import Toybox.Lang;
 
 
-class ArmorItem extends Item {
+class ArmorItem extends EquippableItem {
 	var type as ItemType = ARMOR;
 	var slot as ItemSlot = CHEST;
 	var defense as Number = 5;
 
 	function initialize() {
-		Item.initialize();
+		EquippableItem.initialize();
 	}
 
 	function onEquipItem(player as Player) as Void {
-		Item.onEquipItem(player);
+		EquippableItem.onEquipItem(player);
 	}
 	function onUnequipItem(player as Player) as Void {
-		Item.onUnequipItem(player);
+		EquippableItem.onUnequipItem(player);
 	}
 
 	function onUseItem(player as Player) as Void {
-		Item.onUseItem(player);
+		EquippableItem.onUseItem(player);
 	}
 	function onPickupItem(player as Player) as Void {
-		Item.onPickupItem(player);
+		EquippableItem.onPickupItem(player);
 	}
 
 	function onDropItem(player as Player) as Void {
-		Item.onDropItem(player);
+		EquippableItem.onDropItem(player);
 	}
 
 	function onSellItem(player as Player) as Void {
-		Item.onSellItem(player);
+		EquippableItem.onSellItem(player);
 	}
 
 	function onBuyItem(player as Player) as Void {
-		Item.onBuyItem(player);
+		EquippableItem.onBuyItem(player);
 	}
 	
 	function getDefense() as Number {
 		return defense;
 	}
+
 }

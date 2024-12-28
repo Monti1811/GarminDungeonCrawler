@@ -41,6 +41,15 @@ class DCItemInfoValuesView extends WatchUi.View {
 		drawText(dc, "Damage: " + weapon.getAttack(), 0);
 		drawText(dc, "Equip Slot: " + Constants.EQUIPSLOT_TO_STR[weapon.getItemSlot()], 1);
 		drawText(dc, "Value: " + weapon.getValue(), 2);
+		var attribute_bonus = weapon.getAllAttributeBonuses();
+		var bonus_keys = attribute_bonus.keys() as Array<Symbol>;
+		if (bonus_keys.size() > 0) {
+			drawText(dc, "Attribute Bonus: ", 3);
+			for (var i = 0; i < bonus_keys.size(); i++) {
+				var symbol = bonus_keys[i];
+				drawText(dc, Constants.ATT_SYMBOL_TO_STR[symbol] + ": " + attribute_bonus[symbol], 4 + i);
+			}
+		}
 
 	}
 

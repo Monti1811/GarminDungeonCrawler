@@ -8,41 +8,56 @@ class Helmet extends ArmorItem {
 	var description as String = "A simple helmet";
 	var value as Number = 10;
 	var weight as Number = 10;
+	var attribute_bonus as Dictionary<Symbol, Number> = {
+		:constitution => 2
+	};
 
 	function initialize() {
 		ArmorItem.initialize();
 	}
 
 	function onEquipItem(player as Player) as Void {
-		Item.onUseItem(player);
-		player.addToAttribute(:constitution, 2);
+		ArmorItem.onEquipItem(player);
 	}
 	function onUnequipItem(player as Player) as Void {
 		ArmorItem.onUnequipItem(player);
-		player.removeFromAttribute(:constitution, 2);
 	}
 
 	function onUseItem(player as Player) as Void {
-		Item.onUseItem(player);
+		ArmorItem.onUseItem(player);
 	}
 	function onPickupItem(player as Player) as Void {
-		Item.onPickupItem(player);
+		ArmorItem.onPickupItem(player);
 	}
 
 	function onDropItem(player as Player) as Void {
-		Item.onDropItem(player);
+		ArmorItem.onDropItem(player);
 	}
 
 	function onSellItem(player as Player) as Void {
-		Item.onSellItem(player);
+		ArmorItem.onSellItem(player);
 	}
 
 	function onBuyItem(player as Player) as Void {
-		Item.onBuyItem(player);
+		ArmorItem.onBuyItem(player);
 	}
 	function getSprite() as ResourceId {
 		return $.Rez.Drawables.Helmet;
 	}
 	
+
+	function deepcopy() as Item {
+		var helmet = new Helmet();
+		helmet.name = name;
+		helmet.description = description;
+		helmet.value = value;
+		helmet.amount = amount;
+		helmet.attribute_bonus = attribute_bonus;
+		helmet.pos = pos;
+		helmet.equipped = equipped;
+		helmet.in_inventory = in_inventory;
+		helmet.defense = defense;
+		return helmet;
+	}
 
 }

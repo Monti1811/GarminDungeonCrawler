@@ -26,6 +26,11 @@ class DCPlayerDetailsAttributesDelegate extends WatchUi.BehaviorDelegate {
         
     }
 
+    function onBack() as Boolean {
+        WatchUi.popView(SLIDE_DOWN);
+        return true;
+    }
+
     function onTap(clickEvent as ClickEvent) as Boolean {
         if (clickEvent.getType() == CLICK_TYPE_TAP) {
             var coord = clickEvent.getCoordinates();

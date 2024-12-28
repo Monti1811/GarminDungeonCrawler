@@ -33,7 +33,7 @@ class Dungeon extends WatchUi.Drawable {
     private var _enemies as Array<Enemy?>;
     private var _enemies_sprite as Array<Bitmap?>;
 
-
+    private var _player_pos as Point2D;
 
     function initialize(options as Dictionary?) {
         Drawable.initialize(options);
@@ -41,7 +41,8 @@ class Dungeon extends WatchUi.Drawable {
         _size_y = options[:size_y];
         _tile_width = options[:tile_width];
         _tile_height = options[:tile_height];
-        _start_pos = options[:start_pos];
+        _start_pos = options[:start_pos] as Point2D;
+        _player_pos = _start_pos;
 
         _map = new Array<Array<Object?>>[_size_x];
         for (var i = 0; i < _size_x; i++) {
@@ -50,7 +51,7 @@ class Dungeon extends WatchUi.Drawable {
         _map_drawing = options[:map];
         // Add walls to map
         var a_wall = new Wall();
-        var walls = _map_drawing[:walls] as Dictionary<Symbol, Dictionary<Symbol,Array<Point2D>>>;
+        var walls = _map_drawing[:walls] as Dictionary<Symbol, Dictionary>;
         var wall_keys = walls.keys() as Array<Symbol>;
         for (var i = 0; i < wall_keys.size(); i++) {
             var spec_wall_values = walls[wall_keys[i]] as Array<Point2D>?;
@@ -63,7 +64,7 @@ class Dungeon extends WatchUi.Drawable {
 
 
         _items = options[:items];
-        _items_sprite = new Array<Bitmap?>[20];
+        _items_sprite = new Array<Bitmap?>[_items.size()];
         for (var i = 0; i < _items.size(); i++) {
             var item = _items[i];
             var item_pos = item.getPos();
@@ -71,7 +72,7 @@ class Dungeon extends WatchUi.Drawable {
             _map[item_pos[0]][item_pos[1]] = item;
         }
         _enemies = options[:enemies];
-        _enemies_sprite = new Array<Bitmap?>[20];
+        _enemies_sprite = new Array<Bitmap?>[_enemies.size()];
         for (var i = 0; i < _enemies.size(); i++) {
             var enemy = _enemies[i];
             var enemy_pos = enemy.getPos();
@@ -284,6 +285,41 @@ class Dungeon extends WatchUi.Drawable {
                 _enemies[i].attackNearbyPlayer(view, _map, player_pos);
             }
         }
+    }
+
+    function updatePlayerPos(new_pos as Point2D) as Void {
+        _player_pos = new_pos;
+    }
+
+    function getPlayerPos() as Point2D {
+        return _player_pos;
+    }
+
+    function getNearbyFreePos(pos as Point2D) as Point2D? {
+        var new_pos = [pos[0], pos[1] - 1];
+        if (new_pos[1] >= 0 && _map[new_pos[0]][new_pos[1]] == null) {
+            return new_pos;
+        }
+        new_pos = [pos[0], pos[1] + 1];
+        if (new_pos[1] < _size_y && _map[new_pos[0]][new_pos[1]] == null) {
+            return new_pos;
+        }
+        new_pos = [pos[0] - 1, pos[1]];
+        if (new_pos[0] >= 0 && _map[new_pos[0]][new_pos[1]] == null) {
+            return new_pos;
+        }
+        new_pos = [pos[0] + 1, pos[1]];
+        if (new_pos[0] < _size_x && _map[new_pos[0]][new_pos[1]] == null) {
+            return new_pos;
+        }
+        return null;
+    }
+
+    function addItem(item as Item) as Void {
+        var item_pos = item.getPos();
+        _items.add(item);
+        _items_sprite.add(new WatchUi.Bitmap({:rezId=>item.getSprite(), :locX=>item_pos[0] * _tile_width, :locY=>item_pos[1] * _tile_height}));
+        _map[item_pos[0]][item_pos[1]] = item;
     }
 
 

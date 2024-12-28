@@ -25,6 +25,16 @@ module Constants {
         :luck => "Luck"
     };
 
+	public const ATT_STR_TO_SYMBOL = {
+		"Strength" => :strength,
+		"Constitution" => :constitution,
+		"Dexterity" => :dexterity,
+		"Intelligence" => :intelligence,
+		"Wisdom" => :wisdom,
+		"Charisma" => :charisma,
+		"Luck" => :luck
+	};
+
 	public const EQUIPSLOT_TO_STR as Dictionary<ItemSlot, String> = {
 		HEAD => "Head",
 		CHEST => "Chest",
@@ -35,5 +45,17 @@ module Constants {
 		RIGHT_HAND => "Right Hand",
 		ACCESSORY => "Accessory",
 		NONE => "None"
+	};
+
+	public const STR_TO_EQUIPSLOT as Dictionary<String, ItemSlot> = {
+		"Head" => HEAD,
+		"Chest" => CHEST,
+		"Back" => BACK,
+		"Legs" => LEGS,
+		"Feet" => FEET,
+		"Left Hand" => LEFT_HAND,
+		"Right Hand" => RIGHT_HAND,
+		"Accessory" => ACCESSORY,
+		"None" => NONE
 	};
 }

@@ -8,6 +8,9 @@ class Axe extends WeaponItem {
 	var slot as ItemSlot = RIGHT_HAND;
 	var value as Number = 10;
 	var weight as Number = 10;
+	var attribute_bonus as Dictionary<Symbol, Number> = {
+		:strength => 2
+	};
 
 	function initialize() {
 		WeaponItem.initialize();
@@ -15,35 +18,47 @@ class Axe extends WeaponItem {
 	}
 
 	function onEquipItem(player as Player) as Void {
-		Item.onUseItem(player);
-		player.addToAttribute(:strength, 2);
+		WeaponItem.onEquipItem(player);
 	}
 	function onUnequipItem(player as Player) as Void {
-		Item.onUnequipItem(player);
-		player.removeFromAttribute(:strength, 2);
+		WeaponItem.onUnequipItem(player);
 	}
 
 	function onUseItem(player as Player) as Void {
-		Item.onUseItem(player);
+		WeaponItem.onUseItem(player);
 	}
 	function onPickupItem(player as Player) as Void {
-		Item.onPickupItem(player);
+		WeaponItem.onPickupItem(player);
 	}
 
 	function onDropItem(player as Player) as Void {
-		Item.onDropItem(player);
+		WeaponItem.onDropItem(player);
 	}
 
 	function onSellItem(player as Player) as Void {
-		Item.onSellItem(player);
+		WeaponItem.onSellItem(player);
 	}
 
 	function onBuyItem(player as Player) as Void {
-		Item.onBuyItem(player);
+		WeaponItem.onBuyItem(player);
 	}
 	
 	function getSprite() as ResourceId {
 		return $.Rez.Drawables.Axe;
+	}
+
+	function deepcopy() as Item {
+		var axe = new Axe();
+		axe.name = name;
+		axe.description = description;
+		axe.value = value;
+		axe.amount = amount;
+		axe.attribute_bonus = attribute_bonus;
+		axe.pos = pos;
+		axe.equipped = equipped;
+		axe.in_inventory = in_inventory;
+		axe.attack = attack;
+		return axe;
 	}
 
 }

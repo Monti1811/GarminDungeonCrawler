@@ -7,32 +7,39 @@
 import Toybox.Lang;
 import Toybox.WatchUi;
 
+var itemslot as ItemSlot = HEAD;
+
 //! ViewLoop Delegate for handling the main primate views
 //! and indicates the current page
 class DCPlayerDetailsEquipmentDelegate extends WatchUi.BehaviorDelegate {
 
-    private var _view as DCPlayerDetailsEquipmentsView;
     private const num_to_equipslot as Array<ItemSlot> = [HEAD, CHEST, BACK, LEGS, FEET, LEFT_HAND, RIGHT_HAND, ACCESSORY];
 
-    function initialize(view as DCPlayerDetailsEquipmentsView) {
+    function initialize() {
         BehaviorDelegate.initialize();
-        _view = view;
     }
 
     // Detect Menu button input
-    function onKey(keyEvent as KeyEvent) as Void {
+    function onKey(keyEvent as KeyEvent) as Boolean {
         if (keyEvent.getKey() == KEY_ENTER) {
             var menu = new WatchUi.Menu2({:title=>"Equipped Items"});
             for (var i = 0; i < 8; i++) {
-                var slot = num_to_equipslot[i];
-                var item = _view._player.getEquip(slot);
+                var slot = num_to_equipslot[i] as ItemSlot;
+                var item = getApp().getPlayer().getEquip(slot) as Item?;
+                var name = "No equipped item";
                 if (item != null) {
-                    menu.addItem(new WatchUi.MenuItem(item.getName(), null, item, slot));
+                    name = item.getName();
                 }
+                menu.addItem(new WatchUi.MenuItem(name, Constants.EQUIPSLOT_TO_STR[slot], item, null));
             }
 
-            WatchUi.pushView(menu, new DCPlayerDetailsEquipment2Delegate(_view), SLIDE_UP);
+            WatchUi.pushView(menu, new DCPlayerDetailsEquipment2Delegate(), SLIDE_UP);
         }
+        return true;
+    }
+
+    function onBack() as Boolean {
+        WatchUi.popView(SLIDE_DOWN);
         return true;
     }
 
@@ -40,51 +47,51 @@ class DCPlayerDetailsEquipmentDelegate extends WatchUi.BehaviorDelegate {
 
 class DCPlayerDetailsEquipment2Delegate extends WatchUi.Menu2InputDelegate {
 
-    private var _view as DCPlayerDetailsEquipmentsView;
-
-    function initialize(view as DCPlayerDetailsEquipmentsView) {
+    function initialize() {
         Menu2InputDelegate.initialize();
-        _view = view;
     }
 
     // Detect Menu button input
-    function onSelect(item as MenuItem) as Void {
-        item = item.getId() as Item;
+    function onSelect(menuItem as MenuItem) as Void {
+        var item = menuItem.getId() as Item?;
         var menu = new WatchUi.Menu2({:title=>"Item options"});
-        menu.addItem(new WatchUi.MenuItem("Unequip", null, :unequip, null));
-        menu.addItem(new WatchUi.MenuItem("Drop", null, :drop, null));
-        menu.addItem(new WatchUi.MenuItem("Info", "More information", :info, null));
+        if (item != null) {
+            menu.addItem(new WatchUi.MenuItem("Unequip", null, :unequip, null));
+            menu.addItem(new WatchUi.MenuItem("Drop", null, :drop, null));
+            menu.addItem(new WatchUi.MenuItem("Info", "More information", :info, null));
+        } else {
+            menu.addItem(new WatchUi.MenuItem("Equip", menuItem.getSubLabel(), :equip, null));
+        }
 
-        WatchUi.pushView(menu, new DCPlayerDetailsEquipmentOptionsDelegate(_view, item), SLIDE_UP);
-
-        return true;
+        WatchUi.pushView(menu, new DCPlayerDetailsEquipmentOptionsDelegate(item), SLIDE_UP);
     }
 
 }
 
 class DCPlayerDetailsEquipmentOptionsDelegate extends WatchUi.Menu2InputDelegate {
 
-    private var _view as DCPlayerDetailsEquipmentsView;
     private var _item as Item;
 
-    function initialize(view as DCPlayerDetailsEquipmentsView, item as Item) {
+    function initialize(item as Item) {
         Menu2InputDelegate.initialize();
-        _view = view;
         _item = item;
     }
 
     // Detect Menu button input
     function onSelect(item as MenuItem) as Void {
-        item = item.getId() as Symbol;
-        switch (item) {
+        var type = item.getId() as Symbol;
+        switch (type) {
             case :equip:
+                openInventoryForSlot(item.getSubLabel());
+                break;
+            case :unequip:
                 getApp().getPlayer().unequipItem(_item, _item.getItemSlot());
+                WatchUi.popView(SLIDE_DOWN);
+                WatchUi.popView(SLIDE_DOWN);
+                WatchUi.requestUpdate();
                 break;
             case :drop:
-                showConfirmation("Do you want to drop " + item.getName() + "?",_item, :drop);
-                break;
-            case :use:
-                showConfirmation("Do you want to use " + item.getName() + "?", _item, :use);
+                showConfirmation("Do you want to drop " + _item.getName() + "?",_item, :drop);
                 break;
             case :info:
                 showInfo(_item);
@@ -92,11 +99,26 @@ class DCPlayerDetailsEquipmentOptionsDelegate extends WatchUi.Menu2InputDelegate
         }
     }
 
+    function openInventoryForSlot(itemslot_str as String?) as Void {
+        var itemslot = Constants.STR_TO_EQUIPSLOT[itemslot_str] as ItemSlot;
+        var inventoryMenu = new WatchUi.Menu2({:title=>"Inventory"});
+        var player = $.getApp().getPlayer() as Player;
+        var inventory_items = player.getInventory().getItems();
+        for (var i = 0; i < inventory_items.size(); i++) {
+            var item = inventory_items[i] as Item;
+            if (item.getItemSlot() == itemslot) {
+                var amount = item.getAmount();
+                inventoryMenu.addItem(new WatchUi.MenuItem(item.getName() + " x" + amount, item.getDescription(), item, {:icon=>item.getSprite()}));
+            }
+        }
+        WatchUi.pushView(inventoryMenu, new DCInventoryEquipDelegate(), WatchUi.SLIDE_UP);
+    }
+
     function showConfirmation(message as String, item as Item, action as Symbol) {
         var dialog = new WatchUi.Confirmation(message);
         WatchUi.pushView(
             dialog,
-            new DCConfirmUseItem(getApp().getPlayer(), item, action),
+            new DCConfirmUseItem(getApp().getPlayer(), item, action, 2),
             WatchUi.SLIDE_IMMEDIATE
         );
     }
@@ -105,6 +127,24 @@ class DCPlayerDetailsEquipmentOptionsDelegate extends WatchUi.Menu2InputDelegate
         var factory = new DCGameMenuItemInfoFactory(item);
         var viewLoop = new WatchUi.ViewLoop(factory, {:wrap => true});
         WatchUi.pushView(viewLoop, new DCGameMenuItemInfoDelegate(viewLoop), WatchUi.SLIDE_IMMEDIATE);
+    }
+
+}
+
+class DCInventoryEquipDelegate extends WatchUi.Menu2InputDelegate {
+
+    function initialize() {
+        Menu2InputDelegate.initialize();
+    }
+
+    function onSelect(item as MenuItem) as Void {
+        item = item.getId() as Item;
+        var player = getApp().getPlayer() as Player;
+        player.equipItem(item, item.getItemSlot(), true);
+        WatchUi.popView(SLIDE_DOWN);
+        WatchUi.popView(SLIDE_DOWN);
+        WatchUi.popView(SLIDE_DOWN);
+        WatchUi.requestUpdate();
     }
 
 }

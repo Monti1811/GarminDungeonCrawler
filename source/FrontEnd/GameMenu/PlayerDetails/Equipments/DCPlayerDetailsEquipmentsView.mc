@@ -41,9 +41,21 @@ class DCPlayerDetailsEquipmentsView extends WatchUi.View {
 	function onLayout(dc) {
 		
 	}
+
+	function updateEquipped() {
+		equipped_res = {};
+		for (var i = 0; i < 8; i++) {
+			var slot = num_to_equipslot[i];
+			var item = _player.getEquip(slot);
+			if (item != null) {
+				equipped_res[slot] = WatchUi.loadResource(item.getSprite());
+			}
+		}
+	}
 	
 	
 	function onUpdate(dc) {
+		updateEquipped();
 		dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_BLACK);
         dc.clear();
 		dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);

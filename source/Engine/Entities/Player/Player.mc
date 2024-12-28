@@ -18,8 +18,7 @@ class Player extends Entity {
 		:luck=> 0
 	};
 	var attribute_points as Number = 5;
-	var inventory as Array<Item> = [];
-	var inventory_space as Number = 10;
+	var inventory as Inventory = new Inventory(10);
 	var equipped as Dictionary<ItemSlot, Item> = {
 		HEAD => null,
 		CHEST => null,
@@ -36,20 +35,27 @@ class Player extends Entity {
 		Entity.initialize();
 	}
 
-	function equipItem(item as Item, slot as ItemSlot) as Boolean {
+	function equipItem(item as Item, slot as ItemSlot, remove as Boolean?) as Boolean {
 		if (equipped[slot] == null) {
 			equipped[slot] = item;
 			item.onEquipItem(me);
+			if (remove) {
+				inventory.remove(item);
+			}
 			return true;
 		}
 		return false;
 	}
 
 	function unequipItem(item as Item, slot as ItemSlot) as Boolean {
-		if (equipped[slot] != null && inventory.size() < inventory_space) {
+		if (equipped[slot] != null) {
+			if (!inventory.isFull()) {
+				inventory.add(item);
+			} else if (!dropItem(item)) {
+				return false;
+			}
 			equipped[slot].onUnequipItem(me);
 			equipped.remove(slot);
-			inventory.add(item);
 			return true;
 		}
 		return false;
@@ -59,11 +65,11 @@ class Player extends Entity {
 		return equipped[slot];
 	}
 
-	function onPickupItem(item as Item) as Boolean {
-		if (inventory.size() < inventory_space && item.canBePickedUp(me)) {
+	function pickupItem(item as Item) as Boolean {
+		if (!inventory.isFull() && item.canBePickedUp(me)) {
 			item.onPickupItem(me);
 			if (equipped[item.slot] == null) {
-				equipItem(item, item.slot);
+				equipItem(item, item.slot, false);
 			} else {
 				inventory.add(item);
 			}
@@ -74,7 +80,7 @@ class Player extends Entity {
 	}
 
 	function addInventoryItem(item as Item) as Boolean {
-		if (inventory.size() < inventory_space) {
+		if (!inventory.isFull()) {
 			inventory.add(item);
 			return true;
 		}
@@ -82,10 +88,10 @@ class Player extends Entity {
 	}
 
 	function removeInventoryItem(item as Item) as Boolean {
-		return inventory.remove(item);
+		return inventory.remove(item) != null;
 	}
 
-	function getInventory() as Array<Item> {
+	function getInventory() as Inventory {
 		return inventory;
 	}
 
@@ -97,9 +103,18 @@ class Player extends Entity {
 		return false;
 	}
 
-	function onDropItem(item as Item) as Boolean {
-		item.onDropItem(me);
-		return true;
+	function dropItem(item as Item) as Boolean {
+		var dropped_item = inventory.remove(item);
+		dropped_item.onDropItem(me);
+		var dungeon = getApp().getCurrentDungeon();
+		var player_pos = dungeon.getPlayerPos();
+		var new_item_pos = dungeon.getNearbyFreePos(player_pos) as Point2D?;
+		if (new_item_pos != null) {
+			dropped_item.setPos(new_item_pos);
+			dungeon.addItem(dropped_item);
+			return true;
+		}
+		return false;
 	}
 
 	function onLevelUp() as Void {

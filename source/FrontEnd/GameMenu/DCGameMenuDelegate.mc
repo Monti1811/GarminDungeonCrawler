@@ -4,12 +4,10 @@ import Toybox.WatchUi;
 
 class DCGameMenuDelegate extends WatchUi.Menu2InputDelegate {
 
-    private var _view as DCGameView;
     private const LOG_AMOUNT = 20;
 
-    function initialize(view as DCGameView) {
+    function initialize() {
         Menu2InputDelegate.initialize();
-        _view = view;
     }
 
     function onSelect(item as MenuItem) as Void {
@@ -47,13 +45,13 @@ class DCGameMenuDelegate extends WatchUi.Menu2InputDelegate {
     function openInventory() as Void {
         var inventoryMenu = new WatchUi.Menu2({:title=>"Inventory"});
         var player = $.getApp().getPlayer() as Player;
-        var inventory = player.getInventory();
-        for (var i = 0; i < inventory.size(); i++) {
-            var item = inventory[i] as Item;
+        var inventory_items = player.getInventory().getItems();
+        for (var i = 0; i < inventory_items.size(); i++) {
+            var item = inventory_items[i] as Item;
             var amount = item.getAmount();
             inventoryMenu.addItem(new WatchUi.MenuItem(item.getName() + " x" + amount, item.getDescription(), item, {:icon=>item.getSprite()}));
         }
-        WatchUi.pushView(inventoryMenu, new DCInventoryDelegate(_view), WatchUi.SLIDE_UP);
+        WatchUi.pushView(inventoryMenu, new DCInventoryDelegate(), WatchUi.SLIDE_UP);
     }
 
     function openLog() as Void {
@@ -75,11 +73,8 @@ class DCGameMenuDelegate extends WatchUi.Menu2InputDelegate {
 
 class DCInventoryDelegate extends WatchUi.Menu2InputDelegate {
 
-    private var _view as DCGameView;
-
-    function initialize(view as DCGameView) {
+    function initialize() {
         Menu2InputDelegate.initialize();
-        _view = view;
     }
 
     function onSelect(item as MenuItem) as Void {
@@ -116,16 +111,16 @@ class DCOptionsDelegate extends WatchUi.Menu2InputDelegate {
     }
 
     function onSelect(item as MenuItem) as Void {
-        item = item.getId() as Symbol;
-        switch (item) {
+        var type = item.getId() as Symbol;
+        switch (type) {
             case :equip:
-                getApp().getPlayer().equipItem(_item, _item.getItemSlot());
+                getApp().getPlayer().equipItem(_item, _item.getItemSlot(), true);
                 break;
             case :drop:
-                showConfirmation("Do you want to drop " + item.getName() + "?",_item, :drop);
+                showConfirmation("Do you want to drop " + _item.getName() + "?",_item, :drop);
                 break;
             case :use:
-                showConfirmation("Do you want to use " + item.getName() + "?", _item, :use);
+                showConfirmation("Do you want to use " + _item.getName() + "?", _item, :use);
                 break;
             case :info:
                 showInfo(_item);
@@ -137,7 +132,7 @@ class DCOptionsDelegate extends WatchUi.Menu2InputDelegate {
         var dialog = new WatchUi.Confirmation(message);
         WatchUi.pushView(
             dialog,
-            new DCConfirmUseItem(getApp().getPlayer(), item, action),
+            new DCConfirmUseItem(getApp().getPlayer(), item, action, 3),
             WatchUi.SLIDE_IMMEDIATE
         );
     }
@@ -155,14 +150,16 @@ class DCConfirmUseItem extends WatchUi.ConfirmationDelegate {
     private var _item as Item;
     private var _player as Player;
     private var _action as Symbol;
+    private var _screens_to_pop as Number = 1;
 
     //! Constructor
     //! @param view The app view
-    public function initialize(player as Player, item as Item, action as Symbol) {
+    public function initialize(player as Player, item as Item, action as Symbol, screens_to_pop as Number) {
         ConfirmationDelegate.initialize();
         _player = player;
         _item = item;
         _action = action;
+        _screens_to_pop = screens_to_pop;
     }
 
     //! Handle a confirmation selection
@@ -178,9 +175,15 @@ class DCConfirmUseItem extends WatchUi.ConfirmationDelegate {
                     if (_item.isEquipped()) {
                         _player.unequipItem(_item, _item.getItemSlot());
                     }
-                    _player.onDropItem(_item);
+                    if (_item.isInInventory()) {
+                        _player.dropItem(_item);
+                    }
                     break;
             }
+            for (var i = 0; i < _screens_to_pop; i++) {
+                WatchUi.popView(WatchUi.SLIDE_DOWN);
+            }
+            WatchUi.requestUpdate();
         }
         return true;
     }

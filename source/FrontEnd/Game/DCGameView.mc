@@ -35,7 +35,7 @@ class DCGameView extends WatchUi.View {
             // Load options
 
         }
-        rightLowHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightLow, :locX=>-30, :locY=>290});
+        rightLowHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightLow, :locX => 290, :locY => 220});
 
 		bg_layer = new Layer({:locX=>0, :locY=>0, :width=>360, :height=>360});
         fg_layer = new Layer({:locX=>0, :locY=>0, :width=>360, :height=>360});
@@ -137,7 +137,7 @@ class DCGameView extends WatchUi.View {
 
         if (map_element != null) {
             if (map_element instanceof Item) {
-                _player.onPickupItem(map_element as Item);
+                _player.pickupItem(map_element as Item);
                 _dungeon.removeItem(map_element as Item);
             } else if (map_element instanceof Enemy) {
                 enemy_in_pos = true;
@@ -192,6 +192,7 @@ class DCGameView extends WatchUi.View {
     function movePlayer(map as Array<Array<Object?>>, new_pos as Point2D) as Void {
         map[_player_pos[0]][_player_pos[1]] = null;
         map[new_pos[0]][new_pos[1]] = _player;
+        _dungeon.updatePlayerPos(new_pos);
         _player_pos = new_pos;
     }
 

@@ -74,7 +74,7 @@ class DCGameDelegate extends WatchUi.BehaviorDelegate {
         actionMenu.addItem(new WatchUi.MenuItem("Log", "Show last actions", :log, null));
         actionMenu.addItem(new WatchUi.MenuItem("Settings", "Change settings", :settings, null));
 
-        WatchUi.pushView(actionMenu, new DCGameMenuDelegate(_view), SLIDE_UP);
+        WatchUi.pushView(actionMenu, new DCGameMenuDelegate(), SLIDE_UP);
         return true;
     }
 

@@ -11,6 +11,7 @@ class Item {
 	var weight as Number = 1;
 	var pos as Point2D = [0, 0];
 	var equipped as Boolean = false;
+	var in_inventory as Boolean = false;
 
 	function initialize();
 	function onEquipItem(player as Player) as Void {
@@ -72,7 +73,27 @@ class Item {
 		return amount;
 	}
 
+	function setAmount(amount as Number) as Void {
+		self.amount = amount;
+	}
+
 	function isEquipped() as Boolean {
 		return equipped;
+	}
+
+	function isInInventory() as Boolean {
+		return in_inventory;
+	}
+
+	function setIsInInventory(in_inventory as Boolean) as Void {
+		self.in_inventory = in_inventory;
+	}
+
+	function deepcopy() as Item {
+		var new_item = new Item();
+		new_item.pos = pos;
+		new_item.equipped = equipped;
+		new_item.in_inventory = in_inventory;
+		return new_item;
 	}
 }
