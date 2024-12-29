@@ -1,6 +1,11 @@
 import Toybox.Lang;
 
 
+enum RangeType {
+	SURROUNDING,
+	LINEAR
+}
+
 class WeaponItem extends EquippableItem {
 	var id as Number = 0;
 	var name as String = "Weapon";
@@ -11,6 +16,7 @@ class WeaponItem extends EquippableItem {
 	var weight as Number = 20;
 	var attack as Number = 10;
 	var range as Numeric = 1;
+	var range_type as RangeType = SURROUNDING;
 
 	function initialize() {
 		EquippableItem.initialize();
@@ -48,6 +54,10 @@ class WeaponItem extends EquippableItem {
 
 	function getRange() as Number {
 		return range;
+	}
+
+	function getRangeType() as RangeType {
+		return range_type;
 	}
 	
 

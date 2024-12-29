@@ -140,7 +140,8 @@ class DCGameView extends WatchUi.View {
             _player.pickupItem(map_element as Item);
             _dungeon.removeItem(map_element as Item);
         } else {
-            enemy = MapUtil.getEnemyInRange(map, _player_pos, _player.getRange(), direction);
+            var range = _player.getRange() as [Numeric, RangeType];
+            enemy = MapUtil.getEnemyInRange(map, _player_pos, range[0], range[1], direction);
             if (enemy != null) {
                 enemy_in_pos = true;
             }
@@ -162,7 +163,8 @@ class DCGameView extends WatchUi.View {
         removeDamageTexts();
 
         // Check if enemy is still there, if not move to position
-        enemy = MapUtil.getEnemyInRange(map, _player_pos, _player.getRange(), direction);
+        var range = _player.getRange() as [Numeric, RangeType];
+        enemy = MapUtil.getEnemyInRange(map, _player_pos, range[0], range[1], direction);
         if (enemy_in_pos && enemy == null) {
             movePlayer(map, new_pos);
             has_moved = true;
