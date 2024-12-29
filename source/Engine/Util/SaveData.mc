@@ -5,13 +5,16 @@ import Toybox.Application.Storage;
 
 module SaveData {
 
-	const STORAGE_STRING = "save_data";
+	var saves as Dictionary<String, Array<String>> = {};
+	var chosen_save as String = "";
+	const STORAGE_STRING as String = "save_data";
 
 	var _save_data as Dictionary<PropertyKeyType, PropertyValueType> = {};
 
 	//! Constructor
 	public function initialize() {
 		_save_data = {};
+		self.loadSaves();
 	}
 
 	//! Save a value
@@ -46,18 +49,35 @@ module SaveData {
 	}
 
 	public function loadFromMemory() {
-		var save_data = Storage.getValue(STORAGE_STRING) as Dictionary<PropertyKeyType, PropertyValueType>?;
+		var save_data = Storage.getValue(chosen_save) as Dictionary<PropertyKeyType, PropertyValueType>?;
 		if (save_data != null) {
 			setSaveData(save_data);
 		}
 	}
 
 	public function saveToMemory() {
-		Storage.setValue(STORAGE_STRING, getSaveData());
+		Storage.setValue(chosen_save, getSaveData());
+		saves[chosen_save] = [getApp().getPlayer().getLevel().toString()];
+		saveSaves();
 	}
 
 	public function isEmpty() as Boolean {
 		return _save_data.isEmpty();
+	}
+
+	public function loadSaves() {
+		var save_data = Storage.getValue(STORAGE_STRING) as Dictionary<String, Array>?;
+		if (save_data != null) {
+			saves = save_data;
+		}
+	}
+
+	public function saveSaves() {
+		Storage.setValue(STORAGE_STRING, saves);
+	}
+
+	public function getSaves() as Array<String> {
+		return saves.keys();
 	}
 
 }
