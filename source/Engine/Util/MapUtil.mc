@@ -20,7 +20,7 @@ module MapUtil {
 		return true;
 	}
 
-	function checkEnemy(map, x, y) {
+	function checkEnemy(map as Array<Array<Object?>>, x as Number, y as Number) {
         if (x >= 0 && x < map.size() && y >= 0 && y < map[0].size()) {
             var enemy = map[x][y] as Enemy?;
             if (enemy != null && enemy instanceof Enemy) {
@@ -31,33 +31,100 @@ module MapUtil {
     }
 	
     function getEnemyInRange(map as Array<Array<Object?>>, pos as Point2D, range as Number, range_type as RangeType, direction as WalkDirection) as Enemy? {
+		/*
+		Range 1, direction left:
+		[ ][ ][ ][ ][ ]
+		[ ][ ][ ][ ][ ]
+		[ ][x][P][ ][ ]
+		[ ][ ][ ][ ][ ]
+		[ ][ ][ ][ ][ ]
+		Range 1.5, direction left:
+		[ ][ ][ ][ ][ ]
+		[ ][x][ ][ ][ ]
+		[ ][x][P][ ][ ]
+		[ ][x][ ][ ][ ]
+		[ ][ ][ ][ ][ ]
+		Range 2, direction left:
+		[ ][ ][ ][ ][ ]
+		[ ][x][ ][ ][ ]
+		[x][x][P][ ][ ]
+		[ ][x][ ][ ][ ]
+		[ ][ ][ ][ ][ ]
+		Range 2.5, direction left:
+		[ ][ ][ ][ ][ ]
+		[x][x][ ][ ][ ]
+		[x][x][P][ ][ ]
+		[x][x][ ][ ][ ]
+		[ ][ ][ ][ ][ ]
+		Range 3, direction left:
+		[ ][ ][x][ ][ ][ ]
+		[ ][x][x][ ][ ][ ]
+		[x][x][x][P][ ][ ]
+		[ ][x][x][ ][ ][ ]
+		[ ][ ][x][ ][ ][ ]
+		Range 3.5, direction left:
+		[ ][x][x][ ][ ][ ]
+		[x][x][x][ ][ ][ ]
+		[x][x][x][P][ ][ ]
+		[x][x][x][ ][ ][ ]
+		[ ][x][x][ ][ ][ ]
+		*/
 		var range_int = Math.floor(range).toNumber() as Number;
 		var range_float = range - range_int;
 		var x = pos[0];
 		var y = pos[1];
 
 		var dx = 0, dy = 0;
-		if (direction == UP) dy = -1;
-		else if (direction == DOWN) dy = 1;
-		else if (direction == LEFT) dx = -1;
-		else if (direction == RIGHT) dx = 1;
-
-		for (var i = 1; i <= range_int; i++) {
-			var enemy = checkEnemy(map, x + i * dx, y + i * dy);
-			if (enemy != null) return enemy;
+		if (direction == UP) {
+			dy = -1;
+		} else if (direction == DOWN) {
+			dy = 1;
+		} else if (direction == LEFT) {
+			dx = -1;
+		} else if (direction == RIGHT) {
+			dx = 1;
 		}
 
+		// Check integer range
+		for (var i = 1; i <= range_int; i++) {
+			var reduced_i = i - 1;
+			if (range_type == LINEAR) {
+				reduced_i = 0;
+			}
+			for (var j = -reduced_i; j <= reduced_i; j++) {
+				var enemy;
+				if (direction == UP || direction == DOWN) {
+					enemy = checkEnemy(map, x + j, y + i * dy);
+				} else {
+					enemy = checkEnemy(map, x + i * dx, y + j);
+				}
+				if (enemy != null) {
+					return enemy;
+				}
+			}
+		}
+
+		// Check fractional range
 		if (range_float > 0) {
+			var enemy;
 			if (direction == UP || direction == DOWN) {
-				var enemy = checkEnemy(map, x - 1, y + range_int * dy);
-				if (enemy != null) return enemy;
+				enemy = checkEnemy(map, x - 1, y + range_int * dy);
+				if (enemy != null) {
+					return enemy;
+				}
 				enemy = checkEnemy(map, x + 1, y + range_int * dy);
-				if (enemy != null) return enemy;
+				if (enemy != null) {
+					return enemy;
+				}
 			} else if (direction == LEFT || direction == RIGHT) {
-				var enemy = checkEnemy(map, x + range_int * dx, y - 1);
-				if (enemy != null) return enemy;
+				enemy = checkEnemy(map, x + range_int * dx, y - 1);
+				if (enemy != null) {
+					return enemy;
+				}
 				enemy = checkEnemy(map, x + range_int * dx, y + 1);
-				if (enemy != null) return enemy;
+				if (enemy != null) {
+					return enemy;
+				}
 			}
 		}
 

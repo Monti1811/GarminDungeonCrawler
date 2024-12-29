@@ -293,12 +293,14 @@ class Player extends Entity {
 		if (weapon_right != null) {
 			range_right = weapon_right.getRange();
 		}
-		if (range_left > range_right) {
-			range_type = weapon_left.getRangeType();
+		if (range_left > range_right && weapon_left != null) {
+			range_type = weapon_left.getRangeType() as RangeType;
 			return [range_left, range_type];
-		} else {
-			range_type = weapon_right.getRangeType();
+		} else if (range_right >= range_left && weapon_right != null) {
+			range_type = weapon_right.getRangeType() as RangeType;
 			return [range_right, range_type];
+		} else {
+			return [1, SURROUNDING];
 		}
 	}
 
