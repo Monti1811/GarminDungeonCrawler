@@ -32,19 +32,34 @@ class DungeonCrawlerApp extends Application.AppBase {
 
     // Return the initial view of your application here
     function getInitialView() as [Views] or [Views, InputDelegates] {
-        /*_player.equipItem(new Axe(), RIGHT_HAND, false);
+        //return showPlayerDetails();
+        //return showItemInfo();
+        //return showDungeon1();
+        return showMainMenu();        
+    }
+
+    function showItemInfo(item as Item) as [Views] or [Views, InputDelegates] {
+        var factory = new DCGameMenuItemInfoFactory(item);
+        var viewLoop = new WatchUi.ViewLoop(factory, {:wrap => true});
+        return [viewLoop, new DCGameMenuItemInfoDelegate(viewLoop)];
+    }
+
+    function showPlayerDetails() as [Views] or [Views, InputDelegates] {
         var factory = new DCPlayerDetailsFactory(_player);
         var viewLoop = new WatchUi.ViewLoop(factory, {:wrap => true});
-        return [viewLoop, new DCPlayerDetailsDelegate(viewLoop)];*/
-        ///*
+        return [viewLoop, new DCPlayerDetailsDelegate(viewLoop)];
+    }
+
+    function showDungeon1() as [Views] or [Views, InputDelegates] {
         var dungeon1View = new DCGameView(_player, _curr_dungeon, null);
         var dungeon1Delegate = new DCGameDelegate(dungeon1View);
         return [ dungeon1View, dungeon1Delegate ];
-        //*/
+    }
 
-        /*var factory = new DCGameMenuItemInfoFactory(new Axe());
-        var viewLoop = new WatchUi.ViewLoop(factory, {:wrap => true});
-        return [viewLoop, new DCGameMenuItemInfoDelegate(viewLoop)];*/
+    function showMainMenu() as [Views] or [Views, InputDelegates] {
+        var mainMenu = new DCMainMenuView();
+        var mainMenuDelegate = new DCMainMenuDelegate();
+        return [mainMenu, mainMenuDelegate];
     }
 
     function getPlayer() as Player {
