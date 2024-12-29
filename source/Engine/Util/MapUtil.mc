@@ -30,7 +30,7 @@ module MapUtil {
         return null;
     }
 	
-    function getEnemyInRange(map as Array<Array<Object?>>, pos as Point2D, range as Number, direction as WalkDirection) as Enemy? {
+    function getEnemyInRange(map as Array<Array<Object?>>, pos as Point2D, range as Number, range_type as RangeType, direction as WalkDirection) as Enemy? {
 		var range_int = Math.floor(range).toNumber() as Number;
 		var range_float = range - range_int;
 		var x = pos[0];
