@@ -134,7 +134,16 @@ class RPGConfirmateNewGame extends WatchUi.ConfirmationDelegate {
     public function onResponse(value as Confirm) as Boolean {
         if (value == WatchUi.CONFIRM_YES) {
             // Create new character, then save it to SaveData
-
+            var characterMenu = new WatchUi.Menu2({:title=>"Characters"});
+            var characters = SimUtil.createAllPossibleCharacters();
+            for (var i = 0; i < characters.size(); i++) {
+                var character = characters[i] as Player;
+                var character_item = new WatchUi.MenuItem(character.getName(), character.getDescription(), character, null);
+                characterMenu.addItem(character_item);
+            }
+            WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
+            WatchUi.pushView(characterMenu, new DCCharacterCreationDelegate(), WatchUi.SLIDE_UP);
+            WatchUi.pushView(new WatchUi.View(), new WatchUi.InputDelegate(), WatchUi.SLIDE_UP);
         }
         return true;
     }

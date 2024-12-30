@@ -2,7 +2,7 @@ import Toybox.Graphics;
 import Toybox.Lang;
 import Toybox.WatchUi;
 
-class DCPlayerDetailsFactory extends WatchUi.ViewLoopFactory {
+class DCCharacterCreationDetailsFactory extends WatchUi.ViewLoopFactory {
     private const NUM_PAGES = 3;
     private var _player as Player;
 
@@ -17,10 +17,10 @@ class DCPlayerDetailsFactory extends WatchUi.ViewLoopFactory {
             case 0:
                 return [new $.DCPlayerDetailsOverviewView(_player), new WatchUi.BehaviorDelegate()];
             case 1:
-                return [new $.DCPlayerDetailsAttributesView(_player, true), new DCPlayerDetailsAttributesDelegate()];
+                return [new $.DCPlayerDetailsAttributesView(_player, false), new WatchUi.BehaviorDelegate()];
             case 2: 
                 var view = new $.DCPlayerDetailsEquipmentsView(_player);
-                return [view, new DCPlayerDetailsEquipmentDelegate()];
+                return [view, new WatchUi.BehaviorDelegate()];
         }
         return [new $.DCPlayerDetailsOverviewView(_player), new WatchUi.BehaviorDelegate()];
     }

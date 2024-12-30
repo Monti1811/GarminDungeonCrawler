@@ -9,4 +9,11 @@ module SimUtil {
             dict1[dict2_keys[k]] = dict2[dict2_keys[k]];
         }
     }
+
+    function createAllPossibleCharacters() as Array<Player> {
+        return [
+            new Warrior("Warrior"),
+            new Mage("Mage")
+        ];
+    }
 }

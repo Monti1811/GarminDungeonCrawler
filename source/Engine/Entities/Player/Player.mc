@@ -5,6 +5,7 @@ class Player extends Entity {
 	var current_health as Number = 100;
 	var maxHealth as Number = 100;
 	var name as String = "Player";
+	var description as String = "The player character";
 	var level as Number = 1;
 	var experience as Number = 0;
 	var next_level_experience as Number = 100;
@@ -302,6 +303,10 @@ class Player extends Entity {
 		} else {
 			return [1, SURROUNDING];
 		}
+	}
+
+	function getDescription() as String {
+		return description;
 	}
 
 }

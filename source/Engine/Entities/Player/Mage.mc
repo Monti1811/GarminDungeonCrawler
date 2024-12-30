@@ -1,21 +1,21 @@
 import Toybox.Lang;
 
-class Warrior extends Player {
+class Mage extends Player {
 
 	function initialize(name as String) {
 		Player.initialize();
 
 		// Set name
 		self.name = name;
-		self.description = "A warrior character";
+		self.description = "A mage character";
 
 		// Give starting items
 		equipped[RIGHT_HAND] = new Axe();
 		equipped[HEAD] = new Helmet();
 
 		// Set attributes
-		attributes[:strength] = 10;
-		attributes[:constitution] = 10;
+		attributes[:intelligence] = 10;
+		attributes[:wisdom] = 10;
 
 	}
 
@@ -24,8 +24,8 @@ class Warrior extends Player {
 		maxHealth += 10;
 
 		// Increase attributes
-		addToAttribute(:strength, 2);
-		addToAttribute(:constitution, 2);
+		addToAttribute(:intelligence, 2);
+		addToAttribute(:wisdom, 2);
 	}
 
 

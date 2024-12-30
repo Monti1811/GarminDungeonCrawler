@@ -17,13 +17,14 @@ class DCPlayerDetailsAttributesView extends WatchUi.View {
 	private const rectangle_width as Number = 210;
 	private const tableentry_size as Number = 30;
 
-	private var actionMenuHint as Bitmap;
+	private var actionMenuHint as Bitmap?;
 	
-	function initialize(player as Player) {
+	function initialize(player as Player, withHint as Boolean) {
 		View.initialize();
 		_player = player;
-
-		actionMenuHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.actionMenu, :locX=>-30, :locY=>290});
+		if (withHint) {
+			actionMenuHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.actionMenu, :locX=>-30, :locY=>290});
+		}
 	}
 	
 	
@@ -34,7 +35,9 @@ class DCPlayerDetailsAttributesView extends WatchUi.View {
 		dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
 		drawEntries(dc);
 		//drawPlusMinus(dc);
-		actionMenuHint.draw(dc);
+		if (actionMenuHint != null) {
+			actionMenuHint.draw(dc);
+		}	
 	}
 
 	function drawTable(dc as Dc) as Void {
