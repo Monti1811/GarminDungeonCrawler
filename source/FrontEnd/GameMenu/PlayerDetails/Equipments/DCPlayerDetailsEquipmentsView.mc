@@ -7,15 +7,17 @@ class DCPlayerDetailsEquipmentsView extends WatchUi.View {
 	private var _player as Player;
 	private const size_rectangles as Number = 74;
 	private var small_font as FontResource;
-	private var _hint as Bitmap;
+	private var _hint as Bitmap?;
 	private var equipped_res as Dictionary<ItemSlot, BitmapReference?> = {};
 	private const num_to_equipslot as Array<ItemSlot> = [HEAD, CHEST, BACK, LEGS, FEET, LEFT_HAND, RIGHT_HAND, ACCESSORY];
 	
-	function initialize(player as Player) {
+	function initialize(player as Player, withHint as Boolean) {
 		View.initialize();
 		_player = player;
 		small_font = WatchUi.loadResource($.Rez.Fonts.small);
-		_hint = new WatchUi.Bitmap({:rezId => $.Rez.Drawables.rightTop, :locX => 300, :locY => 60});
+		if (withHint) {
+			_hint = new WatchUi.Bitmap({:rezId => $.Rez.Drawables.rightTop, :locX => 300, :locY => 60});
+		}
 		for (var i = 0; i < 8; i++) {
 			var slot = num_to_equipslot[i];
 			var item = _player.getEquip(slot);
@@ -60,7 +62,9 @@ class DCPlayerDetailsEquipmentsView extends WatchUi.View {
         dc.clear();
 		dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
 		
-		_hint.draw(dc);
+		if (_hint != null) {
+			_hint.draw(dc);
+		}
 		// Head
 		drawRectangle(dc, 180, 80, "Head", HEAD);
 		// Chest

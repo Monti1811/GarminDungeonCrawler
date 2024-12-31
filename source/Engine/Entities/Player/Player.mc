@@ -30,7 +30,7 @@ class Player extends Entity {
 		RIGHT_HAND => null
 	};
 	var gold as Number = 0;
-	var sprite as ResourceId?;
+	var sprite as ResourceId = $.Rez.Drawables.Player;
 
 	function initialize() {
 		Entity.initialize();

@@ -19,7 +19,7 @@ class DCPlayerDetailsFactory extends WatchUi.ViewLoopFactory {
             case 1:
                 return [new $.DCPlayerDetailsAttributesView(_player, true), new DCPlayerDetailsAttributesDelegate()];
             case 2: 
-                var view = new $.DCPlayerDetailsEquipmentsView(_player);
+                var view = new $.DCPlayerDetailsEquipmentsView(_player, true);
                 return [view, new DCPlayerDetailsEquipmentDelegate()];
         }
         return [new $.DCPlayerDetailsOverviewView(_player), new WatchUi.BehaviorDelegate()];
