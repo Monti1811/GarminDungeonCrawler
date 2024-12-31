@@ -16,7 +16,7 @@ class DCCharacterCreationDelegate extends WatchUi.Menu2InputDelegate {
     function showCharacterDetails(character as Player) {
         var factory = new DCCharacterCreationDetailsFactory(character);
         var viewLoop = new WatchUi.ViewLoop(factory, {:wrap => true});
-        WatchUi.pushView(viewLoop, new DCCharacterCreationDetailsoDelegate(viewLoop), WatchUi.SLIDE_IMMEDIATE);
+        WatchUi.pushView(viewLoop, new DCCharacterCreationDetailsDelegate(viewLoop), WatchUi.SLIDE_IMMEDIATE);
     }
 
     function onBack() as Void {

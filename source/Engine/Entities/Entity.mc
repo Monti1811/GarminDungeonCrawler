@@ -9,4 +9,8 @@ class Entity {
 	function getName() as String {
 		return name;
 	}
+
+	function setName(name as String) {
+		self.name = name;
+	}
 }

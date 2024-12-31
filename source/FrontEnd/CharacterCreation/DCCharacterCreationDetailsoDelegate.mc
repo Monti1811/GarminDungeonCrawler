@@ -1,7 +1,7 @@
 import Toybox.Lang;
 import Toybox.WatchUi;
 
-class DCCharacterCreationDetailsoDelegate extends WatchUi.ViewLoopDelegate {
+class DCCharacterCreationDetailsDelegate extends WatchUi.ViewLoopDelegate {
 
     private var mViewLoop as ViewLoop;
 

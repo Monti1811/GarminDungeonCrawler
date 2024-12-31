@@ -143,7 +143,7 @@ class RPGConfirmateNewGame extends WatchUi.ConfirmationDelegate {
             }
             WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
             WatchUi.pushView(characterMenu, new DCCharacterCreationDelegate(), WatchUi.SLIDE_UP);
-            WatchUi.pushView(new WatchUi.View(), new WatchUi.InputDelegate(), WatchUi.SLIDE_UP);
+            WatchUi.pushView(new EmptyView(), new EmptyDelegate(), WatchUi.SLIDE_UP);
         }
         return true;
     }
