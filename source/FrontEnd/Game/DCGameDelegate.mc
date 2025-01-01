@@ -2,11 +2,11 @@ import Toybox.Lang;
 import Toybox.WatchUi;
 
 enum WalkDirection {
-    STANDING,
     UP,
     DOWN,
     LEFT,
-    RIGHT
+    RIGHT,
+    STANDING,
 }
 
 class DCGameDelegate extends WatchUi.BehaviorDelegate {

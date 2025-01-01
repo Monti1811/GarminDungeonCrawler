@@ -3,7 +3,7 @@ import Toybox.Graphics;
 import Toybox.WatchUi;
 import Toybox.System;
 
-class Dungeon1 extends Dungeon {
+class Room1 extends Room {
 
 
     function initialize(tile_width as Number, tile_height as Number, add_options as Dictionary?) {
@@ -101,7 +101,7 @@ class Dungeon1 extends Dungeon {
         };
         SimUtil.addDictToDict(options, add_options);
 
-        Dungeon.initialize(options);
+        Room.initialize(options);
 
     }
 

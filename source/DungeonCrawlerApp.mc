@@ -67,8 +67,16 @@ class DungeonCrawlerApp extends Application.AppBase {
         return _player;
     }
 
+    function setPlayer(player as Player) as Void {
+        _player = player;
+    }
+
     function getCurrentDungeon() as Dungeon {
         return _curr_dungeon;
+    }
+
+    function setCurrentDungeon(dungeon as Dungeon) as Void {
+        _curr_dungeon = dungeon;
     }
 
 }

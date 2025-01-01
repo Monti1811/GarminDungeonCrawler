@@ -41,7 +41,7 @@ class DCCharacterCreationConfirmDelegate extends WatchUi.ConfirmationDelegate {
 
             WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
             WatchUi.pushView(new WatchUi.TextPicker(_player.getName()), new DCCharacterNamingDelegate(_player), WatchUi.SLIDE_UP);
-            WatchUi.pushView(new EmptyView(), new EmptyDelegate(), WatchUi.SLIDE_UP);
+            WatchUi.pushView(new EmptyView(), null, WatchUi.SLIDE_UP);
         } else {
             WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
             
@@ -62,6 +62,8 @@ class DCCharacterNamingDelegate extends WatchUi.TextPickerDelegate {
 
     function onTextEntered(text as String, changed as Boolean) as Boolean {
         _player.setName(text);
+        Main.createNewGame(_player);
+        WatchUi.popView(WatchUi.SLIDE_DOWN);
         WatchUi.popView(WatchUi.SLIDE_DOWN);
         return true;
     }
