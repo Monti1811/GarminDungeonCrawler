@@ -329,7 +329,7 @@ class Room extends WatchUi.Drawable {
         var index = 11; // Middle of the room, as 180/16 = 11.25
         var index_edge = is_up_down ? [index, 0] : [0, index];
         var pos_room_edge = findNearestPointFromEdge(direction, index_edge as Point2D);
-        createTunnel(direction, pos_room_edge, [index, max_size_direction - 1]);
+        createTunnel(direction, pos_room_edge, index_edge as Point2D);
         
     }
 
