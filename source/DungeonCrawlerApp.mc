@@ -50,10 +50,10 @@ class DungeonCrawlerApp extends Application.AppBase {
         return [viewLoop, new DCPlayerDetailsDelegate(viewLoop)];
     }
 
-    function showDungeon1() as [Views] or [Views, InputDelegates] {
-        var dungeon1View = new DCGameView(_player, _curr_dungeon, null);
-        var dungeon1Delegate = new DCGameDelegate(dungeon1View);
-        return [ dungeon1View, dungeon1Delegate ];
+    function showRoom() as [Views] or [Views, InputDelegates] {
+        var roomView = new DCGameView(_player, _curr_dungeon, null);
+        var roomDelegate = new DCGameDelegate(roomView);
+        return [ roomView, roomDelegate ];
     }
 
     function showMainMenu() as [Views] or [Views, InputDelegates] {

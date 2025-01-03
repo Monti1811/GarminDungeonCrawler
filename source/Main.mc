@@ -7,6 +7,8 @@ module Main {
 		var app = getApp();
 		app.setPlayer(player);
 		app.setCurrentDungeon(createNewDungeon());
+		var view_delegate = app.showRoom() as [Views, InputDelegates];
+		WatchUi.switchToView(view_delegate[0], view_delegate[1], WatchUi.SLIDE_IMMEDIATE);
 	}
 
 	function startGame() as Void {
@@ -43,35 +45,81 @@ module Main {
 	function createRandomRoom() as Room {
 		var tile_width = getApp().tile_width;
 		var tile_height = getApp().tile_height;
+		var screen_size_x = Math.ceil(360/tile_width);
+		var screen_size_y = Math.ceil(360/tile_height);
+		var room_size_x = MathUtil.random(5, 15);
+		var room_size_y = MathUtil.random(5, 15);
+
+		var middle_of_screen = [Math.floor(screen_size_x/2), Math.floor(screen_size_y/2)];
+		var left = middle_of_screen[0] - room_size_x;
+		var right = middle_of_screen[0] + room_size_x;
+		var top = middle_of_screen[1] - room_size_y;
+		var bottom = middle_of_screen[1] + room_size_y;
 		var room = new Room({
-			:size_x => Math.ceil(360/tile_width), 
-			:size_y => Math.ceil(360/tile_height),
+			:size_x => room_size_x, 
+			:size_y => room_size_y,
 			:tile_width => tile_width,
 			:tile_height => tile_height,
 			:start_pos => [Math.floor(tile_width), Math.floor(tile_height)],
-			:map => createRandomMap(size_x, size_y),
-			:items => createRandomItems(),
-			:enemies => createRandomEnemies()
-
+			:map => createRandomMap(left, right, top, bottom),
+			:items => createRandomItems(left, right, top, bottom),
+			:enemies => createRandomEnemies(left, right, top, bottom)
 		});
 		
 		return room;
 	}
 
-	function createRandomMap(size_x as Number, size_y as Number) as Dictionary {
-		var size_x = MathUtil.random(10, 20);
-		var size_y = MathUtil.random(10, 20);
-		var map = {
-            :walls => {},
-            :drawPassable => []
+	function createRandomMap(left as Number, right as Number, top as Number, bottom as Number) as Dictionary {
+		var walls = {};
+		walls[:drawTopLeftWall] = [
+			[left, top]
+		];
+		walls[:drawTopRightWall] = [
+			[right, top]
+		];
+		walls[:drawBottomLeftWall] = [
+			[left, bottom]
+		];
+		walls[:drawBottomRightWall] = [
+			[right, bottom]
+		];
+		walls[:drawTopWall] = [];
+		for (var i = left + 1; i < right; i++) {
+			walls[:drawTopWall].add([top, i]);
+		}
+		walls[:drawBottomWall] = [];
+		for (var i = left + 1; i < right; i++) {
+			walls[:drawBottomWall].add([bottom, i]);
+		}
+		walls[:drawLeftWall] = [];
+		for (var j = top + 1; j < bottom; j++) {
+			walls[:drawLeftWall].add([j, left]);
+		}
+		walls[:drawRightWall] = [];
+		for (var j = top + 1; j < bottom; j++) {
+			walls[:drawRightWall].add([j, right]);
+		}
+
+		var passable = [];
+		for (var i = left + 1; i < right; i++) {
+			for (var j = top + 1; i < bottom; j++) {
+				passable.add([i, j]);
+			}
+		}
+		
+		return {
+            :walls => walls,
+            :drawPassable => passable
         };
 	}
 
-	function createRandomItems() as Array<Item> {
+	function createRandomItems(left as Number, right as Number, top as Number, bottom as Number) as Array<Item> {
 		var items = [];
 		var num_items = MathUtil.random(0, 5);
 		for (var i = 0; i < num_items; i++) {
-			items.add(createRandomItem());
+			var item = createRandomItem();
+			item.setPos(getRandomPos(left, right, top, bottom));
+			items.add(item);
 		}
 		return items;
 	}
@@ -81,17 +129,19 @@ module Main {
 		var item_type = MathUtil.random(0, 1);
 		if (item_type == 0) {
 			item = new Helmet();
-		} else {
+		} else if (item_type == 1) {
 			item = new Axe();
 		}
 		return item;
 	}
 
-	function createRandomEnemies() as Array<Enemy> {
+	function createRandomEnemies(left as Number, right as Number, top as Number, bottom as Number) as Array<Enemy> {
 		var enemies = [];
 		var num_enemies = MathUtil.random(0, 5);
 		for (var i = 0; i < num_enemies; i++) {
-			enemies.add(createRandomEnemy());
+			var enemy = createRandomEnemy();
+			enemy.setPos(getRandomPos(left, right, top, bottom));
+			enemies.add();
 		}
 		return enemies;
 	}
@@ -101,9 +151,15 @@ module Main {
 		var enemy_type = MathUtil.random(0, 1);
 		if (enemy_type == 0) {
 			enemy = new Frog();
-		} else {
+		} else if (enemy_type == 1) {
 			enemy = new Frog();
 		}
 		return enemy;
+	}
+
+	private function getRandomPos(left as Number, right as Number, top as Number, bottom as Number) as Point2D {
+		var x = MathUtil.random(left + 1, right - 1);
+		var y = MathUtil.random(top + 1, bottom - 1);
+		return [x, y];
 	}
 }
