@@ -44,11 +44,16 @@ class Room extends WatchUi.Drawable {
         _start_pos = options[:start_pos] as Point2D;
         _player_pos = _start_pos;
 
-        _map = new Array<Array<Object?>>[_size_x];
-        for (var i = 0; i < _size_x; i++) {
-            _map[i] = new Array<Object?>[_size_y];
+        if (options.get(:map) != null) {
+            _map = options[:map]
+        } else {
+             _map = new Array<Array<Object?>>[_size_x];
+            for (var i = 0; i < _size_x; i++) {
+                _map[i] = new Array<Object?>[_size_y];
+            }
         }
-        _map_drawing = options[:map] as Dictionary;
+       
+        _map_drawing = options[:map_drawing] as Dictionary;
         // Add walls to map
         var a_wall = new Wall();
         var walls = _map_drawing[:walls] as Dictionary<Symbol, Dictionary>;

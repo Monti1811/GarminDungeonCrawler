@@ -55,15 +55,21 @@ module Main {
 		var right = middle_of_screen[0] + room_size_x;
 		var top = middle_of_screen[1] - room_size_y;
 		var bottom = middle_of_screen[1] + room_size_y;
+		var map = new Array<Array<Object?>>[_size_x];
+        for (var i = 0; i < screen_size_x; i++) {
+            map[i] = new Array<Object?>[screen_size_y];
+        }
+		var map_drawing = createRandomMap(left, right, top, bottom)
 		var room = new Room({
 			:size_x => room_size_x, 
 			:size_y => room_size_y,
 			:tile_width => tile_width,
 			:tile_height => tile_height,
 			:start_pos => [Math.floor(tile_width), Math.floor(tile_height)],
-			:map => createRandomMap(left, right, top, bottom),
-			:items => createRandomItems(left, right, top, bottom),
-			:enemies => createRandomEnemies(left, right, top, bottom)
+			:map => map,
+			:map_drawing => map_drawing,
+			:items => createRandomItems(map, left, right, top, bottom),
+			:enemies => createRandomEnemies(map, left, right, top, bottom)
 		});
 		
 		return room;
@@ -113,12 +119,12 @@ module Main {
         };
 	}
 
-	function createRandomItems(left as Number, right as Number, top as Number, bottom as Number) as Array<Item> {
+	function createRandomItems(map as Array<Array<Object?>>, left as Number, right as Number, top as Number, bottom as Number) as Array<Item> {
 		var items = [];
 		var num_items = MathUtil.random(0, 5);
 		for (var i = 0; i < num_items; i++) {
 			var item = createRandomItem();
-			item.setPos(getRandomPos(left, right, top, bottom));
+			item.setPos(getRandomPos(map, left, right, top, bottom));
 			items.add(item);
 		}
 		return items;
@@ -135,12 +141,12 @@ module Main {
 		return item;
 	}
 
-	function createRandomEnemies(left as Number, right as Number, top as Number, bottom as Number) as Array<Enemy> {
+	function createRandomEnemies(map as Array<Array<Object?>>, left as Number, right as Number, top as Number, bottom as Number) as Array<Enemy> {
 		var enemies = [];
 		var num_enemies = MathUtil.random(0, 5);
 		for (var i = 0; i < num_enemies; i++) {
 			var enemy = createRandomEnemy();
-			enemy.setPos(getRandomPos(left, right, top, bottom));
+			enemy.setPos(getRandomPos(map, left, right, top, bottom));
 			enemies.add();
 		}
 		return enemies;
@@ -157,9 +163,13 @@ module Main {
 		return enemy;
 	}
 
-	private function getRandomPos(left as Number, right as Number, top as Number, bottom as Number) as Point2D {
-		var x = MathUtil.random(left + 1, right - 1);
-		var y = MathUtil.random(top + 1, bottom - 1);
+	private function getRandomPos(map as Array<Array<Object?>>, left as Number, right as Number, top as Number, bottom as Number) as Point2D {
+		var x = 0;
+		var y = 0;
+		do {
+			x = MathUtil.random(left + 1, right - 1);
+			y = MathUtil.random(top + 1, bottom - 1);
+		} while (map[x][y] != null)
 		return [x, y];
 	}
 }

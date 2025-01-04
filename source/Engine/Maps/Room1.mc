@@ -71,7 +71,7 @@ class Room1 extends Room {
             ]
         };
 
-        var map = {
+        var map_drawing = {
             :walls => walls,
             :drawPassable => passable
         };
@@ -95,7 +95,7 @@ class Room1 extends Room {
             :tile_width => tile_width,
             :tile_height => tile_height,
             :start_pos => [10, 10],
-            :map => map,
+            :map_drawing => map_drawing,
             :items => items,
             :enemies => enemies
         };
