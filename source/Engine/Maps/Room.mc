@@ -45,7 +45,7 @@ class Room extends WatchUi.Drawable {
         _player_pos = _start_pos;
 
         if (options.get(:map) != null) {
-            _map = options[:map]
+            _map = options[:map];
         } else {
              _map = new Array<Array<Object?>>[_size_x];
             for (var i = 0; i < _size_x; i++) {
@@ -330,7 +330,6 @@ class Room extends WatchUi.Drawable {
     function addConnection(direction as WalkDirection, room as Room?) as Void {
         // TODO: check if size_y is correct for up/down or not because of the way the map is drawn
         var is_up_down = direction == UP || direction == DOWN;
-        var max_size_direction = is_up_down ? _size_y : _size_x;
         var index = 11; // Middle of the room, as 180/16 = 11.25
         var index_edge = is_up_down ? [index, 0] : [0, index];
         var pos_room_edge = findNearestPointFromEdge(direction, index_edge as Point2D);
@@ -366,23 +365,23 @@ class Room extends WatchUi.Drawable {
         var y = start_pos[1];
         var dx = 0, dy = 0;
 
-        if (direction == UP) dy = -1;
-        else if (direction == DOWN) dy = 1;
-        else if (direction == LEFT) dx = -1;
-        else if (direction == RIGHT) dx = 1;
+        if (direction == UP) {dy = -1;}
+        else if (direction == DOWN) {dy = 1;}
+        else if (direction == LEFT) {dx = -1;}
+        else if (direction == RIGHT) {dx = 1;}
 
         var left_right = (direction == UP || direction == DOWN);
-        var wall = new Wall()
+        var wall = new Wall();
 
         while (x != end_pos[0] || y != end_pos[1]) {
             _map[x][y] = null;
 
             if (left_right) {
-                if (x > 0) _map[x - 1][y] = wall;
-                if (x < _size_x - 1) _map[x + 1][y] = wall;
+                if (x > 0){ _map[x - 1][y] = wall;}
+                if (x < _size_x - 1) {_map[x + 1][y] = wall;}
             } else {
-                if (y > 0) _map[x][y - 1] = wall;
-                if (y < _size_y - 1) _map[x][y + 1] = wall;
+                if (y > 0) {_map[x][y - 1] = wall;}
+                if (y < _size_y - 1) {_map[x][y + 1] = wall; }
             }
 
             x += dx;
@@ -393,4 +392,3 @@ class Room extends WatchUi.Drawable {
 
 
 }
-

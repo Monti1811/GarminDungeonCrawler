@@ -107,12 +107,12 @@ class Player extends Entity {
 	function dropItem(item as Item) as Boolean {
 		var dropped_item = inventory.remove(item);
 		dropped_item.onDropItem(me);
-		var dungeon = getApp().getCurrentDungeon();
-		var player_pos = dungeon.getPlayerPos();
-		var new_item_pos = dungeon.getNearbyFreePos(player_pos) as Point2D?;
+		var room = getApp().getCurrentDungeon().getCurrentRoom();
+		var player_pos = room.getPlayerPos();
+		var new_item_pos = room.getNearbyFreePos(player_pos) as Point2D?;
 		if (new_item_pos != null) {
 			dropped_item.setPos(new_item_pos);
-			dungeon.addItem(dropped_item);
+			room.addItem(dropped_item);
 			return true;
 		}
 		return false;

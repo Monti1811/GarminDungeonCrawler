@@ -6,8 +6,11 @@ import Toybox.System;
 class Dungeon {
 
 	private var _rooms as Array<Array<Room>>;
+	private var _current_room as Room?;
+	private var _size as Point2D;
 
 	function initialize(size_x as Number, size_y as Number) {
+		_size = [size_x, size_y];
 		_rooms = new Array<Array<Room>>[size_x];
 		for (var i = 0; i < size_x; i++) {
 			_rooms[i] = new Array<Room>[size_y];
@@ -32,5 +35,17 @@ class Dungeon {
 
 	function getRooms() as Array<Array<Room>> {
 		return _rooms;
+	}
+
+	function getCurrentRoom() as Room {
+		return _current_room;
+	}
+
+	function setCurrentRoom(room as Room) {
+		_current_room = room;
+	}
+
+	function getSize() as Point2D {
+		return _size;
 	}
 }

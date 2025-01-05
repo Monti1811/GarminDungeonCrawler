@@ -62,9 +62,24 @@ class DCCharacterNamingDelegate extends WatchUi.TextPickerDelegate {
 
     function onTextEntered(text as String, changed as Boolean) as Boolean {
         _player.setName(text);
-        Main.createNewGame(_player);
         WatchUi.popView(WatchUi.SLIDE_DOWN);
         WatchUi.popView(WatchUi.SLIDE_DOWN);
+        WatchUi.popView(WatchUi.SLIDE_DOWN);
+        /*var progressBar = new DCCreateGameProgressView(
+            "Creating new game...",
+            0.0,
+            _player
+        );*/
+        var progressBar = new WatchUi.ProgressBar(
+            "Creating new game...",
+            0.0
+        );
+        WatchUi.switchToView(
+            progressBar,
+            new DCCreateGameProgressDelegate(_player, progressBar),
+            WatchUi.SLIDE_DOWN
+        );
+        WatchUi.pushView(new EmptyView(), null, WatchUi.SLIDE_DOWN);
         return true;
     }
 

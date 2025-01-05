@@ -8,7 +8,7 @@ class DungeonCrawlerApp extends Application.AppBase {
     public var tile_height as Number = 16;
 
     public var _player as Player;
-    public var _curr_dungeon as Dungeon;
+    public var _curr_dungeon as Dungeon?;
 
     function initialize() {
         AppBase.initialize();
@@ -16,7 +16,7 @@ class DungeonCrawlerApp extends Application.AppBase {
         _player.setSprite($.Rez.Drawables.Player);
         _player.addInventoryItem(new Axe());
 
-        _curr_dungeon = new Dungeon1(tile_width, tile_height, {:width => 360, :height => 360});
+        //_curr_dungeon = new Dungeon1(tile_width, tile_height, {:width => 360, :height => 360});
 
         Log.log("Game started");
         Log.log("Player: " + _player.getName());
@@ -51,7 +51,7 @@ class DungeonCrawlerApp extends Application.AppBase {
     }
 
     function showRoom() as [Views] or [Views, InputDelegates] {
-        var roomView = new DCGameView(_player, _curr_dungeon, null);
+        var roomView = new DCGameView(_player, _curr_dungeon.getRoom([0,0]), null);
         var roomDelegate = new DCGameDelegate(roomView);
         return [ roomView, roomDelegate ];
     }
