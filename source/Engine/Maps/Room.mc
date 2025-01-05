@@ -329,28 +329,40 @@ class Room extends WatchUi.Drawable {
 
     function addConnection(direction as WalkDirection, room as Room?) as Void {
         // TODO: check if size_y is correct for up/down or not because of the way the map is drawn
-        var is_up_down = direction == UP || direction == DOWN;
+        var tile_width = getApp().tile_width;
+		var tile_height = getApp().tile_height;
         var index = 11; // Middle of the room, as 180/16 = 11.25
-        var index_edge = is_up_down ? [index, 0] : [0, index];
-        var pos_room_edge = findNearestPointFromEdge(direction, index_edge as Point2D);
+        var screen_size_x = Math.ceil(360/tile_width);
+		var screen_size_y = Math.ceil(360/tile_height);
+        var index_edge = [0, 0];
+        if (direction == UP) {
+            index_edge = [index, 0];
+        } else if (direction == DOWN) {
+            index_edge = [index, screen_size_y - 1];
+        } else if (direction == LEFT) {
+            index_edge = [0, index];
+        } else if (direction == RIGHT) {
+            index_edge = [screen_size_x - 1, index];
+        }
+        var pos_room_edge = findNearestPointFromEdge(direction, index_edge as Point2D, screen_size_x, screen_size_y);
         createTunnel(direction, pos_room_edge, index_edge as Point2D);
         
     }
 
-    function findNearestPointFromEdge(direction as WalkDirection, pos as Point2D) as Point2D? {
+    function findNearestPointFromEdge(direction as WalkDirection, pos as Point2D, screen_size_x as Number, screen_size_y as Number) as Point2D? {
         var x = pos[0];
         var y = pos[1];
         var dx = 0, dy = 0;
         if (direction == UP) {
-            dy = -1;
-        } else if (direction == DOWN) {
             dy = 1;
+        } else if (direction == DOWN) {
+            dy = -1;
         } else if (direction == LEFT) {
-            dx = -1;
-        } else if (direction == RIGHT) {
             dx = 1;
+        } else if (direction == RIGHT) {
+            dx = -1;
         }
-        while (x >= 0 && x < _size_x && y >= 0 && y < _size_y) {
+        while (x >= 0 && x < screen_size_x && y >= 0 && y < screen_size_y) {
             if (_map[x][y] != null) {
                 return [x, y];
             }

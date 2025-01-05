@@ -40,7 +40,7 @@ class DCCreateGameProgressDelegate extends WatchUi.BehaviorDelegate {
                     Main.createRoomForDungeon(_dungeon, _room_counter % _size_dungeon[0], Math.floor(_room_counter / _size_dungeon[0]));
                     _room_counter += 1;
                     _progress_bar.setProgress(10.0 + _room_counter * 80 / (_size_dungeon[0] * _size_dungeon[1]));
-                    _progress_bar.setDisplayString("Creating room " + (_room_counter + 1) + " of " + (_size_dungeon[0] * _size_dungeon[1]));
+                    _progress_bar.setDisplayString("Creating room " + _room_counter + " of " + (_size_dungeon[0] * _size_dungeon[1]));
                 } else {
                     _time_inbetween = 1000;
                     _progress = 3;

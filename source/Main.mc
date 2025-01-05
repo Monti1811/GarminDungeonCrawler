@@ -60,10 +60,10 @@ module Main {
 		var room_size_y = MathUtil.random(5, 15);
 
 		var middle_of_screen = [Math.floor(screen_size_x/2), Math.floor(screen_size_y/2)];
-		var left = middle_of_screen[0] - room_size_x;
-		var right = middle_of_screen[0] + room_size_x;
-		var top = middle_of_screen[1] - room_size_y;
-		var bottom = middle_of_screen[1] + room_size_y;
+		var left = middle_of_screen[0] - Math.floor(room_size_x/2);
+		var right = middle_of_screen[0] + Math.floor(room_size_x/2);
+		var top = middle_of_screen[1] - Math.floor(room_size_y/2);
+		var bottom = middle_of_screen[1] + Math.floor(room_size_y/2);
 		var map = new Array<Array<Object?>>[screen_size_x];
         for (var i = 0; i < screen_size_x; i++) {
             map[i] = new Array<Object?>[screen_size_y];
@@ -74,7 +74,7 @@ module Main {
 			:size_y => room_size_y,
 			:tile_width => tile_width,
 			:tile_height => tile_height,
-			:start_pos => [Math.floor(tile_width), Math.floor(tile_height)],
+			:start_pos => middle_of_screen,
 			:map => map,
 			:map_drawing => map_drawing,
 			:items => createRandomItems(map, left, right, top, bottom),

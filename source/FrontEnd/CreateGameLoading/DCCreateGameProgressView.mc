@@ -5,12 +5,10 @@ import Toybox.Lang;
 class DCCreateGameProgressView extends WatchUi.ProgressBar {
 
     private var _timer as Timer.Timer;
-    private var _player as Player;
 
-    function initialize(displayString as String, startValue as Float or Null, player as Player) {
+    function initialize(displayString as String, startValue as Float or Null) {
         ProgressBar.initialize(displayString, startValue);
         _timer = new Timer.Timer();
-        _player = player;
         _timer.start(method(:onTimer), 1000, false);
     }
 
