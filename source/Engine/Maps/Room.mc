@@ -383,17 +383,36 @@ class Room extends WatchUi.Drawable {
         else if (direction == RIGHT) {dx = 1;}
 
         var left_right = (direction == UP || direction == DOWN);
+        var walls = _map_drawing[:walls] as Dictionary<Symbol, Array>;
+        var passable = _map_drawing[:drawPassable] as Array<Point2D>;
         var wall = new Wall();
 
         while (x != end_pos[0] || y != end_pos[1]) {
-            _map[x][y] = null;
+            if (_map[x][y] != null) {
+                _map[x][y] = null;
+                
+            }
+            
+            passable.add([x, y]);
 
             if (left_right) {
-                if (x > 0){ _map[x - 1][y] = wall;}
-                if (x < _size_x - 1) {_map[x + 1][y] = wall;}
+                if (x > 0) { 
+                    _map[x - 1][y] = wall;
+                    walls[:drawRightWall].add([x - 1, y]);
+                }
+                if (x < _size_x - 1) {
+                    _map[x + 1][y] = wall;
+                    walls[:drawLeftWall].add([x + 1, y]);
+                }
             } else {
-                if (y > 0) {_map[x][y - 1] = wall;}
-                if (y < _size_y - 1) {_map[x][y + 1] = wall; }
+                if (y > 0) {
+                    _map[x][y - 1] = wall;
+                    walls[:drawBottomWall].add([x, y - 1]);
+                }
+                if (y < _size_y - 1) {
+                    _map[x][y + 1] = wall; 
+                    walls[:drawTopWall].add([x, y + 1]);
+                }
             }
 
             x += dx;

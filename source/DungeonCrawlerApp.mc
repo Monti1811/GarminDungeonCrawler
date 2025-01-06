@@ -12,7 +12,7 @@ class DungeonCrawlerApp extends Application.AppBase {
 
     function initialize() {
         AppBase.initialize();
-        _player = new Player();
+        _player = new Warrior("Warrior");
         _player.setSprite($.Rez.Drawables.Player);
         _player.addInventoryItem(new Axe());
 
@@ -35,7 +35,8 @@ class DungeonCrawlerApp extends Application.AppBase {
         //return showPlayerDetails();
         //return showItemInfo();
         //return showDungeon1();
-        return showMainMenu();        
+        return showNewDungeon();
+        // return showMainMenu();        
     }
 
     function showItemInfo(item as Item) as [Views] or [Views, InputDelegates] {
@@ -61,6 +62,14 @@ class DungeonCrawlerApp extends Application.AppBase {
         var mainMenuDelegate = new DCMainMenuDelegate();
         SaveData.saves = {"save1"=>["Level 1"], "save2"=>["Level 2"], "save3"=>["Level 3"]};
         return [mainMenu, mainMenuDelegate];
+    }
+
+    function showNewDungeon() as [Views] or [Views, InputDelegates] {
+        var progressBar = new WatchUi.ProgressBar(
+            "Creating new game...",
+            0.0
+        );
+        return [progressBar, new DCCreateGameProgressDelegate(_player, progressBar)];
     }
 
     function getPlayer() as Player {

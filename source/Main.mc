@@ -36,16 +36,16 @@ module Main {
 		var room = createRandomRoom();
 		var connections = {};
 		// Check for all walkdirections if a connection is possible and if yes, create a connection
-		if (i > 0 && (MathUtil.random(0,100) < 50)) {
+		if (i > 0 ){//&& (MathUtil.random(0,100) < 50)) {
 			connections[LEFT] = [i - 1, j];
 		}
-		if (i < size_x - 1 && (MathUtil.random(0,100) < 50)) {
+		if (i < size_x - 1){// && (MathUtil.random(0,100) < 50)) {
 			connections[RIGHT] = [i + 1, j];
 		}
-		if (j > 0 && (MathUtil.random(0,100) < 50)) {
+		if (j > 0){// && (MathUtil.random(0,100) < 50)) {
 			connections[UP] = [i, j - 1];
 		}
-		if (j < size_y - 1 && (MathUtil.random(0,100) < 50)) {
+		if (j < size_y - 1){// && (MathUtil.random(0,100) < 50)) {
 			connections[DOWN] = [i, j + 1];
 		}
 		dungeon.addRoom(room, [i, j], connections);
@@ -86,33 +86,33 @@ module Main {
 
 	function createRandomMap(left as Number, right as Number, top as Number, bottom as Number) as Dictionary {
 		var walls = {};
-		walls[:drawTopLeftWall] = [
+		walls[:drawBottomRightWall] = [
 			[left, top]
 		];
 		walls[:drawTopRightWall] = [
-			[right, top]
-		];
-		walls[:drawBottomLeftWall] = [
 			[left, bottom]
 		];
-		walls[:drawBottomRightWall] = [
+		walls[:drawBottomLeftWall] = [
+			[right, top]
+		];
+		walls[:drawTopLeftWall] = [
 			[right, bottom]
 		];
 		walls[:drawTopWall] = [];
 		for (var i = left + 1; i < right; i++) {
-			walls[:drawTopWall].add([top, i]);
+			walls[:drawTopWall].add([i, bottom]);
 		}
 		walls[:drawBottomWall] = [];
 		for (var i = left + 1; i < right; i++) {
-			walls[:drawBottomWall].add([bottom, i]);
+			walls[:drawBottomWall].add([i, top]);
 		}
 		walls[:drawLeftWall] = [];
 		for (var j = top + 1; j < bottom; j++) {
-			walls[:drawLeftWall].add([j, left]);
+			walls[:drawLeftWall].add([right, j]);
 		}
 		walls[:drawRightWall] = [];
 		for (var j = top + 1; j < bottom; j++) {
-			walls[:drawRightWall].add([j, right]);
+			walls[:drawRightWall].add([left, j]);
 		}
 
 		var passable = [];
