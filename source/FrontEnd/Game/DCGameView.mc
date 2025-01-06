@@ -124,14 +124,15 @@ class DCGameView extends WatchUi.View {
         }
 
         var map = _map_data[:map] as Array<Array<Object?>>;
+        if (new_pos[0] < 0 || new_pos[0] >= map.size() || new_pos[1] < 0 || new_pos[1] >= map[0].size()) {
+            return;
+        }
+
         var map_element = map[new_pos[0]][new_pos[1]] as Object?;
         
 		if ((map_element != null) && (map_element instanceof Wall)) {
 			return;
 		}
-        if (new_pos[0] < 0 || new_pos[0] >= _map_data[:size_x] || new_pos[1] < 0 || new_pos[1] >= _map_data[:size_y]) {
-            return;
-        }
 
         var enemy_in_pos = false;   
         var enemy = null as Enemy?;

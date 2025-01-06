@@ -54,37 +54,41 @@ class Room extends WatchUi.Drawable {
         }
        
         _map_drawing = options[:map_drawing] as Dictionary;
+        _items = options[:items];
+        _items_sprite = new Array<Bitmap?>[_items.size()];
+        _enemies = options[:enemies];
+        _enemies_sprite = new Array<Bitmap?>[_enemies.size()];
+        
+        initializeMap();
+
+    }
+
+    function initializeMap() as Void {
         // Add walls to map
         var a_wall = new Wall();
-        var walls = _map_drawing[:walls] as Dictionary<Symbol, Dictionary>;
+        var walls = _map_drawing[:walls] as Dictionary<Symbol, Array<Point2D>>;
         var wall_keys = walls.keys() as Array<Symbol>;
         for (var i = 0; i < wall_keys.size(); i++) {
             var spec_wall_values = walls[wall_keys[i]] as Array<Point2D>?;
             for (var j = 0; j < spec_wall_values.size(); j++) {
                 var wall_pos = spec_wall_values[j];
-                // TODO: Very inefficient to add a new empty object, should be refactored
                 _map[wall_pos[0]][wall_pos[1]] = a_wall;
             }
         }
-
-
-        _items = options[:items];
-        _items_sprite = new Array<Bitmap?>[_items.size()];
+            
         for (var i = 0; i < _items.size(); i++) {
             var item = _items[i];
             var item_pos = item.getPos();
             _items_sprite[i] = new WatchUi.Bitmap({:rezId=>item.getSprite(), :locX=>item_pos[0] * _tile_width, :locY=>item_pos[1] * _tile_height});
             _map[item_pos[0]][item_pos[1]] = item;
         }
-        _enemies = options[:enemies];
-        _enemies_sprite = new Array<Bitmap?>[_enemies.size()];
+
         for (var i = 0; i < _enemies.size(); i++) {
             var enemy = _enemies[i];
             var enemy_pos = enemy.getPos();
             _enemies_sprite[i] = new WatchUi.Bitmap({:rezId=>enemy.getSprite(), :locX=>enemy_pos[0] * _tile_width, :locY=>enemy_pos[1] * _tile_height});
             _map[enemy_pos[0]][enemy_pos[1]] = enemy;
         }
-
     }
 
     function draw(dc as Dc) as Void {
@@ -332,8 +336,8 @@ class Room extends WatchUi.Drawable {
         var tile_width = getApp().tile_width;
 		var tile_height = getApp().tile_height;
         var index = 11; // Middle of the room, as 180/16 = 11.25
-        var screen_size_x = Math.ceil(360/tile_width);
-		var screen_size_y = Math.ceil(360/tile_height);
+        var screen_size_x = Math.ceil(360.0/tile_width).toNumber();
+		var screen_size_y = Math.ceil(360.0/tile_height).toNumber();
         var index_edge = [0, 0];
         if (direction == UP) {
             index_edge = [index, 0];
@@ -345,7 +349,7 @@ class Room extends WatchUi.Drawable {
             index_edge = [screen_size_x - 1, index];
         }
         var pos_room_edge = findNearestPointFromEdge(direction, index_edge as Point2D, screen_size_x, screen_size_y);
-        createTunnel(direction, pos_room_edge, index_edge as Point2D);
+        createTunnel(direction, pos_room_edge, index_edge as Point2D, screen_size_x, screen_size_y);
         
     }
 
@@ -372,7 +376,7 @@ class Room extends WatchUi.Drawable {
         return null;
     }
 
-    function createTunnel(direction as WalkDirection, start_pos as Point2D, end_pos as Point2D) as Void {
+    function createTunnel(direction as WalkDirection, start_pos as Point2D, end_pos as Point2D, screen_size_x as Number, screen_size_y as Number) as Void {
         var x = start_pos[0];
         var y = start_pos[1];
         var dx = 0, dy = 0;
@@ -387,36 +391,48 @@ class Room extends WatchUi.Drawable {
         var passable = _map_drawing[:drawPassable] as Array<Point2D>;
         var wall = new Wall();
 
-        while (x != end_pos[0] || y != end_pos[1]) {
-            if (_map[x][y] != null) {
-                _map[x][y] = null;
-                
-            }
-            
-            passable.add([x, y]);
-
-            if (left_right) {
-                if (x > 0) { 
-                    _map[x - 1][y] = wall;
-                    walls[:drawRightWall].add([x - 1, y]);
-                }
-                if (x < _size_x - 1) {
-                    _map[x + 1][y] = wall;
-                    walls[:drawLeftWall].add([x + 1, y]);
-                }
-            } else {
-                if (y > 0) {
-                    _map[x][y - 1] = wall;
-                    walls[:drawBottomWall].add([x, y - 1]);
-                }
-                if (y < _size_y - 1) {
-                    _map[x][y + 1] = wall; 
-                    walls[:drawTopWall].add([x, y + 1]);
-                }
-            }
-
+        addTunnelTile(walls, x, y, direction, left_right, wall, passable, screen_size_x, screen_size_y);
+        do {
             x += dx;
             y += dy;
+            addTunnelTile(walls, x, y, direction, left_right, wall, passable, screen_size_x, screen_size_y);
+        } while (x != end_pos[0] || y != end_pos[1]);
+    }
+
+    function addTunnelTile(walls as Dictionary<Symbol, Array>, x as Number, y as Number, direction as WalkDirection, left_right as Boolean, wall as Wall, passable as Array<Point2D>, screen_size_x as Number, screen_size_y as Number) as Void {
+        if (_map[x][y] != null) {
+            _map[x][y] = null;
+            if (direction == UP) {
+                walls[:drawBottomWall].remove([x, y]);
+            } else if (direction == DOWN) {
+                walls[:drawTopWall].remove([x, y]);
+            } else if (direction == LEFT) {
+                walls[:drawRightWall].remove([x, y]);
+            } else if (direction == RIGHT) {
+                walls[:drawLeftWall].remove([x, y]);
+            }
+        }
+        
+        passable.add([x, y]);
+
+        if (left_right) {
+            if (x > 0) { 
+                _map[x - 1][y] = wall;
+                walls[:drawRightWall].add([x - 1, y]);
+            }
+            if (x < screen_size_x - 1) {
+                _map[x + 1][y] = wall;
+                walls[:drawLeftWall].add([x + 1, y]);
+            }
+        } else {
+            if (y > 0) {
+                _map[x][y - 1] = wall;
+                walls[:drawBottomWall].add([x, y - 1]);
+            }
+            if (y < screen_size_y - 1) {
+                _map[x][y + 1] = wall; 
+                walls[:drawTopWall].add([x, y + 1]);
+            }
         }
     }
 

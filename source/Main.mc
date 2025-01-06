@@ -54,8 +54,8 @@ module Main {
 	function createRandomRoom() as Room {
 		var tile_width = getApp().tile_width;
 		var tile_height = getApp().tile_height;
-		var screen_size_x = Math.ceil(360/tile_width);
-		var screen_size_y = Math.ceil(360/tile_height);
+		var screen_size_x = Math.ceil(360.0/tile_width).toNumber();
+		var screen_size_y = Math.ceil(360.0/tile_height).toNumber();
 		var room_size_x = MathUtil.random(5, 15);
 		var room_size_y = MathUtil.random(5, 15);
 
