@@ -47,6 +47,17 @@ class DCGameView extends WatchUi.View {
         map[_player_pos[0]][_player_pos[1]] = _player;
     }
 
+    function loadRoom(room as Room) as Void {
+        _room = room;
+        _map_data = room.getMapData();
+        _player_pos = _map_data[:start_pos];
+        room.updatePlayerPos(_player_pos);
+        _player_sprite.locX = _player_pos[0] * _map_data[:tile_width] as Number;
+        _player_sprite.locY = _player_pos[1] * _map_data[:tile_height] as Number;
+        var map = _map_data[:map] as Array<Array<Object?>>;
+        map[_player_pos[0]][_player_pos[1]] = _player;
+    }
+
     // Load your resources here
     function onLayout(dc as Dc) as Void {
 		addLayer(bg_layer);
@@ -94,6 +105,33 @@ class DCGameView extends WatchUi.View {
     function onHide() as Void {
     }
 
+    function getNewPlayerPosInNextRoom(next_pos as Point2D, direction as WalkDirection) as Point2D {
+        var new_pos = next_pos;
+        var tile_width = getApp().tile_width;
+		var tile_height = getApp().tile_height;
+        var screen_size_x = Math.ceil(360.0/tile_width).toNumber();
+		var screen_size_y = Math.ceil(360.0/tile_height).toNumber();
+        switch (direction) {
+            case UP:
+                new_pos = [next_pos[0], screen_size_y - 1];
+                break;
+            case DOWN:
+                new_pos = [next_pos[0], 0];
+                break;
+            case LEFT:
+                new_pos = [screen_size_x - 1, next_pos[1]];
+                break;
+            case RIGHT:
+                new_pos = [0, next_pos[1]];
+                break;
+            case STANDING:
+                new_pos = next_pos;
+                break;
+        }
+        return new_pos;
+    }
+        
+
     function removeDamageTexts() as Void {
         damage_texts = [];
         WatchUi.requestUpdate();
@@ -125,6 +163,16 @@ class DCGameView extends WatchUi.View {
 
         var map = _map_data[:map] as Array<Array<Object?>>;
         if (new_pos[0] < 0 || new_pos[0] >= map.size() || new_pos[1] < 0 || new_pos[1] >= map[0].size()) {
+            var dungeon = getApp().getCurrentDungeon();
+            var next_room = dungeon.getRoomInDirection(direction);
+            if (next_room != null) {
+                dungeon.setCurrentRoom(next_room);
+                // Set the player position to the new room
+                new_pos = getNewPlayerPosInNextRoom(new_pos, direction);
+                next_room.setStartPos(new_pos);
+                loadRoom(next_room);
+                WatchUi.requestUpdate();
+            }
             return;
         }
 

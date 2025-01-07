@@ -296,6 +296,10 @@ class Room extends WatchUi.Drawable {
         }
     }
 
+    function setStartPos(pos as Point2D) as Void {
+        _start_pos = pos;
+    }
+
     function updatePlayerPos(new_pos as Point2D) as Void {
         _player_pos = new_pos;
     }

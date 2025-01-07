@@ -7,6 +7,7 @@ class Dungeon {
 
 	private var _rooms as Array<Array<Room>>;
 	private var _current_room as Room?;
+	private var _current_room_position as Point2D?;
 	private var _size as Point2D;
 
 	function initialize(size_x as Number, size_y as Number) {
@@ -43,9 +44,58 @@ class Dungeon {
 
 	function setCurrentRoom(room as Room) {
 		_current_room = room;
+		_current_room_position = getRoomPosition(room) as Point2D;
+	}
+
+	function setCurrentRoomFromIndex(index as Point2D) {
+		_current_room = getRoom(index);
+		_current_room_position = index;
+	}
+
+	function getCurrentRoomPosition() as Point2D {
+		if (_current_room_position != null) {
+			return _current_room_position;
+		}
+		return getRoomPosition(_current_room) as Point2D;
 	}
 
 	function getSize() as Point2D {
 		return _size;
+	}
+
+	function getRoomPosition(room as Room) as Point2D? {
+		for (var i = 0; i < _size[0]; i++) {
+			for (var j = 0; j < _size[1]; j++) {
+				if (_rooms[i][j] == room) {
+					return [i, j];
+				}
+			}
+		}
+		return null;
+	}
+
+	function getRoomInDirection(direction as WalkDirection) as Room? {
+		var current_pos = getCurrentRoomPosition();
+		var new_pos = [current_pos[0], current_pos[1]];
+		switch (direction) {
+			case UP:
+				new_pos[1] -= 1;
+				break;
+			case DOWN:
+				new_pos[1] += 1;
+				break;
+			case LEFT:
+				new_pos[0] -= 1;
+				break;
+			case RIGHT:
+				new_pos[0] += 1;
+				break;
+			case STANDING:
+				return null;
+		}
+		if (new_pos[0] >= 0 && new_pos[0] < _size[0] && new_pos[1] >= 0 && new_pos[1] < _size[1]) {
+			return _rooms[new_pos[0]][new_pos[1]];
+		}
+		return null;
 	}
 }

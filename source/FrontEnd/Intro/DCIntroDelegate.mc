@@ -27,7 +27,6 @@ class DCIntroDelegate extends WatchUi.BehaviorDelegate {
     }
 
     function onTap(evt as ClickEvent) as Boolean {
-        var tap_coordinates = evt.getCoordinates() as Array<Numeric>;
         if (index < story.size()) {
             _view.setText(story[index], _font, _distance);
             index++;
