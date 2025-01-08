@@ -76,6 +76,7 @@ class Room extends WatchUi.Drawable {
             }
         }
             
+        // Add items to map
         for (var i = 0; i < _items.size(); i++) {
             var item = _items[i];
             var item_pos = item.getPos();
@@ -83,6 +84,7 @@ class Room extends WatchUi.Drawable {
             _map[item_pos[0]][item_pos[1]] = item;
         }
 
+        // Add enemies to map
         for (var i = 0; i < _enemies.size(); i++) {
             var enemy = _enemies[i];
             var enemy_pos = enemy.getPos();
@@ -391,29 +393,40 @@ class Room extends WatchUi.Drawable {
         else if (direction == RIGHT) {dx = 1;}
 
         var left_right = (direction == UP || direction == DOWN);
-        var walls = _map_drawing[:walls] as Dictionary<Symbol, Array>;
         var passable = _map_drawing[:drawPassable] as Array<Point2D>;
         var wall = new Wall();
 
-        addTunnelTile(walls, x, y, direction, left_right, wall, passable, screen_size_x, screen_size_y);
+        addTunnelTile(x, y, direction, left_right, wall, passable, screen_size_x, screen_size_y);
         do {
             x += dx;
             y += dy;
-            addTunnelTile(walls, x, y, direction, left_right, wall, passable, screen_size_x, screen_size_y);
+            addTunnelTile(x, y, direction, left_right, wall, passable, screen_size_x, screen_size_y);
         } while (x != end_pos[0] || y != end_pos[1]);
     }
 
-    function addTunnelTile(walls as Dictionary<Symbol, Array>, x as Number, y as Number, direction as WalkDirection, left_right as Boolean, wall as Wall, passable as Array<Point2D>, screen_size_x as Number, screen_size_y as Number) as Void {
+    function removeFromArray(array as Array<Point2D>, pos as Array<Number>) as Boolean {
+        for (var i = 0; i < array.size(); i++) {
+            if (array[i][0] == pos[0] && array[i][1] == pos[1]) {
+                array.remove(array[i]);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function addTunnelTile(x as Number, y as Number, direction as WalkDirection, left_right as Boolean, wall as Wall, passable as Array<Point2D>, screen_size_x as Number, screen_size_y as Number) as Void {
+        var walls = _map_drawing[:walls] as Dictionary;
         if (_map[x][y] != null) {
             _map[x][y] = null;
+            var pos = [x, y];
             if (direction == UP) {
-                walls[:drawBottomWall].remove([x, y]);
+                removeFromArray(walls[:drawBottomWall], pos);
             } else if (direction == DOWN) {
-                walls[:drawTopWall].remove([x, y]);
+                removeFromArray(walls[:drawTopWall], pos);
             } else if (direction == LEFT) {
-                walls[:drawRightWall].remove([x, y]);
+                removeFromArray(walls[:drawRightWall], pos);
             } else if (direction == RIGHT) {
-                walls[:drawLeftWall].remove([x, y]);
+                removeFromArray(walls[:drawLeftWall], pos);
             }
         }
         
