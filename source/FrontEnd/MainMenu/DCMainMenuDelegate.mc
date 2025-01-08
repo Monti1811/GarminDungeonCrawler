@@ -47,9 +47,9 @@ class DCMainMenuDelegate extends WatchUi.BehaviorDelegate {
         var saves = SaveData.saves;
         var save_keys = saves.keys();
         for (var i = 0; i < save_keys.size(); i++) {
-            var save_key = save_keys[i];
-            var save = saves[save_key];
-            var save_item = new WatchUi.MenuItem(save_key, save[0], null, null);
+            var save_key = save_keys[i] as String;
+            var save = SaveData.getSaveInfo(save_key);
+            var save_item = new WatchUi.MenuItem(save_key, save, null, null);
             loadMenu.addItem(save_item);
         }
         WatchUi.pushView(loadMenu, new RPGLoadGameDelegate(), WatchUi.SLIDE_UP);

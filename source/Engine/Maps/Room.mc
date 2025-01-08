@@ -500,8 +500,9 @@ class Room extends WatchUi.Drawable {
         if (enemies_data != null) {
             for (var i = 0; i < enemies_data.size(); i++) {
                 var enemy = Enemy.onLoad(enemies_data[i]);
+                var enemy_pos = enemy.getPos();
                 room._enemies.add(enemy);
-                room._enemies_sprite.add(new WatchUi.Bitmap({:rezId=>enemy.getSprite(), :locX=>enemy.getPos()[0] * room._tile_width, :locY=>enemy.getPos()[1] * room._tile_height}));
+                room._enemies_sprite.add(new WatchUi.Bitmap({:rezId=>enemy.getSprite(), :locX=>enemy_pos[0] * room._tile_width, :locY=>enemy_pos[1] * room._tile_height}));
             }
         }
         return room;

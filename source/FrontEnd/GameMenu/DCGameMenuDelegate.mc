@@ -18,6 +18,8 @@ class DCGameMenuDelegate extends WatchUi.Menu2InputDelegate {
             openInventory();
         } else if (label == :log ) {
             openLog();
+        } else if (label == :save) {
+            saveGame();
         } else if (label == :settings) {
             openSettings();
         }
@@ -68,6 +70,12 @@ class DCGameMenuDelegate extends WatchUi.Menu2InputDelegate {
         settingsMenu.addItem(new WatchUi.MenuItem("Sound", "Change sound settings", null, null));
         settingsMenu.addItem(new WatchUi.MenuItem("Graphics", "Change graphics settings", null, null));
         WatchUi.pushView(settingsMenu, new WatchUi.Menu2InputDelegate(), WatchUi.SLIDE_UP);
+    }
+
+    function saveGame() as Void {
+        $.SaveData.saveGame();
+        WatchUi.popView(WatchUi.SLIDE_DOWN);
+        WatchUi.showToast("Saved game", {:icon=>Rez.Drawables.warningToastIcon});
     }
 }
 

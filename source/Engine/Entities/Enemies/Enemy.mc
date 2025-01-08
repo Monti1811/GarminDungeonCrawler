@@ -100,5 +100,24 @@ class Enemy extends Entity {
 		return true;
 	}
 
+	static function onLoad(data as Dictionary) as Enemy {
+		var enemy = new Enemy();
+		enemy.pos = data["pos"] as Point2D;
+		enemy.next_pos = data["next_pos"] as Point2D;
+		enemy.has_moved = data["has_moved"] as Boolean;
+		enemy.damage = data["damage"] as Number;
+		enemy.armor = data["armor"] as Number;
+		enemy.current_health = data["current_health"] as Number;
+		enemy.maxHealth = data["maxHealth"] as Number;
+		enemy.kill_experience = data["kill_experience"] as Number;
+		enemy.name = data["name"] as String;
+		enemy.level = data["level"] as Number;
+		enemy.experience = data["experience"] as Number;
+		enemy.attack_cooldown = data["attack_cooldown"] as Number;
+		enemy.curr_attack_cooldown = data["curr_attack_cooldown"] as Number;
+		return enemy;
+		
+	}
+
 
 }

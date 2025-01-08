@@ -1,4 +1,5 @@
 import Toybox.Lang;
+import Toybox.Application;
 
 class Entity {
 	var name as String = "Entity";
@@ -20,7 +21,9 @@ class Entity {
 		return save_data;
 	}
 
-	function onLoad(save_data as Dictionary<PropertyKeyType, PropertyValueType>) as Void {
-		name = save_data["name"] as String;
+	static function onLoad(save_data as Dictionary<PropertyKeyType, PropertyValueType>) as Entity {
+		var entity = new Entity();
+		entity.name = save_data["name"] as String;
+		return entity;
 	}
 }

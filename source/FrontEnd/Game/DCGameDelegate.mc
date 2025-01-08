@@ -24,7 +24,13 @@ class DCGameDelegate extends WatchUi.BehaviorDelegate {
     }
 
     function onBack() as Boolean {
-        return false;
+        showConfirmation("Do you exit the game?");
+        return true;
+    }
+
+    function showConfirmation(message as String) {
+        var dialog = new WatchUi.Confirmation(message);
+        WatchUi.pushView(dialog, new DCGameExitConfirmDelegate(), WatchUi.SLIDE_UP);
     }
 
 
@@ -72,9 +78,25 @@ class DCGameDelegate extends WatchUi.BehaviorDelegate {
         actionMenu.addItem(new WatchUi.MenuItem(_view.getPlayer().getName(), "Show details", :player, null));
         actionMenu.addItem(new WatchUi.MenuItem("Inventory", "Show inventory", :inventory, null));
         actionMenu.addItem(new WatchUi.MenuItem("Log", "Show last actions", :log, null));
+        actionMenu.addItem(new WatchUi.MenuItem("Save", "Save the game", :save, null));
         actionMenu.addItem(new WatchUi.MenuItem("Settings", "Change settings", :settings, null));
 
         WatchUi.pushView(actionMenu, new DCGameMenuDelegate(), SLIDE_UP);
+        return true;
+    }
+
+}
+
+class DCGameExitConfirmDelegate extends WatchUi.ConfirmationDelegate {
+    
+    function initialize() {
+        ConfirmationDelegate.initialize();
+    }
+
+    public function onResponse(value as Confirm) as Boolean {
+        if (value == WatchUi.CONFIRM_YES) {
+            WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
+        }
         return true;
     }
 

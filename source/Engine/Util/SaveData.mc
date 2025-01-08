@@ -5,7 +5,7 @@ import Toybox.Application.Storage;
 
 module SaveData {
 
-	var saves as Dictionary<String, Array<String>> = {};
+	var saves as Dictionary = {};
 	var chosen_save as String = "";
 	const STORAGE_STRING as String = "save_data";
 
@@ -55,10 +55,24 @@ module SaveData {
 		}
 	}
 
-	public function saveToMemory() {
+	public function saveToMemory(data) {
 		Storage.setValue(chosen_save, getSaveData());
-		saves[chosen_save] = [getApp().getPlayer().getLevel().toString()];
+		saves[chosen_save] = [data];
 		saveSaves();
+	}
+
+	public function saveGame() as Void {
+		var app = getApp();
+		var player = app.getPlayer();
+		var save_name = "save_" + player.getName() + "_" + player.getLevel().toString();
+		chosen_save = save_name;
+		var data = {
+			:player => player.onSave(),
+			:level => player.getLevel(),
+			:dungeon => app.getCurrentDungeon().onSave(),
+		};
+		_save_data = data as Dictionary<PropertyKeyType, PropertyValueType>;
+		saveToMemory(data[:level]);
 	}
 
 	public function isEmpty() as Boolean {
@@ -76,8 +90,9 @@ module SaveData {
 		Storage.setValue(STORAGE_STRING, saves);
 	}
 
-	public function getSaves() as Array<String> {
-		return saves.keys();
+	public function getSaveInfo(save as String) as String {
+		var info = saves[save] as Array;
+		return "Level " + info[0];
 	}
 
 }

@@ -21,4 +21,9 @@
     <bitmap id="rightTop" personality="
             system_icon_light__hint_button_right_top
             system_loc__hint_button_right_top" />
+    
+    <bitmap id="saveToastIcon" personality="
+        system_icon_dark__save
+        system_size__toast_icon
+    "/>
 </drawables>

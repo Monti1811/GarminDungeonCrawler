@@ -1,4 +1,5 @@
 import Toybox.Lang;
+import Toybox.Application;
 
 class Item {
 	var id as Number = 0;
@@ -106,3 +107,4 @@ class Item {
 		var item = new Item();
 		return item;
 	}
+}

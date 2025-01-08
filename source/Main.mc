@@ -147,14 +147,7 @@ module Main {
 	}
 
 	function createRandomItem() as Item {
-		var item = null;
-		var item_type = MathUtil.random(0, 1);
-		if (item_type == 0) {
-			item = new Helmet();
-		} else if (item_type == 1) {
-			item = new Axe();
-		}
-		return item;
+		return Items.createRandomItem();
 	}
 
 	function createRandomEnemies(map as Array<Array<Object?>>, left as Number, right as Number, top as Number, bottom as Number) as Array<Enemy> {
@@ -171,14 +164,7 @@ module Main {
 	}
 
 	function createRandomEnemy() as Enemy {
-		var enemy = null;
-		var enemy_type = MathUtil.random(0, 1);
-		if (enemy_type == 0) {
-			enemy = new Frog();
-		} else if (enemy_type == 1) {
-			enemy = new Frog();
-		}
-		return enemy;
+		return Enemies.createRandomEnemy();
 	}
 
 	function getRandomPos(map as Array<Array<Object?>>, left as Number, right as Number, top as Number, bottom as Number) as Point2D {

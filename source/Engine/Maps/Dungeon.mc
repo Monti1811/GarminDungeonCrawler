@@ -99,7 +99,7 @@ class Dungeon {
 		return null;
 	}
 
-	function onSave() as Dictionary<String, Object?> {
+	function onSave() as Dictionary {
 		var data = {
 			:size => _size,
 			:current_room_position => _current_room_position,
@@ -113,7 +113,7 @@ class Dungeon {
 		return data;
 	}
 
-	static function onLoad(data as Dictionary<String, Object?>) as Void {
+	static function onLoad(data as Dictionary) as Dungeon {
 		var dungeon = new Dungeon(data["size"][0] as Number, data["size"][1] as Number);
 		dungeon._current_room_position = data["current_room_position"] as Point2D?;
 		var rooms = data["rooms"] as Array<Dictionary<String, Object?>>;
