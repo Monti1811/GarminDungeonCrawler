@@ -35,8 +35,8 @@ class DungeonCrawlerApp extends Application.AppBase {
         //return showPlayerDetails();
         //return showItemInfo();
         //return showDungeon1();
-        return showNewDungeon();
-        // return showMainMenu();        
+        //return showNewDungeon();
+        return showMainMenu();        
     }
 
     function showItemInfo(item as Item) as [Views] or [Views, InputDelegates] {
@@ -49,6 +49,11 @@ class DungeonCrawlerApp extends Application.AppBase {
         var factory = new DCPlayerDetailsFactory(_player);
         var viewLoop = new WatchUi.ViewLoop(factory, {:wrap => true});
         return [viewLoop, new DCPlayerDetailsDelegate(viewLoop)];
+    }
+
+    function showIntro() as [Views] or [Views, InputDelegates] {
+        var introView = new DCIntroView();
+        return [introView, new DCIntroDelegate(introView, null, Graphics.FONT_SMALL)];
     }
 
     function showRoom() as [Views] or [Views, InputDelegates] {

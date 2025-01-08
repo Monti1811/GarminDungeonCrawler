@@ -1,6 +1,7 @@
 import Toybox.Lang;
 import Toybox.Math;
 import Toybox.WatchUi;
+import Toybox.Graphics;
 
 module Main {
 
@@ -17,12 +18,14 @@ module Main {
 		app.setCurrentDungeon(dungeon);
 		var start_room = MathUtil.random(0, dungeon.getSize()[0] * dungeon.getSize()[1] - 1);
 		dungeon.setCurrentRoomFromIndex(MathUtil.IndexToPos2D(start_room, dungeon.getSize()[0]));
-		var view_delegate = app.showRoom() as [Views, InputDelegates];
-		WatchUi.switchToView(view_delegate[0], view_delegate[1], WatchUi.SLIDE_IMMEDIATE);
+		var view = new DCIntroView();
+		WatchUi.switchToView(view, new DCIntroDelegate(view, null, Graphics.FONT_TINY), WatchUi.SLIDE_IMMEDIATE);
 	}
 
 	function startGame() as Void {
 		Log.log("Game started");
+		var view_delegate = getApp().showRoom() as [Views, InputDelegates];
+		WatchUi.switchToView(view_delegate[0], view_delegate[1], WatchUi.SLIDE_IMMEDIATE);
 	}
 
 	function createNewDungeon(progress_bar as WatchUi.ProgressBar) as Dungeon {
@@ -135,7 +138,9 @@ module Main {
 		var num_items = MathUtil.random(0, 5);
 		for (var i = 0; i < num_items; i++) {
 			var item = createRandomItem();
-			item.setPos(getRandomPos(map, left, right, top, bottom));
+			var item_pos = getRandomPos(map, left, right, top, bottom);
+			item.setPos(item_pos);
+			map[item_pos[0]][item_pos[1]] = item;
 			items.add(item);
 		}
 		return items;
@@ -157,7 +162,9 @@ module Main {
 		var num_enemies = MathUtil.random(0, 5);
 		for (var i = 0; i < num_enemies; i++) {
 			var enemy = createRandomEnemy();
-			enemy.setPos(getRandomPos(map, left, right, top, bottom));
+			var enemy_pos = getRandomPos(map, left, right, top, bottom);
+			enemy.setPos(enemy_pos);
+			map[enemy_pos[0]][enemy_pos[1]] = enemy;
 			enemies.add(enemy);
 		}
 		return enemies;

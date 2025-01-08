@@ -81,7 +81,6 @@ class Room extends WatchUi.Drawable {
             var item = _items[i];
             var item_pos = item.getPos();
             _items_sprite[i] = new WatchUi.Bitmap({:rezId=>item.getSprite(), :locX=>item_pos[0] * _tile_width, :locY=>item_pos[1] * _tile_height});
-            _map[item_pos[0]][item_pos[1]] = item;
         }
 
         // Add enemies to map
@@ -89,7 +88,6 @@ class Room extends WatchUi.Drawable {
             var enemy = _enemies[i];
             var enemy_pos = enemy.getPos();
             _enemies_sprite[i] = new WatchUi.Bitmap({:rezId=>enemy.getSprite(), :locX=>enemy_pos[0] * _tile_width, :locY=>enemy_pos[1] * _tile_height});
-            _map[enemy_pos[0]][enemy_pos[1]] = enemy;
         }
     }
 

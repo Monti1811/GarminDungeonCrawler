@@ -9,18 +9,13 @@ class DCIntroView extends WatchUi.View {
     //private var _new_game_icon as BitmapResource;
     //private var _knight as AnimationLayer;
     //private var _font as FontResource;
-    private var _text as Array<String>;
+    private var _text as String;
     private var _font as FontDefinition | FontReference;
-    private var _distance as Number;
-
-    private var _middle as Number = 180;
-
 
     function initialize() {
         View.initialize();
-        _text = ["Welcome to the game!"];
+        _text = "Welcome to the game!";
         _font = WatchUi.loadResource($.Rez.Fonts.small);
-        _distance = 20;
     }
 
     // Load your resources here
@@ -41,17 +36,14 @@ class DCIntroView extends WatchUi.View {
         dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_BLACK);
         dc.clear();
 
-        var start = _middle - Math.floor(_text.size()/2) * 35;
-        for (var i = 0; i < _text.size(); i++) {
-            dc.drawText(180, start + i * _distance, _font, _text[i], Graphics.TEXT_JUSTIFY_CENTER);
-        }
+        var formatted_text = Graphics.fitTextToArea(_text, _font, 260, 260, false);
+        dc.drawText(180, 180, _font, formatted_text, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
 
     }
 
-    function setText(text as Array<String>, font as FontDefinition | FontReference, distance as Number) as Void {
+    function setText(text as String, font as FontDefinition | FontReference) as Void {
         _text = text;
         _font = font;
-        _distance = distance;
     }
 
     // Called when this View is removed from the screen. Save the
