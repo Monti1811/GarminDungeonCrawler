@@ -451,6 +451,60 @@ class Room extends WatchUi.Drawable {
         }
     }
 
+    function onSave() as Dictionary {
+        var items = [];
+        for (var i = 0; i < _items.size(); i++) {
+            if (_items[i] != null) {
+                items.add(_items[i].onSave());
+            }
+        }
+        var enemies = [];
+        for (var i = 0; i < _enemies.size(); i++) {
+            if (_enemies[i] != null) {
+                enemies.add(_enemies[i].onSave());
+            }
+        }
+        return {
+            :size_x => _size_x,
+            :size_y => _size_y,
+            :tile_width => _tile_width,
+            :tile_height => _tile_height,
+            :start_pos => _start_pos,
+            :map => _map,
+            :map_drawing => _map_drawing,
+            :items => items,
+            :enemies => enemies
+        };
+    }
 
+    static function onLoad(data as Dictionary) as Room {
+        var room = new Room({
+            :size_x => data[:size_x],
+            :size_y => data[:size_y],
+            :tile_width => data[:tile_width],
+            :tile_height => data[:tile_height],
+            :start_pos => data[:start_pos],
+            :map => data[:map],
+            :map_drawing => data[:map_drawing],
+            :items => [],
+            :enemies => []
+        });
+        var items_data = data[:items] as Array<Dictionary>?;
+        if (items_data != null) {
+            for (var i = 0; i < items_data.size(); i++) {
+                var item = Item.onLoad(items_data[i]);
+                room.addItem(item);
+            }
+        }
+        var enemies_data = data[:enemies] as Array<Dictionary>?;
+        if (enemies_data != null) {
+            for (var i = 0; i < enemies_data.size(); i++) {
+                var enemy = Enemy.onLoad(enemies_data[i]);
+                room._enemies.add(enemy);
+                room._enemies_sprite.add(new WatchUi.Bitmap({:rezId=>enemy.getSprite(), :locX=>enemy.getPos()[0] * room._tile_width, :locY=>enemy.getPos()[1] * room._tile_height}));
+            }
+        }
+        return room;
+    }
 
 }

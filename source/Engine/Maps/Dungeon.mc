@@ -98,4 +98,30 @@ class Dungeon {
 		}
 		return null;
 	}
+
+	function onSave() as Dictionary<String, Object?> {
+		var data = {
+			:size => _size,
+			:current_room_position => _current_room_position,
+			:rooms => new Array<Dictionary<String, Object?>>[_size[0] * _size[1]]
+		};
+		for (var i = 0; i < _size[0]; i++) {
+			for (var j = 0; j < _size[1]; j++) {
+				data[:rooms][i * _size[1] + j] = _rooms[i][j].onSave();
+			}
+		}
+		return data;
+	}
+
+	static function onLoad(data as Dictionary<String, Object?>) as Void {
+		var dungeon = new Dungeon(data["size"][0] as Number, data["size"][1] as Number);
+		dungeon._current_room_position = data["current_room_position"] as Point2D?;
+		var rooms = data["rooms"] as Array<Dictionary<String, Object?>>;
+		for (var i = 0; i < dungeon._size[0]; i++) {
+			for (var j = 0; j < dungeon._size[1]; j++) {
+				dungeon._rooms[i][j] = Room.onLoad(rooms[i * dungeon._size[1] + j]);
+			}
+		}
+		return dungeon;
+	}
 }

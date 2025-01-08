@@ -96,4 +96,13 @@ class Item {
 		new_item.in_inventory = in_inventory;
 		return new_item;
 	}
-}
+
+	function onSave() as Dictionary<PropertyKeyType, PropertyValueType> {
+		var save_data = {};
+		return save_data;
+	}
+
+	static function onLoad(save_data as Dictionary<PropertyKeyType, PropertyValueType>) as Item {
+		var item = new Item();
+		return item;
+	}
