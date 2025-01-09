@@ -139,4 +139,36 @@ module MapUtil {
 		return [screen_size_x, screen_size_y];
 	}
 
+	function getRandomPos(map as Array<Array<Object?>>, left as Number, right as Number, top as Number, bottom as Number) as Point2D {
+		var x = 0;
+		var y = 0;
+		do {
+			x = MathUtil.random(left + 1, right - 1);
+			y = MathUtil.random(top + 1, bottom - 1);
+		} while (map[x][y] != null);
+		return [x, y];
+	}
+
+	function getRandomPosFromRoom(room as Room) as Point2D {
+		var map_data = room.getMapData();
+		var coords = getCoordOfRoom(map_data[:size_x], map_data[:size_y]);
+		return getRandomPos(map_data[:map], coords[0], coords[1], coords[2], coords[3]);
+	}
+
+	function getCoordOfRoom(size_x as Number, size_y as Number) as Array<Number> {
+		var tile_width = getApp().tile_width;
+		var tile_height = getApp().tile_height;
+		var screen_size_x = Math.ceil(360.0/tile_width).toNumber();
+		var screen_size_y = Math.ceil(360.0/tile_height).toNumber();
+		var room_size_x = MathUtil.random(5, 15);
+		var room_size_y = MathUtil.random(5, 15);
+
+		var middle_of_screen = [Math.floor(screen_size_x/2), Math.floor(screen_size_y/2)];
+		var left = middle_of_screen[0] - Math.floor(room_size_x/2);
+		var right = middle_of_screen[0] + Math.floor(room_size_x/2);
+		var top = middle_of_screen[1] - Math.floor(room_size_y/2);
+		var bottom = middle_of_screen[1] + Math.floor(room_size_y/2);
+		return [left, right, top, bottom];
+	}
+
 }

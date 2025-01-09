@@ -25,6 +25,7 @@ class Room extends WatchUi.Drawable {
 
     private var _map as Array<Array<Object?>>;
     private var _map_drawing as Dictionary<Symbol, Array<Point2D>>;
+    private var _stairs as Point2D?;
 
     private var _start_pos as Point2D?;
 
@@ -463,6 +464,17 @@ class Room extends WatchUi.Drawable {
         }
     }
 
+    function addStairs(pos as Point2D?) as Void {
+        var stairs = new Stairs();
+        if (pos == null) {
+            pos = MapUtil.getRandomPosFromRoom(self);
+        }
+        if (pos != null) {
+            _map[pos[0]][pos[1]] = stairs;
+            _stairs = pos;
+        }
+    }
+
     function convertToIndexStringMapDrawing() as Dictionary {
         var walls = _map_drawing[:walls] as Dictionary<Symbol, Array<Point2D>>;
         var new_walls = {};
@@ -499,6 +511,7 @@ class Room extends WatchUi.Drawable {
             "tile_height" => _tile_height,
             "start_pos" => _start_pos,
             "player_pos" => _player_pos,
+            "stairs" => _stairs,
             "map_drawing" => convertToIndexStringMapDrawing(),
             "items" => items,
             "enemies" => enemies
@@ -546,6 +559,9 @@ class Room extends WatchUi.Drawable {
         if (data["player_pos"] != null) {
             System.println("Set Player pos: " + data["player_pos"]);
             room.updatePlayerPos(data["player_pos"]);
+        }
+        if (data["stairs"] != null) {
+            room.addStairs(data["stairs"]);
         }
         var items_data = data["items"] as Array<Dictionary>?;
         if (items_data != null) {

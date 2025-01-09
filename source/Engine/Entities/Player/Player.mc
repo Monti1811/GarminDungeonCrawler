@@ -6,6 +6,8 @@ class Player extends Entity {
 	var maxHealth as Number = 100;
 	var name as String = "Player";
 	var description as String = "The player character";
+	var current_run as Number = 0;
+	var time_played as Float = 0.0;
 	var level as Number = 1;
 	var experience as Number = 0;
 	var next_level_experience as Number = 100;
@@ -327,6 +329,8 @@ class Player extends Entity {
 	function save() as Dictionary {
 		var save_data = {
 			"name" => name,
+			"run" => current_run,
+			"time_played" => time_played,
 			"current_health" => current_health,
 			"maxHealth" => maxHealth,
 			"level" => level,
@@ -349,12 +353,19 @@ class Player extends Entity {
 	}
 
 	static function load(save_data as Dictionary) as Player {
+		Toybox.System.println("Loading player: " + save_data);
 		var player = Players.createWarrior(save_data["name"]);
 		player.onLoad(save_data);
 		return player;
 	}
 
 	function onLoad(save_data as Dictionary) as Void {
+		if (save_data["run"] != null) {
+			current_run = save_data["run"] as Number;
+		}
+		if (save_data["time_played"] != null) {
+			time_played = save_data["time_played"] as Float;
+		}
 		if (save_data["current_health"] != null) {
 			current_health = save_data["current_health"] as Number;
 		}
@@ -382,7 +393,7 @@ class Player extends Entity {
 		if (save_data["equipped"] != null) {
 			for (var i = 0; i < equipped.size(); i++) {
 				var slot = equipped.keys()[i];
-				var item_data = save_data["equipped"][slot] as Dictionary?;
+				var item_data = (save_data["equipped"] as Dictionary)[slot] as Dictionary?;
 				if (item_data != null && item_data["id"] != null) {
 					var item = Items.createItemFromId(item_data["id"]);
 					item.onLoad(item_data);

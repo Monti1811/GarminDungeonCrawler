@@ -138,7 +138,7 @@ module Main {
 		var num_items = MathUtil.random(0, 5);
 		for (var i = 0; i < num_items; i++) {
 			var item = createRandomItem();
-			var item_pos = getRandomPos(map, left, right, top, bottom);
+			var item_pos = MapUtil.getRandomPos(map, left, right, top, bottom);
 			item.setPos(item_pos);
 			map[item_pos[0]][item_pos[1]] = item;
 			items.add(item);
@@ -155,7 +155,7 @@ module Main {
 		var num_enemies = MathUtil.random(0, 5);
 		for (var i = 0; i < num_enemies; i++) {
 			var enemy = createRandomEnemy();
-			var enemy_pos = getRandomPos(map, left, right, top, bottom);
+			var enemy_pos = MapUtil.getRandomPos(map, left, right, top, bottom);
 			enemy.setPos(enemy_pos);
 			map[enemy_pos[0]][enemy_pos[1]] = enemy;
 			enemies.add(enemy);
@@ -167,13 +167,4 @@ module Main {
 		return Enemies.createRandomEnemy();
 	}
 
-	function getRandomPos(map as Array<Array<Object?>>, left as Number, right as Number, top as Number, bottom as Number) as Point2D {
-		var x = 0;
-		var y = 0;
-		do {
-			x = MathUtil.random(left + 1, right - 1);
-			y = MathUtil.random(top + 1, bottom - 1);
-		} while (map[x][y] != null);
-		return [x, y];
-	}
 }

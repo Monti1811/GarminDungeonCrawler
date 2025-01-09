@@ -32,6 +32,18 @@ class Dungeon {
 		}
 	}
 
+	function addStairs() as Void {
+		while (true) {
+			var rand_x = MathUtil.random(0, _size[0] - 1);
+			var rand_y = MathUtil.random(0, _size[1] - 1);
+			if (_rooms[rand_x][rand_y] != null) {
+				_rooms[rand_x][rand_y].addStairs(null);
+				return;
+			}
+		}
+		
+	}
+
 	function getRoom(index as Point2D) as Room {
 		return _rooms[index[0]][index[1]];
 	}

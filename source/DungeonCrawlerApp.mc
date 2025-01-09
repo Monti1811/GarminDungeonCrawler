@@ -12,7 +12,7 @@ class DungeonCrawlerApp extends Application.AppBase {
 
     function initialize() {
         AppBase.initialize();
-        SaveData.loadSaves();
+        SaveData.init();
         _player = new Warrior("Warrior");
         _player.setSprite($.Rez.Drawables.Player);
         _player.addInventoryItem(new Axe());

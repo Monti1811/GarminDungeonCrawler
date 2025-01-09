@@ -49,7 +49,7 @@ class DCMainMenuDelegate extends WatchUi.BehaviorDelegate {
         for (var i = 0; i < save_keys.size(); i++) {
             var save_key = save_keys[i] as String;
             var save = SaveData.getSaveInfo(save_key);
-            var save_item = new WatchUi.MenuItem(save_key, save, i, null);
+            var save_item = new WatchUi.MenuItem(save[0], save[1], save_key, null);
             loadMenu.addItem(save_item);
         }
         WatchUi.pushView(loadMenu, new RPGLoadGameDelegate(loadMenu), WatchUi.SLIDE_UP);
@@ -79,7 +79,7 @@ class RPGLoadGameDelegate extends WatchUi.Menu2InputDelegate {
 
     function onSelect(item as MenuItem) as Void {
 
-        var savegame = item.getLabel() as String;
+        var savegame = item.getId() as String;
         var optionsMenu = new WatchUi.Menu2({:title=>"Options"});
         optionsMenu.addItem(new WatchUi.MenuItem("Load", null, savegame, null));
         optionsMenu.addItem(new WatchUi.MenuItem("Delete", null, savegame, null));

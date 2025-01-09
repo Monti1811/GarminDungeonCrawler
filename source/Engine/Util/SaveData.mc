@@ -7,9 +7,19 @@ module SaveData {
 
 	var saves as Dictionary = {};
 	var chosen_save as String = "";
+	var current_save_num = 0;
 	const STORAGE_STRING as String = "save_data";
 
 	var _save_data as Dictionary<PropertyKeyType, PropertyValueType> = {};
+
+
+	public function init() as Void {
+		loadSaves();
+		var save_num = Storage.getValue("save_num") as Number?;
+		if (save_num != null) {
+			current_save_num = save_num;
+		}
+	}
 
 	//! Save a value
 	//! @param key The key
@@ -51,24 +61,32 @@ module SaveData {
 
 	public function saveToMemory(data) {
 		Storage.setValue(chosen_save, getSaveData());
-		saves[chosen_save] = [data];
+		saves[chosen_save] = data;
 		saveSaves();
 	}
 
 	public function saveGame() as Void {
 		var app = getApp();
 		var player = app.getPlayer();
-		var save_name = "save_" + player.getName() + "_" + player.getLevel().toString();
-		chosen_save = save_name;
+		if (Storage.getValue(chosen_save) == null) {
+			Storage.setValue("save_num", current_save_num);
+		}
 		var data = {
 			"player" => player.save() as Dictionary<PropertyKeyType, PropertyValueType>,
 			"level" => player.getLevel() as PropertyValueType,
 			"dungeon" => app.getCurrentDungeon().save() as Dictionary<PropertyKeyType, PropertyValueType>
 		} as Dictionary<PropertyKeyType, PropertyValueType>;
-		Toybox.System.println("Saving game to " + save_name);
+		Toybox.System.println("Saving game to " + chosen_save);
 		Toybox.System.println("Data: " + data);
 		_save_data = data;
-		saveToMemory(data["level"]);
+		var playerData = data["player"] as Dictionary<PropertyKeyType, PropertyValueType>;
+		var data_to_show = [
+			playerData["name"], 
+			data["level"], 
+			playerData["run"], 
+			playerData["time_played"]
+		] as Array<PropertyValueType>;
+		saveToMemory(data_to_show);
 		_save_data = {};
 	}
 
@@ -97,14 +115,17 @@ module SaveData {
 		Storage.setValue(STORAGE_STRING, saves);
 	}
 
-	public function getSaveInfo(save as String) as String {
+	public function getSaveInfo(save as String) as Array<String> {
 		var info = saves[save] as Array;
-		return "Level " + info[0];
+		return [
+			info[0], 
+			"Level " + info[1] + " Depth: " + info[2] + " Time played: " + info[3].format("%.2f")
+		];
 	}
 
 	public function deleteSave(save as String) {
 		var temp = Storage.getValue(save) as Dictionary;
-		var dungeon_save_keys = temp["dungeon"]["rooms"] as Array<String>;
+		var dungeon_save_keys = (temp["dungeon"] as Dictionary)["rooms"] as Array<String>;
 		for (var i = 0; i < dungeon_save_keys.size(); i++) {
 			Storage.deleteValue(dungeon_save_keys[i]);
 		}

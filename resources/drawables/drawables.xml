@@ -4,6 +4,7 @@
     <bitmap id="Axe" filename="axe.png" />
     <bitmap id="Helmet" filename="helmet.png" />
     <bitmap id="Frog" filename="frog.png" />
+    <bitmap id="Stairs" filename="stairs.png" />
     <!-- Right low hint :locX => 290, :locY => 220 --> 
     <bitmap id="rightLow" personality="
             system_icon_light__hint_button_right_bottom
