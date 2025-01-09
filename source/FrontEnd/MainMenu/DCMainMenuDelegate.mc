@@ -109,9 +109,15 @@ class DCConfirmLoadGame extends WatchUi.ConfirmationDelegate {
     public function onResponse(value as Confirm) as Boolean {
         if (value == WatchUi.CONFIRM_YES) {
             SaveData.chosen_save = _savegame;
-            SaveData.loadFromMemory();
+            SaveData.loadGame(_savegame);
             WatchUi.popView(WatchUi.SLIDE_DOWN);
-            WatchUi.requestUpdate();
+            WatchUi.popView(WatchUi.SLIDE_DOWN);
+            var app = getApp();
+            var player = app.getPlayer();
+            var roomView = new DCGameView(player, app.getCurrentDungeon().getCurrentRoom(), null);
+            var roomDelegate = new DCGameDelegate(roomView);
+            WatchUi.switchToView(roomView, roomDelegate, WatchUi.SLIDE_UP);
+            WatchUi.pushView(new EmptyView(), new EmptyDelegate(), WatchUi.SLIDE_UP);
         }
         return true;
     }

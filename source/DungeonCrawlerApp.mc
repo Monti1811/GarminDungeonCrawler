@@ -12,6 +12,7 @@ class DungeonCrawlerApp extends Application.AppBase {
 
     function initialize() {
         AppBase.initialize();
+        SaveData.loadSaves();
         _player = new Warrior("Warrior");
         _player.setSprite($.Rez.Drawables.Player);
         _player.addInventoryItem(new Axe());
@@ -65,7 +66,6 @@ class DungeonCrawlerApp extends Application.AppBase {
     function showMainMenu() as [Views] or [Views, InputDelegates] {
         var mainMenu = new DCMainMenuView();
         var mainMenuDelegate = new DCMainMenuDelegate();
-        SaveData.saves = {"save1"=>["Level 1"], "save2"=>["Level 2"], "save3"=>["Level 3"]};
         return [mainMenu, mainMenuDelegate];
     }
 

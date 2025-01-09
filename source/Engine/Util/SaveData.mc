@@ -11,12 +11,6 @@ module SaveData {
 
 	var _save_data as Dictionary<PropertyKeyType, PropertyValueType> = {};
 
-	//! Constructor
-	public function initialize() {
-		_save_data = {};
-		self.loadSaves();
-	}
-
 	//! Save a value
 	//! @param key The key
 	//! @param value The value
@@ -67,12 +61,22 @@ module SaveData {
 		var save_name = "save_" + player.getName() + "_" + player.getLevel().toString();
 		chosen_save = save_name;
 		var data = {
-			:player => player.onSave(),
-			:level => player.getLevel(),
-			:dungeon => app.getCurrentDungeon().onSave(),
-		};
-		_save_data = data as Dictionary<PropertyKeyType, PropertyValueType>;
-		saveToMemory(data[:level]);
+			"player" => player.onSave() as Dictionary<PropertyKeyType, PropertyValueType>,
+			"level" => player.getLevel() as PropertyValueType,
+			"dungeon" => app.getCurrentDungeon().onSave() as Dictionary<PropertyKeyType, PropertyValueType>
+		} as Dictionary<PropertyKeyType, PropertyValueType>;
+		_save_data = data;
+		saveToMemory(data["level"]);
+	}
+
+	public function loadGame(save as String) as Void {
+		chosen_save = save;
+		loadFromMemory();
+		var app = getApp();
+		var data = getSaveData();
+		var player = Player.onLoad(data["player"] as Dictionary<PropertyKeyType, PropertyValueType>);
+		app.setPlayer(player);
+		app.setCurrentDungeon(Dungeon.onLoad(data["dungeon"] as Dictionary<PropertyKeyType, PropertyValueType>));
 	}
 
 	public function isEmpty() as Boolean {

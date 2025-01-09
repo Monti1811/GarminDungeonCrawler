@@ -131,4 +131,12 @@ module MapUtil {
 		return null;
 	}
 
+	function getNumTilesForScreensize() as Point2D {
+		var tile_width = getApp().tile_width;
+		var tile_height = getApp().tile_height;
+		var screen_size_x = Math.ceil(360.0/tile_width).toNumber();
+		var screen_size_y = Math.ceil(360.0/tile_height).toNumber();
+		return [screen_size_x, screen_size_y];
+	}
+
 }

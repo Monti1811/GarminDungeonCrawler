@@ -309,4 +309,14 @@ class Player extends Entity {
 		return description;
 	}
 
+	function toString() as String {
+		return name;
+	}
+
+	static function onLoad(save_data as Dictionary) as Player {
+		var player = Players.createWarrior(save_data["name"]);
+		player.name = save_data["name"] as String;
+		return player;
+	}
+
 }

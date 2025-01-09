@@ -47,11 +47,15 @@ class Room extends WatchUi.Drawable {
         if (options.get(:map) != null) {
             _map = options[:map];
         } else {
-             _map = new Array<Array<Object?>>[_size_x];
-            for (var i = 0; i < _size_x; i++) {
-                _map[i] = new Array<Object?>[_size_y];
+            var screen_size = MapUtil.getNumTilesForScreensize();
+             _map = new Array<Array<Object?>>[screen_size[0]];
+            for (var i = 0; i < screen_size[0]; i++) {
+                _map[i] = new Array<Object?>[screen_size[1]];
             }
         }
+
+        //System.println("Map: " + _map);
+        System.println("Map size: " + _size_x + " " + _size_y);
        
         _map_drawing = options[:map_drawing] as Dictionary;
         _items = options[:items];
@@ -72,7 +76,7 @@ class Room extends WatchUi.Drawable {
             var spec_wall_values = walls[wall_keys[i]] as Array<Point2D>?;
             for (var j = 0; j < spec_wall_values.size(); j++) {
                 var wall_pos = spec_wall_values[j];
-                _map[wall_pos[0]][wall_pos[1]] = a_wall;
+                _map[wall_pos[0]][wall_pos[1]] = a_wall; 
             }
         }
             
@@ -451,6 +455,22 @@ class Room extends WatchUi.Drawable {
         }
     }
 
+    function convertToIndexStringMapDrawing() as Dictionary {
+        var walls = _map_drawing[:walls] as Dictionary<Symbol, Array<Point2D>>;
+        var new_walls = {};
+        var wall_keys = walls.keys() as Array<Symbol>;
+        for (var i = 0; i < wall_keys.size(); i++) {
+            var key = wall_keys[i];
+            var points = walls[key] as Array<Point2D>;
+            new_walls[key.toString()] = points;
+        }
+        var passable = _map_drawing[:drawPassable] as Array<Point2D>;
+        return {
+            "walls" => new_walls,
+            "drawPassable" => passable
+        };
+    }
+
     function onSave() as Dictionary {
         var items = [];
         for (var i = 0; i < _items.size(); i++) {
@@ -465,27 +485,52 @@ class Room extends WatchUi.Drawable {
             }
         }
         return {
-            :size_x => _size_x,
-            :size_y => _size_y,
-            :tile_width => _tile_width,
-            :tile_height => _tile_height,
-            :start_pos => _start_pos,
-            :map => _map,
-            :map_drawing => _map_drawing,
-            :items => items,
-            :enemies => enemies
+            "size_x" => _size_x,
+            "size_y" => _size_y,
+            "tile_width" => _tile_width,
+            "tile_height" => _tile_height,
+            "start_pos" => _start_pos,
+            "map_drawing" => convertToIndexStringMapDrawing(),
+            "items" => items,
+            "enemies" => enemies
+        };
+    }
+
+    static var string_to_symbol_map = {
+        "drawTopWall" => :drawTopWall,
+        "drawBottomWall" => :drawBottomWall,
+        "drawLeftWall" => :drawLeftWall,
+        "drawRightWall" => :drawRightWall,
+        "drawTopLeftWall" => :drawTopLeftWall,
+        "drawTopRightWall" => :drawTopRightWall,
+        "drawBottomLeftWall" => :drawBottomLeftWall,
+        "drawBottomRightWall" => :drawBottomRightWall
+    };
+
+    static function convertToIndexSymbolMapDrawing(_map_drawing as Dictionary) as Dictionary {
+        var walls = _map_drawing["walls"] as Dictionary<String, Array<Point2D>>;
+        var new_walls = {};
+        var wall_keys = walls.keys() as Array<String>;
+        for (var i = 0; i < wall_keys.size(); i++) {
+            var key = wall_keys[i];
+            var points = walls[key] as Array<Point2D>;
+            new_walls[string_to_symbol_map[key]] = points;
+        }
+        var passable = _map_drawing["drawPassable"] as Array<Point2D>;
+        return {
+            :walls => new_walls,
+            :drawPassable => passable
         };
     }
 
     static function onLoad(data as Dictionary) as Room {
         var room = new Room({
-            :size_x => data[:size_x],
-            :size_y => data[:size_y],
-            :tile_width => data[:tile_width],
-            :tile_height => data[:tile_height],
-            :start_pos => data[:start_pos],
-            :map => data[:map],
-            :map_drawing => data[:map_drawing],
+            :size_x => data["size_x"],
+            :size_y => data["size_y"],
+            :tile_width => data["tile_width"],
+            :tile_height => data["tile_height"],
+            :start_pos => data["start_pos"],
+            :map_drawing => convertToIndexSymbolMapDrawing(data["map_drawing"]),
             :items => [],
             :enemies => []
         });

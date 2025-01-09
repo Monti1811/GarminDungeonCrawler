@@ -75,7 +75,7 @@ class DCGameMenuDelegate extends WatchUi.Menu2InputDelegate {
     function saveGame() as Void {
         $.SaveData.saveGame();
         WatchUi.popView(WatchUi.SLIDE_DOWN);
-        WatchUi.showToast("Saved game", {:icon=>Rez.Drawables.warningToastIcon});
+        WatchUi.showToast("Saved game", {:icon=>Rez.Drawables.saveToastIcon});
     }
 }
 

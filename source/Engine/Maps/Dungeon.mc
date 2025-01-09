@@ -101,27 +101,28 @@ class Dungeon {
 
 	function onSave() as Dictionary {
 		var data = {
-			:size => _size,
-			:current_room_position => _current_room_position,
-			:rooms => new Array<Dictionary<String, Object?>>[_size[0] * _size[1]]
+			"size" => _size,
+			"current_room_position" => _current_room_position,
+			"rooms" => new Array<Dictionary<String, Object?>>[_size[0] * _size[1]]
 		};
 		for (var i = 0; i < _size[0]; i++) {
 			for (var j = 0; j < _size[1]; j++) {
-				data[:rooms][i * _size[1] + j] = _rooms[i][j].onSave();
+				data["rooms"][i * _size[1] + j] = _rooms[i][j].onSave();
 			}
 		}
 		return data;
 	}
 
 	static function onLoad(data as Dictionary) as Dungeon {
-		var dungeon = new Dungeon(data["size"][0] as Number, data["size"][1] as Number);
-		dungeon._current_room_position = data["current_room_position"] as Point2D?;
+		var size = data["size"] as Point2D;
+		var dungeon = new Dungeon(size[0] as Number, size[1] as Number);
 		var rooms = data["rooms"] as Array<Dictionary<String, Object?>>;
-		for (var i = 0; i < dungeon._size[0]; i++) {
-			for (var j = 0; j < dungeon._size[1]; j++) {
-				dungeon._rooms[i][j] = Room.onLoad(rooms[i * dungeon._size[1] + j]);
+		for (var i = 0; i < size[0]; i++) {
+			for (var j = 0; j < size[1]; j++) {
+				dungeon.addRoom(Room.onLoad(rooms[i * size[1] + j]), [i, j], {});
 			}
 		}
+		dungeon.setCurrentRoomFromIndex(data["current_room_position"] as Point2D?);
 		return dungeon;
 	}
 }
