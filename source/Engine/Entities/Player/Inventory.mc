@@ -51,4 +51,42 @@ class Inventory {
 		return current_items >= max_items;
 	}
 
+	function save() as Dictionary {
+		var save_data = {};
+		save_data["max_items"] = max_items;
+		save_data["current_items"] = current_items;
+		save_data["items"] = saveItems();
+		return save_data;
+	}
+
+	function saveItems() as Array<Dictionary> {
+		var item_list = items.values() as Array<Item>;
+		var save_data = new Array<Dictionary>[item_list.size()];
+		for (var i = 0; i < item_list.size(); i++) {
+			save_data[i] = item_list[i].save();
+		}
+		return save_data;
+	}
+
+	static function load(save_data as Dictionary) as Inventory {
+		var max_items = save_data["max_items"] as Number;
+		if (max_items == null) {
+			max_items = 10;
+		}
+		var inventory = new Inventory(save_data["max_items"]);
+		inventory.onLoad(save_data);
+		return inventory;
+	}
+
+	function onLoad(save_data as Dictionary) as Void {
+		if (save_data["current_items"] != null) {
+			self.current_items = save_data["current_items"] as Number;
+		}
+		var item_list = save_data["items"] as Array<Dictionary>;
+		for (var i = 0; i < item_list.size(); i++) {
+			var item = Item.load(item_list[i]);
+			items[item.id] = item;
+		}
+	}
+
 }

@@ -64,7 +64,6 @@ class DCCharacterNamingDelegate extends WatchUi.TextPickerDelegate {
         _player.setName(text);
         WatchUi.popView(WatchUi.SLIDE_DOWN);
         WatchUi.popView(WatchUi.SLIDE_DOWN);
-        WatchUi.popView(WatchUi.SLIDE_DOWN);
         /*var progressBar = new DCCreateGameProgressView(
             "Creating new game...",
             0.0,

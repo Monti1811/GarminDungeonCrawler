@@ -16,4 +16,5 @@ module SimUtil {
             new Mage("Mage")
         ];
     }
+
 }

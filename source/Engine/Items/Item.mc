@@ -98,13 +98,38 @@ class Item {
 		return new_item;
 	}
 
-	function onSave() as Dictionary<PropertyKeyType, PropertyValueType> {
+	function save() as Dictionary<PropertyKeyType, PropertyValueType> {
 		var save_data = {};
+		save_data["id"] = id;
+		save_data["pos"] = pos;
+		save_data["equipped"] = equipped;
+		save_data["in_inventory"] = in_inventory;
+		save_data["amount"] = amount;
 		return save_data;
 	}
 
-	static function onLoad(save_data as Dictionary<PropertyKeyType, PropertyValueType>) as Item {
-		var item = new Item();
+	static function load(save_data as Dictionary<PropertyKeyType, PropertyValueType>) as Item {
+		// TODO remove later
+		if (save_data["id"] == null) {
+			save_data["id"] = 0;
+		}
+		var item = Items.createItemFromId(save_data["id"]);
+		item.onLoad(save_data);
 		return item;
+	}
+
+	function onLoad(save_data as Dictionary<PropertyKeyType, PropertyValueType>) as Void {
+		if (save_data["pos"] != null) {
+			pos = save_data["pos"] as Point2D;
+		}
+		if (save_data["equipped"] != null) {
+			equipped = save_data["equipped"] as Boolean;
+		}
+		if (save_data["in_inventory"] != null) {
+			in_inventory = save_data["in_inventory"] as Boolean;
+		}
+		if (save_data["amount"] != null) {
+			amount = save_data["amount"] as Number;
+		}
 	}
 }

@@ -61,12 +61,15 @@ module SaveData {
 		var save_name = "save_" + player.getName() + "_" + player.getLevel().toString();
 		chosen_save = save_name;
 		var data = {
-			"player" => player.onSave() as Dictionary<PropertyKeyType, PropertyValueType>,
+			"player" => player.save() as Dictionary<PropertyKeyType, PropertyValueType>,
 			"level" => player.getLevel() as PropertyValueType,
-			"dungeon" => app.getCurrentDungeon().onSave() as Dictionary<PropertyKeyType, PropertyValueType>
+			"dungeon" => app.getCurrentDungeon().save() as Dictionary<PropertyKeyType, PropertyValueType>
 		} as Dictionary<PropertyKeyType, PropertyValueType>;
+		Toybox.System.println("Saving game to " + save_name);
+		Toybox.System.println("Data: " + data);
 		_save_data = data;
 		saveToMemory(data["level"]);
+		_save_data = {};
 	}
 
 	public function loadGame(save as String) as Void {
@@ -74,9 +77,9 @@ module SaveData {
 		loadFromMemory();
 		var app = getApp();
 		var data = getSaveData();
-		var player = Player.onLoad(data["player"] as Dictionary<PropertyKeyType, PropertyValueType>);
+		var player = Player.load(data["player"] as Dictionary<PropertyKeyType, PropertyValueType>);
 		app.setPlayer(player);
-		app.setCurrentDungeon(Dungeon.onLoad(data["dungeon"] as Dictionary<PropertyKeyType, PropertyValueType>));
+		app.setCurrentDungeon(Dungeon.load(data["dungeon"] as Dictionary<PropertyKeyType, PropertyValueType>));
 	}
 
 	public function isEmpty() as Boolean {
@@ -97,6 +100,17 @@ module SaveData {
 	public function getSaveInfo(save as String) as String {
 		var info = saves[save] as Array;
 		return "Level " + info[0];
+	}
+
+	public function deleteSave(save as String) {
+		var temp = Storage.getValue(save) as Dictionary;
+		var dungeon_save_keys = temp["dungeon"]["rooms"] as Array<String>;
+		for (var i = 0; i < dungeon_save_keys.size(); i++) {
+			Storage.deleteValue(dungeon_save_keys[i]);
+		}
+		Storage.deleteValue(save);
+		saves.remove(save);
+		saveSaves();
 	}
 
 }

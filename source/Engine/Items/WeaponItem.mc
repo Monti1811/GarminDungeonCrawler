@@ -60,5 +60,12 @@ class WeaponItem extends EquippableItem {
 		return range_type;
 	}
 	
+	function save() as Dictionary {
+		var data = EquippableItem.save();
+		data["attack"] = attack;
+		data["range"] = range;
+		data["range_type"] = range_type;
+		return data;
+	}
 
 }

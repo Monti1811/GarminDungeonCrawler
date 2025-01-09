@@ -49,10 +49,10 @@ class DCMainMenuDelegate extends WatchUi.BehaviorDelegate {
         for (var i = 0; i < save_keys.size(); i++) {
             var save_key = save_keys[i] as String;
             var save = SaveData.getSaveInfo(save_key);
-            var save_item = new WatchUi.MenuItem(save_key, save, null, null);
+            var save_item = new WatchUi.MenuItem(save_key, save, i, null);
             loadMenu.addItem(save_item);
         }
-        WatchUi.pushView(loadMenu, new RPGLoadGameDelegate(), WatchUi.SLIDE_UP);
+        WatchUi.pushView(loadMenu, new RPGLoadGameDelegate(loadMenu), WatchUi.SLIDE_UP);
 
     }
 
@@ -70,19 +70,20 @@ class DCMainMenuDelegate extends WatchUi.BehaviorDelegate {
 
 class RPGLoadGameDelegate extends WatchUi.Menu2InputDelegate {
 
-    function initialize() {
+    private var _view as WatchUi.Menu2;
+
+    function initialize(view as WatchUi.Menu2) {
         Menu2InputDelegate.initialize();
+        _view = view;
     }
 
     function onSelect(item as MenuItem) as Void {
+
         var savegame = item.getLabel() as String;
-        var message = "Do you want to load " + savegame + "?";
-        var dialog = new WatchUi.Confirmation(message);
-        WatchUi.pushView(
-            dialog,
-            new DCConfirmLoadGame(savegame),
-            WatchUi.SLIDE_IMMEDIATE
-        );
+        var optionsMenu = new WatchUi.Menu2({:title=>"Options"});
+        optionsMenu.addItem(new WatchUi.MenuItem("Load", null, savegame, null));
+        optionsMenu.addItem(new WatchUi.MenuItem("Delete", null, savegame, null));
+        WatchUi.pushView(optionsMenu, new RPGLoadGameOptionsDelegate(_view, item.getId() as Number), WatchUi.SLIDE_UP);
     }
 
     //! Handle the back key being pressed
@@ -90,6 +91,83 @@ class RPGLoadGameDelegate extends WatchUi.Menu2InputDelegate {
         WatchUi.popView(WatchUi.SLIDE_DOWN);
     }
 }
+
+class RPGLoadGameOptionsDelegate extends WatchUi.Menu2InputDelegate {
+
+    private var _parent as WatchUi.Menu2;
+    private var _id as Number;
+
+    function initialize(parent as WatchUi.Menu2, id as Number) {
+        Menu2InputDelegate.initialize();
+        _parent = parent;
+        _id = id;
+    }
+
+    function onSelect(item as MenuItem) as Void {
+        var type = item.getLabel() as String;
+        var savegame = item.getId() as String;
+       switch (type) {
+            case "Load":
+                load(savegame);
+                break;
+            case "Delete":
+                delete(savegame);
+                break;
+        }
+    }
+
+    function load(savegame as String) as Void {
+        var dialog = new WatchUi.Confirmation("Do you want to load this save?");
+        WatchUi.pushView(dialog, new DCConfirmLoadGame(savegame), WatchUi.SLIDE_UP);
+    }
+
+    function delete(savegame as String) as Void {
+        var dialog = new WatchUi.Confirmation("Do you want to delete this save?");
+        WatchUi.pushView(dialog, new DCConfirmDeleteGame(savegame, _id, _parent), WatchUi.SLIDE_UP);
+    }
+
+
+    //! Handle the back key being pressed
+    function onBack() as Void {
+        WatchUi.popView(WatchUi.SLIDE_DOWN);
+    }
+}
+
+//! Input handler for the confirmation dialog
+class DCConfirmDeleteGame extends WatchUi.ConfirmationDelegate {
+
+    private var _savegame as String;
+    private var _id as Number;
+    private var _parent as WatchUi.Menu2;
+
+    //! Constructor
+    //! @param view The app view
+    public function initialize(savegame as String, id as Number, parent as WatchUi.Menu2) {
+        ConfirmationDelegate.initialize();
+        _savegame = savegame;
+        _id = id;
+        _parent = parent;
+    }
+
+    //! Handle a confirmation selection
+    //! @param value The confirmation value
+    //! @return true if handled, false otherwise
+    public function onResponse(value as Confirm) as Boolean {
+        if (value == WatchUi.CONFIRM_YES) {
+            deleteSave();
+        }
+        return true;
+    }
+
+    
+    function deleteSave() as Void {
+        SaveData.deleteSave(_savegame);
+        _parent.deleteItem(_id);
+        WatchUi.popView(WatchUi.SLIDE_DOWN);
+    }
+
+}
+
 
 //! Input handler for the confirmation dialog
 class DCConfirmLoadGame extends WatchUi.ConfirmationDelegate {

@@ -224,6 +224,7 @@ class Room extends WatchUi.Drawable {
             :tile_width => _tile_width,
             :tile_height => _tile_height,
             :start_pos => _start_pos,
+            :player_pos => _player_pos,
             :map => _map
         };
     }
@@ -337,6 +338,13 @@ class Room extends WatchUi.Drawable {
         _items.add(item);
         _items_sprite.add(new WatchUi.Bitmap({:rezId=>item.getSprite(), :locX=>item_pos[0] * _tile_width, :locY=>item_pos[1] * _tile_height}));
         _map[item_pos[0]][item_pos[1]] = item;
+    }
+
+    function addEnemy(enemy as Enemy) as Void {
+        var enemy_pos = enemy.getPos();
+        _enemies.add(enemy);
+        _enemies_sprite.add(new WatchUi.Bitmap({:rezId=>enemy.getSprite(), :locX=>enemy_pos[0] * _tile_width, :locY=>enemy_pos[1] * _tile_height}));
+        _map[enemy_pos[0]][enemy_pos[1]] = enemy;
     }
 
     function addConnection(direction as WalkDirection, room as Room?) as Void {
@@ -471,17 +479,17 @@ class Room extends WatchUi.Drawable {
         };
     }
 
-    function onSave() as Dictionary {
+    function save() as Dictionary {
         var items = [];
         for (var i = 0; i < _items.size(); i++) {
             if (_items[i] != null) {
-                items.add(_items[i].onSave());
+                items.add(_items[i].save());
             }
         }
         var enemies = [];
         for (var i = 0; i < _enemies.size(); i++) {
             if (_enemies[i] != null) {
-                enemies.add(_enemies[i].onSave());
+                enemies.add(_enemies[i].save());
             }
         }
         return {
@@ -490,13 +498,14 @@ class Room extends WatchUi.Drawable {
             "tile_width" => _tile_width,
             "tile_height" => _tile_height,
             "start_pos" => _start_pos,
+            "player_pos" => _player_pos,
             "map_drawing" => convertToIndexStringMapDrawing(),
             "items" => items,
             "enemies" => enemies
         };
     }
 
-    static var string_to_symbol_map = {
+    static var string_to_symbol_map as Dictionary<String, Symbol> = {
         "drawTopWall" => :drawTopWall,
         "drawBottomWall" => :drawBottomWall,
         "drawLeftWall" => :drawLeftWall,
@@ -523,7 +532,7 @@ class Room extends WatchUi.Drawable {
         };
     }
 
-    static function onLoad(data as Dictionary) as Room {
+    static function load(data as Dictionary) as Room {
         var room = new Room({
             :size_x => data["size_x"],
             :size_y => data["size_y"],
@@ -534,20 +543,22 @@ class Room extends WatchUi.Drawable {
             :items => [],
             :enemies => []
         });
-        var items_data = data[:items] as Array<Dictionary>?;
+        if (data["player_pos"] != null) {
+            System.println("Set Player pos: " + data["player_pos"]);
+            room.updatePlayerPos(data["player_pos"]);
+        }
+        var items_data = data["items"] as Array<Dictionary>?;
         if (items_data != null) {
             for (var i = 0; i < items_data.size(); i++) {
-                var item = Item.onLoad(items_data[i]);
+                var item = Item.load(items_data[i]);
                 room.addItem(item);
             }
         }
-        var enemies_data = data[:enemies] as Array<Dictionary>?;
+        var enemies_data = data["enemies"] as Array<Dictionary>?;
         if (enemies_data != null) {
             for (var i = 0; i < enemies_data.size(); i++) {
-                var enemy = Enemy.onLoad(enemies_data[i]);
-                var enemy_pos = enemy.getPos();
-                room._enemies.add(enemy);
-                room._enemies_sprite.add(new WatchUi.Bitmap({:rezId=>enemy.getSprite(), :locX=>enemy_pos[0] * room._tile_width, :locY=>enemy_pos[1] * room._tile_height}));
+                var enemy = Enemy.load(enemies_data[i]);
+                room.addEnemy(enemy);
             }
         }
         return room;

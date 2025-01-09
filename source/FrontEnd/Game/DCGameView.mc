@@ -27,7 +27,7 @@ class DCGameView extends WatchUi.View {
 		_player = player;
 		_room = room;
 		_map_data = room.getMapData();
-        _player_pos = _map_data[:start_pos];
+        _player_pos = _map_data[:player_pos] as Point2D;
 
 		_timer = new Timer.Timer();
         

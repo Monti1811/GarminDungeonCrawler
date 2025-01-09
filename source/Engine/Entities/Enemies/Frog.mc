@@ -27,4 +27,11 @@ class Frog extends Enemy {
 		self.next_pos = pos;
 		return pos;
 	}
+
+	function onLoad(save_data as Dictionary) as Void {
+		Enemy.onLoad(save_data);
+		if (save_data["move_up"] != null) {
+			move_up = save_data["move_up"] as Boolean;
+		}
+	}
 }

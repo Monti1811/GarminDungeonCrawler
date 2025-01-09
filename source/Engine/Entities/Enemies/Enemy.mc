@@ -2,6 +2,8 @@ import Toybox.Lang;
 
 class Enemy extends Entity {
 
+	var id as Number = 0;
+
 	var pos as Point2D = [0, 0];
 	var next_pos as Point2D = [0, 0];
 	var has_moved as Boolean = false;
@@ -100,23 +102,76 @@ class Enemy extends Entity {
 		return true;
 	}
 
-	static function onLoad(data as Dictionary) as Enemy {
-		var enemy = new Enemy();
-		enemy.pos = data["pos"] as Point2D;
-		enemy.next_pos = data["next_pos"] as Point2D;
-		enemy.has_moved = data["has_moved"] as Boolean;
-		enemy.damage = data["damage"] as Number;
-		enemy.armor = data["armor"] as Number;
-		enemy.current_health = data["current_health"] as Number;
-		enemy.maxHealth = data["maxHealth"] as Number;
-		enemy.kill_experience = data["kill_experience"] as Number;
-		enemy.name = data["name"] as String;
-		enemy.level = data["level"] as Number;
-		enemy.experience = data["experience"] as Number;
-		enemy.attack_cooldown = data["attack_cooldown"] as Number;
-		enemy.curr_attack_cooldown = data["curr_attack_cooldown"] as Number;
+	function save() as Dictionary {
+		var data = {};
+		data["id"] = id;
+		data["pos"] = pos;
+		data["next_pos"] = next_pos;
+		data["has_moved"] = has_moved;
+		data["damage"] = damage;
+		data["armor"] = armor;
+		data["current_health"] = current_health;
+		data["maxHealth"] = maxHealth;
+		data["kill_experience"] = kill_experience;
+		data["name"] = name;
+		data["level"] = level;
+		data["experience"] = experience;
+		data["attack_cooldown"] = attack_cooldown;
+		data["curr_attack_cooldown"] = curr_attack_cooldown;
+		return data;
+	}
+
+	static function load(data as Dictionary) as Enemy {
+		// TODO remove that once correct save data is provided
+		if (data["id"] == null) {
+			data["id"] = 0;
+		}
+		var enemy = Enemies.createEnemyFromId(data["id"] as Number);
+		enemy.onLoad(data);
 		return enemy;
 		
+	}
+
+	function onLoad(data as Dictionary) as Void {
+		if (data["pos"] != null) {
+			pos = data["pos"] as Point2D;
+		}
+		if (data["next_pos"] != null) {
+			next_pos = data["next_pos"] as Point2D;
+		}
+		if (data["has_moved"] != null) {
+			has_moved = data["has_moved"] as Boolean;
+		}
+		if (data["damage"] != null) {
+			damage = data["damage"] as Number;
+		}
+		if (data["armor"] != null) {
+			armor = data["armor"] as Number;
+		}
+		if (data["current_health"] != null) {
+			current_health = data["current_health"] as Number;
+		}
+		if (data["maxHealth"] != null) {
+			maxHealth = data["maxHealth"] as Number;
+		}
+		if (data["kill_experience"] != null) {
+			kill_experience = data["kill_experience"] as Number;
+		}
+		if (data["name"] != null) {
+			name = data["name"] as String;
+		}
+		if (data["level"] != null) {
+			level = data["level"] as Number;
+		}
+		if (data["experience"] != null) {
+			experience = data["experience"] as Number;
+		}
+		if (data["attack_cooldown"] != null) {
+			attack_cooldown = data["attack_cooldown"] as Number;
+		}
+		if (data["curr_attack_cooldown"] != null) {
+			curr_attack_cooldown = data["curr_attack_cooldown"] as Number;
+		}
 	}
 
 

@@ -22,7 +22,8 @@ module Items {
     }
 
     function createItemFromId(id as Number) as Item {
-        var method = new Method(self, items[id]);
+        var symbol = items[id] as Symbol;
+        var method = new Method(self, symbol);
         return method.invoke() as Item;
     }
 

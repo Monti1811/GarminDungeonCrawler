@@ -2,6 +2,8 @@ import Toybox.Lang;
 import Toybox.Graphics;
 import Toybox.WatchUi;
 import Toybox.System;
+import Toybox.Application;
+import Toybox.Application.Storage;
 
 class Dungeon {
 
@@ -99,27 +101,30 @@ class Dungeon {
 		return null;
 	}
 
-	function onSave() as Dictionary {
+	function save() as Dictionary {
 		var data = {
 			"size" => _size,
 			"current_room_position" => _current_room_position,
-			"rooms" => new Array<Dictionary<String, Object?>>[_size[0] * _size[1]]
+			"rooms" => new Array<String?>[_size[0] * _size[1]]
 		};
 		for (var i = 0; i < _size[0]; i++) {
 			for (var j = 0; j < _size[1]; j++) {
-				data["rooms"][i * _size[1] + j] = _rooms[i][j].onSave();
+				var save_str = SaveData.chosen_save + "_dungeon_" + i + "_" + j;
+				Storage.setValue(save_str, _rooms[i][j].save());
+				data["rooms"][i * _size[1] + j] = save_str;
 			}
 		}
 		return data;
 	}
 
-	static function onLoad(data as Dictionary) as Dungeon {
+	static function load(data as Dictionary) as Dungeon {
 		var size = data["size"] as Point2D;
 		var dungeon = new Dungeon(size[0] as Number, size[1] as Number);
 		var rooms = data["rooms"] as Array<Dictionary<String, Object?>>;
 		for (var i = 0; i < size[0]; i++) {
 			for (var j = 0; j < size[1]; j++) {
-				dungeon.addRoom(Room.onLoad(rooms[i * size[1] + j]), [i, j], {});
+				var room_data = Storage.getValue(rooms[i * size[1] + j] as String) as Dictionary;
+				dungeon.addRoom(Room.load(room_data), [i, j], {});
 			}
 		}
 		dungeon.setCurrentRoomFromIndex(data["current_room_position"] as Point2D?);

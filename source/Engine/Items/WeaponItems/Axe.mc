@@ -63,4 +63,12 @@ class Axe extends WeaponItem {
 		return axe;
 	}
 
+	function toString() as String {
+		return name;
+	}
+
+	function onLoad(save_data as Dictionary) as Void {
+		WeaponItem.onLoad(save_data);
+	}
+
 }

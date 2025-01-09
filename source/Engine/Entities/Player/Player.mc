@@ -208,13 +208,6 @@ class Player extends Entity {
 	}
 
 
-	function save(saveData as SaveData) {
-		return saveData;
-	}
-
-	function load(saveData as SaveData) {
-		return saveData;
-	}
 
 	function getSprite() as ResourceId {
 		return sprite;
@@ -313,10 +306,91 @@ class Player extends Entity {
 		return name;
 	}
 
-	static function onLoad(save_data as Dictionary) as Player {
+	private function convertAttributeSymbolToString() as Dictionary {
+		var attribute_string = {};
+		for (var i = 0; i < attributes.size(); i++) {
+			var attribute = attributes.keys()[i];
+			attribute_string[Constants.ATT_SYMBOL_TO_STR[attribute]] = attributes[attribute];
+		}
+		return attribute_string;
+	}
+
+	private function convertAttributeStringToSymbol(data_attributes as Dictionary) as Dictionary {
+		var attribute_symbol = {};
+		for (var i = 0; i < data_attributes.size(); i++) {
+			var attribute = data_attributes.keys()[i];
+			attribute_symbol[Constants.ATT_STR_TO_SYMBOL[attribute]] = data_attributes[attribute];
+		}
+		return attribute_symbol;
+	}
+
+	function save() as Dictionary {
+		var save_data = {
+			"name" => name,
+			"current_health" => current_health,
+			"maxHealth" => maxHealth,
+			"level" => level,
+			"experience" => experience,
+			"next_level_experience" => next_level_experience,
+			"attributes" => convertAttributeSymbolToString(),
+			"attribute_points" => attribute_points,
+			"inventory" => inventory.save(),
+			"equipped" => {}
+		};
+		for (var i = 0; i < equipped.size(); i++) {
+			var slot = equipped.keys()[i];
+			var item = equipped[slot];
+			if (item != null) {
+				save_data["equipped"][slot] = item.save();
+			}
+		}
+		Toybox.System.println("Equipped: " + save_data["equipped"]);
+		return save_data;
+	}
+
+	static function load(save_data as Dictionary) as Player {
 		var player = Players.createWarrior(save_data["name"]);
-		player.name = save_data["name"] as String;
+		player.onLoad(save_data);
 		return player;
+	}
+
+	function onLoad(save_data as Dictionary) as Void {
+		if (save_data["current_health"] != null) {
+			current_health = save_data["current_health"] as Number;
+		}
+		if (save_data["maxHealth"] != null) {
+			maxHealth = save_data["maxHealth"] as Number;
+		}
+		if (save_data["level"] != null) {
+			level = save_data["level"] as Number;
+		}
+		if (save_data["experience"] != null) {
+			experience = save_data["experience"] as Number;
+		}
+		if (save_data["next_level_experience"] != null) {
+			next_level_experience = save_data["next_level_experience"] as Number;
+		}
+		if (save_data["attributes"] != null) {
+			attributes = convertAttributeStringToSymbol(save_data["attributes"] as Dictionary);
+		}
+		if (save_data["attribute_points"] != null) {
+			attribute_points = save_data["attribute_points"] as Number;
+		}
+		if (save_data["inventory"] != null) {
+			inventory = Inventory.load(save_data["inventory"] as Dictionary);
+		}
+		if (save_data["equipped"] != null) {
+			for (var i = 0; i < equipped.size(); i++) {
+				var slot = equipped.keys()[i];
+				var item_data = save_data["equipped"][slot] as Dictionary?;
+				if (item_data != null && item_data["id"] != null) {
+					var item = Items.createItemFromId(item_data["id"]);
+					item.onLoad(item_data);
+					equipped[slot] = item;
+				}
+			}
+		}
+
 	}
 
 }

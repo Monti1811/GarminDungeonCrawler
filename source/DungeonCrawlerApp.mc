@@ -7,7 +7,7 @@ class DungeonCrawlerApp extends Application.AppBase {
     public var tile_width as Number = 16;
     public var tile_height as Number = 16;
 
-    public var _player as Player;
+    public var _player as Player?;
     public var _curr_dungeon as Dungeon?;
 
     function initialize() {
@@ -77,19 +77,19 @@ class DungeonCrawlerApp extends Application.AppBase {
         return [progressBar, new DCCreateGameProgressDelegate(_player, progressBar)];
     }
 
-    function getPlayer() as Player {
+    function getPlayer() as Player? {
         return _player;
     }
 
-    function setPlayer(player as Player) as Void {
+    function setPlayer(player as Player?) as Void {
         _player = player;
     }
 
-    function getCurrentDungeon() as Dungeon {
+    function getCurrentDungeon() as Dungeon? {
         return _curr_dungeon;
     }
 
-    function setCurrentDungeon(dungeon as Dungeon) as Void {
+    function setCurrentDungeon(dungeon as Dungeon?) as Void {
         _curr_dungeon = dungeon;
     }
 
