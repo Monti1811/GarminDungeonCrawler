@@ -2,7 +2,7 @@ import Toybox.Lang;
 
 
 class SteelSword extends WeaponItem {
-	var id as Number = 0;
+	var id as Number = 8;
 	var name as String = "Steel Sword";
 	var description as String = "A simple steel sword";
 	var slot as ItemSlot = RIGHT_HAND;

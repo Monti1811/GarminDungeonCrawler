@@ -4,7 +4,15 @@ module Items {
 
     var items as Dictionary<Number, Symbol> = {
         0 => :createSteelAxe,
-        1 => :createSteelLance,
+        1 => :createSteelBow,
+        2 => :createSteelDagger,
+        3 => :createSteelGreatsword,
+        4 => :createSteelKatana,
+        5 => :createSteelLance,
+        6 => :createSteelSpell,
+        7 => :createSteelStaff,
+        8 => :createSteelSword,
+
         1000 => :createSteelHelmet
     };
 
@@ -13,8 +21,36 @@ module Items {
         return new SteelAxe();
     }
 
+    function createSteelBow() as Item {
+        return new SteelBow();
+    }
+
+    function createSteelDagger() as Item {
+        return new SteelDagger();
+    }
+    
+    function createSteelGreatsword() as Item {
+        return new SteelGreatsword();
+    }
+
+    function createSteelKatana() as Item {
+        return new SteelKatana();
+    }
+
     function createSteelLance() as Item {
         return new SteelLance();
+    }
+
+    function createSteelSpell() as Item {
+        return new SteelSpell();
+    }
+
+    function createSteelStaff() as Item {
+        return new SteelStaff();
+    }
+
+    function createSteelSword() as Item {
+        return new SteelSword();
     }
 
     function createSteelHelmet() as Item {

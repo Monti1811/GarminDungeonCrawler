@@ -2,7 +2,7 @@ import Toybox.Lang;
 
 
 class SteelSpell extends Spell {
-	var id as Number = 1;
+	var id as Number = 6;
 	var name as String = "Steel Spell";
 	var description as String = "A simple steel spell";
 	var slot as ItemSlot = RIGHT_HAND;

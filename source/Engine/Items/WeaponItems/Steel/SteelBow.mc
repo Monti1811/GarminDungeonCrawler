@@ -2,7 +2,7 @@ import Toybox.Lang;
 
 
 class SteelBow extends Bow {
-	var id as Number = 0;
+	var id as Number = 1;
 	var name as String = "Steel Bow";
 	var description as String = "A simple steel bow";
 

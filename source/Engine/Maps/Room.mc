@@ -277,8 +277,11 @@ class Room extends WatchUi.Drawable {
         if (enemy_pos != enemy_next_pos) {
             _map[enemy_pos[0]][enemy_pos[1]] = null;
             _map[enemy_next_pos[0]][enemy_next_pos[1]] = enemy;
-            _enemies_sprite[index].locX = enemy_next_pos[0] * _tile_width;
-            _enemies_sprite[index].locY = enemy_next_pos[1] * _tile_height;
+            var enemy_sprite = _enemies_sprite[index];
+            var enemy_sprite_dimensions = enemy_sprite.getDimensions();
+            var enemy_sprite_offset = [enemy_sprite_dimensions[0] - _tile_width, (enemy_sprite_dimensions[1] - _tile_height) / 2];
+            enemy_sprite.locX = enemy_next_pos[0] * _tile_width - enemy_sprite_offset[0];
+            enemy_sprite.locY = enemy_next_pos[1] * _tile_height - enemy_sprite_offset[1];
             enemy.setPos(enemy_next_pos);
             enemy.setHasMoved(true);
         } else {

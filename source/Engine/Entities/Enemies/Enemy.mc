@@ -57,12 +57,7 @@ class Enemy extends Entity {
 	}
 
 	function takeDamage(damage as Number, enemy as Player) as Boolean {
-		var defense = getDefense(enemy);
-		var damage_taken = damage - defense;
-		if (damage_taken < 0) {
-			damage_taken = 0;
-		}
-		current_health -= damage_taken;
+		current_health -= damage;
 		if (current_health < 0) {
 			current_health = 0;
 			return true;

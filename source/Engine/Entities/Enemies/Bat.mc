@@ -6,6 +6,7 @@ class Bat extends Enemy {
 
 	function initialize() {
 		Enemy.initialize();
+		id = 1;
 	}
 
 	function getSprite() as ResourceId {
@@ -15,9 +16,12 @@ class Bat extends Enemy {
 	function findNextMove(map as Array<Array<Object?>>) as Point2D {
 		var next_pos = Pathfinder.findNextMove(map, pos, $.getApp().getPlayer().getPos());
 		if (next_pos != null) {
+			Toybox.System.print("Bat moving to " + next_pos);
+			self.next_pos = next_pos;
 			return next_pos;
 		}
-		return pos;
+		self.next_pos = self.pos;
+		return self.next_pos;
 	}
 
 	function onLoad(save_data as Dictionary) as Void {

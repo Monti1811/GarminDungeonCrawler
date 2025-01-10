@@ -4,11 +4,21 @@ module Enemies {
 
     var enemies as Dictionary<Number, Symbol> = {
         0 => :createFrog, 
+        1 => :createBat,
+        2 => :createDemon,
     };
 
 
     function createFrog() as Enemy {
         return new Frog();
+    }
+
+    function createBat() as Enemy {
+        return new Bat();
+    }
+
+    function createDemon() as Enemy {
+        return new Demon();
     }
 
     function createEnemyFromId(id as Number) as Enemy {

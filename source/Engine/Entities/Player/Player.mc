@@ -170,6 +170,7 @@ class Player extends Entity {
 	}
 
 	function onLoseHealth(amount as Number) as Void {
+		Toybox.System.println("Losing health: " + amount);
 		current_health = MathUtil.ceil(current_health - amount, 0);
 		if (current_health == 0) {
 			onDeath();
@@ -281,12 +282,7 @@ class Player extends Entity {
 	}
 
 	function takeDamage(damage as Number, enemy as Enemy?) as Boolean {
-		var defense = getDefense(enemy);
-		var damage_taken = damage - defense;
-		if (damage_taken < 0) {
-			damage_taken = 0;
-		}
-		onLoseHealth(damage_taken);
+		onLoseHealth(damage);
 		if (current_health == 0) {
 			onDeath();
 			return true;

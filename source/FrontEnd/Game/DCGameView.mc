@@ -10,6 +10,7 @@ class DCGameView extends WatchUi.View {
 
 	private var _player as Player;
 	private var _player_sprite as Bitmap;
+    private var _player_sprite_offset as Point2D = [0,0];
     private var _player_pos as Point2D = [0,0];
 
 	private var _timer as Timer.Timer;
@@ -42,6 +43,8 @@ class DCGameView extends WatchUi.View {
         fg_layer = new Layer({:locX=>0, :locY=>0, :width=>360, :height=>360});
 		
 		_player_sprite = new WatchUi.Bitmap({:rezId=>_player.getSprite(), :locX=>_player_pos[0] * _map_data[:tile_width], :locY=>_player_pos[1] * _map_data[:tile_height]});
+        var player_sprite_dimensions = _player_sprite.getDimensions();
+        _player_sprite_offset = [player_sprite_dimensions[0] - _map_data[:tile_width], (player_sprite_dimensions[1] - _map_data[:tile_height]) / 2];
 
         // Add player position to map
         var map = _map_data[:map] as Array<Array<Object?>>;
@@ -54,8 +57,8 @@ class DCGameView extends WatchUi.View {
         _player_pos = _map_data[:start_pos];
         _player.setPos(_player_pos);
         room.updatePlayerPos(_player_pos);
-        _player_sprite.locX = _player_pos[0] * _map_data[:tile_width] as Number;
-        _player_sprite.locY = _player_pos[1] * _map_data[:tile_height] as Number;
+        _player_sprite.locX = _player_pos[0] * _map_data[:tile_width] - _player_sprite_offset[0];
+		_player_sprite.locY = _player_pos[1] * _map_data[:tile_height] - _player_sprite_offset[1];
         var map = _map_data[:map] as Array<Array<Object?>>;
         map[_player_pos[0]][_player_pos[1]] = _player;
     }
@@ -92,13 +95,18 @@ class DCGameView extends WatchUi.View {
 		
 		fg_dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
 		fg_dc.clear();
-		_player_sprite.locX = _player_pos[0] * _map_data[:tile_width];
-		_player_sprite.locY = _player_pos[1] * _map_data[:tile_height];
-		_player_sprite.draw(fg_dc);
+		
+		drawPlayer(fg_dc);
 
         for (var i = 0; i < damage_texts.size(); i++) {
             damage_texts[i].draw(fg_dc);
         }
+    }
+
+    function drawPlayer(dc as Dc) as Void {
+        _player_sprite.locX = _player_pos[0] * _map_data[:tile_width] - _player_sprite_offset[0];
+		_player_sprite.locY = _player_pos[1] * _map_data[:tile_height] - _player_sprite_offset[1];
+        _player_sprite.draw(dc);
     }
 
     // Called when this View is removed from the screen. Save the
