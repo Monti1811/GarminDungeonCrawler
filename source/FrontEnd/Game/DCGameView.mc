@@ -182,6 +182,18 @@ class DCGameView extends WatchUi.View {
 			return;
 		}
 
+        if (map_element != null && map_element instanceof Stairs) {
+            var app = getApp();
+            app.setCurrentDungeon(null);
+            _player.addToCurrentRun(1);
+            var progressBar = new WatchUi.ProgressBar(
+            "Creating new dungeon...",
+            0.0
+            );
+            WatchUi.switchToView(progressBar, new DCNewDungeonProgressDelegate(progressBar), WatchUi.SLIDE_UP);
+            return;
+        }
+
         var enemy_in_pos = false;   
         var enemy = null as Enemy?;
 

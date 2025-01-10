@@ -71,6 +71,7 @@ module SaveData {
 		if (Storage.getValue(chosen_save) == null) {
 			Storage.setValue("save_num", current_save_num);
 		}
+		player.updateTimePlayed(Toybox.Time.now());
 		var data = {
 			"player" => player.save() as Dictionary<PropertyKeyType, PropertyValueType>,
 			"level" => player.getLevel() as PropertyValueType,
@@ -117,9 +118,14 @@ module SaveData {
 
 	public function getSaveInfo(save as String) as Array<String> {
 		var info = saves[save] as Array;
+		var hours = info[3].toNumber() / 3600;
+		var minutes = (info[3].toNumber() % 3600) / 60;
+		if (minutes < 10) {
+			minutes = "0" + minutes;
+		}
 		return [
 			info[0], 
-			"Level " + info[1] + " Depth: " + info[2] + " Time played: " + info[3].format("%.2f")
+			"Level " + info[1] + " Depth: " + info[2] + " Time played: " + hours + ":" + minutes
 		];
 	}
 

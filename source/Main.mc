@@ -14,6 +14,7 @@ module Main {
 	}
 
 	function createNewGame2(player as Player, progress_bar as WatchUi.ProgressBar, dungeon as Dungeon) as Void {
+		dungeon.addStairs();
 		var app = getApp();
 		app.setCurrentDungeon(dungeon);
 		var start_room = MathUtil.random(0, dungeon.getSize()[0] * dungeon.getSize()[1] - 1);
@@ -22,10 +23,27 @@ module Main {
 		WatchUi.switchToView(view, new DCIntroDelegate(view, null, Graphics.FONT_TINY), WatchUi.SLIDE_IMMEDIATE);
 	}
 
-	function startGame() as Void {
-		Log.log("Game started");
+	function createNextDungeon1(progress_bar as WatchUi.ProgressBar) as Void {
+		progress_bar.setProgress(10.0);
+		progress_bar.setDisplayString("Creating dungeon");
+		
+	}
+
+	function createNextDungeon2(progress_bar as WatchUi.ProgressBar, dungeon as Dungeon) as Void {
+		dungeon.addStairs();
+		var app = getApp();
+		app.setCurrentDungeon(dungeon);
+		var start_room = MathUtil.random(0, dungeon.getSize()[0] * dungeon.getSize()[1] - 1);
+		dungeon.setCurrentRoomFromIndex(MathUtil.IndexToPos2D(start_room, dungeon.getSize()[0]));
 		var view_delegate = getApp().showRoom() as [Views, InputDelegates];
 		WatchUi.switchToView(view_delegate[0], view_delegate[1], WatchUi.SLIDE_IMMEDIATE);
+	}
+
+	function startGame() as Void {
+		var app = getApp();
+		var view_delegate = app.showRoom() as [Views, InputDelegates];
+		WatchUi.switchToView(view_delegate[0], view_delegate[1], WatchUi.SLIDE_IMMEDIATE);
+		app.getPlayer().setTimeStarted(Toybox.Time.now());
 	}
 
 	function createNewDungeon(progress_bar as WatchUi.ProgressBar) as Dungeon {

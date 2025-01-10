@@ -2,11 +2,10 @@ import Toybox.WatchUi;
 import Toybox.Timer;
 import Toybox.Lang;
 
-class DCCreateGameProgressDelegate extends WatchUi.BehaviorDelegate {
+class DCNewDungeonProgressDelegate extends WatchUi.BehaviorDelegate {
 
     private var _timer as Timer.Timer;
     private var _time_inbetween as Number = 1000;
-    private var _player as Player;
     private var _progress_bar as WatchUi.ProgressBar;
     private var _progress as Number = 0;
 
@@ -14,10 +13,9 @@ class DCCreateGameProgressDelegate extends WatchUi.BehaviorDelegate {
     private var _size_dungeon as Point2D?;
     private var _room_counter as Number = 0;
 
-    function initialize(player as Player, progressBar as WatchUi.ProgressBar) {
+    function initialize(progressBar as WatchUi.ProgressBar) {
         BehaviorDelegate.initialize();
         _timer = new Timer.Timer();
-        _player = player;
         _progress_bar = progressBar;
         _timer.start(method(:onTimer), _time_inbetween, false);
     }
@@ -26,7 +24,7 @@ class DCCreateGameProgressDelegate extends WatchUi.BehaviorDelegate {
     function onTimer() as Void {
         switch (_progress) {
             case 0:
-                Main.createNewGame1(_player, _progress_bar);
+                Main.createNextDungeon1(_progress_bar);
                 _time_inbetween = 100;
                 _progress = 1;
                 break;
@@ -47,9 +45,7 @@ class DCCreateGameProgressDelegate extends WatchUi.BehaviorDelegate {
                 }
                 break;
             case 3:
-                Main.createNewGame2(_player, _progress_bar, _dungeon);
-                SaveData.current_save_num = SaveData.current_save_num + 1;
-                SaveData.chosen_save = SaveData.current_save_num.toString();
+                Main.createNextDungeon2(_progress_bar, _dungeon);
                 _progress = 4;
                 return;
         }

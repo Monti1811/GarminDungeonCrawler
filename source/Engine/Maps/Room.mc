@@ -26,6 +26,7 @@ class Room extends WatchUi.Drawable {
     private var _map as Array<Array<Object?>>;
     private var _map_drawing as Dictionary<Symbol, Array<Point2D>>;
     private var _stairs as Point2D?;
+    private var _stairs_sprite as BitmapReference?;
 
     private var _start_pos as Point2D?;
 
@@ -133,8 +134,11 @@ class Room extends WatchUi.Drawable {
                     func.invoke(options);
                 }
             }
-            
-            
+        }
+        if (_stairs != null) {
+            // Draw the stairs
+            System.println("Stairs at: " + _stairs);
+            dc.drawBitmap(_stairs[0] * _tile_width, _stairs[1] * _tile_height, _stairs_sprite);
         }
     }
 
@@ -472,6 +476,7 @@ class Room extends WatchUi.Drawable {
         if (pos != null) {
             _map[pos[0]][pos[1]] = stairs;
             _stairs = pos;
+            _stairs_sprite = WatchUi.loadResource($.Rez.Drawables.Stairs);
         }
     }
 
