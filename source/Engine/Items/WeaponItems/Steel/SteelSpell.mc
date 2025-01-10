@@ -1,0 +1,68 @@
+import Toybox.Lang;
+
+
+class SteelSpell extends Spell {
+	var id as Number = 1;
+	var name as String = "Steel Spell";
+	var description as String = "A simple steel spell";
+	var slot as ItemSlot = RIGHT_HAND;
+	var value as Number = 10;
+	var weight as Number = 10;
+	var attribute_bonus as Dictionary<Symbol, Number> = {
+		:intelligence => 2
+	};
+
+	function initialize() {
+		Spell.initialize();
+		attack = 10;
+		range = 2;
+		range_type = LINEAR;
+		cooldown = 3;
+	}
+
+	function onEquipItem(player as Player) as Void {
+		Spell.onEquipItem(player);
+	}
+	function onUnequipItem(player as Player) as Void {
+		Spell.onUnequipItem(player);
+	}
+
+	function onUseItem(player as Player) as Void {
+		Spell.onUseItem(player);
+	}
+	function onPickupItem(player as Player) as Void {
+		Spell.onPickupItem(player);
+	}
+
+	function onDropItem(player as Player) as Void {
+		Spell.onDropItem(player);
+	}
+
+	function onSellItem(player as Player) as Void {
+		Spell.onSellItem(player);
+	}
+
+	function onBuyItem(player as Player) as Void {
+		Spell.onBuyItem(player);
+	}
+	
+	function getSprite() as ResourceId {
+		return $.Rez.Drawables.steel_spell;
+	}
+
+	function deepcopy() as Item {
+		var spell = new SteelLance();
+		spell.name = name;
+		spell.description = description;
+		spell.value = value;
+		spell.amount = amount;
+		spell.attribute_bonus = attribute_bonus;
+		spell.pos = pos;
+		spell.equipped = equipped;
+		spell.in_inventory = in_inventory;
+		spell.attack = attack;
+		spell.range = range;
+		return spell;
+	}
+
+}

@@ -78,8 +78,8 @@ class Room1 extends Room {
 
 
         var items = [
-            new Helmet(),
-            new Axe()
+            new SteelHelmet(),
+            new SteelAxe()
         ];
         items[0].setPos([7, 7]);
         items[1].setPos([12, 12]);

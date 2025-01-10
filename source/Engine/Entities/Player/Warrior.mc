@@ -10,12 +10,14 @@ class Warrior extends Player {
 		self.description = "A warrior character";
 
 		// Give starting items
-		equipped[RIGHT_HAND] = new Axe();
-		equipped[HEAD] = new Helmet();
+		self.equipped[RIGHT_HAND] = new SteelAxe();
+		self.equipped[HEAD] = new SteelHelmet();
 
 		// Set attributes
-		attributes[:strength] = 10;
-		attributes[:constitution] = 10;
+		self.attributes[:strength] = 10;
+		self.attributes[:constitution] = 10;
+
+		self.sprite = $.Rez.Drawables.KnightBlue;
 
 	}
 

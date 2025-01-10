@@ -85,7 +85,7 @@ class DCPlayerDetailsEquipmentOptionsDelegate extends WatchUi.Menu2InputDelegate
                 openInventoryForSlot(item.getSubLabel() as String);
                 break;
             case :unequip:
-                getApp().getPlayer().unequipItem(_item, _item.getItemSlot());
+                getApp().getPlayer().unequipItem(_item.getItemSlot());
                 WatchUi.popView(SLIDE_DOWN);
                 WatchUi.popView(SLIDE_DOWN);
                 WatchUi.requestUpdate();

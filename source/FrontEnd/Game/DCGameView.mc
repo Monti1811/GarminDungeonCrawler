@@ -28,6 +28,7 @@ class DCGameView extends WatchUi.View {
 		_room = room;
 		_map_data = room.getMapData();
         _player_pos = _map_data[:player_pos] as Point2D;
+        _player.setPos(_player_pos);
 
 		_timer = new Timer.Timer();
         
@@ -51,6 +52,7 @@ class DCGameView extends WatchUi.View {
         _room = room;
         _map_data = room.getMapData();
         _player_pos = _map_data[:start_pos];
+        _player.setPos(_player_pos);
         room.updatePlayerPos(_player_pos);
         _player_sprite.locX = _player_pos[0] * _map_data[:tile_width] as Number;
         _player_sprite.locY = _player_pos[1] * _map_data[:tile_height] as Number;
@@ -187,7 +189,7 @@ class DCGameView extends WatchUi.View {
             app.setCurrentDungeon(null);
             _player.addToCurrentRun(1);
             var progressBar = new WatchUi.ProgressBar(
-            "Creating new dungeon...",
+            "Creating next dungeon...",
             0.0
             );
             WatchUi.switchToView(progressBar, new DCNewDungeonProgressDelegate(progressBar), WatchUi.SLIDE_UP);
@@ -201,7 +203,7 @@ class DCGameView extends WatchUi.View {
             _player.pickupItem(map_element as Item);
             _room.removeItem(map_element as Item);
         } else {
-            var range = _player.getRange() as [Numeric, RangeType];
+            var range = _player.getRange(null) as [Numeric, RangeType];
             enemy = MapUtil.getEnemyInRange(map, _player_pos, range[0], range[1], direction);
             if (enemy != null) {
                 enemy_in_pos = true;
@@ -224,7 +226,7 @@ class DCGameView extends WatchUi.View {
         removeDamageTexts();
 
         // Check if enemy is still there, if not move to position
-        var range = _player.getRange() as [Numeric, RangeType];
+        var range = _player.getRange(null) as [Numeric, RangeType];
         enemy = MapUtil.getEnemyInRange(map, _player_pos, range[0], range[1], direction);
         if (enemy_in_pos && enemy == null) {
             movePlayer(map, new_pos);
@@ -232,7 +234,7 @@ class DCGameView extends WatchUi.View {
         }
 
         // Check for enemy collision and attack
-        if (!has_moved && enemy != null) {
+        if (!has_moved && enemy != null && _player.canAttack(enemy)) {
             var defeated = Battle.attackEnemy(self, _player, enemy);
             if (defeated) {
                 _player.onGainExperience(enemy.getKillExperience());
@@ -245,6 +247,8 @@ class DCGameView extends WatchUi.View {
         _room.enemiesAttack(self, new_pos);
         _timer.start(method(:removeDamageTexts), 1000, false);
 
+        // Do stuff after the turn is over
+        _player.onTurnDone();
 
 		WatchUi.requestUpdate();
 	}
@@ -254,6 +258,7 @@ class DCGameView extends WatchUi.View {
         map[new_pos[0]][new_pos[1]] = _player;
         _room.updatePlayerPos(new_pos);
         _player_pos = new_pos;
+        _player.setPos(new_pos);
     }
 
     function addDamageText(amount as Number, pos as Point2D) as Void {

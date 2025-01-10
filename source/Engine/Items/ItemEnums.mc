@@ -1,5 +1,15 @@
 import Toybox.Lang;
 
+/*
+IDs for items
+
+0-999: Weapons
+1000-1999: Armor
+2000-2999: Consumables
+3000-3999: Quest Items
+
+*/
+
 enum ItemType {
 	WEAPON,
 	ARMOR,
@@ -17,15 +27,18 @@ enum ItemSlot {
 	LEFT_HAND = 5,
 	RIGHT_HAND = 6,
 	ACCESSORY = 7,
-	NONE = 8
+	MUNITION = 8,
+	NONE = 9
 }
 
-/*
-IDs for items
+enum WeaponType {
+	MELEE,
+	TWOHAND,
+	RANGED
+}
 
-0-999: Weapons
-1000-1999: Armor
-2000-2999: Consumables
-3000-3999: Quest Items
-
-*/
+enum MunitionType {
+	ARROW,
+	FIRE_ARROW,
+	ICE_ARROW
+}

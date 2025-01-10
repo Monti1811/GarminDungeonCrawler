@@ -5,18 +5,19 @@ import Toybox.WatchUi;
 module Battle {
 
 	function attackEnemy(view as DCGameView, attacker as Player, defender as Enemy) as Boolean {
-		var damage = MathUtil.ceil(attacker.getAttack() - defender.getDefense(), 0);
+		var damage = MathUtil.ceil(attacker.getAttack(defender) - defender.getDefense(attacker), 0);
 		showAttackString(view, defender.getPos(), damage);
 		Log.log(attacker.getName() + " attacks " + defender.getName() + " for " + damage + " damage");
-		var death = defender.takeDamage(damage);
+		var death = defender.takeDamage(damage, attacker);
+		attacker.onDamageDone(damage, defender);
 		return death;
 	}
 
 	function attackPlayer(view as DCGameView, attacker as Enemy, defender as Player, defender_pos as Point2D) as Boolean {
-		var damage = MathUtil.ceil(attacker.getAttack() - defender.getDefense(), 0);
+		var damage = MathUtil.ceil(attacker.getAttack(defender) - defender.getDefense(attacker), 0);
 		showAttackString(view, defender_pos, damage);
 		Log.log(attacker.getName() + " attacks " + defender.getName() + " for " + damage + " damage");
-		var death = defender.takeDamage(damage);
+		var death = defender.takeDamage(damage, attacker);
 		return death;
 	}
 

@@ -1,0 +1,91 @@
+import Toybox.Lang;
+
+
+class Bow extends WeaponItem {
+	var id as Number = 0;
+	var name as String = "Steel Bow";
+	var description as String = "A simple steel bow";
+	var slot as ItemSlot = RIGHT_HAND;
+	var value as Number = 10;
+	var weight as Number = 10;
+	var attribute_bonus as Dictionary<Symbol, Number> = {
+	};
+	var munition_type as MunitionType = ARROW;
+
+	function initialize() {
+		WeaponItem.initialize();
+		attack = 3;
+		range = 3;
+	}
+
+	function onEquipItem(player as Player) as Void {
+		WeaponItem.onEquipItem(player);
+	}
+	function onUnequipItem(player as Player) as Void {
+		WeaponItem.onUnequipItem(player);
+	}
+
+	function onUseItem(player as Player) as Void {
+		WeaponItem.onUseItem(player);
+	}
+	function onPickupItem(player as Player) as Void {
+		WeaponItem.onPickupItem(player);
+	}
+
+	function onDropItem(player as Player) as Void {
+		WeaponItem.onDropItem(player);
+	}
+
+	function onSellItem(player as Player) as Void {
+		WeaponItem.onSellItem(player);
+	}
+
+	function onBuyItem(player as Player) as Void {
+		WeaponItem.onBuyItem(player);
+	}
+	
+	function getSprite() as ResourceId {
+		return $.Rez.Drawables.steel_bow;
+	}
+
+	function canAttack(enemy as Enemy?) as Boolean {
+		var player = getApp().getPlayer();
+		var munition = player.getEquip(MUNITION) as Munition?;
+		return munition != null && munition.isType(self.munition_type);
+	}
+
+	function onDamageDone(damage as Number, enemy as Enemy?) as Void {
+		var player = getApp().getPlayer();
+		var munition = player.getEquip(MUNITION) as Munition?;
+		if (munition != null) {
+			munition.amount -= 1;
+			if (munition.amount <= 0) {
+				player.equipped.remove(MUNITION);
+			}
+		}
+	}
+
+	function deepcopy() as Item {
+		var bow = new SteelBow();
+		bow.name = name;
+		bow.description = description;
+		bow.value = value;
+		bow.amount = amount;
+		bow.attribute_bonus = attribute_bonus;
+		bow.pos = pos;
+		bow.equipped = equipped;
+		bow.in_inventory = in_inventory;
+		bow.attack = attack;
+		bow.range = range;
+		return bow;
+	}
+
+	function toString() as String {
+		return name;
+	}
+
+	function onLoad(save_data as Dictionary) as Void {
+		WeaponItem.onLoad(save_data);
+	}
+
+}

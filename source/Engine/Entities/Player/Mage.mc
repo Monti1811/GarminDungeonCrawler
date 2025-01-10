@@ -10,12 +10,14 @@ class Mage extends Player {
 		self.description = "A mage character";
 
 		// Give starting items
-		equipped[RIGHT_HAND] = new Axe();
-		equipped[HEAD] = new Helmet();
+		self.equipped[RIGHT_HAND] = new SteelAxe();
+		self.equipped[HEAD] = new SteelHelmet();
 
 		// Set attributes
-		attributes[:intelligence] = 10;
-		attributes[:wisdom] = 10;
+		self.attributes[:intelligence] = 10;
+		self.attributes[:wisdom] = 10;
+
+		self.sprite = $.Rez.Drawables.Wizard;
 
 	}
 

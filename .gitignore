@@ -1,3 +1,5 @@
+.VSCodeCounter
 /bin
+/test/
 **/.DS_Store
 **/._.DS_Store

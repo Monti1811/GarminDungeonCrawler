@@ -36,7 +36,7 @@ class ArmorItem extends EquippableItem {
 		EquippableItem.onBuyItem(player);
 	}
 	
-	function getDefense() as Number {
+	function getDefense(enemy as Enemy?) as Number {
 		return defense;
 	}
 

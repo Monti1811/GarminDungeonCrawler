@@ -29,9 +29,9 @@ class DCPlayerDetailsOverviewView extends WatchUi.View {
 		// Current health
 		dc.drawText(x_axis, y_axis + 120, Graphics.FONT_TINY, "Health: " + _player.getHealth() + "/" + _player.getMaxHealth(), Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
 		// Current attack
-		dc.drawText(x_axis, y_axis + 150, Graphics.FONT_TINY, "Attack: " + _player.getAttack(), Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
+		dc.drawText(x_axis, y_axis + 150, Graphics.FONT_TINY, "Attack: " + _player.getAttack(null), Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
 		// Current defense
-		dc.drawText(x_axis, y_axis + 180, Graphics.FONT_TINY, "Defense: " + _player.getDefense(), Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
+		dc.drawText(x_axis, y_axis + 180, Graphics.FONT_TINY, "Defense: " + _player.getDefense(null), Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
 		// Current gold
 		dc.drawText(x_axis, y_axis + 210, Graphics.FONT_TINY, "Gold: " + _player.getGold(), Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
 

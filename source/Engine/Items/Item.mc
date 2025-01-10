@@ -90,6 +90,8 @@ class Item {
 		self.in_inventory = in_inventory;
 	}
 
+	function onTurnDone() as Void {}
+
 	function deepcopy() as Item {
 		var new_item = new Item();
 		new_item.pos = pos;

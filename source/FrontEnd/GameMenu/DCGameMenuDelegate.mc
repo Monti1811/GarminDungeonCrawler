@@ -133,6 +133,9 @@ class DCOptionsDelegate extends WatchUi.Menu2InputDelegate {
             case :info:
                 showInfo(_item);
                 break;
+            case :delete:
+                showConfirmation("Do you want to delete " + _item.getName() + "?", _item, :delete);
+                break;
         }
     }
 
@@ -181,11 +184,14 @@ class DCConfirmUseItem extends WatchUi.ConfirmationDelegate {
                     break;
                 case :drop:
                     if (_item.isEquipped()) {
-                        _player.unequipItem(_item, _item.getItemSlot());
+                        _player.unequipItem(_item.getItemSlot());
                     }
                     if (_item.isInInventory()) {
                         _player.dropItem(_item);
                     }
+                    break;
+                case :delete:
+                    _player.deleteItem(_item);
                     break;
             }
             for (var i = 0; i < _screens_to_pop; i++) {

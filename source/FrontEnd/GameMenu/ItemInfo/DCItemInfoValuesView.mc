@@ -38,7 +38,7 @@ class DCItemInfoValuesView extends WatchUi.View {
 
 	function showWeaponStats(dc) {
 		var weapon = _item as WeaponItem;
-		drawText(dc, "Damage: " + weapon.getAttack(), 0);
+		drawText(dc, "Damage: " + weapon.getAttack(null), 0);
 		drawText(dc, "Equip Slot: " + Constants.EQUIPSLOT_TO_STR[weapon.getItemSlot()], 1);
 		drawText(dc, "Value: " + weapon.getValue(), 2);
 		var attribute_bonus = weapon.getAllAttributeBonuses();
@@ -55,7 +55,7 @@ class DCItemInfoValuesView extends WatchUi.View {
 
 	function showArmorStats(dc) {
 		var armor = _item as ArmorItem;
-		drawText(dc, "Defense: " + armor.getDefense(), 0);
+		drawText(dc, "Defense: " + armor.getDefense(null), 0);
 		drawText(dc, "Equip Slot: " + Constants.EQUIPSLOT_TO_STR[armor.getItemSlot()], 1);
 		drawText(dc, "Value: " + armor.getValue(), 2);
 	}

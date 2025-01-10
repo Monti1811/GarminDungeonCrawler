@@ -56,8 +56,13 @@ class Enemy extends Entity {
 		return $.Rez.Drawables.LauncherIcon;
 	}
 
-	function takeDamage(damage as Number) as Boolean {
-		current_health -= damage;
+	function takeDamage(damage as Number, enemy as Player) as Boolean {
+		var defense = getDefense(enemy);
+		var damage_taken = damage - defense;
+		if (damage_taken < 0) {
+			damage_taken = 0;
+		}
+		current_health -= damage_taken;
 		if (current_health < 0) {
 			current_health = 0;
 			return true;
@@ -65,11 +70,11 @@ class Enemy extends Entity {
 		return false;
 	}
 
-	function getAttack() as Number {
+	function getAttack(enemy as Player?) as Number {
 		return damage;
 	}
 
-	function getDefense() as Number {
+	function getDefense(enemy as Player?) as Number {
 		return armor;
 	}
 

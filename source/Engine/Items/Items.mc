@@ -3,22 +3,22 @@ import Toybox.Lang;
 module Items {
 
     var items as Dictionary<Number, Symbol> = {
-        0 => :createAxe,
-        1 => :createSpear,
-        1000 => :createHelmet
+        0 => :createSteelAxe,
+        1 => :createSteelLance,
+        1000 => :createSteelHelmet
     };
 
 
-    function createAxe() as Item {
-        return new Axe();
+    function createSteelAxe() as Item {
+        return new SteelAxe();
     }
 
-    function createSpear() as Item {
-        return new Spear();
+    function createSteelLance() as Item {
+        return new SteelLance();
     }
 
-    function createHelmet() as Item {
-        return new Helmet();
+    function createSteelHelmet() as Item {
+        return new SteelHelmet();
     }
 
     function createItemFromId(id as Number) as Item {

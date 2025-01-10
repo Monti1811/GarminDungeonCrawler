@@ -13,14 +13,6 @@ class DungeonCrawlerApp extends Application.AppBase {
     function initialize() {
         AppBase.initialize();
         SaveData.init();
-        _player = new Warrior("Warrior");
-        _player.setSprite($.Rez.Drawables.Player);
-        _player.addInventoryItem(new Axe());
-
-        //_curr_dungeon = new Dungeon1(tile_width, tile_height, {:width => 360, :height => 360});
-
-        Log.log("Game started");
-        Log.log("Player: " + _player.getName());
     }
 
     // onStart() is called on application start up

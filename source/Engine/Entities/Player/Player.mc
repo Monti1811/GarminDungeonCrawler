@@ -35,10 +35,12 @@ class Player extends Entity {
 	};
 	var gold as Number = 0;
 	var sprite as ResourceId = $.Rez.Drawables.Player;
+	var pos as Point2D = [0, 0];
 
 	function initialize() {
 		Entity.initialize();
 	}
+	
 
 	function equipItem(item as Item, slot as ItemSlot, remove as Boolean?) as Boolean {
 		if (equipped[slot] == null) {
@@ -52,7 +54,8 @@ class Player extends Entity {
 		return false;
 	}
 
-	function unequipItem(item as Item, slot as ItemSlot) as Boolean {
+	function unequipItem(slot as ItemSlot) as Boolean {
+		var item = equipped[slot];
 		if (equipped[slot] != null) {
 			if (!inventory.isFull()) {
 				inventory.add(item);
@@ -120,6 +123,10 @@ class Player extends Entity {
 			return true;
 		}
 		return false;
+	}
+
+	function deleteItem(item as Item) as Boolean {
+		return inventory.remove(item) != null;
 	}
 
 	function onLevelUp() as Void {
@@ -221,20 +228,32 @@ class Player extends Entity {
 		self.sprite = sprite;
 	}
 
-	function getAttack() as Number {
+	function canAttack(enemy as Enemy?) as Boolean {
+		var weapon_left = equipped[LEFT_HAND] as WeaponItem?;
+		var weapon_right = equipped[RIGHT_HAND] as WeaponItem?;
+		if (weapon_left != null && weapon_left.canAttack(enemy)) {
+			return true;
+		}
+		if (weapon_right != null && weapon_right.canAttack(enemy)) {
+			return true;
+		}
+		return false;
+	}
+
+	function getAttack(enemy as Enemy?) as Number {
 		var base_attack = attributes[:strength];
 		var weapon_left = equipped[LEFT_HAND] as WeaponItem?;
 		var weapon_right = equipped[RIGHT_HAND] as WeaponItem?;
-		if (weapon_left != null) {
-			base_attack += weapon_left.getAttack();
+		if (weapon_left != null && weapon_left.canAttack(enemy)) {
+			base_attack += weapon_left.getAttack(enemy);
 		}
-		if (weapon_right != null) {
-			base_attack += weapon_right.getAttack();
+		if (weapon_right != null && weapon_right.canAttack(enemy)) {
+			base_attack += weapon_right.getAttack(enemy);
 		}
 		return base_attack;
 	}
 
-	function getDefense() as Number {
+	function getDefense(enemy as Enemy?) as Number {
 		var base_defense = attributes[:constitution];
 		var armor_head = equipped[HEAD] as ArmorItem?;
 		var armor_chest = equipped[CHEST] as ArmorItem?;
@@ -243,26 +262,26 @@ class Player extends Entity {
 		var armor_feet = equipped[FEET] as ArmorItem?;
 
 		if (armor_head != null) {
-			base_defense += armor_head.getDefense();
+			base_defense += armor_head.getDefense(enemy);
 		}
 		if (armor_chest != null) {
-			base_defense += armor_chest.getDefense();
+			base_defense += armor_chest.getDefense(enemy);
 		}
 		if (armor_back != null) {
-			base_defense += armor_back.getDefense();
+			base_defense += armor_back.getDefense(enemy);
 		}
 		if (armor_legs != null) {
-			base_defense += armor_legs.getDefense();
+			base_defense += armor_legs.getDefense(enemy);
 		}
 		if (armor_feet != null) {
-			base_defense += armor_feet.getDefense();
+			base_defense += armor_feet.getDefense(enemy);
 		}
 
 		return base_defense;
 	}
 
-	function takeDamage(damage as Number) as Boolean {
-		var defense = getDefense();
+	function takeDamage(damage as Number, enemy as Enemy?) as Boolean {
+		var defense = getDefense(enemy);
 		var damage_taken = damage - defense;
 		if (damage_taken < 0) {
 			damage_taken = 0;
@@ -275,20 +294,31 @@ class Player extends Entity {
 		return false;
 	}
 
+	function onDamageDone(damage as Number, enemy as Enemy?) as Void {
+		var weapon_left = equipped[LEFT_HAND] as WeaponItem?;
+		var weapon_right = equipped[RIGHT_HAND] as WeaponItem?;
+		if (weapon_left != null && weapon_left.canAttack(enemy)) {
+			weapon_left.onDamageDone(damage, enemy);
+		}
+		if (weapon_right != null && weapon_right.canAttack(enemy)) {
+			weapon_right.onDamageDone(damage, enemy);
+		}
+	}
+
 	function getGold() as Number {
 		return gold;
 	}	
 
-	function getRange() as [Numeric, RangeType] {
+	function getRange(enemy as Enemy?) as [Numeric, RangeType] {
 		var weapon_left = equipped[LEFT_HAND] as WeaponItem?;
 		var weapon_right = equipped[RIGHT_HAND] as WeaponItem?;
 		var range_left = 1;
 		var range_right = 1;
 		var range_type = SURROUNDING;
-		if (weapon_left != null) {
+		if (weapon_left != null && weapon_left.canAttack(enemy)) {
 			range_left = weapon_left.getRange();
 		}
-		if (weapon_right != null) {
+		if (weapon_right != null && weapon_right.canAttack(enemy)) {
 			range_right = weapon_right.getRange();
 		}
 		if (range_left > range_right && weapon_left != null) {
@@ -299,6 +329,17 @@ class Player extends Entity {
 			return [range_right, range_type];
 		} else {
 			return [1, SURROUNDING];
+		}
+	}
+
+	function onTurnDone() as Void {
+		var equip_keys = equipped.keys();
+		for (var i = 0; i < equip_keys.size(); i++) {
+			var slot = equip_keys[i];
+			var item = equipped[slot];
+			if (item != null) {
+				item.onTurnDone();
+			}
 		}
 	}
 
@@ -344,6 +385,14 @@ class Player extends Entity {
 		var diff = time.subtract(time_started);
 		time_played += diff.value();
 		time_started = time;
+	}
+
+	function getPos() as Point2D {
+		return pos;
+	}
+
+	function setPos(pos as Point2D) as Void {
+		self.pos = pos;
 	}
 
 	private function convertAttributeSymbolToString() as Dictionary {
