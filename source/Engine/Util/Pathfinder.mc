@@ -25,16 +25,16 @@ module Pathfinder {
 			var neighbors = getNeighbors(map, current);
 			for (var i = 0; i < neighbors.size(); i++) {
 				var neighbor = neighbors[i] as Point2D;
-				if (closed_list.indexOf(neighbor) != null) {
+				if (containsPoint2D(closed_list, neighbor)) {
 					continue;
 				}
 
 				var tentative_g_score = g_score[current] + 1;
-				if (!(open_list.indexOf(neighbor) != null) || tentative_g_score < g_score[neighbor]) {
+				if (!(containsPoint2D(open_list, neighbor)) || tentative_g_score < g_score[neighbor]) {
 					came_from[neighbor] = current;
 					g_score[neighbor] = tentative_g_score;
 					f_score[neighbor] = g_score[neighbor] + heuristic(neighbor, end_pos);
-					if (!open_list.indexOf(neighbor) != null) {
+					if (!containsPoint2D(open_list, neighbor)) {
 						open_list.add(neighbor);
 					}
 				}
@@ -42,6 +42,16 @@ module Pathfinder {
 		}
 
 		return null;
+	}
+
+	function containsPoint2D(array as Array, element as Point2D) as Boolean {
+		for (var i = 0; i < array.size(); i++) {
+			var point = array[i] as Point2D;
+			if (point[0] == element[0] && point[1] == element[1]) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	function getLowestF(open_list as Array<Point2D>, f_score as Dictionary<Point2D, Number>) as Point2D {
