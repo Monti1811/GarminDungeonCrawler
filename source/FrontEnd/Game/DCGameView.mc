@@ -10,8 +10,8 @@ class DCGameView extends WatchUi.View {
 
 	private var _player as Player;
 	private var _player_sprite as Bitmap;
-    private var _player_sprite_offset as Point2D = new Point2D(0, 0);
-    private var _player_pos as Point2D = new Point2D(0, 0);
+    private var _player_sprite_offset as Point2D = [0,0];
+    private var _player_pos as Point2D = [0,0];
 
 	private var _timer as Timer.Timer;
     private var bg_layer as Layer;

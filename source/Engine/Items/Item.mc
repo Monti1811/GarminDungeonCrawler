@@ -10,7 +10,7 @@ class Item {
 	var value as Number = 0;
 	var amount as Number = 1;
 	var weight as Number = 1;
-	var pos as Point2D = new Point2D(0, 0);
+	var pos as Point2D = [0, 0];
 	var equipped as Boolean = false;
 	var in_inventory as Boolean = false;
 
@@ -122,7 +122,7 @@ class Item {
 
 	function onLoad(save_data as Dictionary<PropertyKeyType, PropertyValueType>) as Void {
 		if (save_data["pos"] != null) {
-			pos = Point2D.toPoint2D(save_data["pos"] as Array<Number>);
+			pos = save_data["pos"] as Point2D;
 		}
 		if (save_data["equipped"] != null) {
 			equipped = save_data["equipped"] as Boolean;

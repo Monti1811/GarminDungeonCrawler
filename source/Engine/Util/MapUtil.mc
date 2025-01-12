@@ -20,6 +20,16 @@ module MapUtil {
 		return true;
 	}
 
+	function canMoveToPlayer(map as Array<Array<Object?>>, point as Point2D) as Boolean {
+		if (point[0] < 0 || point[0] >= map.size() || point[1] < 0 || point[1] >= map[0].size()) {
+			return false;
+		}
+		if (map[point[0]][point[1]] != null && !(map[point[0]][point[1]] instanceof Player)) {
+			return false;
+		}
+		return true;
+	}
+
 	function checkEnemy(map as Array<Array<Object?>>, x as Number, y as Number) {
         if (x >= 0 && x < map.size() && y >= 0 && y < map[0].size()) {
             var enemy = map[x][y] as Enemy?;
