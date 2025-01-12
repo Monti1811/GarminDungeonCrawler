@@ -50,9 +50,9 @@ class Room extends WatchUi.Drawable {
             _map = options[:map];
         } else {
             var screen_size = MapUtil.getNumTilesForScreensize();
-             _map = new Array<Array<Object?>>[screen_size[0]];
-            for (var i = 0; i < screen_size[0]; i++) {
-                _map[i] = new Array<Object?>[screen_size[1]];
+             _map = new Array<Array<Object?>>[screen_size.x];
+            for (var i = 0; i < screen_size.x; i++) {
+                _map[i] = new Array<Object?>[screen_size.y];
             }
         }
 
@@ -78,7 +78,7 @@ class Room extends WatchUi.Drawable {
             var spec_wall_values = walls[wall_keys[i]] as Array<Point2D>?;
             for (var j = 0; j < spec_wall_values.size(); j++) {
                 var wall_pos = spec_wall_values[j];
-                _map[wall_pos[0]][wall_pos[1]] = a_wall; 
+                _map[wall_pos.x][wall_pos.y] = a_wall; 
             }
         }
             
@@ -93,7 +93,7 @@ class Room extends WatchUi.Drawable {
         for (var i = 0; i < _enemies.size(); i++) {
             var enemy = _enemies[i];
             var enemy_pos = enemy.getPos();
-            _enemies_sprite[i] = new WatchUi.Bitmap({:rezId=>enemy.getSprite(), :locX=>enemy_pos[0] * _tile_width, :locY=>enemy_pos[1] * _tile_height});
+            _enemies_sprite[i] = new WatchUi.Bitmap({:rezId=>enemy.getSprite(), :locX=>enemy_pos.x * _tile_width, :locY=>enemy_pos.y * _tile_height});
         }
     }
 
@@ -116,8 +116,8 @@ class Room extends WatchUi.Drawable {
                     for (var k = 0; k < points.size(); k++) {
                         var options = {
                             :dc => dc,
-                            :x => points[k][0],
-                            :y => points[k][1]
+                            :x => points[k].x,
+                            :y => points[k].y
                         };
                         func.invoke(options);
                     }
@@ -128,8 +128,8 @@ class Room extends WatchUi.Drawable {
                 for (var j = 0; j < points.size(); j++) {
                     var options = {
                         :dc => dc,
-                        :x => points[j][0],
-                        :y => points[j][1]
+                        :x => points[j].x,
+                        :y => points[j].y
                     };
                     func.invoke(options);
                 }
@@ -138,7 +138,7 @@ class Room extends WatchUi.Drawable {
         if (_stairs != null) {
             // Draw the stairs
             System.println("Stairs at: " + _stairs);
-            dc.drawBitmap(_stairs[0] * _tile_width, _stairs[1] * _tile_height, _stairs_sprite);
+            dc.drawBitmap(_stairs.x * _tile_width, _stairs.y * _tile_height, _stairs_sprite);
         }
     }
 
@@ -236,7 +236,7 @@ class Room extends WatchUi.Drawable {
 
     function removeItem(item as Item) as Void {
         var item_pos = item.getPos();
-        _map[item_pos[0]][item_pos[1]] = null;
+        _map[item_pos.x][item_pos.y] = null;
         for (var i = 0; i < _items.size(); i++) {
             if (_items[i] == item) {
                 _items[i] = null;
@@ -255,13 +255,13 @@ class Room extends WatchUi.Drawable {
         loot.setPos(enemy.getPos());
         _items.add(loot);
         var loot_pos = loot.getPos();
-        _items_sprite.add(new WatchUi.Bitmap({:rezId=>loot.getSprite(), :locX=>loot_pos[0] * _tile_width, :locY=>loot_pos[1] * _tile_height}));
-        _map[loot_pos[0]][loot_pos[1]] = loot;
+        _items_sprite.add(new WatchUi.Bitmap({:rezId=>loot.getSprite(), :locX=>loot_pos.x * _tile_width, :locY=>loot_pos.y * _tile_height}));
+        _map[loot_pos.x][loot_pos.y] = loot;
     }
 
     function removeEnemy(enemy as Enemy) as Void {
         var enemy_pos = enemy.getPos();
-        _map[enemy_pos[0]][enemy_pos[1]] = null;
+        _map[enemy_pos.x][enemy_pos.y] = null;
         for (var i = 0; i < _enemies.size(); i++) {
             if (_enemies[i] == enemy) {
                 _enemies[i] = null;
@@ -275,13 +275,13 @@ class Room extends WatchUi.Drawable {
         var enemy_pos = enemy.getPos();
         var enemy_next_pos = enemy.getNextPos();
         if (enemy_pos != enemy_next_pos) {
-            _map[enemy_pos[0]][enemy_pos[1]] = null;
-            _map[enemy_next_pos[0]][enemy_next_pos[1]] = enemy;
+            _map[enemy_pos.x][enemy_pos.y] = null;
+            _map[enemy_next_pos.x][enemy_next_pos.y] = enemy;
             var enemy_sprite = _enemies_sprite[index];
             var enemy_sprite_dimensions = enemy_sprite.getDimensions();
-            var enemy_sprite_offset = [enemy_sprite_dimensions[0] - _tile_width, (enemy_sprite_dimensions[1] - _tile_height) / 2];
-            enemy_sprite.locX = enemy_next_pos[0] * _tile_width - enemy_sprite_offset[0];
-            enemy_sprite.locY = enemy_next_pos[1] * _tile_height - enemy_sprite_offset[1];
+            var enemy_sprite_offset = [enemy_sprite_dimensions.x - _tile_width, (enemy_sprite_dimensions.y - _tile_height) / 2];
+            enemy_sprite.locX = enemy_next_pos.x * _tile_width - enemy_sprite_offset.x;
+            enemy_sprite.locY = enemy_next_pos.y * _tile_height - enemy_sprite_offset.y;
             enemy.setPos(enemy_next_pos);
             enemy.setHasMoved(true);
         } else {
@@ -322,20 +322,20 @@ class Room extends WatchUi.Drawable {
     }
 
     function getNearbyFreePos(pos as Point2D) as Point2D? {
-        var new_pos = [pos[0], pos[1] - 1];
-        if (new_pos[1] >= 0 && _map[new_pos[0]][new_pos[1]] == null) {
+        var new_pos = new Point2D(pos.x, pos.y - 1);
+        if (new_pos.y >= 0 && _map[new_pos.x][new_pos.y] == null) {
             return new_pos;
         }
-        new_pos = [pos[0], pos[1] + 1];
-        if (new_pos[1] < _size_y && _map[new_pos[0]][new_pos[1]] == null) {
+        new_pos = new Point2D(pos.x, pos.y + 1);
+        if (new_pos.y < _size_y && _map[new_pos.x][new_pos.y] == null) {
             return new_pos;
         }
-        new_pos = [pos[0] - 1, pos[1]];
-        if (new_pos[0] >= 0 && _map[new_pos[0]][new_pos[1]] == null) {
+        new_pos = new Point2D(pos.x - 1, pos.y);
+        if (new_pos.x >= 0 && _map[new_pos.x][new_pos.y] == null) {
             return new_pos;
         }
-        new_pos = [pos[0] + 1, pos[1]];
-        if (new_pos[0] < _size_x && _map[new_pos[0]][new_pos[1]] == null) {
+        new_pos = new Point2D(pos.x + 1, pos.y);
+        if (new_pos.x < _size_x && _map[new_pos.x][new_pos.y] == null) {
             return new_pos;
         }
         return null;

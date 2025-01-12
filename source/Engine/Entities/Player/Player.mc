@@ -35,7 +35,7 @@ class Player extends Entity {
 	};
 	var gold as Number = 0;
 	var sprite as ResourceId = $.Rez.Drawables.Player;
-	var pos as Point2D = [0, 0];
+	var pos as Point2D = new Point2D(0, 0);
 
 	function initialize() {
 		Entity.initialize();

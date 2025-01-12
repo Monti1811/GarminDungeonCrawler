@@ -4,8 +4,8 @@ class Enemy extends Entity {
 
 	var id as Number = 0;
 
-	var pos as Point2D = [0, 0];
-	var next_pos as Point2D = [0, 0];
+	var pos as Point2D = new Point2D(0, 0);
+	var next_pos as Point2D = new Point2D(0, 0);
 	var has_moved as Boolean = false;
 
 	var damage as Number = 10;
@@ -94,7 +94,7 @@ class Enemy extends Entity {
 		if (!MathUtil.isPointDirectAdjacent(pos, player_pos)) {
 			return false;
 		}
-		var player = map[player_pos[0]][player_pos[1]] as Player?;
+		var player = map[player_pos.x][player_pos.y] as Player?;
 		if (player != null) {
 			Battle.attackPlayer(view, self, player, player_pos);
 			curr_attack_cooldown = attack_cooldown;
@@ -134,10 +134,10 @@ class Enemy extends Entity {
 
 	function onLoad(data as Dictionary) as Void {
 		if (data["pos"] != null) {
-			pos = data["pos"] as Point2D;
+			pos = Point2D.toPoint2D(data["pos"] as Array<Number>);
 		}
 		if (data["next_pos"] != null) {
-			next_pos = data["next_pos"] as Point2D;
+			next_pos = Point2D.toPoint2D(data["next_pos"] as Array<Number>);
 		}
 		if (data["has_moved"] != null) {
 			has_moved = data["has_moved"] as Boolean;
