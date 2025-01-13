@@ -86,7 +86,7 @@ class Enemy extends Entity {
 		return pos;
 	}
 
-	function attackNearbyPlayer(view as DCGameView, map as Array<Array<Object?>>, player_pos as Point2D) as Boolean {
+	function attackNearbyPlayer(map as Array<Array<Object?>>, player_pos as Point2D) as Boolean {
 		if (curr_attack_cooldown > 0) {
 			curr_attack_cooldown -= 1;
 			return false;
@@ -96,7 +96,7 @@ class Enemy extends Entity {
 		}
 		var player = map[player_pos[0]][player_pos[1]] as Player?;
 		if (player != null) {
-			Battle.attackPlayer(view, self, player, player_pos);
+			Battle.attackPlayer(self, player, player_pos);
 			curr_attack_cooldown = attack_cooldown;
 		}
 		return true;

@@ -300,11 +300,11 @@ class Room extends WatchUi.Drawable {
         }
     }
 
-    function enemiesAttack(view as DCGameView, player_pos as Point2D) as Void {
+    function enemiesAttack(player_pos as Point2D) as Void {
         for (var i = 0; i < _enemies.size(); i++) {
             var enemy = _enemies[i];
             if (enemy != null && !enemy.getHasMoved()) {
-                _enemies[i].attackNearbyPlayer(view, _map, player_pos);
+                _enemies[i].attackNearbyPlayer(_map, player_pos);
             }
         }
     }

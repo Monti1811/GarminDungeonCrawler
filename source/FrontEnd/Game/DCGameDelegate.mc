@@ -38,34 +38,34 @@ class DCGameDelegate extends WatchUi.BehaviorDelegate {
         var coord = clickEvent.getCoordinates() as Array<Number>;
         if (coord[0] > 180 && coord[1] > 180) {
             if (MathUtil.isInTriangleArray(coord, _down_array)) {
-                _view.doTurn(DOWN);
+                _view.getTurns().doTurn(DOWN);
                 return true;
             } else if (MathUtil.isInTriangleArray(coord, _right_array)) {
-                _view.doTurn(RIGHT);
+                _view.getTurns().doTurn(RIGHT);
                 return true;
             }
         } else if (coord[0] < 180 && coord[1] > 180) {
             if (MathUtil.isInTriangleArray(coord, _down_array)) {
-                _view.doTurn(DOWN);
+                _view.getTurns().doTurn(DOWN);
                 return true;
             } else if (MathUtil.isInTriangleArray(coord, _left_array)) {
-                _view.doTurn(LEFT);
+                _view.getTurns().doTurn(LEFT);
                 return true;
             }
         } else if (coord[0] > 180 && coord[1] < 180) {
             if (MathUtil.isInTriangleArray(coord, _up_array)) {
-                _view.doTurn(UP);
+                _view.getTurns().doTurn(UP);
                 return true;
             } else if (MathUtil.isInTriangleArray(coord, _right_array)) {
-                _view.doTurn(RIGHT);
+                _view.getTurns().doTurn(RIGHT);
                 return true;
             }
         } else if (coord[0] < 180 && coord[1] < 180) {
             if (MathUtil.isInTriangleArray(coord, _up_array)) {
-                _view.doTurn(UP);
+                _view.getTurns().doTurn(UP);
                 return true;
             } else if (MathUtil.isInTriangleArray(coord, _left_array)) {
-                _view.doTurn(LEFT);
+                _view.getTurns().doTurn(LEFT);
                 return true;
             }
         }
@@ -75,7 +75,7 @@ class DCGameDelegate extends WatchUi.BehaviorDelegate {
 
     function onMenu() as Boolean {
         var actionMenu = new WatchUi.Menu2({:title=>"Game Menu"});
-        actionMenu.addItem(new WatchUi.MenuItem(_view.getPlayer().getName(), "Show details", :player, null));
+        actionMenu.addItem(new WatchUi.MenuItem(getApp().getPlayer().getName(), "Show details", :player, null));
         actionMenu.addItem(new WatchUi.MenuItem("Inventory", "Show inventory", :inventory, null));
         actionMenu.addItem(new WatchUi.MenuItem("Log", "Show last actions", :log, null));
         actionMenu.addItem(new WatchUi.MenuItem("Save", "Save the game", :save, null));
