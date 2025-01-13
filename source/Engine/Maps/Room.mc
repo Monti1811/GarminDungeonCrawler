@@ -99,7 +99,8 @@ class Room {
             :tile_height => _tile_height,
             :start_pos => _start_pos,
             :player_pos => _player_pos,
-            :map => _map
+            :map => _map,
+            :map_drawing => _map_drawing,
         };
     }
 

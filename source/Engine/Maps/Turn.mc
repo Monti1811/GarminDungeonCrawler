@@ -176,7 +176,10 @@ class Turn {
         );
         var player_attacked = false;
         if (attackable_enemy != null) {
-            Battle.attackEnemy(_player, attackable_enemy);
+            var death = Battle.attackEnemy(_player, attackable_enemy);
+            if (death) {
+                _room.removeEnemy(attackable_enemy);
+            }
             player_attacked = true;
         }
         // If the player did not attack, try to move
@@ -189,7 +192,7 @@ class Turn {
     function resolveEnemyActions(enemies as Array<Enemy>, target_pos as Point2D) as Void {
         // Do enemy actions
         // Sort enemies by distance to player
-        var comparator = new MapUtil.DistanceCompare(_player_pos);
+        var comparator = new MapUtil.EnemyDistanceCompare(_player_pos);
         enemies.sort(comparator);
         
         var maxIterations = 10; 
@@ -216,6 +219,7 @@ class Turn {
                     }
                 }
             }
+            iterations++;
         }
     }
         

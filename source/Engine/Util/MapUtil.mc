@@ -232,7 +232,7 @@ module MapUtil {
 		return Math.sqrt(Math.pow(pos1[0] - pos2[0], 2) + Math.pow(pos1[1] - pos2[1], 2));
 	}
 
-	class DistanceCompare {
+	class EnemyDistanceCompare {
 
 		private var player_pos as Point2D;
 
@@ -241,10 +241,11 @@ module MapUtil {
 		}
 
 		function compare(a as Object, b as Object) as Number {
-			var pos1 = a as Point2D;
-			var pos2 = b as Point2D;
-			var dist1 = calcDistance(player_pos, pos1);
-			var dist2 = calcDistance(player_pos, pos2);
+			var enemy1 = a as Enemy;
+			var enemy2 = b as Enemy;
+
+			var dist1 = calcDistance(player_pos, enemy1.getPos());
+			var dist2 = calcDistance(player_pos, enemy2.getPos());
 			if (dist1 < dist2) {
 				return -1;
 			} else if (dist1 > dist2) {
