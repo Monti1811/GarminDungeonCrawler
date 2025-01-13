@@ -22,6 +22,7 @@ module Battle {
 	}
 
 	function showAttackString(pos as Point2D, damage as Number) as Void {
-		(WatchUi.getCurrentView() as DCGameView).addDamageText(damage, pos);
+		var view = WatchUi.getCurrentView()[0] as DCGameView;
+		view.addDamageText(damage, pos);
 	}
 }

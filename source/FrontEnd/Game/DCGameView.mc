@@ -62,6 +62,15 @@ class DCGameView extends WatchUi.View {
         return _timer;
     }
 
+    function setRoom(room as Room) as Void {
+        _room = room;
+    }
+
+    function setMapData(map_data as Dictionary) as Void {
+        _tile_width = map_data[:tile_width] as Number;
+        _tile_height = map_data[:tile_height] as Number;
+    }
+
     // Load your resources here
     function onLayout(dc as Dc) as Void {
 		addLayer(bg_layer);

@@ -121,7 +121,9 @@ class Turn {
 
     function loadRoom(room as Room) as Void {
         _room = room;
+        _view.setRoom(room);
         _map_data = room.getMapData();
+        _view.setMapData(_map_data);
         _player_pos = _map_data[:start_pos];
         _player.setPos(_player_pos);
         room.updatePlayerPos(_player_pos);
