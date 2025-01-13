@@ -8,6 +8,7 @@ class DCGameView extends WatchUi.View {
     private var _tile_width as Number;
     private var _tile_height as Number;
     private var _room as Room;
+    private var _room_drawable as RoomDrawable;
 
 	private var _player_sprite as Bitmap;
     private var _player_sprite_offset as Point2D = [0,0];
@@ -30,6 +31,12 @@ class DCGameView extends WatchUi.View {
         _tile_height = map_data[:tile_height] as Number;
         _turns = new Turn(self, player, _room, map_data);
         var player_pos = map_data[:player_pos] as Point2D;
+
+        _room_drawable = new RoomDrawable({
+            :tile_width=>_tile_width, 
+            :tile_height=>_tile_height, 
+            :map_drawing=>map_data[:map_drawing]
+        });
 
 		_timer = new Timer.Timer();
         
@@ -93,13 +100,13 @@ class DCGameView extends WatchUi.View {
 		var bg_dc = bg_layer.getDc();
 		var fg_dc = fg_layer.getDc();
 
-        _room.draw(dc);
+        _room_drawable.draw(dc);
 		rightLowHint.draw(dc);
 
         bg_dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
 		bg_dc.clear();
-        _room.drawItems(bg_dc);
-        _room.drawEnemies(bg_dc);
+        _room_drawable.drawItems(bg_dc, _room.getItems());
+        _room_drawable.drawEnemies(bg_dc, _room.getEnemies());
 		
 		fg_dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
 		fg_dc.clear();

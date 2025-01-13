@@ -16,7 +16,7 @@ enum MapElement {
     PAS  // PASSABLE
 }
 
-class Room extends WatchUi.Drawable {
+class Room {
 
     private var _size_x as Number;
     private var _size_y as Number;
@@ -26,19 +26,15 @@ class Room extends WatchUi.Drawable {
     private var _map as Array<Array<Object?>>;
     private var _map_drawing as Dictionary<Symbol, Array<Point2D>>;
     private var _stairs as Point2D?;
-    private var _stairs_sprite as BitmapReference?;
 
     private var _start_pos as Point2D?;
 
-    private var _items as Array<Item?>;
-    private var _items_sprite as Array<Bitmap?>;
-    private var _enemies as Array<Enemy?>;
-    private var _enemies_sprite as Array<Bitmap?>;
+    private var _items as Dictionary<Point2D, Item>;
+    private var _enemies as Dictionary<Point2D, Enemy>;
 
     private var _player_pos as Point2D;
 
     function initialize(options as Dictionary?) {
-        Drawable.initialize(options);
         _size_x = options[:size_x];
         _size_y = options[:size_y];
         _tile_width = options[:tile_width];
@@ -61,9 +57,7 @@ class Room extends WatchUi.Drawable {
        
         _map_drawing = options[:map_drawing] as Dictionary;
         _items = options[:items];
-        _items_sprite = new Array<Bitmap?>[_items.size()];
         _enemies = options[:enemies];
-        _enemies_sprite = new Array<Bitmap?>[_enemies.size()];
         
         initializeMap();
 
@@ -83,142 +77,17 @@ class Room extends WatchUi.Drawable {
         }
             
         // Add items to map
-        for (var i = 0; i < _items.size(); i++) {
-            var item = _items[i];
-            var item_pos = item.getPos();
-            _items_sprite[i] = new WatchUi.Bitmap({:rezId=>item.getSprite(), :locX=>item_pos[0] * _tile_width, :locY=>item_pos[1] * _tile_height});
+        var item_keys = _items.keys() as Array<Point2D>;
+        for (var i = 0; i < item_keys.size(); i++) {
+            var item = _items[item_keys[i]];
+            _map[item_keys[i][0]][item_keys[i][1]] = item;
         }
 
         // Add enemies to map
+        var enemy_keys = _enemies.keys() as Array<Point2D>;
         for (var i = 0; i < _enemies.size(); i++) {
-            var enemy = _enemies[i];
-            var enemy_pos = enemy.getPos();
-            _enemies_sprite[i] = new WatchUi.Bitmap({:rezId=>enemy.getSprite(), :locX=>enemy_pos[0] * _tile_width, :locY=>enemy_pos[1] * _tile_height});
-        }
-    }
-
-    function draw(dc as Dc) as Void {
-        drawMap(dc);
-    }
-
-    function drawMap(dc as Dc) as Void {
-        var map_keys = _map_drawing.keys() as Array<Symbol>;
-        for (var i = 0; i < map_keys.size(); i++) {
-            var key = map_keys[i];
-            if (key == :walls) {
-                dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_BLACK);
-                var walls = _map_drawing[key] as Dictionary<Symbol, Array<Point2D>>?;
-                var wall_keys = walls.keys() as Array<Symbol>;
-                for (var j = 0; j < wall_keys.size(); j++) {
-                    var wall_key = wall_keys[j] as Symbol;
-                    var func = new Method(self, wall_key) as Method;
-                    var points = walls[wall_key] as Array<Point2D>;
-                    for (var k = 0; k < points.size(); k++) {
-                        var options = {
-                            :dc => dc,
-                            :x => points[k][0],
-                            :y => points[k][1]
-                        };
-                        func.invoke(options);
-                    }
-                }
-            } else {
-                var points = _map_drawing[key] as Array<Point2D>;
-                var func = new Method(self, key) as Method;
-                for (var j = 0; j < points.size(); j++) {
-                    var options = {
-                        :dc => dc,
-                        :x => points[j][0],
-                        :y => points[j][1]
-                    };
-                    func.invoke(options);
-                }
-            }
-        }
-        if (_stairs != null) {
-            // Draw the stairs
-            System.println("Stairs at: " + _stairs);
-            dc.drawBitmap(_stairs[0] * _tile_width, _stairs[1] * _tile_height, _stairs_sprite);
-        }
-    }
-
-    public function drawPassable(options as Dictionary) as Void {
-        var dc = options[:dc] as Dc;
-        var x = options[:x] as Number;
-        var y = options[:y] as Number;
-        dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_BLACK);
-        dc.fillRectangle(x * _tile_width, y * _tile_height, _tile_width, _tile_height);
-    }
-
-    public function drawTopWall(options as Dictionary) as Void {
-        var dc = options[:dc] as Dc;
-        var x = options[:x] as Number;
-        var y = options[:y] as Number;
-        dc.fillRectangle(x * _tile_width, y * _tile_height, _tile_width, _tile_height / 2);
-    }
-
-    public function drawBottomWall(options as Dictionary) as Void {
-        var dc = options[:dc] as Dc;
-        var x = options[:x] as Number;
-        var y = options[:y] as Number;
-        dc.fillRectangle(x * _tile_width, y * _tile_height + _tile_height / 2, _tile_width, _tile_height / 2);
-    }
-
-    public function drawLeftWall(options as Dictionary) as Void {
-        var dc = options[:dc] as Dc;
-        var x = options[:x] as Number;
-        var y = options[:y] as Number;
-        dc.fillRectangle(x * _tile_width, y * _tile_height, _tile_width / 2, _tile_height);
-    }
-
-    public function drawRightWall(options as Dictionary) as Void {
-        var dc = options[:dc] as Dc;
-        var x = options[:x] as Number;
-        var y = options[:y] as Number;
-        dc.fillRectangle(x * _tile_width + _tile_width / 2, y * _tile_height, _tile_width / 2, _tile_height);
-    }
-
-    public function drawTopLeftWall(options as Dictionary) as Void {
-        var dc = options[:dc] as Dc;
-        var x = options[:x] as Number;
-        var y = options[:y] as Number;
-        dc.fillRectangle(x * _tile_width, y * _tile_height, _tile_width / 2, _tile_height / 2);
-    }
-
-    public function drawTopRightWall(options as Dictionary) as Void {
-        var dc = options[:dc] as Dc;
-        var x = options[:x] as Number;
-        var y = options[:y] as Number;
-        dc.fillRectangle(x * _tile_width + _tile_width / 2, y * _tile_height, _tile_width / 2, _tile_height / 2);
-    }
-
-    public function drawBottomLeftWall(options as Dictionary) as Void {
-        var dc = options[:dc] as Dc;
-        var x = options[:x] as Number;
-        var y = options[:y] as Number;
-        dc.fillRectangle(x * _tile_width, y * _tile_height + _tile_height / 2, _tile_width / 2, _tile_height / 2);
-    }
-
-    public function drawBottomRightWall(options as Dictionary) as Void {
-        var dc = options[:dc] as Dc;
-        var x = options[:x] as Number;
-        var y = options[:y] as Number;
-        dc.fillRectangle(x * _tile_width + _tile_width / 2, y * _tile_height + _tile_height / 2, _tile_width / 2, _tile_height / 2);
-    }
-
-    function drawItems(dc as Dc) as Void {
-        for (var i = 0; i < _items.size(); i++) {
-            if (_items_sprite[i] != null) {
-                _items_sprite[i].draw(dc);
-            } 
-        }
-    }
-
-    function drawEnemies(dc as Dc) as Void {
-        for (var i = 0; i < _enemies.size(); i++) {
-            if (_enemies_sprite[i] != null) {
-                _enemies_sprite[i].draw(dc);
-            }
+            var enemy = _enemies[enemy_keys[i]];
+            _map[enemy_keys[i][0]][enemy_keys[i][1]] = enemy;
         }
     }
 
@@ -237,14 +106,7 @@ class Room extends WatchUi.Drawable {
     function removeItem(item as Item) as Void {
         var item_pos = item.getPos();
         _map[item_pos[0]][item_pos[1]] = null;
-        for (var i = 0; i < _items.size(); i++) {
-            if (_items[i] == item) {
-                _items[i] = null;
-                _items_sprite[i] = null;
-                break;
-            }
-        }
-
+        _items.remove(item_pos);
     }
 
     function dropLoot(enemy as Enemy) as Void {
@@ -252,36 +114,32 @@ class Room extends WatchUi.Drawable {
         if (loot == null) {
             return;
         }
-        loot.setPos(enemy.getPos());
-        _items.add(loot);
-        var loot_pos = loot.getPos();
-        _items_sprite.add(new WatchUi.Bitmap({:rezId=>loot.getSprite(), :locX=>loot_pos[0] * _tile_width, :locY=>loot_pos[1] * _tile_height}));
-        _map[loot_pos[0]][loot_pos[1]] = loot;
+        var new_pos = enemy.getPos();
+        loot.setPos(new_pos);
+        _items.put(new_pos, loot);
+        _map[new_pos[0]][new_pos[1]] = loot;
     }
 
     function removeEnemy(enemy as Enemy) as Void {
         var enemy_pos = enemy.getPos();
         _map[enemy_pos[0]][enemy_pos[1]] = null;
-        for (var i = 0; i < _enemies.size(); i++) {
-            if (_enemies[i] == enemy) {
-                _enemies[i] = null;
-                _enemies_sprite[i] = null;
-                break;
-            }
-        }
+        _enemies.remove(enemy_pos);
     }
 
-    function moveEnemy(enemy as Enemy, index as Number) as Void {
+    function getEnemies() as Dictionary<Point2D, Enemy> {
+        return _enemies;
+    }
+
+    function getItems() as Dictionary<Point2D, Item> {
+        return _items;
+    }
+
+    function moveEnemy(enemy as Enemy) as Void {
         var enemy_pos = enemy.getPos();
         var enemy_next_pos = enemy.getNextPos();
         if (enemy_pos != enemy_next_pos) {
             _map[enemy_pos[0]][enemy_pos[1]] = null;
             _map[enemy_next_pos[0]][enemy_next_pos[1]] = enemy;
-            var enemy_sprite = _enemies_sprite[index];
-            var enemy_sprite_dimensions = enemy_sprite.getDimensions();
-            var enemy_sprite_offset = [enemy_sprite_dimensions[0] - _tile_width, (enemy_sprite_dimensions[1] - _tile_height) / 2];
-            enemy_sprite.locX = enemy_next_pos[0] * _tile_width - enemy_sprite_offset[0];
-            enemy_sprite.locY = enemy_next_pos[1] * _tile_height - enemy_sprite_offset[1];
             enemy.setPos(enemy_next_pos);
             enemy.setHasMoved(true);
         } else {
@@ -289,22 +147,35 @@ class Room extends WatchUi.Drawable {
         }
     }
 
+    function getNextEnemyMoves() as Dictionary<Point2D, Enemy> {
+        var next_moves = {} as Dictionary<Point2D, Enemy>;
+        var enemies = _enemies.values() as Array<Enemy>;
+        for (var i = 0; i < enemies.size(); i++) {
+            var enemy = enemies[i];
+            enemy.findNextMove(_map);
+            next_moves.put(enemy.getNextPos(), enemy);
+        }
+        return next_moves;
+    }
+
 
     function moveEnemies(player_pos as Point2D) as Void {
         for (var i = 0; i < _enemies.size(); i++) {
-            if (_enemies[i] != null) {
-                var enemy = _enemies[i];
+            var enemy_pos = _enemies.keys()[i];
+            if (_enemies[enemy_pos] != null) {
+                var enemy = _enemies[enemy_pos];
                 enemy.findNextMove(_map);
-                moveEnemy(enemy, i);
+                moveEnemy(enemy);
             }
         }
     }
 
     function enemiesAttack(player_pos as Point2D) as Void {
-        for (var i = 0; i < _enemies.size(); i++) {
-            var enemy = _enemies[i];
+        var enemy_keys = _enemies.keys() as Array<Point2D>;
+        for (var i = 0; i < enemy_keys.size(); i++) {
+            var enemy = _enemies[enemy_keys[i]];
             if (enemy != null && !enemy.getHasMoved()) {
-                _enemies[i].attackNearbyPlayer(_map, player_pos);
+                _enemies[enemy_keys[i]].attackNearbyPlayer(_map, player_pos);
             }
         }
     }
@@ -343,15 +214,13 @@ class Room extends WatchUi.Drawable {
 
     function addItem(item as Item) as Void {
         var item_pos = item.getPos();
-        _items.add(item);
-        _items_sprite.add(new WatchUi.Bitmap({:rezId=>item.getSprite(), :locX=>item_pos[0] * _tile_width, :locY=>item_pos[1] * _tile_height}));
+        _items.put(item_pos, item);
         _map[item_pos[0]][item_pos[1]] = item;
     }
 
     function addEnemy(enemy as Enemy) as Void {
         var enemy_pos = enemy.getPos();
-        _enemies.add(enemy);
-        _enemies_sprite.add(new WatchUi.Bitmap({:rezId=>enemy.getSprite(), :locX=>enemy_pos[0] * _tile_width, :locY=>enemy_pos[1] * _tile_height}));
+        _enemies.put(enemy_pos, enemy);
         _map[enemy_pos[0]][enemy_pos[1]] = enemy;
     }
 
@@ -479,7 +348,7 @@ class Room extends WatchUi.Drawable {
         if (pos != null) {
             _map[pos[0]][pos[1]] = stairs;
             _stairs = pos;
-            _stairs_sprite = WatchUi.loadResource($.Rez.Drawables.Stairs);
+            
         }
     }
 
@@ -501,15 +370,19 @@ class Room extends WatchUi.Drawable {
 
     function save() as Dictionary {
         var items = [];
-        for (var i = 0; i < _items.size(); i++) {
-            if (_items[i] != null) {
-                items.add(_items[i].save());
+        var item_keys = _items.keys() as Array<Point2D>;
+        for (var i = 0; i < item_keys.size(); i++) {
+            var item = _items[item_keys[i]];
+            if (item != null) {
+                items.add(item.save());
             }
         }
         var enemies = [];
-        for (var i = 0; i < _enemies.size(); i++) {
-            if (_enemies[i] != null) {
-                enemies.add(_enemies[i].save());
+        var enemy_keys = _enemies.keys() as Array<Point2D>;
+        for (var i = 0; i < enemy_keys.size(); i++) {
+            var enemy = _enemies[enemy_keys[i]];
+            if (enemy != null) {
+                enemies.add(enemy.save());
             }
         }
         return {
@@ -561,8 +434,8 @@ class Room extends WatchUi.Drawable {
             :tile_height => data["tile_height"],
             :start_pos => data["start_pos"],
             :map_drawing => convertToIndexSymbolMapDrawing(data["map_drawing"]),
-            :items => [],
-            :enemies => []
+            :items => {},
+            :enemies => {}
         });
         if (data["player_pos"] != null) {
             System.println("Set Player pos: " + data["player_pos"]);

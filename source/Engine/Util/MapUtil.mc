@@ -141,6 +141,53 @@ module MapUtil {
 		return null;
 	}
 
+	function getRangeCoords(map as Array<Array<Object?>>, pos as Point2D, range as Number, range_type as RangeType, direction as WalkDirection) as Array<Point2D> {
+		var range_int = Math.floor(range).toNumber() as Number;
+		var range_float = range - range_int;
+		var x = pos[0];
+		var y = pos[1];
+
+		var dx = 0, dy = 0;
+		if (direction == UP) {
+			dy = -1;
+		} else if (direction == DOWN) {
+			dy = 1;
+		} else if (direction == LEFT) {
+			dx = -1;
+		} else if (direction == RIGHT) {
+			dx = 1;
+		}
+
+		var coords = [];
+		// Check integer range
+		for (var i = 1; i <= range_int; i++) {
+			var reduced_i = i - 1;
+			if (range_type == LINEAR) {
+				reduced_i = 0;
+			}
+			for (var j = -reduced_i; j <= reduced_i; j++) {
+				if (direction == UP || direction == DOWN) {
+					coords.add([x + j, y + i * dy]);
+				} else {
+					coords.add([x + i * dx, y + j]);
+				}
+			}
+		}
+
+		// Check fractional range
+		if (range_float > 0) {
+			if (direction == UP || direction == DOWN) {
+				coords.add([x - 1, y + range_int * dy]);
+				coords.add([x + 1, y + range_int * dy]);
+			} else if (direction == LEFT || direction == RIGHT) {
+				coords.add([x + range_int * dx, y - 1]);
+				coords.add([x + range_int * dx, y + 1]);
+			}
+		}
+
+		return coords;
+	}
+
 	function getNumTilesForScreensize() as Point2D {
 		var tile_width = getApp().tile_width;
 		var tile_height = getApp().tile_height;
@@ -179,6 +226,61 @@ module MapUtil {
 		var top = middle_of_screen[1] - Math.floor(room_size_y/2);
 		var bottom = middle_of_screen[1] + Math.floor(room_size_y/2);
 		return [left, right, top, bottom];
+	}
+
+	function calcDistance(pos1 as Point2D, pos2 as Point2D) as Numeric {
+		return Math.sqrt(Math.pow(pos1[0] - pos2[0], 2) + Math.pow(pos1[1] - pos2[1], 2));
+	}
+
+	class DistanceCompare {
+
+		private var player_pos as Point2D;
+
+		function initialize(player_pos as Point2D) {
+			self.player_pos = player_pos;
+		}
+
+		function compare(a as Object, b as Object) as Number {
+			var pos1 = a as Point2D;
+			var pos2 = b as Point2D;
+			var dist1 = calcDistance(player_pos, pos1);
+			var dist2 = calcDistance(player_pos, pos2);
+			if (dist1 < dist2) {
+				return -1;
+			} else if (dist1 > dist2) {
+				return 1;
+			}
+			return 0;
+			
+		}
+	}
+
+	function getCoordInDirection(pos as Point2D, direction as WalkDirection) as Point2D {
+		var x = pos[0];
+		var y = pos[1];
+		if (direction == UP) {
+			y--;
+		} else if (direction == DOWN) {
+			y++;
+		} else if (direction == LEFT) {
+			x--;
+		} else if (direction == RIGHT) {
+			x++;
+		}
+		return [x, y];
+	}
+
+	function getInversedDirection(direction as WalkDirection) as WalkDirection {
+		if (direction == UP) {
+			return DOWN;
+		} else if (direction == DOWN) {
+			return UP;
+		} else if (direction == LEFT) {
+			return RIGHT;
+		} else if (direction == RIGHT) {
+			return LEFT;
+		}
+		return STANDING;
 	}
 
 }

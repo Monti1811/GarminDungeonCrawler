@@ -38,71 +38,23 @@ class Turn {
         }
 
         var map_element = map[new_pos[0]][new_pos[1]] as Object?;
-        
 		if ((map_element != null) && (map_element instanceof Wall)) {
 			return;
 		}
 
-        if (map_element != null && map_element instanceof Stairs) {
-            var app = getApp();
-            app.setCurrentDungeon(null);
-            _player.addToCurrentRun(1);
-            var progressBar = new WatchUi.ProgressBar(
-            "Creating next dungeon...",
-            0.0
-            );
-            WatchUi.switchToView(progressBar, new DCNewDungeonProgressDelegate(progressBar), WatchUi.SLIDE_UP);
+        if (checkIfNextDungeon(map_element)) {
             return;
-        }
-
-        var enemy_in_pos = false;   
-        var enemy = null as Enemy?;
-        if (map_element != null && map_element instanceof Item) {
-            _player.pickupItem(map_element as Item);
-            _room.removeItem(map_element as Item);
-        } else {
-            var range = _player.getRange(null) as [Numeric, RangeType];
-            enemy = MapUtil.getEnemyInRange(map, _player_pos, range[0], range[1], direction);
-            if (enemy != null) {
-                enemy_in_pos = true;
-            }
         }
 
 		System.println("Old pos: " + _player_pos);
         System.println("New pos: " + new_pos);
 
-        var has_moved = false;
-        // Move player
-        if (!enemy_in_pos && _player_pos != new_pos) {
-            movePlayer(map, new_pos);
-            has_moved = true;
-        }
-        // Move enemies
-        _room.moveEnemies(new_pos);
+        resolvePlayerActions(map, new_pos, direction);
+        // Resolve enemy actions
+        resolveEnemyActions(_room.getEnemies().values(), _player_pos);
 
         // Remove existing damage texts
         _view.removeDamageTexts();
-
-        // Check if enemy is still there, if not move to position
-        var range = _player.getRange(null) as [Numeric, RangeType];
-        enemy = MapUtil.getEnemyInRange(map, _player_pos, range[0], range[1], direction);
-        if (enemy_in_pos && enemy == null) {
-            movePlayer(map, new_pos);
-            has_moved = true;
-        }
-
-        // Check for enemy collision and attack
-        if (!has_moved && enemy != null && _player.canAttack(enemy)) {
-            var defeated = Battle.attackEnemy(_player, enemy);
-            if (defeated) {
-                _player.onGainExperience(enemy.getKillExperience());
-                _room.dropLoot(enemy);
-                _room.removeEnemy(enemy);
-            }
-            new_pos = _player_pos;
-        }
-        // Check for enemy collision and attack
-        _room.enemiesAttack(new_pos);
         _view.getTimer().start(new Method(_view, (:removeDamageTexts)), 1000, false);
 
         // Do stuff after the turn is over
@@ -199,4 +151,73 @@ class Turn {
         }
         return false;
     }
+
+    function checkIfNextDungeon(map_element as Object?) as Boolean {
+        if (map_element != null && map_element instanceof Stairs) {
+            var app = getApp();
+            app.setCurrentDungeon(null);
+            _player.addToCurrentRun(1);
+            var progressBar = new WatchUi.ProgressBar(
+            "Creating next dungeon...",
+            0.0
+            );
+            WatchUi.switchToView(progressBar, new DCNewDungeonProgressDelegate(progressBar), WatchUi.SLIDE_UP);
+            return true;
+        }
+        return false;
+    }
+
+    function resolvePlayerActions(map as Array<Array<Object?>>, new_pos as Point2D, direction as WalkDirection) as Void {
+
+        // Check if player can attack enemy, if yes do so and don't move
+        var range = _player.getRange(null) as [Numeric, RangeType];
+        var attackable_enemy = MapUtil.getEnemyInRange(
+            _map_data[:map], _player_pos, range[0], range[1], direction
+        );
+        var player_attacked = false;
+        if (attackable_enemy != null) {
+            Battle.attackEnemy(_player, attackable_enemy);
+            player_attacked = true;
+        }
+        // If the player did not attack, try to move
+        if (!player_attacked) {
+            movePlayer(map, new_pos);
+        }
+
+    }
+
+    function resolveEnemyActions(enemies as Array<Enemy>, target_pos as Point2D) as Void {
+        // Do enemy actions
+        // Sort enemies by distance to player
+        var comparator = new MapUtil.DistanceCompare(_player_pos);
+        enemies.sort(comparator);
+        
+        var maxIterations = 10; 
+        var iterations = 0;
+        while (iterations < maxIterations) {
+            for (var i = 0; i < enemies.size(); i++) {
+                var enemy = enemies[i];
+                var curr_pos = enemy.getPos();
+                if (enemy.attackNearbyPlayer(_map_data[:map], target_pos)) {
+                    enemies.remove(enemy);
+                    return;
+                }   
+                var next_pos = enemy.findNextMove(_map_data[:map]);
+                if (next_pos != curr_pos) {
+                    if (MapUtil.isPosPlayer(_map_data[:map], next_pos)) {
+                        Battle.attackPlayer(enemy, _player, target_pos);
+                        enemies.remove(enemy);
+                    } else {
+                        var map = _map_data[:map] as Array<Array<Object?>>;
+                        map[curr_pos[0]][curr_pos[1]] = null;
+                        map[next_pos[0]][next_pos[1]] = enemy;
+                        enemy.setPos(next_pos);
+                        enemies.remove(enemy);
+                    }
+                }
+            }
+        }
+    }
+        
+
 }

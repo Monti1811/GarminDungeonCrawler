@@ -46,6 +46,10 @@ class Item {
 		return $.Rez.Drawables.LauncherIcon;
 	}
 
+	function getSpriteRef() as Toybox.Graphics.BitmapReference {
+		return $.Toybox.WatchUi.loadResource(getSprite());
+	}
+
 	function canBePickedUp(player as Player) as Boolean {
 		return true;
 	}
@@ -88,6 +92,10 @@ class Item {
 
 	function setIsInInventory(in_inventory as Boolean) as Void {
 		self.in_inventory = in_inventory;
+	}
+
+	function getSpriteOffset() as Point2D {
+		return [0, 0];
 	}
 
 	function onTurnDone() as Void {}

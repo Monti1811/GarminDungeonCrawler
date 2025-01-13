@@ -151,15 +151,15 @@ module Main {
         };
 	}
 
-	function createRandomItems(map as Array<Array<Object?>>, left as Number, right as Number, top as Number, bottom as Number) as Array<Item> {
-		var items = [];
+	function createRandomItems(map as Array<Array<Object?>>, left as Number, right as Number, top as Number, bottom as Number) as Dictionary<Point2D, Item> {
+		var items = {};
 		var num_items = MathUtil.random(0, 5);
 		for (var i = 0; i < num_items; i++) {
 			var item = createRandomItem();
 			var item_pos = MapUtil.getRandomPos(map, left, right, top, bottom);
 			item.setPos(item_pos);
 			map[item_pos[0]][item_pos[1]] = item;
-			items.add(item);
+			items.put(item_pos, item);
 		}
 		return items;
 	}
@@ -168,15 +168,15 @@ module Main {
 		return Items.createRandomItem();
 	}
 
-	function createRandomEnemies(map as Array<Array<Object?>>, left as Number, right as Number, top as Number, bottom as Number) as Array<Enemy> {
-		var enemies = [];
+	function createRandomEnemies(map as Array<Array<Object?>>, left as Number, right as Number, top as Number, bottom as Number) as Dictionary<Point2D,Enemy> {
+		var enemies = {};
 		var num_enemies = MathUtil.random(0, 5);
 		for (var i = 0; i < num_enemies; i++) {
 			var enemy = createRandomEnemy();
 			var enemy_pos = MapUtil.getRandomPos(map, left, right, top, bottom);
 			enemy.setPos(enemy_pos);
 			map[enemy_pos[0]][enemy_pos[1]] = enemy;
-			enemies.add(enemy);
+			enemies.put(enemy_pos, enemy);
 		}
 		return enemies;
 	}

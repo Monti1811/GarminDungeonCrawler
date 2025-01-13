@@ -15,6 +15,18 @@ class Entity {
 		self.name = name;
 	}
 
+	function getSprite() as ResourceId {
+		return $.Rez.Drawables.steel_axe;
+	}
+
+	function getSpriteRef() as Toybox.Graphics.BitmapReference {
+		return $.Toybox.WatchUi.loadResource(getSprite());
+	}
+
+	function getSpriteOffset() as Point2D {
+		return [0, 0];
+	}
+
 	function save() as Dictionary<PropertyKeyType, PropertyValueType> {
 		var save_data = {};
 		save_data["name"] = name;
