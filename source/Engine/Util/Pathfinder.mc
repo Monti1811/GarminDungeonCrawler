@@ -14,7 +14,7 @@ module Pathfinder {
 
 
     // Find the next best movement to reach the target the fastest
-    function findNextMove(map as Array<Array<Object?>>, start_pos as Point2D, end_pos as Point2D) as Point2D? {
+    function findPathToPos(map as Array<Array<Object?>>, start_pos as Point2D, end_pos as Point2D) as Point2D? {
         start_pos = toIntPoint2D(start_pos);
         end_pos = toIntPoint2D(end_pos);
         var open_dict = {start_pos => true} as Dictionary<Number, Boolean>;
@@ -92,4 +92,27 @@ module Pathfinder {
         }
         return path[path.size() - 2];
     }
+
+	function findSimplePathToPos(map as Array<Array<Object?>>, start_pos as Point2D, end_pos as Point2D) as Point2D? {
+		var current_pos = start_pos;
+		var x_diff = end_pos[0] - current_pos[0];
+		var y_diff = end_pos[1] - current_pos[1];
+		if (MathUtil.abs(x_diff) > MathUtil.abs(y_diff)) {
+			if (x_diff > 0) {
+				current_pos = [current_pos[0] + 1, current_pos[1]];
+			} else {
+				current_pos = [current_pos[0] - 1, current_pos[1]];
+			}
+		} else {
+			if (y_diff > 0) {
+				current_pos = [current_pos[0], current_pos[1] + 1];
+			} else {
+				current_pos = [current_pos[0], current_pos[1] - 1];
+			}
+		}
+		if (MapUtil.canMoveToPlayer(map, current_pos) || MapUtil.canMoveToPoint(map, current_pos)) {
+			return current_pos;
+		}
+		return null;
+	}
 }

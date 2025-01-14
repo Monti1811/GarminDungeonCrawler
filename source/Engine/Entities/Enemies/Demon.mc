@@ -19,9 +19,9 @@ class Demon extends Enemy {
 	}
 
 	function findNextMove(map as Array<Array<Object?>>) as Point2D {
-		var next_pos = Pathfinder.findNextMove(map, pos, $.getApp().getPlayer().getPos());
+		var next_pos = Pathfinder.findSimplePathToPos(map, pos, $.getApp().getPlayer().getPos());
 		if (next_pos != null) {
-            Toybox.System.print("Demon moving to " + next_pos);
+            Toybox.System.println("Demon moving to " + next_pos);
 			self.next_pos = next_pos;
 			return next_pos;
 		}
