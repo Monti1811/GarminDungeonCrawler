@@ -43,12 +43,19 @@ class Player extends Entity {
 	
 
 	function equipItem(item as Item, slot as ItemSlot, remove as Boolean?) as Boolean {
+		// Try to unequip item if slot is already equipped
+		if (equipped[slot] != null) {
+			var success = unequipItem(slot);
+			if (!success) {
+				return false;
+			}
+		}
 		if (equipped[slot] == null) {
+			if (remove) {
+				item = inventory.remove(item);
+			}
 			equipped[slot] = item;
 			item.onEquipItem(me);
-			if (remove) {
-				inventory.remove(item);
-			}
 			return true;
 		}
 		return false;

@@ -95,24 +95,25 @@ module Pathfinder {
 
 	function findSimplePathToPos(map as Array<Array<Object?>>, start_pos as Point2D, end_pos as Point2D) as Point2D? {
 		var current_pos = start_pos;
-		var x_diff = end_pos[0] - current_pos[0];
-		var y_diff = end_pos[1] - current_pos[1];
-		if (MathUtil.abs(x_diff) > MathUtil.abs(y_diff)) {
-			if (x_diff > 0) {
-				current_pos = [current_pos[0] + 1, current_pos[1]];
-			} else {
-				current_pos = [current_pos[0] - 1, current_pos[1]];
-			}
-		} else {
-			if (y_diff > 0) {
-				current_pos = [current_pos[0], current_pos[1] + 1];
-			} else {
-				current_pos = [current_pos[0], current_pos[1] - 1];
+		var directions = [
+			[current_pos[0] + 1, current_pos[1]], // right
+			[current_pos[0] - 1, current_pos[1]], // left
+			[current_pos[0], current_pos[1] + 1], // down
+			[current_pos[0], current_pos[1] - 1]  // up
+		];
+		var min_distance = MapUtil.calcDistance(current_pos, end_pos);
+		var best_move = null;
+
+		for (var i = 0; i < directions.size(); i++) {
+			var new_pos = directions[i];
+			if (MapUtil.canMoveToPlayer(map, new_pos) || MapUtil.canMoveToPoint(map, new_pos)) {
+				var new_distance = MapUtil.calcDistance(new_pos, end_pos);
+				if (new_distance < min_distance) {
+					min_distance = new_distance;
+					best_move = new_pos;
+				}
 			}
 		}
-		if (MapUtil.canMoveToPlayer(map, current_pos) || MapUtil.canMoveToPoint(map, current_pos)) {
-			return current_pos;
-		}
-		return null;
+		return best_move;
 	}
 }

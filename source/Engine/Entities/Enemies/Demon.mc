@@ -18,6 +18,10 @@ class Demon extends Enemy {
 		return $.Rez.Drawables.monster_demon;
 	}
 
+	function getSpriteOffset() as Point2D {
+		return [8, 16];
+	}
+
 	function findNextMove(map as Array<Array<Object?>>) as Point2D {
 		var next_pos = Pathfinder.findSimplePathToPos(map, pos, $.getApp().getPlayer().getPos());
 		if (next_pos != null) {

@@ -61,6 +61,10 @@ class DCGameView extends WatchUi.View {
 
     }
 
+    function getRoomDrawable() as RoomDrawable {
+        return _room_drawable;
+    }
+
     function getTurns() as Turn {
         return _turns;
     }
@@ -129,6 +133,7 @@ class DCGameView extends WatchUi.View {
     // state of this View here. This includes freeing resources from
     // memory.
     function onHide() as Void {
+        _room_drawable.setMapBufferInitialized(false);
     }
 
     function removeDamageTexts() as Void {

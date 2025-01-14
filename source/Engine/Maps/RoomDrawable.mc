@@ -31,6 +31,16 @@ class RoomDrawable extends WatchUi.Drawable {
 
     }
 
+    function updateToNewRoom(options as Dictionary) as Void {
+        _map_drawing = options[:map_drawing] as Dictionary;
+        _stairs = options[:stairs] as Point2D?;
+        _map_buffer_initialized = false;
+    }
+
+    function setMapBufferInitialized(value as Boolean) as Void {
+        _map_buffer_initialized = value;
+    }
+
     function drawItem(dc as Dc, item as Item) as Void {
         var item_pos = item.getPos();
         var item_sprite_ref = item.getSpriteRef();
@@ -74,6 +84,7 @@ class RoomDrawable extends WatchUi.Drawable {
         if (!_map_buffer_initialized) {
             _map_buffer_initialized = true;
             var map_dc = map_buffer.getDc();
+            map_dc.clear();
             drawMap(map_dc);
         }
         dc.drawBitmap(0, 0, map_buffer);

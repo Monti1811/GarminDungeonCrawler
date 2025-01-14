@@ -10,7 +10,6 @@ class Turn {
     private var _room as Room;
     private var _map_data as Dictionary;
 
-    private var is_moving as Boolean = false;
 
     function initialize(view as DCGameView, player as Player, room as Room, map_data as Dictionary) {
         _view = view;
@@ -26,9 +25,9 @@ class Turn {
     }
 
     function doTurn(direction as WalkDirection) as Void {
-		if (is_moving) {
-            return;
-        }
+        // Remove existing damage texts
+        _view.removeDamageTexts();
+
         System.println("Moving " + direction);
         var new_pos = calculateNewPos(_player_pos, direction);
 
@@ -49,12 +48,10 @@ class Turn {
 		System.println("Old pos: " + _player_pos);
         System.println("New pos: " + new_pos);
 
-        resolvePlayerActions(map, new_pos, direction);
+        resolvePlayerActions(map, new_pos, direction, map_element);
         // Resolve enemy actions
         resolveEnemyActions(_room.getEnemies().values(), _player_pos);
 
-        // Remove existing damage texts
-        _view.removeDamageTexts();
         _view.getTimer().start(new Method(_view, (:removeDamageTexts)), 1000, false);
 
         // Do stuff after the turn is over
@@ -76,6 +73,10 @@ class Turn {
         _view.setRoom(room);
         _map_data = room.getMapData();
         _view.setMapData(_map_data);
+        _view.getRoomDrawable().updateToNewRoom({
+            :map_drawing => _map_data[:map_drawing],
+            :stairs => _map_data[:stairs]
+        });
         _player_pos = _map_data[:start_pos];
         _player.setPos(_player_pos);
         room.updatePlayerPos(_player_pos);
@@ -167,12 +168,12 @@ class Turn {
         return false;
     }
 
-    function resolvePlayerActions(map as Array<Array<Object?>>, new_pos as Point2D, direction as WalkDirection) as Void {
+    function resolvePlayerActions(map as Array<Array<Object?>>, new_pos as Point2D, direction as WalkDirection, map_element as Object?) as Void {
 
         // Check if player can attack enemy, if yes do so and don't move
         var range = _player.getRange(null) as [Numeric, RangeType];
         var attackable_enemy = MapUtil.getEnemyInRange(
-            _map_data[:map], _player_pos, range[0], range[1], direction
+            map, _player_pos, range[0], range[1], direction
         );
         var player_attacked = false;
         if (attackable_enemy != null) {
@@ -185,8 +186,17 @@ class Turn {
         // If the player did not attack, try to move
         if (!player_attacked) {
             movePlayer(map, new_pos);
+            pickUpItem(map, new_pos, map_element);
         }
 
+    }
+
+    function pickUpItem(map as Array<Array<Object?>>, new_pos as Point2D, map_element as Object?) as Void {
+        if (map_element != null && map_element instanceof Item) {
+            var item = map_element as Item;
+            _player.pickupItem(item);
+            _room.removeItem(item);
+        }
     }
 
     function resolveEnemyActions(enemies as Array<Enemy>, target_pos as Point2D) as Void {
@@ -211,10 +221,7 @@ class Turn {
                         Battle.attackPlayer(enemy, _player, target_pos);
                         enemies.remove(enemy);
                     } else {
-                        var map = _map_data[:map] as Array<Array<Object?>>;
-                        map[curr_pos[0]][curr_pos[1]] = null;
-                        map[next_pos[0]][next_pos[1]] = enemy;
-                        enemy.setPos(next_pos);
+                        _room.moveEnemy(enemy);
                         enemies.remove(enemy);
                     }
                 }

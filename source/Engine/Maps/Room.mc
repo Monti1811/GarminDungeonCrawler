@@ -141,6 +141,8 @@ class Room {
         if (enemy_pos != enemy_next_pos) {
             _map[enemy_pos[0]][enemy_pos[1]] = null;
             _map[enemy_next_pos[0]][enemy_next_pos[1]] = enemy;
+            _enemies.remove(enemy_pos);
+            _enemies.put(enemy_next_pos, enemy);
             enemy.setPos(enemy_next_pos);
             enemy.setHasMoved(true);
         } else {

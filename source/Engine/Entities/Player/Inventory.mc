@@ -34,6 +34,7 @@ class Inventory {
 			if (existing_item.amount <= 0) {
 				items.remove(item.id);
 			}
+			current_items -= 1;
 			var new_item = item.deepcopy();
 			new_item.setIsInInventory(false);
 			new_item.amount = 1;
