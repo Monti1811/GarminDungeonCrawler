@@ -23,18 +23,15 @@ class DCGameMenuDelegate extends WatchUi.Menu2InputDelegate {
         } else if (label == :settings) {
             openSettings();
         }
-        //WatchUi.popView(WatchUi.SLIDE_DOWN);
     }
 
     //! Handle the back key being pressed
     function onBack() as Void {
-        System.println("RPGActionMenuDelegate.Back");
         WatchUi.popView(WatchUi.SLIDE_DOWN);
     }
 
     //! Handle the done item being selected
     function onDone() as Void {
-        // WatchUi.popView(WatchUi.SLIDE_DOWN);
     }
 
     function openPlayerDetails() as Void {
@@ -51,9 +48,10 @@ class DCGameMenuDelegate extends WatchUi.Menu2InputDelegate {
         for (var i = 0; i < inventory_items.size(); i++) {
             var item = inventory_items[i] as Item;
             var amount = item.getAmount();
-            inventoryMenu.addItem(new WatchUi.MenuItem(item.getName() + " x" + amount, item.getDescription(), item, {:icon=>item.getSprite()}));
+            var icon = new DCItemIcon(item);
+            inventoryMenu.addItem(new WatchUi.IconMenuItem(item.getName() + " x" + amount, item.getDescription(), item, icon, null));
         }
-        WatchUi.pushView(inventoryMenu, new DCInventoryDelegate(), WatchUi.SLIDE_UP);
+        WatchUi.pushView(inventoryMenu, new DCInventoryDelegate(self), WatchUi.SLIDE_UP);
     }
 
     function openLog() as Void {
@@ -79,10 +77,27 @@ class DCGameMenuDelegate extends WatchUi.Menu2InputDelegate {
     }
 }
 
+class DCItemIcon extends WatchUi.Drawable {
+    
+    private var _icon as BitmapResource;
+
+    function initialize(item as Item) {
+        Drawable.initialize({});
+        _icon = item.getSpriteRef() as BitmapResource;
+    }
+
+    function draw(dc as Toybox.Graphics.Dc) as Void {
+        dc.drawScaledBitmap(15, 25, 32, 32, _icon);
+    }
+}
+
 class DCInventoryDelegate extends WatchUi.Menu2InputDelegate {
 
-    function initialize() {
+    private var _delegate as DCGameMenuDelegate;
+
+    function initialize(delegate as DCGameMenuDelegate) {
         Menu2InputDelegate.initialize();
+        _delegate = delegate;
     }
 
     function onSelect(item as MenuItem) as Void {
@@ -105,24 +120,36 @@ class DCInventoryDelegate extends WatchUi.Menu2InputDelegate {
         for (var i = 0; i < options.size(); i++) {
             optionsMenu.addItem(options[i]);
         }
-        WatchUi.pushView(optionsMenu, new DCOptionsDelegate(item), WatchUi.SLIDE_UP);
+        WatchUi.pushView(optionsMenu, new DCOptionsDelegate(item, _delegate), WatchUi.SLIDE_UP);
     }
 }
 
 class DCOptionsDelegate extends WatchUi.Menu2InputDelegate {
 
     private var _item as Item;
+    private var _delegate as DCGameMenuDelegate;
 
-    function initialize(item as Item) {
+    function initialize(item as Item, delegate as DCGameMenuDelegate) {
         Menu2InputDelegate.initialize();
         _item = item;
+        _delegate = delegate;
+    }
+
+    private function updateInventoryMenu() as Void {
+        _delegate.openInventory();
     }
 
     function onSelect(item as MenuItem) as Void {
         var type = item.getId() as Symbol;
         switch (type) {
             case :equip:
-                getApp().getPlayer().equipItem(_item, _item.getItemSlot(), true);
+                var success = getApp().getPlayer().equipItem(_item, _item.getItemSlot(), true);
+                if (!success) {
+                    WatchUi.showToast("Could not equip item", {:icon=>Rez.Drawables.cancelToastIcon});
+                }
+                WatchUi.popView(SLIDE_DOWN);
+                WatchUi.popView(SLIDE_DOWN);
+                updateInventoryMenu();
                 break;
             case :drop:
                 showConfirmation("Do you want to drop " + _item.getName() + "?",_item, :drop);

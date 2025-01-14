@@ -140,7 +140,10 @@ class DCInventoryEquipDelegate extends WatchUi.Menu2InputDelegate {
     function onSelect(item as MenuItem) as Void {
         item = item.getId() as Item;
         var player = getApp().getPlayer() as Player;
-        player.equipItem(item, item.getItemSlot(), true);
+        var success = player.equipItem(item, item.getItemSlot(), true);
+        if (!success) {
+            WatchUi.showToast("Could not equip item", {:icon=>Rez.Drawables.cancelToastIcon});
+        }
         WatchUi.popView(SLIDE_DOWN);
         WatchUi.popView(SLIDE_DOWN);
         WatchUi.popView(SLIDE_DOWN);

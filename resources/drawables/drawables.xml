@@ -26,6 +26,11 @@
         system_size__toast_icon
     "/>
 
+    <bitmap id="cancelToastIcon" personality="
+        system_icon_dark__cancel
+        system_size__toast_icon
+    "/>
+
     <!-- Players/NPCs -->
     <bitmap id="Basic" filename="players/hero_basic.png" />
     <bitmap id="Barbarian" filename="players/npc_barbarian.png" />
