@@ -88,6 +88,7 @@ class RoomDrawable extends WatchUi.Drawable {
             drawMap(map_dc);
         }
         dc.drawBitmap(0, 0, map_buffer);
+        map_buffer = null;
     }
 
     function drawMap(dc as Dc) as Void {

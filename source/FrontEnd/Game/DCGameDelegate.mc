@@ -24,7 +24,7 @@ class DCGameDelegate extends WatchUi.BehaviorDelegate {
     }
 
     function onBack() as Boolean {
-        showConfirmation("Do you exit the game?");
+        showConfirmation("Do you want to exit the game?");
         return true;
     }
 

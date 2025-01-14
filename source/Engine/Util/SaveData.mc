@@ -73,9 +73,10 @@ module SaveData {
 		}
 		player.updateTimePlayed(Toybox.Time.now());
 		var data = {
-			"player" => player.save() as Dictionary<PropertyKeyType, PropertyValueType>,
-			"level" => player.getLevel() as PropertyValueType,
-			"dungeon" => app.getCurrentDungeon().save() as Dictionary<PropertyKeyType, PropertyValueType>
+			"player" => player.save(),
+			"level" => player.getLevel(),
+			"dungeon" => app.getCurrentDungeon().save(),
+			"game" => $.Game.save()
 		} as Dictionary<PropertyKeyType, PropertyValueType>;
 		Toybox.System.println("Saving game to " + chosen_save);
 		Toybox.System.println("Data: " + data);
@@ -99,6 +100,7 @@ module SaveData {
 		var player = Player.load(data["player"] as Dictionary<PropertyKeyType, PropertyValueType>);
 		app.setPlayer(player);
 		app.setCurrentDungeon(Dungeon.load(data["dungeon"] as Dictionary<PropertyKeyType, PropertyValueType>));
+		$.Game.load(data["game"] as Dictionary<PropertyKeyType, PropertyValueType>);
 	}
 
 	public function isEmpty() as Boolean {
@@ -125,7 +127,7 @@ module SaveData {
 		}
 		return [
 			info[0], 
-			"Level " + info[1] + " Depth: " + info[2] + " Time played: " + hours + ":" + minutes
+			"Level " + info[1] + " Depth: " + info[2] + " Time: " + hours + ":" + minutes
 		];
 	}
 

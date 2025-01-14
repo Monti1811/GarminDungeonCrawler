@@ -1,5 +1,6 @@
 import Toybox.Lang;
 import Toybox.Time;
+import Toybox.WatchUi;
 
 class Player extends Entity {
 
@@ -145,7 +146,7 @@ class Player extends Entity {
 	}
 
 	function onDeath() as Void {
-
+		WatchUi.pushView(new DCGameOverView(), new DCGameOverDelegate(), WatchUi.SLIDE_UP);
 	}
 
 	function onRevive() as Void {
@@ -291,7 +292,6 @@ class Player extends Entity {
 	function takeDamage(damage as Number, enemy as Enemy?) as Boolean {
 		onLoseHealth(damage);
 		if (current_health == 0) {
-			onDeath();
 			return true;
 		}
 		return false;

@@ -213,7 +213,7 @@ class Turn {
                 var curr_pos = enemy.getPos();
                 if (enemy.attackNearbyPlayer(_map_data[:map], target_pos)) {
                     enemies.remove(enemy);
-                    return;
+                    continue;
                 }   
                 var next_pos = enemy.findNextMove(_map_data[:map]);
                 if (next_pos != curr_pos) {

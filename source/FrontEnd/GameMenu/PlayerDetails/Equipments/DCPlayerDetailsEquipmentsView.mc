@@ -36,7 +36,8 @@ class DCPlayerDetailsEquipmentsView extends WatchUi.View {
 		dc.drawText(x, y_line, small_font, name, Graphics.TEXT_JUSTIFY_CENTER);
 		var res = equipped_res[equipslot];
 		if (res != null) {
-			dc.drawScaledBitmap(x - res.getWidth(), y_start + res.getHeight()/2 - size_rectangles/10, size_rectangles * 3/5, size_rectangles * 3/5, res);
+			var new_size = size_rectangles * 3/5;
+			dc.drawScaledBitmap(x - new_size/2, y_start + new_size/2 - 3*size_rectangles/10, new_size, new_size, res);
 		}
 	}
 

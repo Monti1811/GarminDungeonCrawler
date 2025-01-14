@@ -44,7 +44,7 @@ class DCPlayerDetailsAttributesDelegate extends WatchUi.BehaviorDelegate {
 
     function showActionMenu() as Void{
         var points_available = changed_attributes[:available] - changed_attributes[:total_used];
-        var actionMenu = new WatchUi.Menu2({:title=>"Change Attributes (" + points_available + " points)"});
+        var actionMenu = new WatchUi.Menu2({:title=>"Attributes (" + points_available + " points)"});
         actionMenu.addItem(new WatchUi.MenuItem("Strength: " + changed_attributes[:strength], "Change Strength", :strength, null));
         actionMenu.addItem(new WatchUi.MenuItem("Constitution: " + changed_attributes[:constitution], "Change Constitution", :constitution, null));
         actionMenu.addItem(new WatchUi.MenuItem("Dexterity: " + changed_attributes[:dexterity], "Change Dexterity", :dexterity, null));

@@ -32,7 +32,7 @@ class DCPlayerDetailsAttributesChangerDelegate extends WatchUi.Menu2InputDelegat
     public function updateMenu() as Void {
         var changed_attributes = _delegate.changed_attributes;
         var points_available = changed_attributes[:available] - changed_attributes[:total_used];
-        _view.setTitle("Change Attributes (" + points_available + " points)");
+        _view.setTitle("Attributes (" + points_available + " points)");
         _view.updateItem(new WatchUi.MenuItem("Strength: " + changed_attributes[:strength], null, :strength, null), 0);
         _view.updateItem(new WatchUi.MenuItem("Constitution: " + changed_attributes[:constitution], null, :constitution, null), 1);
         _view.updateItem(new WatchUi.MenuItem("Dexterity: " + changed_attributes[:dexterity], null, :dexterity, null), 2);
@@ -51,7 +51,7 @@ class DCPlayerDetailsAttributesChangerDelegate extends WatchUi.Menu2InputDelegat
     }
 
     function showConfirmation() {
-        var message = "Do you want to use set the chosen attributes?";
+        var message = "Do you want to set the chosen attributes?";
         var dialog = new WatchUi.Confirmation(message);
         WatchUi.pushView(
             dialog,
