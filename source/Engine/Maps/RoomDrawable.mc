@@ -9,7 +9,8 @@ class RoomDrawable extends WatchUi.Drawable {
     private var _tile_width as Number;
     private var _tile_height as Number;
 
-    private var _map_buffer as BufferedBitmapReference;
+    private var _map_string as String;
+    private var _map_buffer as BufferedBitmapReference?;
     private var _map_buffer_initialized as Boolean = false;
     private var _map_drawing as Dictionary<Symbol, Array<Point2D>>;
     private var _stairs as Point2D?;
@@ -21,20 +22,56 @@ class RoomDrawable extends WatchUi.Drawable {
         _tile_width = options[:tile_width];
         _tile_height = options[:tile_height];
        
-        _map_drawing = options[:map_drawing] as Dictionary;
+        _map_drawing = options[:map_drawing] as Dictionary;_map_string = mapToString();
 
         var buffer_options = {
 			:width => 368,
 			:height => 368,
 		};
-        _map_buffer = Graphics.createBufferedBitmap(buffer_options);
+        //_map_buffer = Graphics.createBufferedBitmap(buffer_options);
 
+    }
+
+    function mapToString() as String {
+        var map_char_array = new [529] as ByteArray;
+        for (var i = 0; i < 529; i++) {
+            map_char_array[i] = ' ';
+        }
+        var map_keys = _map_drawing.keys() as Array<Symbol>;
+        for (var i = 0; i < map_keys.size(); i++) {
+            var key = map_keys[i];
+            if (key == :walls) {
+                var walls = _map_drawing[key] as Dictionary<Symbol, Array<Point2D>>?;
+                var wall_keys = walls.keys() as Array<Symbol>;
+                for (var j = 0; j < wall_keys.size(); j++) {
+                    var wall_key = wall_keys[j] as Symbol;
+                    var points = walls[wall_key] as Array<Point2D>;
+                    for (var k = 0; k < points.size(); k++) {
+                        var point = points[k] as Point2D;
+                        map_char_array[point[0] + point[1] * 23] = 'X';
+                    }
+                }
+            } else {
+                var points = _map_drawing[key] as Array<Point2D>;
+                for (var j = 0; j < points.size(); j++) {
+                    map_char_array[points[j][0] + points[j][1] * 23] = 'O';
+                }
+            }
+        }
+        var ret_str = "";
+        for (var i = 0; i < 529; i++) {
+            ret_str += map_char_array[i] as Char;
+            if (i % 23 == 22) {
+                ret_str += "\n";
+            }
+        }
+        return ret_str;
     }
 
     function updateToNewRoom(options as Dictionary) as Void {
         _map_drawing = options[:map_drawing] as Dictionary;
         _stairs = options[:stairs] as Point2D?;
-        _map_buffer_initialized = false;
+        _map_string = mapToString();
     }
 
     function setMapBufferInitialized(value as Boolean) as Void {
@@ -80,7 +117,7 @@ class RoomDrawable extends WatchUi.Drawable {
     }
 
     function draw(dc as Dc) as Void {
-        var map_buffer = _map_buffer.get();
+        /*var map_buffer = _map_buffer.get();
         if (!_map_buffer_initialized) {
             _map_buffer_initialized = true;
             var map_dc = map_buffer.getDc();
@@ -88,7 +125,9 @@ class RoomDrawable extends WatchUi.Drawable {
             drawMap(map_dc);
         }
         dc.drawBitmap(0, 0, map_buffer);
-        map_buffer = null;
+        map_buffer = null;*/
+        dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_BLACK);
+        dc.drawText(180, 180, Graphics.FONT_SYSTEM_XTINY, _map_string.toString(), Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
     }
 
     function drawMap(dc as Dc) as Void {
