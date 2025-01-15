@@ -145,9 +145,12 @@ module SaveData {
 
 	public function deleteSave(save as String) {
 		var temp = Storage.getValue(save) as Dictionary;
-		var dungeon_save_keys = (temp["dungeon"] as Dictionary)["rooms"] as Array<String>;
-		for (var i = 0; i < dungeon_save_keys.size(); i++) {
-			Storage.deleteValue(dungeon_save_keys[i]);
+		var dungeon = temp["dungeon"] as Dictionary?;
+		if (dungeon != null) {
+			var dungeon_save_keys = dungeon["rooms"] as Array<String>;
+			for (var i = 0; i < dungeon_save_keys.size(); i++) {
+				Storage.deleteValue(dungeon_save_keys[i]);
+			}
 		}
 		Storage.deleteValue(save);
 		saves.remove(save);

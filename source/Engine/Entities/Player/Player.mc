@@ -193,6 +193,10 @@ class Player extends Entity {
 		return maxHealth;
 	}
 
+	function getHealthPercent() as Float {
+		return current_health.toFloat() / maxHealth.toFloat();
+	}
+
 	function addToAttribute(attribute as Symbol, amount as Number) as Void {
 		attributes[attribute] = MathUtil.floor(attributes[attribute] + amount, Constants.MAX_ATTRIBUTE_POINTS);
 		onGainAttribute(attribute, amount);

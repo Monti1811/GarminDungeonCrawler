@@ -365,7 +365,7 @@ class Room {
         for (var i = 0; i < screensize[0]; i++) {
             var row = [];
             for (var j = 0; j < screensize[1]; j++) {
-                row.add(_map[i][j].type);
+                row.add(_map[i][j].type as Number);
             }
             map.add(row);
         }

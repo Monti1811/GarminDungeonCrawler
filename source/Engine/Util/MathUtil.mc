@@ -104,6 +104,22 @@ module MathUtil {
 		return isInTriangle(coord[0], coord[1], triangle[0], triangle[1], triangle[2], triangle[3], triangle[4], triangle[5]);
 	}
 
+	function getArcCoordinates(cx as Number, cy as Number, r as Number, startAngleDeg as Number, endAngleDeg as Number) as Array {
+		var startAngleRad = Math.toRadians(startAngleDeg);
+		var endAngleRad = Math.toRadians(endAngleDeg);
+
+		var startX = cx + r * Math.cos(startAngleRad);
+		var startY = cy + r * Math.sin(startAngleRad);
+
+		var endX = cx + r * Math.cos(endAngleRad);
+		var endY = cy + r * Math.sin(endAngleRad);
+
+		return [
+			[startX, startY],
+			[endX, endY]
+		];
+	}
+
 	function IndexToPos2D(index as Numeric, width as Numeric) as Point2D {
 		var x = index % width;
 		var y = Math.floor(index / width);

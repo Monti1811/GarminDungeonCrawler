@@ -12,7 +12,6 @@ class DCGameView extends WatchUi.View {
 
 	private var _player_sprite as Bitmap;
     private var _player_sprite_offset as Point2D = [0,0];
-    private var _player_health as Number = 100;
 
 	private var _timer as Timer.Timer;
 
@@ -109,10 +108,24 @@ class DCGameView extends WatchUi.View {
         for (var i = 0; i < damage_texts.size(); i++) {
             damage_texts[i].draw(dc);
         }
+
+        drawHealth(dc);
     }
 
     function drawHealth(dc as Dc) as Void {
-        dc.drawArc(180, 180, 175, Graphics.ARC_CLOCKWISE, )
+        // Draw health bar
+        dc.setColor(Graphics.COLOR_DK_RED, Graphics.COLOR_BLACK);
+        var health_percent = getApp().getPlayer().getHealthPercent();
+        var bar_percent = (70 * health_percent).toNumber();
+        dc.setPenWidth(5);
+        dc.drawArc(180, 180, 175, Graphics.ARC_CLOCKWISE, 170, 170 - bar_percent);
+        // Draw health bar outline
+        dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_BLACK);
+        dc.setPenWidth(1);
+        dc.drawArc(180, 180, 178, Graphics.ARC_CLOCKWISE, 170, 100);
+        dc.drawArc(180, 180, 172, Graphics.ARC_CLOCKWISE, 170, 100);
+        dc.drawLine(5, 149, 12, 150);
+        dc.drawLine(150, 11, 149, 5);
     }
 
     function drawPlayer(dc as Dc) as Void {
