@@ -35,7 +35,8 @@ class DCGameView extends WatchUi.View {
         _room_drawable = new RoomDrawable({
             :tile_width=>_tile_width, 
             :tile_height=>_tile_height, 
-            :map_drawing=>map_data[:map_drawing]
+            :map=>map_data[:map],
+            :map_string=>map_data[:map_string]
         });
 
 		_timer = new Timer.Timer();
@@ -133,7 +134,6 @@ class DCGameView extends WatchUi.View {
     // state of this View here. This includes freeing resources from
     // memory.
     function onHide() as Void {
-        _room_drawable.setMapBufferInitialized(false);
     }
 
     function removeDamageTexts() as Void {

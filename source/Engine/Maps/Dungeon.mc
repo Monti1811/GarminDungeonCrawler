@@ -7,29 +7,32 @@ import Toybox.Application.Storage;
 
 class Dungeon {
 
-	private var _rooms as Array<Array<Room>>;
+	private var _rooms as Array<Array<String?>>;
 	private var _current_room as Room?;
+	private var _current_room_name as String?;
 	private var _current_room_position as Point2D?;
 	private var _size as Point2D;
 
 	function initialize(size_x as Number, size_y as Number) {
 		_size = [size_x, size_y];
-		_rooms = new Array<Array<Room>>[size_x];
+		_rooms = new Array<Array<String?>>[size_x];
 		for (var i = 0; i < size_x; i++) {
-			_rooms[i] = new Array<Room>[size_y];
+			_rooms[i] = new Array<String?>[size_y];
 		}
 
 	}
 
 	function addRoom(room as Room, pos as Point2D, connections as Dictionary<WalkDirection, Point2D>) {
 		// Add room to dungeon
-		_rooms[pos[0]][pos[1]] = room;
 		var connection_keys = connections.keys();
 		for (var i = 0; i < connection_keys.size(); i++) {
 			var connection = connections[connection_keys[i]];
 			// Add connections to room
-			_rooms[pos[0]][pos[1]].addConnection(connection_keys[i], _rooms[connection[0]][connection[1]]);
+			room.addConnection(connection_keys[i], _rooms[connection[0]][connection[1]]);
 		}
+		var save_str = SaveData.chosen_save + "_dungeon_" + pos[0] + "_" + pos[1];
+		Storage.setValue(save_str, room.save());
+		_rooms[pos[0]][pos[1]] = save_str;
 	}
 
 	function addStairs() as Void {
@@ -37,18 +40,32 @@ class Dungeon {
 			var rand_x = MathUtil.random(0, _size[0] - 1);
 			var rand_y = MathUtil.random(0, _size[1] - 1);
 			if (_rooms[rand_x][rand_y] != null) {
-				_rooms[rand_x][rand_y].addStairs(null);
+				var room = loadRoom(_rooms[rand_x][rand_y]);
+				room.addStairs(null, true);
+				setCurrentRoom(null);
 				return;
 			}
 		}
 		
 	}
 
-	function getRoom(index as Point2D) as Room {
+	function getRoom(index as Point2D) as String {
 		return _rooms[index[0]][index[1]];
 	}
 
-	function getRooms() as Array<Array<Room>> {
+	function loadRoom(room_name as String) as Room {
+		var room = Storage.getValue(room_name) as Dictionary;
+		return Room.load(room);
+	}
+
+	function saveCurrentRoom() as Void {
+		if (_current_room != null) {
+			var room_save = _current_room.save();
+			Storage.setValue(_current_room_name, room_save);
+		}
+	}
+
+	function getRooms() as Array<Array<String?>> {
 		return _rooms;
 	}
 
@@ -56,13 +73,22 @@ class Dungeon {
 		return _current_room;
 	}
 
-	function setCurrentRoom(room as Room) {
-		_current_room = room;
-		_current_room_position = getRoomPosition(room) as Point2D;
+	function setCurrentRoom(room_name as String?) {
+		saveCurrentRoom();
+		if (room_name == null) {
+			_current_room = null;
+			_current_room_name = null;
+			_current_room_position = null;
+			return;
+		}
+		_current_room = loadRoom(room_name);
+		_current_room_name = room_name;
+		_current_room_position = getRoomPosition(room_name) as Point2D;
 	}
 
 	function setCurrentRoomFromIndex(index as Point2D) {
-		_current_room = getRoom(index);
+		_current_room_name = getRoom(index);
+		_current_room = loadRoom(_current_room_name);
 		_current_room_position = index;
 	}
 
@@ -70,17 +96,17 @@ class Dungeon {
 		if (_current_room_position != null) {
 			return _current_room_position;
 		}
-		return getRoomPosition(_current_room) as Point2D;
+		return getRoomPosition(_current_room_name) as Point2D;
 	}
 
 	function getSize() as Point2D {
 		return _size;
 	}
 
-	function getRoomPosition(room as Room) as Point2D? {
+	function getRoomPosition(room_name as String) as Point2D? {
 		for (var i = 0; i < _size[0]; i++) {
 			for (var j = 0; j < _size[1]; j++) {
-				if (_rooms[i][j] == room) {
+				if (_rooms[i][j] == room_name) {
 					return [i, j];
 				}
 			}
@@ -88,7 +114,7 @@ class Dungeon {
 		return null;
 	}
 
-	function getRoomInDirection(direction as WalkDirection) as Room? {
+	function getRoomInDirection(direction as WalkDirection) as String? {
 		var current_pos = getCurrentRoomPosition();
 		var new_pos = [current_pos[0], current_pos[1]];
 		switch (direction) {
@@ -119,27 +145,31 @@ class Dungeon {
 			"current_room_position" => _current_room_position,
 			"rooms" => new Array<String?>[_size[0] * _size[1]]
 		};
+		saveCurrentRoom();
 		for (var i = 0; i < _size[0]; i++) {
 			for (var j = 0; j < _size[1]; j++) {
-				var save_str = SaveData.chosen_save + "_dungeon_" + i + "_" + j;
-				Storage.setValue(save_str, _rooms[i][j].save());
-				data["rooms"][i * _size[1] + j] = save_str;
+				if (_rooms[i][j] != null) {
+					data["rooms"][i * _size[1] + j] = _rooms[i][j];
+				}
 			}
 		}
 		return data;
 	}
 
+	function onLoad(data as Dictionary) as Void {
+		var rooms = data["rooms"] as Array<String?>;
+		for (var i = 0; i < _size[0]; i++) {
+			for (var j = 0; j < _size[1]; j++) {
+				_rooms[i][j] = rooms[i * _size[1] + j];
+			}
+		}
+		setCurrentRoomFromIndex(data["current_room_position"] as Point2D);
+	}
+
 	static function load(data as Dictionary) as Dungeon {
 		var size = data["size"] as Point2D;
 		var dungeon = new Dungeon(size[0] as Number, size[1] as Number);
-		var rooms = data["rooms"] as Array<Dictionary<String, Object?>>;
-		for (var i = 0; i < size[0]; i++) {
-			for (var j = 0; j < size[1]; j++) {
-				var room_data = Storage.getValue(rooms[i * size[1] + j] as String) as Dictionary;
-				dungeon.addRoom(Room.load(room_data), [i, j], {});
-			}
-		}
-		dungeon.setCurrentRoomFromIndex(data["current_room_position"] as Point2D?);
+		dungeon.onLoad(data);
 		return dungeon;
 	}
 }

@@ -81,12 +81,12 @@ class Enemy extends Entity {
 		return null;
 	}
 
-	function findNextMove(map as Array<Array<Object?>>) as Point2D {
+	function findNextMove(map as Array<Array<Tile>>) as Point2D {
 		self.next_pos = pos;
 		return pos;
 	}
 
-	function attackNearbyPlayer(map as Array<Array<Object?>>, player_pos as Point2D) as Boolean {
+	function attackNearbyPlayer(map as Array<Array<Tile>>, player_pos as Point2D) as Boolean {
 		if (curr_attack_cooldown > 0) {
 			curr_attack_cooldown -= 1;
 			return false;
@@ -94,7 +94,7 @@ class Enemy extends Entity {
 		if (!MathUtil.isPointDirectAdjacent(pos, player_pos)) {
 			return false;
 		}
-		var player = map[player_pos[0]][player_pos[1]] as Player?;
+		var player = map[player_pos[0]][player_pos[1]].content as Player?;
 		if (player != null) {
 			Battle.attackPlayer(self, player, player_pos);
 			curr_attack_cooldown = attack_cooldown;

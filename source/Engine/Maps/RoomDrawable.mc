@@ -9,73 +9,31 @@ class RoomDrawable extends WatchUi.Drawable {
     private var _tile_width as Number;
     private var _tile_height as Number;
 
-    private var _map_string as String;
-    private var _map_buffer as BufferedBitmapReference?;
-    private var _map_buffer_initialized as Boolean = false;
-    private var _map_drawing as Dictionary<Symbol, Array<Point2D>>;
-    private var _stairs as Point2D?;
-    private var _stairs_sprite as BitmapReference?;
+    private var _map_string as Array<String>;
+    private var _font as FontReference;
 
 
     function initialize(options as Dictionary?) {
         Drawable.initialize(options);
         _tile_width = options[:tile_width];
         _tile_height = options[:tile_height];
-       
-        _map_drawing = options[:map_drawing] as Dictionary;_map_string = mapToString();
+        _map_string = options[:map_string] as Array<String>;
 
-        var buffer_options = {
-			:width => 368,
-			:height => 368,
-		};
-        //_map_buffer = Graphics.createBufferedBitmap(buffer_options);
+        printRoom();
+
+        _font = WatchUi.loadResource($.Rez.Fonts.dungeon);
 
     }
 
-    function mapToString() as String {
-        var map_char_array = new [529] as ByteArray;
-        for (var i = 0; i < 529; i++) {
-            map_char_array[i] = ' ';
+    function printRoom() as Void {
+        System.println("Printing room");
+        for (var i = 0; i < _map_string.size(); i++) {
+            System.println(_map_string[i]);
         }
-        var map_keys = _map_drawing.keys() as Array<Symbol>;
-        for (var i = 0; i < map_keys.size(); i++) {
-            var key = map_keys[i];
-            if (key == :walls) {
-                var walls = _map_drawing[key] as Dictionary<Symbol, Array<Point2D>>?;
-                var wall_keys = walls.keys() as Array<Symbol>;
-                for (var j = 0; j < wall_keys.size(); j++) {
-                    var wall_key = wall_keys[j] as Symbol;
-                    var points = walls[wall_key] as Array<Point2D>;
-                    for (var k = 0; k < points.size(); k++) {
-                        var point = points[k] as Point2D;
-                        map_char_array[point[0] + point[1] * 23] = 'X';
-                    }
-                }
-            } else {
-                var points = _map_drawing[key] as Array<Point2D>;
-                for (var j = 0; j < points.size(); j++) {
-                    map_char_array[points[j][0] + points[j][1] * 23] = 'O';
-                }
-            }
-        }
-        var ret_str = "";
-        for (var i = 0; i < 529; i++) {
-            ret_str += map_char_array[i] as Char;
-            if (i % 23 == 22) {
-                ret_str += "\n";
-            }
-        }
-        return ret_str;
     }
 
     function updateToNewRoom(options as Dictionary) as Void {
-        _map_drawing = options[:map_drawing] as Dictionary;
-        _stairs = options[:stairs] as Point2D?;
-        _map_string = mapToString();
-    }
-
-    function setMapBufferInitialized(value as Boolean) as Void {
-        _map_buffer_initialized = value;
+        _map_string = options[:map_string] as Array<String>;
     }
 
     function drawItem(dc as Dc, item as Item) as Void {
@@ -117,125 +75,21 @@ class RoomDrawable extends WatchUi.Drawable {
     }
 
     function draw(dc as Dc) as Void {
-        /*var map_buffer = _map_buffer.get();
-        if (!_map_buffer_initialized) {
-            _map_buffer_initialized = true;
-            var map_dc = map_buffer.getDc();
-            map_dc.clear();
-            drawMap(map_dc);
+
+        dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_BLACK);
+        for (var i = 0; i < _map_string.size(); i++) {
+            dc.drawText(0, i * 16, _font, _map_string[i], Graphics.TEXT_JUSTIFY_LEFT);
         }
-        dc.drawBitmap(0, 0, map_buffer);
-        map_buffer = null;*/
-        dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_BLACK);
-        dc.drawText(180, 180, Graphics.FONT_SYSTEM_XTINY, _map_string.toString(), Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
-    }
-
-    function drawMap(dc as Dc) as Void {
-        var map_keys = _map_drawing.keys() as Array<Symbol>;
-        for (var i = 0; i < map_keys.size(); i++) {
-            var key = map_keys[i];
-            if (key == :walls) {
-                dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_BLACK);
-                var walls = _map_drawing[key] as Dictionary<Symbol, Array<Point2D>>?;
-                var wall_keys = walls.keys() as Array<Symbol>;
-                for (var j = 0; j < wall_keys.size(); j++) {
-                    var wall_key = wall_keys[j] as Symbol;
-                    var func = new Method(self, wall_key) as Method;
-                    var points = walls[wall_key] as Array<Point2D>;
-                    for (var k = 0; k < points.size(); k++) {
-                        var options = {
-                            :dc => dc,
-                            :x => points[k][0],
-                            :y => points[k][1]
-                        };
-                        func.invoke(options);
-                    }
-                }
-            } else {
-                var points = _map_drawing[key] as Array<Point2D>;
-                var func = new Method(self, key) as Method;
-                for (var j = 0; j < points.size(); j++) {
-                    var options = {
-                        :dc => dc,
-                        :x => points[j][0],
-                        :y => points[j][1]
-                    };
-                    func.invoke(options);
-                }
-            }
+        /*
+        var chars = [0, ' ', '!', '"'] as Array<Char>;
+        var string = "";
+        for (var i = 0; i < chars.size(); i++) {
+            string += chars[i];
         }
-        if (_stairs != null) {
-            // Draw the stairs
-            System.println("Stairs at: " + _stairs);
-            if (_stairs_sprite != null) {
-                _stairs_sprite = WatchUi.loadResource($.Rez.Drawables.Stairs);
-            }
-            dc.drawBitmap(_stairs[0] * _tile_width, _stairs[1] * _tile_height, _stairs_sprite);
-        }
+        System.println("String: " + string);
+        dc.drawText(180, 180, _font, string, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
+        */
     }
 
-    public function drawPassable(options as Dictionary) as Void {
-        var dc = options[:dc] as Dc;
-        var x = options[:x] as Number;
-        var y = options[:y] as Number;
-        dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_BLACK);
-        dc.fillRectangle(x * _tile_width, y * _tile_height, _tile_width, _tile_height);
-    }
-
-    public function drawTopWall(options as Dictionary) as Void {
-        var dc = options[:dc] as Dc;
-        var x = options[:x] as Number;
-        var y = options[:y] as Number;
-        dc.fillRectangle(x * _tile_width, y * _tile_height, _tile_width, _tile_height / 2);
-    }
-
-    public function drawBottomWall(options as Dictionary) as Void {
-        var dc = options[:dc] as Dc;
-        var x = options[:x] as Number;
-        var y = options[:y] as Number;
-        dc.fillRectangle(x * _tile_width, y * _tile_height + _tile_height / 2, _tile_width, _tile_height / 2);
-    }
-
-    public function drawLeftWall(options as Dictionary) as Void {
-        var dc = options[:dc] as Dc;
-        var x = options[:x] as Number;
-        var y = options[:y] as Number;
-        dc.fillRectangle(x * _tile_width, y * _tile_height, _tile_width / 2, _tile_height);
-    }
-
-    public function drawRightWall(options as Dictionary) as Void {
-        var dc = options[:dc] as Dc;
-        var x = options[:x] as Number;
-        var y = options[:y] as Number;
-        dc.fillRectangle(x * _tile_width + _tile_width / 2, y * _tile_height, _tile_width / 2, _tile_height);
-    }
-
-    public function drawTopLeftWall(options as Dictionary) as Void {
-        var dc = options[:dc] as Dc;
-        var x = options[:x] as Number;
-        var y = options[:y] as Number;
-        dc.fillRectangle(x * _tile_width, y * _tile_height, _tile_width / 2, _tile_height / 2);
-    }
-
-    public function drawTopRightWall(options as Dictionary) as Void {
-        var dc = options[:dc] as Dc;
-        var x = options[:x] as Number;
-        var y = options[:y] as Number;
-        dc.fillRectangle(x * _tile_width + _tile_width / 2, y * _tile_height, _tile_width / 2, _tile_height / 2);
-    }
-
-    public function drawBottomLeftWall(options as Dictionary) as Void {
-        var dc = options[:dc] as Dc;
-        var x = options[:x] as Number;
-        var y = options[:y] as Number;
-        dc.fillRectangle(x * _tile_width, y * _tile_height + _tile_height / 2, _tile_width / 2, _tile_height / 2);
-    }
-
-    public function drawBottomRightWall(options as Dictionary) as Void {
-        var dc = options[:dc] as Dc;
-        var x = options[:x] as Number;
-        var y = options[:y] as Number;
-        dc.fillRectangle(x * _tile_width + _tile_width / 2, y * _tile_height + _tile_height / 2, _tile_width / 2, _tile_height / 2);
-    }
 
 }

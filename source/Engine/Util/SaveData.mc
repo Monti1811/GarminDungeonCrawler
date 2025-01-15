@@ -131,6 +131,18 @@ module SaveData {
 		];
 	}
 
+	public function deleteDungeonSave() as Void {
+		var dungeon = getApp().getCurrentDungeon();
+		var dungeon_save_keys = dungeon.getRooms();
+		for (var i = 0; i < dungeon_save_keys.size(); i++) {
+			if (dungeon_save_keys[i] != null) {
+				var room_name = dungeon_save_keys[i] as String;
+				Storage.deleteValue(room_name);
+			}
+		}
+		Storage.deleteValue(chosen_save);
+	}
+
 	public function deleteSave(save as String) {
 		var temp = Storage.getValue(save) as Dictionary;
 		var dungeon_save_keys = (temp["dungeon"] as Dictionary)["rooms"] as Array<String>;
