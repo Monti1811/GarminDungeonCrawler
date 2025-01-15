@@ -80,15 +80,6 @@ class RoomDrawable extends WatchUi.Drawable {
         for (var i = 0; i < _map_string.size(); i++) {
             dc.drawText(0, i * 16, _font, _map_string[i], Graphics.TEXT_JUSTIFY_LEFT);
         }
-        /*
-        var chars = [0, ' ', '!', '"'] as Array<Char>;
-        var string = "";
-        for (var i = 0; i < chars.size(); i++) {
-            string += chars[i];
-        }
-        System.println("String: " + string);
-        dc.drawText(180, 180, _font, string, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
-        */
     }
 
 

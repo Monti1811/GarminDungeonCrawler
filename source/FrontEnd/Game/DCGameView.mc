@@ -12,10 +12,9 @@ class DCGameView extends WatchUi.View {
 
 	private var _player_sprite as Bitmap;
     private var _player_sprite_offset as Point2D = [0,0];
+    private var _player_health as Number = 100;
 
 	private var _timer as Timer.Timer;
-    private var bg_layer as Layer;
-    private var fg_layer as Layer;
 
 	private var _turns as Turn;
 
@@ -46,9 +45,6 @@ class DCGameView extends WatchUi.View {
 
         }
         rightLowHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightLow, :locX => 290, :locY => 220});
-
-		bg_layer = new Layer({:locX=>0, :locY=>0, :width=>360, :height=>360});
-        fg_layer = new Layer({:locX=>0, :locY=>0, :width=>360, :height=>360});
 		
 		_player_sprite = new WatchUi.Bitmap({
             :rezId=>player.getSprite(), 
@@ -85,8 +81,6 @@ class DCGameView extends WatchUi.View {
 
     // Load your resources here
     function onLayout(dc as Dc) as Void {
-		addLayer(bg_layer);
-        addLayer(fg_layer);
     }
 
     // Called when this View is brought to the foreground. Restore
@@ -102,25 +96,23 @@ class DCGameView extends WatchUi.View {
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_BLACK);
         dc.clear();
 
-		var bg_dc = bg_layer.getDc();
-		var fg_dc = fg_layer.getDc();
-
         _room_drawable.draw(dc);
 		rightLowHint.draw(dc);
 
-        bg_dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-		bg_dc.clear();
-        _room_drawable.drawItems(bg_dc, _room.getItems());
-        _room_drawable.drawEnemies(bg_dc, _room.getEnemies());
+        dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+        _room_drawable.drawItems(dc, _room.getItems());
+        _room_drawable.drawEnemies(dc, _room.getEnemies());
 		
-		fg_dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-		fg_dc.clear();
-		
-		drawPlayer(fg_dc);
+		dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+		drawPlayer(dc);
 
         for (var i = 0; i < damage_texts.size(); i++) {
-            damage_texts[i].draw(fg_dc);
+            damage_texts[i].draw(dc);
         }
+    }
+
+    function drawHealth(dc as Dc) as Void {
+        dc.drawArc(180, 180, 175, Graphics.ARC_CLOCKWISE, )
     }
 
     function drawPlayer(dc as Dc) as Void {
