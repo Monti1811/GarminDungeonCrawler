@@ -42,6 +42,9 @@ class Turn {
             goToNextDungeon();
             return;
         }
+        if (checkForNPC(map_element)) {
+            return;
+        }
 		if (!(tile.type == PASSABLE)) {
 			return;
 		}
@@ -184,8 +187,8 @@ class Turn {
         }
         // If the player did not attack, try to move
         if (!player_attacked) {
-            movePlayer(map, new_pos);
             pickUpItem(map, new_pos, map_element);
+            movePlayer(map, new_pos);
         }
 
     }
@@ -196,6 +199,15 @@ class Turn {
             _player.pickupItem(item);
             _room.removeItem(item);
         }
+    }
+
+    function checkForNPC(map_element as Object?) as Boolean {
+        if (map_element != null && map_element instanceof NPC) {
+            var npc = map_element as NPC;
+            npc.onInteract();
+            return true;
+        }
+        return false;
     }
 
     function resolveEnemyActions(enemies as Array<Enemy>, target_pos as Point2D) as Void {

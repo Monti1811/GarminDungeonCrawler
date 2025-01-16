@@ -95,14 +95,9 @@ class DCGameView extends WatchUi.View {
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_BLACK);
         dc.clear();
 
-        _room_drawable.draw(dc);
+        _room_drawable.drawAll(dc, _room);
 		rightLowHint.draw(dc);
 
-        dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-        _room_drawable.drawItems(dc, _room.getItems());
-        _room_drawable.drawEnemies(dc, _room.getEnemies());
-		
-		dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
 		drawPlayer(dc);
 
         for (var i = 0; i < damage_texts.size(); i++) {

@@ -74,12 +74,44 @@ class RoomDrawable extends WatchUi.Drawable {
         }
     }
 
+    function drawNPC(dc as Dc, npc as NPC) as Void {
+        var npc_pos = npc.getPos();
+        var npc_sprite_ref = npc.getSpriteRef();
+        var npc_sprite_offset = npc.getSpriteOffset();
+        dc.drawBitmap(
+                npc_pos[0] * _tile_width - npc_sprite_offset[0], 
+                npc_pos[1] * _tile_height - npc_sprite_offset[1], 
+                npc_sprite_ref
+        );
+    }
+
+    function drawNPCs(dc as Dc, npcs as Dictionary<Point2D, NPC>) as Void {
+        var npc_values = npcs.values() as Array<NPC>;
+        for (var i = 0; i < npc_values.size(); i++) {
+            var npc = npc_values[i];
+            drawNPC(dc, npc);
+        }
+    }
+
     function draw(dc as Dc) as Void {
 
         dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_BLACK);
         for (var i = 0; i < _map_string.size(); i++) {
             dc.drawText(0, i * 16, _font, _map_string[i], Graphics.TEXT_JUSTIFY_LEFT);
         }
+    }
+
+    function drawAll(dc as Dc, room as Room) as Void {
+
+        dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_BLACK);
+        for (var i = 0; i < _map_string.size(); i++) {
+            dc.drawText(0, i * 16, _font, _map_string[i], Graphics.TEXT_JUSTIFY_LEFT);
+        }
+
+        dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+        drawItems(dc, room.getItems());
+        drawEnemies(dc, room.getEnemies());
+        drawNPCs(dc, room.getNPCs());
     }
 
 

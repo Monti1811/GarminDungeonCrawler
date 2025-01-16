@@ -30,13 +30,15 @@ class Dungeon {
 			// Add connections to room
 			room.addConnection(connection_keys[i], _rooms[connection[0]][connection[1]]);
 		}
+		// Save the room and save the save string of the room in the dungeon
 		var save_str = SaveData.chosen_save + "_dungeon_" + pos[0] + "_" + pos[1];
 		Storage.setValue(save_str, room.save());
 		_rooms[pos[0]][pos[1]] = save_str;
 	}
 
 	function addStairs() as Void {
-		while (true) {
+		var max_tries = 100;
+		while (max_tries > 0) {
 			var rand_x = MathUtil.random(0, _size[0] - 1);
 			var rand_y = MathUtil.random(0, _size[1] - 1);
 			var room_name = _rooms[rand_x][rand_y];
@@ -46,8 +48,28 @@ class Dungeon {
 				saveRoom(room_name, room);
 				return;
 			}
+			max_tries -= 1;
 		}
 		
+	}
+
+	function addMerchant() as Void {
+		if (MathUtil.random(0, 100) < 0) {
+			return;
+		}
+		var max_tries = 100;
+		while (max_tries > 0) {
+			var rand_x = MathUtil.random(0, _size[0] - 1);
+			var rand_y = MathUtil.random(0, _size[1] - 1);
+			var room_name = _rooms[rand_x][rand_y];
+			if (room_name != null) {
+				var room = loadRoom(room_name);
+				room.addMerchant();
+				saveRoom(room_name, room);
+				return;
+			}
+			max_tries -= 1;
+		}
 	}
 
 	function getRoom(index as Point2D) as String {

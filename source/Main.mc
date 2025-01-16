@@ -5,6 +5,15 @@ import Toybox.Graphics;
 
 module Main {
 
+	function prepareDungeon(dungeon as Dungeon) {
+		dungeon.addStairs();
+		dungeon.addMerchant();
+		var app = getApp();
+		app.setCurrentDungeon(dungeon);
+		var start_room = MathUtil.random(0, dungeon.getSize()[0] * dungeon.getSize()[1] - 1);
+		dungeon.setCurrentRoomFromIndex(MathUtil.IndexToPos2D(start_room, dungeon.getSize()[0]));
+	}
+
 	function createNewGame1(player as Player, progress_bar as WatchUi.ProgressBar) as Void {
 		var app = getApp();
 		app.setPlayer(player);
@@ -16,11 +25,7 @@ module Main {
 	}
 
 	function createNewGame2(player as Player, progress_bar as WatchUi.ProgressBar, dungeon as Dungeon) as Void {
-		dungeon.addStairs();
-		var app = getApp();
-		app.setCurrentDungeon(dungeon);
-		var start_room = MathUtil.random(0, dungeon.getSize()[0] * dungeon.getSize()[1] - 1);
-		dungeon.setCurrentRoomFromIndex(MathUtil.IndexToPos2D(start_room, dungeon.getSize()[0]));
+		prepareDungeon(dungeon);
 		var view = new DCIntroView();
 		WatchUi.switchToView(view, new DCIntroDelegate(view, null, Graphics.FONT_TINY), WatchUi.SLIDE_IMMEDIATE);
 	}
@@ -32,12 +37,8 @@ module Main {
 	}
 
 	function createNextDungeon2(progress_bar as WatchUi.ProgressBar, dungeon as Dungeon) as Void {
-		dungeon.addStairs();
-		var app = getApp();
-		app.setCurrentDungeon(dungeon);
-		var start_room = MathUtil.random(0, dungeon.getSize()[0] * dungeon.getSize()[1] - 1);
-		dungeon.setCurrentRoomFromIndex(MathUtil.IndexToPos2D(start_room, dungeon.getSize()[0]));
-		var view_delegate = app.showRoom() as [Views, InputDelegates];
+		prepareDungeon(dungeon);
+		var view_delegate = getApp().showRoom() as [Views, InputDelegates];
 		WatchUi.switchToView(view_delegate[0], view_delegate[1], WatchUi.SLIDE_IMMEDIATE);
 	}
 

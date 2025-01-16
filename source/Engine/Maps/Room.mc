@@ -31,6 +31,7 @@ class Room {
 
     private var _items as Dictionary<Point2D, Item>;
     private var _enemies as Dictionary<Point2D, Enemy>;
+    private var _npcs as Dictionary<Point2D, NPC>;
 
     private var _player_pos as Point2D;
 
@@ -49,6 +50,7 @@ class Room {
        
         _items = options[:items];
         _enemies = options[:enemies];
+        _npcs = {};
         
         initializeMap();
 
@@ -137,6 +139,10 @@ class Room {
 
     function getItems() as Dictionary<Point2D, Item> {
         return _items;
+    }
+
+    function getNPCs() as Dictionary<Point2D, NPC> {
+        return _npcs;
     }
 
     function moveEnemy(enemy as Enemy) as Void {
@@ -229,6 +235,12 @@ class Room {
         var enemy_pos = enemy.getPos();
         _enemies.put(enemy_pos, enemy);
         _map[enemy_pos[0]][enemy_pos[1]].content = enemy;
+    }
+
+    function addNPC(npc as NPC) as Void {
+        var npc_pos = npc.getPos();
+        _npcs.put(npc_pos, npc);
+        _map[npc_pos[0]][npc_pos[1]].content = npc;
     }
 
     function addConnection(direction as WalkDirection, room as Room?) as Void {
@@ -343,24 +355,34 @@ class Room {
         }
     }
 
+    function addMerchant() as Void {
+        var pos = MapUtil.getRandomPosFromRoom(self);
+        if (pos != null) {
+            var merchant = new Merchant();
+            merchant.setPos(pos);
+            _map[pos[0]][pos[1]].content = merchant;
+            addNPC(merchant);
+        }
+    }
+
+    function saveEntityDict(dict as Dictionary) as Array<Dictionary> {
+        var entities = [];
+        var entity_keys = dict.keys() as Array<Point2D>;
+        for (var i = 0; i < entity_keys.size(); i++) {
+            var entity = dict[entity_keys[i]];
+            if (entity != null) {
+                entities.add(entity.save());
+            }
+        }
+        return entities;
+    }
+
 
     function save() as Dictionary {
-        var items = [];
-        var item_keys = _items.keys() as Array<Point2D>;
-        for (var i = 0; i < item_keys.size(); i++) {
-            var item = _items[item_keys[i]];
-            if (item != null) {
-                items.add(item.save());
-            }
-        }
-        var enemies = [];
-        var enemy_keys = _enemies.keys() as Array<Point2D>;
-        for (var i = 0; i < enemy_keys.size(); i++) {
-            var enemy = _enemies[enemy_keys[i]];
-            if (enemy != null) {
-                enemies.add(enemy.save());
-            }
-        }
+        var items = saveEntityDict(_items);
+        var enemies = saveEntityDict(_enemies);
+        var npcs = saveEntityDict(_npcs);
+
         var screensize = MapUtil.getNumTilesForScreensize();
         var map = [];
         for (var i = 0; i < screensize[0]; i++) {
@@ -381,7 +403,8 @@ class Room {
             "map" => map,
             "map_string" => _map_string,
             "items" => items,
-            "enemies" => enemies
+            "enemies" => enemies,
+            "npcs" => npcs
         };
     }
 
@@ -419,28 +442,36 @@ class Room {
             :items => {},
             :enemies => {}
         });
+        room.onLoad(data);
+        return room;
+    }
+
+    function onLoad(data as Dictionary) as Void {
         if (data["player_pos"] != null) {
             System.println("Set Player pos: " + data["player_pos"]);
-            room.updatePlayerPos(data["player_pos"]);
+            updatePlayerPos(data["player_pos"]);
         }
         if (data["stairs"] != null) {
-            room.addStairs(data["stairs"], false);
+            addStairs(data["stairs"], false);
         }
-        var items_data = data["items"] as Array<Dictionary>?;
-        if (items_data != null) {
-            for (var i = 0; i < items_data.size(); i++) {
-                var item = Item.load(items_data[i]);
-                room.addItem(item);
-            }
+        _items = {};
+        var data_items = data["items"] as Array<Dictionary>;
+        for (var i = 0; i < data_items.size(); i++) {
+            var item = Item.load(data_items[i] as Dictionary);
+            addItem(item);
         }
-        var enemies_data = data["enemies"] as Array<Dictionary>?;
-        if (enemies_data != null) {
-            for (var i = 0; i < enemies_data.size(); i++) {
-                var enemy = Enemy.load(enemies_data[i]);
-                room.addEnemy(enemy);
-            }
+        _enemies = {};
+        var data_enemies = data["enemies"] as Array<Dictionary>;
+        for (var i = 0; i < data_enemies.size(); i++) {
+            var enemy = Enemy.load(data_enemies[i] as Dictionary);
+            addEnemy(enemy);
         }
-        return room;
+        _npcs = {};
+        var data_npcs = data["npcs"] as Array<Dictionary>;
+        for (var i = 0; i < data_npcs.size(); i++) {
+            var npc = NPC.load(data_npcs[i] as Dictionary);
+            addNPC(npc);
+        }
     }
 
 }
