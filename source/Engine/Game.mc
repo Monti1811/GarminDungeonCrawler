@@ -1,4 +1,5 @@
 import Toybox.Lang;
+import Toybox.Time;
 
 enum Difficulty {
 	EASY,
@@ -34,12 +35,16 @@ module Game {
 		}
 		difficulty = data["difficulty"];
 		game_mode = data["game_mode"];
-		depth = data["depth"];
-		time_played = data["time_played"];
+		if (data["depth"] != null) {
+			depth = data["depth"];
+		}
+		if (data["time_played"] != null) {
+			time_played = data["time_played"];
+		}
 	}
 
-	function addToCurrentRun(amount as Number) as Void {
-		current_run += amount;
+	function addToDepth(amount as Number) as Void {
+		depth += amount;
 	}
 
 	function getTimePlayed() as Number {
@@ -59,8 +64,8 @@ module Game {
 	}
 
 	function updateTimePlayed(time as Time.Moment) as Void {
-		Toybox.System.println("Time started: " + time_started);
-		Toybox.System.println("Time ended: " + time);
+		Toybox.System.println("Time started: " + time_started.value());
+		Toybox.System.println("Time ended: " + time.value());
 		var diff = time.subtract(time_started);
 		time_played += diff.value();
 		time_started = time;

@@ -82,11 +82,12 @@ module SaveData {
 		Toybox.System.println("Data: " + data);
 		_save_data = data;
 		var playerData = data["player"] as Dictionary<PropertyKeyType, PropertyValueType>;
+		var gameData = data["game"] as Dictionary<PropertyKeyType, PropertyValueType>;
 		var data_to_show = [
-			playerData["name"], 
-			data["level"], 
-			$.Game["depth"], 
-			$.Game["time_played"]
+			playerData["name"] as PropertyValueType, 
+			data["level"] as PropertyValueType, 
+			gameData["depth"] as PropertyValueType, 
+			gameData["time_played"] as PropertyValueType
 		] as Array<PropertyValueType>;
 		saveToMemory(data_to_show);
 		_save_data = {};

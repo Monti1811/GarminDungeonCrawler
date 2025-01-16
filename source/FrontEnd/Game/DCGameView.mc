@@ -124,7 +124,7 @@ class DCGameView extends WatchUi.View {
         dc.setPenWidth(1);
         dc.drawArc(180, 180, 178, Graphics.ARC_CLOCKWISE, 170, 100);
         dc.drawArc(180, 180, 172, Graphics.ARC_CLOCKWISE, 170, 100);
-        dc.drawLine(5, 149, 12, 150);
+        dc.drawLine(5, 149, 11, 150);
         dc.drawLine(150, 11, 149, 5);
     }
 

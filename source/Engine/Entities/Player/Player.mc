@@ -415,7 +415,7 @@ class Player extends Entity {
 		if (save_data["id"] == null) {
 			save_data["id"] = 0;
 		}
-		var player = Players.createPlayerFromId(save_data["id"] as Number);
+		var player = Players.createPlayerFromId(save_data["id"] as Number, save_data["name"] as String);
 		player.onLoad(save_data);
 		return player;
 	}
