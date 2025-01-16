@@ -38,13 +38,15 @@ class Turn {
 
         var tile = map[new_pos[0]][new_pos[1]];
         var map_element = tile.content as Object?;
-		if (tile.type != PASSABLE) {
+        if (tile.type == STAIRS) {
+            goToNextDungeon();
+            return;
+        }
+		if (!(tile.type == PASSABLE)) {
 			return;
 		}
 
-        if (checkIfNextDungeon(map_element)) {
-            return;
-        }
+        
 
 		System.println("Old pos: " + _player_pos);
         System.println("New pos: " + new_pos);
@@ -154,19 +156,15 @@ class Turn {
         return false;
     }
 
-    function checkIfNextDungeon(map_element as Object?) as Boolean {
-        if (map_element != null && map_element instanceof Stairs) {
-            var app = getApp();
-            app.setCurrentDungeon(null);
-            $.Game.addToDepth(1);
-            var progressBar = new WatchUi.ProgressBar(
-            "Creating next dungeon...",
-            0.0
-            );
-            WatchUi.switchToView(progressBar, new DCNewDungeonProgressDelegate(progressBar), WatchUi.SLIDE_UP);
-            return true;
-        }
-        return false;
+    function goToNextDungeon() as Void {
+        var app = getApp();
+        app.setCurrentDungeon(null);
+        $.Game.addToDepth(1);
+        var progressBar = new WatchUi.ProgressBar(
+        "Creating next dungeon...",
+        0.0
+        );
+        WatchUi.switchToView(progressBar, new DCNewDungeonProgressDelegate(progressBar), WatchUi.SLIDE_UP);
     }
 
     function resolvePlayerActions(map as Array<Array<Tile>>, new_pos as Point2D, direction as WalkDirection, map_element as Object?) as Void {

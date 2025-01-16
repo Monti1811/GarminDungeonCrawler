@@ -109,13 +109,15 @@ class DCGameView extends WatchUi.View {
             damage_texts[i].draw(dc);
         }
 
-        drawHealth(dc);
+        var player = getApp().getPlayer();
+        drawHealth(dc, player);
+        drawSecondBar(dc, player);
     }
 
-    function drawHealth(dc as Dc) as Void {
+    function drawHealth(dc as Dc, player as Player) as Void {
         // Draw health bar
         dc.setColor(Graphics.COLOR_DK_RED, Graphics.COLOR_BLACK);
-        var health_percent = getApp().getPlayer().getHealthPercent();
+        var health_percent = player.getHealthPercent();
         var bar_percent = (70 * health_percent).toNumber();
         dc.setPenWidth(5);
         dc.drawArc(180, 180, 175, Graphics.ARC_CLOCKWISE, 170, 170 - bar_percent);
@@ -126,6 +128,37 @@ class DCGameView extends WatchUi.View {
         dc.drawArc(180, 180, 172, Graphics.ARC_CLOCKWISE, 170, 100);
         dc.drawLine(5, 149, 11, 150);
         dc.drawLine(150, 11, 149, 5);
+    }
+
+    var bar_to_fn as Dictionary<Symbol, Symbol> = {
+        :mana=>:drawManaBar
+    };
+
+    function drawSecondBar(dc as Dc, player as Player) as Void {
+        if (player.second_bar == null) {
+            return;
+        }
+        var method = new Method(self, bar_to_fn[player.second_bar]);
+        var bar_values = method.invoke(player) as [Number, Number];
+        // Draw second bar
+        dc.setColor(bar_values[0], Graphics.COLOR_BLACK);
+        dc.setPenWidth(5);
+        dc.drawArc(180, 180, 175, Graphics.ARC_COUNTER_CLOCKWISE, 80 - bar_values[1], 80);
+        // Draw health bar outline
+        dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_BLACK);
+        dc.setPenWidth(1);
+        dc.drawArc(180, 180, 178, Graphics.ARC_COUNTER_CLOCKWISE, 10, 80);
+        dc.drawArc(180, 180, 172, Graphics.ARC_COUNTER_CLOCKWISE, 10, 80);
+        dc.drawLine(355, 149, 349, 150);
+        dc.drawLine(210, 11, 211, 5);
+    }
+
+    function drawManaBar(player as Player) as [Number, Number] {
+        player = player as Mage;
+        var mana_percent = player.getManaPercent();
+        var bar_percent = (70 * mana_percent).toNumber();
+        return [Graphics.COLOR_DK_BLUE as Number, bar_percent];
+        
     }
 
     function drawPlayer(dc as Dc) as Void {

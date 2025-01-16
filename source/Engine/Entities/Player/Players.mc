@@ -5,6 +5,8 @@ module Players {
     var players as Dictionary<Number, Symbol> = {
         0 => :createWarrior,
         1 => :createMage,
+
+        999 => :createGod,
     };
 
 
@@ -14,6 +16,10 @@ module Players {
 
     function createMage(name as String) as Player {
         return new Mage(name);
+    }
+
+    function createGod(name as String) as Player {
+        return new God(name);
     }
 
 

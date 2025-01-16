@@ -7,6 +7,7 @@ class Player extends Entity {
 	var id = 0;
 	var current_health as Number = 100;
 	var maxHealth as Number = 100;
+	var second_bar as Symbol?;
 	var name as String = "Player";
 	var description as String = "The player character";
 	
@@ -31,7 +32,9 @@ class Player extends Entity {
 		LEGS => null,
 		FEET => null,
 		LEFT_HAND => null,
-		RIGHT_HAND => null
+		RIGHT_HAND => null,
+		ACCESSORY => null,
+		MUNITION => null,
 	};
 	var gold as Number = 0;
 	var sprite as ResourceId = $.Rez.Drawables.Player;
@@ -83,7 +86,7 @@ class Player extends Entity {
 	function pickupItem(item as Item) as Boolean {
 		if (!inventory.isFull() && item.canBePickedUp(me)) {
 			item.onPickupItem(me);
-			if (equipped[item.slot] == null) {
+			if (item instanceof EquippableItem && equipped[item.slot] == null) {
 				equipItem(item, item.slot, false);
 			} else {
 				inventory.add(item);
@@ -138,6 +141,8 @@ class Player extends Entity {
 
 	function onLevelUp() as Void {
 		level++;
+		next_level_experience = level * 100;
+		attribute_points += 5;
 	}
 
 	function getLevel() as Number {

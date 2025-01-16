@@ -10,6 +10,8 @@ module Main {
 		app.setPlayer(player);
 		progress_bar.setProgress(10.0);
 		progress_bar.setDisplayString("Creating dungeon");
+		$.SaveData.current_save_num = SaveData.current_save_num + 1;
+        $.SaveData.chosen_save = SaveData.current_save_num.toString();
 		
 	}
 
@@ -183,9 +185,13 @@ module Main {
         };
 	}*/
 
+	function getMaxItemsNumForRoom(size_x as Number, size_y as Number) as Number {
+		return Math.floor(size_x * size_y / 20);
+	}
+
 	function createRandomItems(map as Array<Array<Tile>>, left as Number, right as Number, top as Number, bottom as Number) as Dictionary<Point2D, Item> {
 		var items = {};
-		var num_items = MathUtil.random(0, 5);
+		var num_items = MathUtil.random(0, getMaxItemsNumForRoom(right - left - 1, bottom - top - 1));
 		for (var i = 0; i < num_items; i++) {
 			var item = createRandomItem();
 			var item_pos = MapUtil.getRandomPos(map, left, right, top, bottom);
@@ -197,12 +203,16 @@ module Main {
 	}
 
 	function createRandomItem() as Item {
-		return Items.createRandomItem();
+		return Items.createRandomWeightedItem();
+	}
+
+	function getMaxEnemiesNumForRoom(size_x as Number, size_y as Number) as Number {
+		return Math.floor(size_x * size_y / 10);
 	}
 
 	function createRandomEnemies(map as Array<Array<Tile>>, left as Number, right as Number, top as Number, bottom as Number) as Dictionary<Point2D,Enemy> {
 		var enemies = {};
-		var num_enemies = MathUtil.random(0, 5);
+		var num_enemies = MathUtil.random(0, getMaxEnemiesNumForRoom(right - left - 1, bottom - top - 1));
 		for (var i = 0; i < num_enemies; i++) {
 			var enemy = createRandomEnemy();
 			var enemy_pos = MapUtil.getRandomPos(map, left, right, top, bottom);
@@ -214,7 +224,7 @@ module Main {
 	}
 
 	function createRandomEnemy() as Enemy {
-		return Enemies.createRandomEnemy();
+		return Enemies.createRandomWeightedEnemy();
 	}
 
 }

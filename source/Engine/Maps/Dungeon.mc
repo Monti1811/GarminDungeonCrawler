@@ -39,10 +39,11 @@ class Dungeon {
 		while (true) {
 			var rand_x = MathUtil.random(0, _size[0] - 1);
 			var rand_y = MathUtil.random(0, _size[1] - 1);
-			if (_rooms[rand_x][rand_y] != null) {
-				var room = loadRoom(_rooms[rand_x][rand_y]);
+			var room_name = _rooms[rand_x][rand_y];
+			if (room_name != null) {
+				var room = loadRoom(room_name);
 				room.addStairs(null, true);
-				setCurrentRoom(null);
+				saveRoom(room_name, room);
 				return;
 			}
 		}
@@ -51,6 +52,10 @@ class Dungeon {
 
 	function getRoom(index as Point2D) as String {
 		return _rooms[index[0]][index[1]];
+	}
+
+	function saveRoom(room_name as String, room as Room) as Void {
+		Storage.setValue(room_name, room.save());
 	}
 
 	function loadRoom(room_name as String) as Room {

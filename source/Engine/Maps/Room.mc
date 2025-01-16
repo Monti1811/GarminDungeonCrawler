@@ -333,6 +333,7 @@ class Room {
         if (pos == null) {
             pos = MapUtil.getRandomPosFromRoom(self);
         }
+        System.println("Stairs pos: " + pos);
         if (pos != null) {
             _map[pos[0]][pos[1]].type = STAIRS;
             _stairs = pos;

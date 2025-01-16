@@ -48,8 +48,6 @@ class DCCreateGameProgressDelegate extends WatchUi.BehaviorDelegate {
                 break;
             case 3:
                 Main.createNewGame2(_player, _progress_bar, _dungeon);
-                SaveData.current_save_num = SaveData.current_save_num + 1;
-                SaveData.chosen_save = SaveData.current_save_num.toString();
                 _progress = 4;
                 return;
         }
