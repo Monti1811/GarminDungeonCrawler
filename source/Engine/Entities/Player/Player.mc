@@ -4,13 +4,12 @@ import Toybox.WatchUi;
 
 class Player extends Entity {
 
+	var id = 0;
 	var current_health as Number = 100;
 	var maxHealth as Number = 100;
 	var name as String = "Player";
 	var description as String = "The player character";
-	var current_run as Number = 0;
-	var time_played as Number = 0;
-	var time_started as Time.Moment?;
+	
 	var level as Number = 1;
 	var experience as Number = 0;
 	var next_level_experience as Number = 100;
@@ -358,42 +357,8 @@ class Player extends Entity {
 		return name;
 	}
 
-	function getCurrentRun() as Number {
-		return current_run;
-	}
 
-	function setCurrentRun(run as Number) as Void {
-		current_run = run;
-	}
-
-	function addToCurrentRun(amount as Number) as Void {
-		current_run += amount;
-	}
-
-	function getTimePlayed() as Number {
-		return time_played;
-	}
-
-	function setTimePlayed(time as Number) as Void {
-		time_played = time;
-	}
-
-	function addToTimePlayed(time as Number) as Void {
-		time_played += time;
-	}
 	
-	function setTimeStarted(time as Time.Moment) as Void {
-		time_started = time;
-	}
-
-	function updateTimePlayed(time as Time.Moment) as Void {
-		Toybox.System.println("Time started: " + time_started);
-		Toybox.System.println("Time ended: " + time);
-		var diff = time.subtract(time_started);
-		time_played += diff.value();
-		time_started = time;
-	}
-
 	function getPos() as Point2D {
 		return pos;
 	}
@@ -422,9 +387,8 @@ class Player extends Entity {
 
 	function save() as Dictionary {
 		var save_data = {
+			"id" => id,
 			"name" => name,
-			"run" => current_run,
-			"time_played" => time_played,
 			"current_health" => current_health,
 			"maxHealth" => maxHealth,
 			"level" => level,
@@ -448,18 +412,15 @@ class Player extends Entity {
 
 	static function load(save_data as Dictionary) as Player {
 		Toybox.System.println("Loading player: " + save_data);
-		var player = Players.createWarrior(save_data["name"]);
+		if (save_data["id"] == null) {
+			save_data["id"] = 0;
+		}
+		var player = Players.createPlayerFromId(save_data["id"] as Number);
 		player.onLoad(save_data);
 		return player;
 	}
 
 	function onLoad(save_data as Dictionary) as Void {
-		if (save_data["run"] != null) {
-			current_run = save_data["run"] as Number;
-		}
-		if (save_data["time_played"] != null) {
-			time_played = save_data["time_played"] as Number;
-		}
 		if (save_data["current_health"] != null) {
 			current_health = save_data["current_health"] as Number;
 		}

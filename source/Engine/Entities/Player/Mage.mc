@@ -4,7 +4,7 @@ class Mage extends Player {
 
 	function initialize(name as String) {
 		Player.initialize();
-
+		self.id = 1;
 		// Set name
 		self.name = name;
 		self.description = "A mage character";

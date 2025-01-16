@@ -43,7 +43,7 @@ module Main {
 		var app = getApp();
 		var view_delegate = app.showRoom() as [Views, InputDelegates];
 		WatchUi.switchToView(view_delegate[0], view_delegate[1], WatchUi.SLIDE_IMMEDIATE);
-		app.getPlayer().setTimeStarted(Toybox.Time.now());
+		$.Game.setTimeStarted(Toybox.Time.now());
 	}
 
 	function createNewDungeon(progress_bar as WatchUi.ProgressBar) as Dungeon {

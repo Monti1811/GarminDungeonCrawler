@@ -4,7 +4,7 @@ class Warrior extends Player {
 
 	function initialize(name as String) {
 		Player.initialize();
-
+		self.id = 0;
 		// Set name
 		self.name = name;
 		self.description = "A warrior character";

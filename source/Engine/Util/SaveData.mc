@@ -71,7 +71,7 @@ module SaveData {
 		if (Storage.getValue(chosen_save) == null) {
 			Storage.setValue("save_num", current_save_num);
 		}
-		player.updateTimePlayed(Toybox.Time.now());
+		$.Game.updateTimePlayed(Toybox.Time.now());
 		var data = {
 			"player" => player.save(),
 			"level" => player.getLevel(),
@@ -85,8 +85,8 @@ module SaveData {
 		var data_to_show = [
 			playerData["name"], 
 			data["level"], 
-			playerData["run"], 
-			playerData["time_played"]
+			$.Game["depth"], 
+			$.Game["time_played"]
 		] as Array<PropertyValueType>;
 		saveToMemory(data_to_show);
 		_save_data = {};
