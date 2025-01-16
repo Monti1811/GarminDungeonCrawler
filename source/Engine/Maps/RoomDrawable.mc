@@ -9,36 +9,31 @@ class RoomDrawable extends WatchUi.Drawable {
     private var _tile_width as Number;
     private var _tile_height as Number;
 
-    private var _map_buffer as BufferedBitmapReference;
-    private var _map_buffer_initialized as Boolean = false;
-    private var _map_drawing as Dictionary<Symbol, Array<Point2D>>;
-    private var _stairs as Point2D?;
-    private var _stairs_sprite as BitmapReference?;
+    private var _map_string as Array<String>;
+    private var _font as FontReference;
 
 
     function initialize(options as Dictionary?) {
         Drawable.initialize(options);
         _tile_width = options[:tile_width];
         _tile_height = options[:tile_height];
-       
-        _map_drawing = options[:map_drawing] as Dictionary;
+        _map_string = options[:map_string] as Array<String>;
 
-        var buffer_options = {
-			:width => 368,
-			:height => 368,
-		};
-        _map_buffer = Graphics.createBufferedBitmap(buffer_options);
+        printRoom();
 
+        _font = WatchUi.loadResource($.Rez.Fonts.dungeon);
+
+    }
+
+    function printRoom() as Void {
+        System.println("Printing room");
+        for (var i = 0; i < _map_string.size(); i++) {
+            System.println(_map_string[i]);
+        }
     }
 
     function updateToNewRoom(options as Dictionary) as Void {
-        _map_drawing = options[:map_drawing] as Dictionary;
-        _stairs = options[:stairs] as Point2D?;
-        _map_buffer_initialized = false;
-    }
-
-    function setMapBufferInitialized(value as Boolean) as Void {
-        _map_buffer_initialized = value;
+        _map_string = options[:map_string] as Array<String>;
     }
 
     function drawItem(dc as Dc, item as Item) as Void {
@@ -79,124 +74,45 @@ class RoomDrawable extends WatchUi.Drawable {
         }
     }
 
+    function drawNPC(dc as Dc, npc as NPC) as Void {
+        var npc_pos = npc.getPos();
+        var npc_sprite_ref = npc.getSpriteRef();
+        var npc_sprite_offset = npc.getSpriteOffset();
+        dc.drawBitmap(
+                npc_pos[0] * _tile_width - npc_sprite_offset[0], 
+                npc_pos[1] * _tile_height - npc_sprite_offset[1], 
+                npc_sprite_ref
+        );
+    }
+
+    function drawNPCs(dc as Dc, npcs as Dictionary<Point2D, NPC>) as Void {
+        var npc_values = npcs.values() as Array<NPC>;
+        for (var i = 0; i < npc_values.size(); i++) {
+            var npc = npc_values[i];
+            drawNPC(dc, npc);
+        }
+    }
+
     function draw(dc as Dc) as Void {
-        var map_buffer = _map_buffer.get();
-        if (!_map_buffer_initialized) {
-            _map_buffer_initialized = true;
-            var map_dc = map_buffer.getDc();
-            map_dc.clear();
-            drawMap(map_dc);
-        }
-        dc.drawBitmap(0, 0, map_buffer);
-        map_buffer = null;
-    }
 
-    function drawMap(dc as Dc) as Void {
-        var map_keys = _map_drawing.keys() as Array<Symbol>;
-        for (var i = 0; i < map_keys.size(); i++) {
-            var key = map_keys[i];
-            if (key == :walls) {
-                dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_BLACK);
-                var walls = _map_drawing[key] as Dictionary<Symbol, Array<Point2D>>?;
-                var wall_keys = walls.keys() as Array<Symbol>;
-                for (var j = 0; j < wall_keys.size(); j++) {
-                    var wall_key = wall_keys[j] as Symbol;
-                    var func = new Method(self, wall_key) as Method;
-                    var points = walls[wall_key] as Array<Point2D>;
-                    for (var k = 0; k < points.size(); k++) {
-                        var options = {
-                            :dc => dc,
-                            :x => points[k][0],
-                            :y => points[k][1]
-                        };
-                        func.invoke(options);
-                    }
-                }
-            } else {
-                var points = _map_drawing[key] as Array<Point2D>;
-                var func = new Method(self, key) as Method;
-                for (var j = 0; j < points.size(); j++) {
-                    var options = {
-                        :dc => dc,
-                        :x => points[j][0],
-                        :y => points[j][1]
-                    };
-                    func.invoke(options);
-                }
-            }
-        }
-        if (_stairs != null) {
-            // Draw the stairs
-            System.println("Stairs at: " + _stairs);
-            if (_stairs_sprite != null) {
-                _stairs_sprite = WatchUi.loadResource($.Rez.Drawables.Stairs);
-            }
-            dc.drawBitmap(_stairs[0] * _tile_width, _stairs[1] * _tile_height, _stairs_sprite);
+        dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_BLACK);
+        for (var i = 0; i < _map_string.size(); i++) {
+            dc.drawText(0, i * 16, _font, _map_string[i], Graphics.TEXT_JUSTIFY_LEFT);
         }
     }
 
-    public function drawPassable(options as Dictionary) as Void {
-        var dc = options[:dc] as Dc;
-        var x = options[:x] as Number;
-        var y = options[:y] as Number;
-        dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_BLACK);
-        dc.fillRectangle(x * _tile_width, y * _tile_height, _tile_width, _tile_height);
+    function drawAll(dc as Dc, room as Room) as Void {
+
+        dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_BLACK);
+        for (var i = 0; i < _map_string.size(); i++) {
+            dc.drawText(0, i * 16, _font, _map_string[i], Graphics.TEXT_JUSTIFY_LEFT);
+        }
+
+        dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+        drawItems(dc, room.getItems());
+        drawEnemies(dc, room.getEnemies());
+        drawNPCs(dc, room.getNPCs());
     }
 
-    public function drawTopWall(options as Dictionary) as Void {
-        var dc = options[:dc] as Dc;
-        var x = options[:x] as Number;
-        var y = options[:y] as Number;
-        dc.fillRectangle(x * _tile_width, y * _tile_height, _tile_width, _tile_height / 2);
-    }
-
-    public function drawBottomWall(options as Dictionary) as Void {
-        var dc = options[:dc] as Dc;
-        var x = options[:x] as Number;
-        var y = options[:y] as Number;
-        dc.fillRectangle(x * _tile_width, y * _tile_height + _tile_height / 2, _tile_width, _tile_height / 2);
-    }
-
-    public function drawLeftWall(options as Dictionary) as Void {
-        var dc = options[:dc] as Dc;
-        var x = options[:x] as Number;
-        var y = options[:y] as Number;
-        dc.fillRectangle(x * _tile_width, y * _tile_height, _tile_width / 2, _tile_height);
-    }
-
-    public function drawRightWall(options as Dictionary) as Void {
-        var dc = options[:dc] as Dc;
-        var x = options[:x] as Number;
-        var y = options[:y] as Number;
-        dc.fillRectangle(x * _tile_width + _tile_width / 2, y * _tile_height, _tile_width / 2, _tile_height);
-    }
-
-    public function drawTopLeftWall(options as Dictionary) as Void {
-        var dc = options[:dc] as Dc;
-        var x = options[:x] as Number;
-        var y = options[:y] as Number;
-        dc.fillRectangle(x * _tile_width, y * _tile_height, _tile_width / 2, _tile_height / 2);
-    }
-
-    public function drawTopRightWall(options as Dictionary) as Void {
-        var dc = options[:dc] as Dc;
-        var x = options[:x] as Number;
-        var y = options[:y] as Number;
-        dc.fillRectangle(x * _tile_width + _tile_width / 2, y * _tile_height, _tile_width / 2, _tile_height / 2);
-    }
-
-    public function drawBottomLeftWall(options as Dictionary) as Void {
-        var dc = options[:dc] as Dc;
-        var x = options[:x] as Number;
-        var y = options[:y] as Number;
-        dc.fillRectangle(x * _tile_width, y * _tile_height + _tile_height / 2, _tile_width / 2, _tile_height / 2);
-    }
-
-    public function drawBottomRightWall(options as Dictionary) as Void {
-        var dc = options[:dc] as Dc;
-        var x = options[:x] as Number;
-        var y = options[:y] as Number;
-        dc.fillRectangle(x * _tile_width + _tile_width / 2, y * _tile_height + _tile_height / 2, _tile_width / 2, _tile_height / 2);
-    }
 
 }

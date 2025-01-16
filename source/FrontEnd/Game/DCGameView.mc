@@ -14,8 +14,6 @@ class DCGameView extends WatchUi.View {
     private var _player_sprite_offset as Point2D = [0,0];
 
 	private var _timer as Timer.Timer;
-    private var bg_layer as Layer;
-    private var fg_layer as Layer;
 
 	private var _turns as Turn;
 
@@ -35,7 +33,8 @@ class DCGameView extends WatchUi.View {
         _room_drawable = new RoomDrawable({
             :tile_width=>_tile_width, 
             :tile_height=>_tile_height, 
-            :map_drawing=>map_data[:map_drawing]
+            :map=>map_data[:map],
+            :map_string=>map_data[:map_string]
         });
 
 		_timer = new Timer.Timer();
@@ -45,9 +44,6 @@ class DCGameView extends WatchUi.View {
 
         }
         rightLowHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightLow, :locX => 290, :locY => 220});
-
-		bg_layer = new Layer({:locX=>0, :locY=>0, :width=>360, :height=>360});
-        fg_layer = new Layer({:locX=>0, :locY=>0, :width=>360, :height=>360});
 		
 		_player_sprite = new WatchUi.Bitmap({
             :rezId=>player.getSprite(), 
@@ -84,8 +80,6 @@ class DCGameView extends WatchUi.View {
 
     // Load your resources here
     function onLayout(dc as Dc) as Void {
-		addLayer(bg_layer);
-        addLayer(fg_layer);
     }
 
     // Called when this View is brought to the foreground. Restore
@@ -98,28 +92,68 @@ class DCGameView extends WatchUi.View {
     function onUpdate(dc as Dc) as Void {
         // Call the parent onUpdate function to redraw the layout
 
-        dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_BLACK);
+        dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_BLACK);
         dc.clear();
 
-		var bg_dc = bg_layer.getDc();
-		var fg_dc = fg_layer.getDc();
-
-        _room_drawable.draw(dc);
+        _room_drawable.drawAll(dc, _room);
 		rightLowHint.draw(dc);
 
-        bg_dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-		bg_dc.clear();
-        _room_drawable.drawItems(bg_dc, _room.getItems());
-        _room_drawable.drawEnemies(bg_dc, _room.getEnemies());
-		
-		fg_dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-		fg_dc.clear();
-		
-		drawPlayer(fg_dc);
+		drawPlayer(dc);
 
         for (var i = 0; i < damage_texts.size(); i++) {
-            damage_texts[i].draw(fg_dc);
+            damage_texts[i].draw(dc);
         }
+
+        var player = getApp().getPlayer();
+        drawHealth(dc, player);
+        drawSecondBar(dc, player);
+    }
+
+    function drawHealth(dc as Dc, player as Player) as Void {
+        // Draw health bar
+        dc.setColor(Graphics.COLOR_DK_RED, Graphics.COLOR_BLACK);
+        var health_percent = player.getHealthPercent();
+        var bar_percent = (70 * health_percent).toNumber();
+        dc.setPenWidth(5);
+        dc.drawArc(180, 180, 175, Graphics.ARC_CLOCKWISE, 170, 170 - bar_percent);
+        // Draw health bar outline
+        dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_BLACK);
+        dc.setPenWidth(1);
+        dc.drawArc(180, 180, 178, Graphics.ARC_CLOCKWISE, 170, 100);
+        dc.drawArc(180, 180, 172, Graphics.ARC_CLOCKWISE, 170, 100);
+        dc.drawLine(5, 149, 11, 150);
+        dc.drawLine(150, 11, 149, 5);
+    }
+
+    var bar_to_fn as Dictionary<Symbol, Symbol> = {
+        :mana=>:drawManaBar
+    };
+
+    function drawSecondBar(dc as Dc, player as Player) as Void {
+        if (player.second_bar == null) {
+            return;
+        }
+        var method = new Method(self, bar_to_fn[player.second_bar]);
+        var bar_values = method.invoke(player) as [Number, Number];
+        // Draw second bar
+        dc.setColor(bar_values[0], Graphics.COLOR_BLACK);
+        dc.setPenWidth(5);
+        dc.drawArc(180, 180, 175, Graphics.ARC_COUNTER_CLOCKWISE, 80 - bar_values[1], 80);
+        // Draw health bar outline
+        dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_BLACK);
+        dc.setPenWidth(1);
+        dc.drawArc(180, 180, 178, Graphics.ARC_COUNTER_CLOCKWISE, 10, 80);
+        dc.drawArc(180, 180, 172, Graphics.ARC_COUNTER_CLOCKWISE, 10, 80);
+        dc.drawLine(355, 149, 349, 150);
+        dc.drawLine(210, 11, 211, 5);
+    }
+
+    function drawManaBar(player as Player) as [Number, Number] {
+        player = player as Mage;
+        var mana_percent = player.getManaPercent();
+        var bar_percent = (70 * mana_percent).toNumber();
+        return [Graphics.COLOR_DK_BLUE as Number, bar_percent];
+        
     }
 
     function drawPlayer(dc as Dc) as Void {
@@ -133,7 +167,6 @@ class DCGameView extends WatchUi.View {
     // state of this View here. This includes freeing resources from
     // memory.
     function onHide() as Void {
-        _room_drawable.setMapBufferInitialized(false);
     }
 
     function removeDamageTexts() as Void {

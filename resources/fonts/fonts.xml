@@ -1,4 +1,5 @@
 <fonts>
     <!-- Fonts -->
     <font id="small" filename="small.fnt" antialias="true" />
+    <font id="dungeon" filename="test.fnt" antialias="true" />
 </fonts>

@@ -13,7 +13,7 @@ class Bat extends Enemy {
 		return $.Rez.Drawables.monster_bat;
 	}
 
-	function findNextMove(map as Array<Array<Object?>>) as Point2D {
+	function findNextMove(map as Array<Array<Tile>>) as Point2D {
 		var next_pos = Pathfinder.findSimplePathToPos(map, pos, $.getApp().getPlayer().getPos());
 		if (next_pos != null) {
 			Toybox.System.println("Bat moving to " + next_pos);

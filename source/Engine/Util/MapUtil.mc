@@ -3,36 +3,38 @@ import Toybox.Math;
 
 module MapUtil {
 
-	function isPosPlayer(map as Array<Array<Object?>>, new_pos as Point2D) as Boolean {
-		if (map[new_pos[0]][new_pos[1]] instanceof Player) {
+	function isPosPlayer(map as Array<Array<Tile>>, new_pos as Point2D) as Boolean {
+		if (map[new_pos[0]][new_pos[1]].content instanceof Player) {
 			return true;
 		}
 		return false;
 	}
 
-	function canMoveToPoint(map as Array<Array<Object?>>, point as Point2D) as Boolean {
+	function canMoveToPoint(map as Array<Array<Tile>>, point as Point2D) as Boolean {
 		if (point[0] < 0 || point[0] >= map.size() || point[1] < 0 || point[1] >= map[0].size()) {
 			return false;
 		}
-		if (map[point[0]][point[1]] != null) {
+		var tile = map[point[0]][point[1]];
+		if (tile.type != PASSABLE || tile.content != null) {
 			return false;
 		}
 		return true;
 	}
 
-	function canMoveToPlayer(map as Array<Array<Object?>>, point as Point2D) as Boolean {
+	function canMoveToPlayer(map as Array<Array<Tile>>, point as Point2D) as Boolean {
 		if (point[0] < 0 || point[0] >= map.size() || point[1] < 0 || point[1] >= map[0].size()) {
 			return false;
 		}
-		if (map[point[0]][point[1]] != null && !(map[point[0]][point[1]] instanceof Player)) {
+		var tile = map[point[0]][point[1]];
+		if (tile.content == null || !(tile.content instanceof Player)) {
 			return false;
 		}
 		return true;
 	}
 
-	function checkEnemy(map as Array<Array<Object?>>, x as Number, y as Number) {
+	function checkEnemy(map as Array<Array<Tile>>, x as Number, y as Number) {
         if (x >= 0 && x < map.size() && y >= 0 && y < map[0].size()) {
-            var enemy = map[x][y] as Enemy?;
+            var enemy = map[x][y].content as Enemy?;
             if (enemy != null && enemy instanceof Enemy) {
                 return enemy;
             }
@@ -40,7 +42,7 @@ module MapUtil {
         return null;
     }
 	
-    function getEnemyInRange(map as Array<Array<Object?>>, pos as Point2D, range as Number, range_type as RangeType, direction as WalkDirection) as Enemy? {
+    function getEnemyInRange(map as Array<Array<Tile>>, pos as Point2D, range as Number, range_type as RangeType, direction as WalkDirection) as Enemy? {
 		/*
 		Range 1, direction left:
 		[ ][ ][ ][ ][ ]
@@ -141,7 +143,7 @@ module MapUtil {
 		return null;
 	}
 
-	function getRangeCoords(map as Array<Array<Object?>>, pos as Point2D, range as Number, range_type as RangeType, direction as WalkDirection) as Array<Point2D> {
+	function getRangeCoords(map as Array<Array<Tile>>, pos as Point2D, range as Number, range_type as RangeType, direction as WalkDirection) as Array<Point2D> {
 		var range_int = Math.floor(range).toNumber() as Number;
 		var range_float = range - range_int;
 		var x = pos[0];
@@ -196,13 +198,13 @@ module MapUtil {
 		return [screen_size_x, screen_size_y];
 	}
 
-	function getRandomPos(map as Array<Array<Object?>>, left as Number, right as Number, top as Number, bottom as Number) as Point2D {
+	function getRandomPos(map as Array<Array<Tile>>, left as Number, right as Number, top as Number, bottom as Number) as Point2D {
 		var x = 0;
 		var y = 0;
 		do {
 			x = MathUtil.random(left + 1, right - 1);
 			y = MathUtil.random(top + 1, bottom - 1);
-		} while (map[x][y] != null);
+		} while ((x != 11 || y != 11) && map[x][y].content != null);
 		return [x, y];
 	}
 
@@ -212,13 +214,11 @@ module MapUtil {
 		return getRandomPos(map_data[:map], coords[0], coords[1], coords[2], coords[3]);
 	}
 
-	function getCoordOfRoom(size_x as Number, size_y as Number) as Array<Number> {
+	function getCoordOfRoom(room_size_x as Number, room_size_y as Number) as Array<Number> {
 		var tile_width = getApp().tile_width;
 		var tile_height = getApp().tile_height;
 		var screen_size_x = Math.ceil(360.0/tile_width).toNumber();
 		var screen_size_y = Math.ceil(360.0/tile_height).toNumber();
-		var room_size_x = MathUtil.random(5, 15);
-		var room_size_y = MathUtil.random(5, 15);
 
 		var middle_of_screen = [Math.floor(screen_size_x/2), Math.floor(screen_size_y/2)];
 		var left = middle_of_screen[0] - Math.floor(room_size_x/2);

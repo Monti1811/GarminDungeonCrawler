@@ -14,7 +14,7 @@ module Pathfinder {
 
 
     // Find the next best movement to reach the target the fastest
-    function findPathToPos(map as Array<Array<Object?>>, start_pos as Point2D, end_pos as Point2D) as Point2D? {
+    function findPathToPos(map as Array<Array<Tile>>, start_pos as Point2D, end_pos as Point2D) as Point2D? {
         start_pos = toIntPoint2D(start_pos);
         end_pos = toIntPoint2D(end_pos);
         var open_dict = {start_pos => true} as Dictionary<Number, Boolean>;
@@ -66,7 +66,7 @@ module Pathfinder {
     }
 
 
-    function getNeighbors(map as Array<Array<Object?>>, pos_num as Number) as Array<Number> {
+    function getNeighbors(map as Array<Array<Tile>>, pos_num as Number) as Array<Number> {
         var neighbors = [];
         var pos = fromIntPoint2D(pos_num);
         if (pos[0] > 0 && MapUtil.canMoveToPlayer(map, [pos[0] - 1, pos[1]])) {
@@ -93,7 +93,7 @@ module Pathfinder {
         return path[path.size() - 2];
     }
 
-	function findSimplePathToPos(map as Array<Array<Object?>>, start_pos as Point2D, end_pos as Point2D) as Point2D? {
+	function findSimplePathToPos(map as Array<Array<Tile>>, start_pos as Point2D, end_pos as Point2D) as Point2D? {
 		var current_pos = start_pos;
 		var directions = [
 			[current_pos[0] + 1, current_pos[1]], // right

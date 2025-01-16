@@ -71,7 +71,7 @@ module SaveData {
 		if (Storage.getValue(chosen_save) == null) {
 			Storage.setValue("save_num", current_save_num);
 		}
-		player.updateTimePlayed(Toybox.Time.now());
+		$.Game.updateTimePlayed(Toybox.Time.now());
 		var data = {
 			"player" => player.save(),
 			"level" => player.getLevel(),
@@ -82,11 +82,12 @@ module SaveData {
 		Toybox.System.println("Data: " + data);
 		_save_data = data;
 		var playerData = data["player"] as Dictionary<PropertyKeyType, PropertyValueType>;
+		var gameData = data["game"] as Dictionary<PropertyKeyType, PropertyValueType>;
 		var data_to_show = [
-			playerData["name"], 
-			data["level"], 
-			playerData["run"], 
-			playerData["time_played"]
+			playerData["name"] as PropertyValueType, 
+			data["level"] as PropertyValueType, 
+			gameData["depth"] as PropertyValueType, 
+			gameData["time_played"] as PropertyValueType
 		] as Array<PropertyValueType>;
 		saveToMemory(data_to_show);
 		_save_data = {};
@@ -131,11 +132,26 @@ module SaveData {
 		];
 	}
 
+	public function deleteDungeonSave() as Void {
+		var dungeon = getApp().getCurrentDungeon();
+		var dungeon_save_keys = dungeon.getRooms();
+		for (var i = 0; i < dungeon_save_keys.size(); i++) {
+			if (dungeon_save_keys[i] != null) {
+				var room_name = dungeon_save_keys[i] as String;
+				Storage.deleteValue(room_name);
+			}
+		}
+		Storage.deleteValue(chosen_save);
+	}
+
 	public function deleteSave(save as String) {
 		var temp = Storage.getValue(save) as Dictionary;
-		var dungeon_save_keys = (temp["dungeon"] as Dictionary)["rooms"] as Array<String>;
-		for (var i = 0; i < dungeon_save_keys.size(); i++) {
-			Storage.deleteValue(dungeon_save_keys[i]);
+		var dungeon = temp["dungeon"] as Dictionary?;
+		if (dungeon != null) {
+			var dungeon_save_keys = dungeon["rooms"] as Array<String>;
+			for (var i = 0; i < dungeon_save_keys.size(); i++) {
+				Storage.deleteValue(dungeon_save_keys[i]);
+			}
 		}
 		Storage.deleteValue(save);
 		saves.remove(save);

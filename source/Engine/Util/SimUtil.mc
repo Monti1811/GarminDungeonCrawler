@@ -13,7 +13,8 @@ module SimUtil {
     function createAllPossibleCharacters() as Array<Player> {
         return [
             new Warrior("Warrior"),
-            new Mage("Mage")
+            new Mage("Mage"),
+            new God("God"),
         ];
     }
 

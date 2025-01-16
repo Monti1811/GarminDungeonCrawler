@@ -5,20 +5,27 @@ import Toybox.Graphics;
 
 module Main {
 
+	function prepareDungeon(dungeon as Dungeon) {
+		dungeon.addStairs();
+		dungeon.addMerchant();
+		var app = getApp();
+		app.setCurrentDungeon(dungeon);
+		var start_room = MathUtil.random(0, dungeon.getSize()[0] * dungeon.getSize()[1] - 1);
+		dungeon.setCurrentRoomFromIndex(MathUtil.IndexToPos2D(start_room, dungeon.getSize()[0]));
+	}
+
 	function createNewGame1(player as Player, progress_bar as WatchUi.ProgressBar) as Void {
 		var app = getApp();
 		app.setPlayer(player);
 		progress_bar.setProgress(10.0);
 		progress_bar.setDisplayString("Creating dungeon");
+		$.SaveData.current_save_num = SaveData.current_save_num + 1;
+        $.SaveData.chosen_save = SaveData.current_save_num.toString();
 		
 	}
 
 	function createNewGame2(player as Player, progress_bar as WatchUi.ProgressBar, dungeon as Dungeon) as Void {
-		dungeon.addStairs();
-		var app = getApp();
-		app.setCurrentDungeon(dungeon);
-		var start_room = MathUtil.random(0, dungeon.getSize()[0] * dungeon.getSize()[1] - 1);
-		dungeon.setCurrentRoomFromIndex(MathUtil.IndexToPos2D(start_room, dungeon.getSize()[0]));
+		prepareDungeon(dungeon);
 		var view = new DCIntroView();
 		WatchUi.switchToView(view, new DCIntroDelegate(view, null, Graphics.FONT_TINY), WatchUi.SLIDE_IMMEDIATE);
 	}
@@ -30,11 +37,7 @@ module Main {
 	}
 
 	function createNextDungeon2(progress_bar as WatchUi.ProgressBar, dungeon as Dungeon) as Void {
-		dungeon.addStairs();
-		var app = getApp();
-		app.setCurrentDungeon(dungeon);
-		var start_room = MathUtil.random(0, dungeon.getSize()[0] * dungeon.getSize()[1] - 1);
-		dungeon.setCurrentRoomFromIndex(MathUtil.IndexToPos2D(start_room, dungeon.getSize()[0]));
+		prepareDungeon(dungeon);
 		var view_delegate = getApp().showRoom() as [Views, InputDelegates];
 		WatchUi.switchToView(view_delegate[0], view_delegate[1], WatchUi.SLIDE_IMMEDIATE);
 	}
@@ -43,7 +46,7 @@ module Main {
 		var app = getApp();
 		var view_delegate = app.showRoom() as [Views, InputDelegates];
 		WatchUi.switchToView(view_delegate[0], view_delegate[1], WatchUi.SLIDE_IMMEDIATE);
-		app.getPlayer().setTimeStarted(Toybox.Time.now());
+		$.Game.setTimeStarted(Toybox.Time.now());
 	}
 
 	function createNewDungeon(progress_bar as WatchUi.ProgressBar) as Dungeon {
@@ -87,11 +90,7 @@ module Main {
 		var right = middle_of_screen[0] + Math.floor(room_size_x/2);
 		var top = middle_of_screen[1] - Math.floor(room_size_y/2);
 		var bottom = middle_of_screen[1] + Math.floor(room_size_y/2);
-		var map = new Array<Array<Object?>>[screen_size_x];
-        for (var i = 0; i < screen_size_x; i++) {
-            map[i] = new Array<Object?>[screen_size_y];
-        }
-		var map_drawing = createRandomMap(left, right, top, bottom);
+		var map = createRandomMap(screen_size_x, screen_size_y, left, right, top, bottom);
 		var room = new Room({
 			:size_x => room_size_x, 
 			:size_y => room_size_y,
@@ -99,7 +98,6 @@ module Main {
 			:tile_height => tile_height,
 			:start_pos => middle_of_screen,
 			:map => map,
-			:map_drawing => map_drawing,
 			:items => createRandomItems(map, left, right, top, bottom),
 			:enemies => createRandomEnemies(map, left, right, top, bottom)
 		});
@@ -107,7 +105,44 @@ module Main {
 		return room;
 	}
 
-	function createRandomMap(left as Number, right as Number, top as Number, bottom as Number) as Dictionary {
+	function createRandomMap(screen_size_x as Number, screen_size_y as Number, left as Number, right as Number, top as Number, bottom as Number) as  Array<Array<Tile>> {
+		var map = new Array<Array<Tile>>[screen_size_x];
+        for (var i = 0; i < screen_size_x; i++) {
+            map[i] = new Array<Tile>[screen_size_y];
+			for (var j = 0; j < screen_size_y; j++) {
+				map[i][j] = new Tile(i, j);
+			}
+        }
+
+		// Add walls to tiles by changing the type of the tile
+		// Top wall
+		for (var i = left; i <= right; i++) {
+			map[i][top].type = WALL;
+		}
+		// Bottom wall
+		for (var i = left; i <= right; i++) {
+			map[i][bottom].type = WALL;
+		}
+		// Left wall
+		for (var j = top; j <= bottom; j++) {
+			map[left][j].type = WALL;
+		}
+		// Right wall
+		for (var j = top; j <= bottom; j++) {
+			map[right][j].type = WALL;
+		}
+
+		// Add passable to tiles
+		for (var i = left + 1; i < right; i++) {
+			for (var j = top + 1; j < bottom; j++) {
+				map[i][j].type = PASSABLE;
+			}
+		}
+
+		return map;
+	}
+
+	/*function createRandomMap(left as Number, right as Number, top as Number, bottom as Number) as Dictionary {
 		var walls = {};
 		walls[:drawBottomRightWall] = [
 			[left, top]
@@ -149,40 +184,48 @@ module Main {
             :walls => walls,
             :drawPassable => passable
         };
+	}*/
+
+	function getMaxItemsNumForRoom(size_x as Number, size_y as Number) as Number {
+		return Math.floor(size_x * size_y / 20);
 	}
 
-	function createRandomItems(map as Array<Array<Object?>>, left as Number, right as Number, top as Number, bottom as Number) as Dictionary<Point2D, Item> {
+	function createRandomItems(map as Array<Array<Tile>>, left as Number, right as Number, top as Number, bottom as Number) as Dictionary<Point2D, Item> {
 		var items = {};
-		var num_items = MathUtil.random(0, 5);
+		var num_items = MathUtil.random(0, getMaxItemsNumForRoom(right - left - 1, bottom - top - 1));
 		for (var i = 0; i < num_items; i++) {
 			var item = createRandomItem();
 			var item_pos = MapUtil.getRandomPos(map, left, right, top, bottom);
 			item.setPos(item_pos);
-			map[item_pos[0]][item_pos[1]] = item;
+			map[item_pos[0]][item_pos[1]].content = item;
 			items.put(item_pos, item);
 		}
 		return items;
 	}
 
 	function createRandomItem() as Item {
-		return Items.createRandomItem();
+		return Items.createRandomWeightedItem();
 	}
 
-	function createRandomEnemies(map as Array<Array<Object?>>, left as Number, right as Number, top as Number, bottom as Number) as Dictionary<Point2D,Enemy> {
+	function getMaxEnemiesNumForRoom(size_x as Number, size_y as Number) as Number {
+		return Math.floor(size_x * size_y / 10);
+	}
+
+	function createRandomEnemies(map as Array<Array<Tile>>, left as Number, right as Number, top as Number, bottom as Number) as Dictionary<Point2D,Enemy> {
 		var enemies = {};
-		var num_enemies = MathUtil.random(0, 5);
+		var num_enemies = MathUtil.random(0, getMaxEnemiesNumForRoom(right - left - 1, bottom - top - 1));
 		for (var i = 0; i < num_enemies; i++) {
 			var enemy = createRandomEnemy();
 			var enemy_pos = MapUtil.getRandomPos(map, left, right, top, bottom);
 			enemy.setPos(enemy_pos);
-			map[enemy_pos[0]][enemy_pos[1]] = enemy;
+			map[enemy_pos[0]][enemy_pos[1]].content = enemy;
 			enemies.put(enemy_pos, enemy);
 		}
 		return enemies;
 	}
 
 	function createRandomEnemy() as Enemy {
-		return Enemies.createRandomEnemy();
+		return Enemies.createRandomWeightedEnemy();
 	}
 
 }

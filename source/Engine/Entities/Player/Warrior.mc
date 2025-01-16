@@ -4,18 +4,25 @@ class Warrior extends Player {
 
 	function initialize(name as String) {
 		Player.initialize();
-
+		self.id = 0;
 		// Set name
 		self.name = name;
 		self.description = "A warrior character";
 
 		// Give starting items
 		self.equipped[RIGHT_HAND] = new SteelAxe();
-		self.equipped[HEAD] = new SteelHelmet();
+		self.equipped[CHEST] = new SteelBreastPlate();
 
 		// Set attributes
-		self.attributes[:strength] = 10;
-		self.attributes[:constitution] = 10;
+		self.attributes = {
+			:strength => 8,
+			:constitution => 12,
+			:intelligence => 1,
+			:wisdom => 2,
+			:dexterity => 1,
+			:charisma => 3,
+			:luck => 4
+		};
 
 		self.sprite = $.Rez.Drawables.KnightBlue;
 
@@ -23,11 +30,8 @@ class Warrior extends Player {
 
 	function onLevelUp() as Void {
 		// Increase max health
+		Player.onLevelUp();
 		maxHealth += 10;
-
-		// Increase attributes
-		addToAttribute(:strength, 2);
-		addToAttribute(:constitution, 2);
 	}
 
 

@@ -20,8 +20,8 @@ class Turn {
         _player.setPos(_player_pos);
 
         // Add player position to map
-        var map = _map_data[:map] as Array<Array<Object?>>;
-        map[_player_pos[0]][_player_pos[1]] = _player;
+        var map = _map_data[:map] as Array<Array<Tile>>;
+        map[_player_pos[0]][_player_pos[1]].content = _player;
     }
 
     function doTurn(direction as WalkDirection) as Void {
@@ -31,19 +31,25 @@ class Turn {
         System.println("Moving " + direction);
         var new_pos = calculateNewPos(_player_pos, direction);
 
-        var map = _map_data[:map] as Array<Array<Object?>>;
+        var map = _map_data[:map] as Array<Array<Tile>>;
         if (checkIfNextRoom(new_pos, direction, map)) {
             return;
         }
 
-        var map_element = map[new_pos[0]][new_pos[1]] as Object?;
-		if ((map_element != null) && (map_element instanceof Wall)) {
+        var tile = map[new_pos[0]][new_pos[1]];
+        var map_element = tile.content as Object?;
+        if (tile.type == STAIRS) {
+            goToNextDungeon();
+            return;
+        }
+        if (checkForNPC(map_element)) {
+            return;
+        }
+		if (!(tile.type == PASSABLE)) {
 			return;
 		}
 
-        if (checkIfNextDungeon(map_element)) {
-            return;
-        }
+        
 
 		System.println("Old pos: " + _player_pos);
         System.println("New pos: " + new_pos);
@@ -60,9 +66,9 @@ class Turn {
 		WatchUi.requestUpdate();
 	}
 
-    function movePlayer(map as Array<Array<Object?>>, new_pos as Point2D) as Void {
-        map[_player_pos[0]][_player_pos[1]] = null;
-        map[new_pos[0]][new_pos[1]] = _player;
+    function movePlayer(map as Array<Array<Tile>>, new_pos as Point2D) as Void {
+        map[_player_pos[0]][_player_pos[1]].content = null;
+        map[new_pos[0]][new_pos[1]].content = _player;
         _room.updatePlayerPos(new_pos);
         _player_pos = new_pos;
         _player.setPos(new_pos);
@@ -74,15 +80,14 @@ class Turn {
         _map_data = room.getMapData();
         _view.setMapData(_map_data);
         _view.getRoomDrawable().updateToNewRoom({
-            :map_drawing => _map_data[:map_drawing],
-            :stairs => _map_data[:stairs]
+            :map_string => _map_data[:map_string]
         });
         _player_pos = _map_data[:start_pos];
         _player.setPos(_player_pos);
         room.updatePlayerPos(_player_pos);
         _view.setPlayerSpritePos(_player_pos);
-        var map = _map_data[:map] as Array<Array<Object?>>;
-        map[_player_pos[0]][_player_pos[1]] = _player;
+        var map = _map_data[:map] as Array<Array<Tile>>;
+        map[_player_pos[0]][_player_pos[1]].content = _player;
     }
 
     private function getNewPlayerPosInNextRoom(next_pos as Point2D, direction as WalkDirection) as Point2D {
@@ -133,15 +138,16 @@ class Turn {
         return new_pos;
     }
 
-    function checkIfNextRoom(new_pos as Point2D, direction as WalkDirection, map as Array<Array<Object?>>) as Boolean {
+    function checkIfNextRoom(new_pos as Point2D, direction as WalkDirection, map as Array<Array<Tile>>) as Boolean {
         if (new_pos[0] < 0 || 
                 new_pos[0] >= map.size() || 
                 new_pos[1] < 0 || 
                 new_pos[1] >= map[0].size()) {
             var dungeon = getApp().getCurrentDungeon();
-            var next_room = dungeon.getRoomInDirection(direction);
-            if (next_room != null) {
-                dungeon.setCurrentRoom(next_room);
+            var next_room_name = dungeon.getRoomInDirection(direction);
+            if (next_room_name != null) {
+                dungeon.setCurrentRoom(next_room_name);
+                var next_room = dungeon.getCurrentRoom();
                 // Set the player position to the new room
                 new_pos = getNewPlayerPosInNextRoom(new_pos, direction);
                 next_room.setStartPos(new_pos);
@@ -153,22 +159,18 @@ class Turn {
         return false;
     }
 
-    function checkIfNextDungeon(map_element as Object?) as Boolean {
-        if (map_element != null && map_element instanceof Stairs) {
-            var app = getApp();
-            app.setCurrentDungeon(null);
-            _player.addToCurrentRun(1);
-            var progressBar = new WatchUi.ProgressBar(
-            "Creating next dungeon...",
-            0.0
-            );
-            WatchUi.switchToView(progressBar, new DCNewDungeonProgressDelegate(progressBar), WatchUi.SLIDE_UP);
-            return true;
-        }
-        return false;
+    function goToNextDungeon() as Void {
+        var app = getApp();
+        app.setCurrentDungeon(null);
+        $.Game.addToDepth(1);
+        var progressBar = new WatchUi.ProgressBar(
+        "Creating next dungeon...",
+        0.0
+        );
+        WatchUi.switchToView(progressBar, new DCNewDungeonProgressDelegate(progressBar), WatchUi.SLIDE_UP);
     }
 
-    function resolvePlayerActions(map as Array<Array<Object?>>, new_pos as Point2D, direction as WalkDirection, map_element as Object?) as Void {
+    function resolvePlayerActions(map as Array<Array<Tile>>, new_pos as Point2D, direction as WalkDirection, map_element as Object?) as Void {
 
         // Check if player can attack enemy, if yes do so and don't move
         var range = _player.getRange(null) as [Numeric, RangeType];
@@ -185,18 +187,27 @@ class Turn {
         }
         // If the player did not attack, try to move
         if (!player_attacked) {
-            movePlayer(map, new_pos);
             pickUpItem(map, new_pos, map_element);
+            movePlayer(map, new_pos);
         }
 
     }
 
-    function pickUpItem(map as Array<Array<Object?>>, new_pos as Point2D, map_element as Object?) as Void {
+    function pickUpItem(map as Array<Array<Tile>>, new_pos as Point2D, map_element as Object?) as Void {
         if (map_element != null && map_element instanceof Item) {
             var item = map_element as Item;
             _player.pickupItem(item);
             _room.removeItem(item);
         }
+    }
+
+    function checkForNPC(map_element as Object?) as Boolean {
+        if (map_element != null && map_element instanceof NPC) {
+            var npc = map_element as NPC;
+            npc.onInteract();
+            return true;
+        }
+        return false;
     }
 
     function resolveEnemyActions(enemies as Array<Enemy>, target_pos as Point2D) as Void {
