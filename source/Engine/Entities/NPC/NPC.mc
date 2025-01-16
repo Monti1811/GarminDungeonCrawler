@@ -11,7 +11,7 @@ class NPC extends Entity {
 		Entity.initialize();
 	}
 
-	function onInteract(player as Player) as Void {
+	function onInteract() as Void {
 		// Do nothing
 	}
 

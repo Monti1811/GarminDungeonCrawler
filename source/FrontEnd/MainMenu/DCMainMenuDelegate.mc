@@ -162,7 +162,8 @@ class DCConfirmDeleteGame extends WatchUi.ConfirmationDelegate {
     
     function deleteSave() as Void {
         SaveData.deleteSave(_savegame);
-        _parent.deleteItem(_id.toNumber());
+        var parent_item = _parent.findItemById(_id);
+        _parent.deleteItem(parent_item);
         WatchUi.popView(WatchUi.SLIDE_DOWN);
     }
 
