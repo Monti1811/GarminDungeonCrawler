@@ -320,6 +320,14 @@ class Player extends Entity {
 		return gold;
 	}	
 
+	function doGoldDelta(amount as Number) as Boolean {
+		if (gold + amount < 0) {
+			return false;
+		}
+		gold += amount;
+		return true;
+	}
+
 	function getRange(enemy as Enemy?) as [Numeric, RangeType] {
 		var weapon_left = equipped[LEFT_HAND] as WeaponItem?;
 		var weapon_right = equipped[RIGHT_HAND] as WeaponItem?;

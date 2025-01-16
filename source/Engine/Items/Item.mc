@@ -73,6 +73,10 @@ class Item {
 	function getValue() as Number {
 		return value;
 	}
+
+	function getSellValue() as Number {
+		return value / 4;
+	}
 	
 	function getAmount() as Number {
 		return amount;

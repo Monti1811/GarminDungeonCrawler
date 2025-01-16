@@ -5,6 +5,7 @@ class NPC extends Entity {
 	var name as String = "NPC";
 	var description as String = "A simple NPC";
 	var pos as Point2D = [0, 0];
+	var dialog as String = "Hello there!";
 	
 
 	function initialize() {
@@ -13,6 +14,10 @@ class NPC extends Entity {
 
 	function onInteract() as Void {
 		// Do nothing
+	}
+
+	function getDialog() as String {
+		return dialog;
 	}
 
 	function getSprite() as ResourceId {
