@@ -32,6 +32,10 @@ class Enemy extends Entity {
 		self.armor = 5 * level/2;
 	}
 
+	function hashCode() {
+		return id;
+	}
+
 	function getPos() as Point2D {
 		return pos;
 	}
@@ -78,6 +82,11 @@ class Enemy extends Entity {
 	}
 
 	function getLoot() as Item? {
+		if (MathUtil.random(0, 100) < 50) {
+			var gold = new Gold();
+			gold.amount = MathUtil.random(1, 10);
+			return gold;
+		}
 		return null;
 	}
 

@@ -182,6 +182,7 @@ class Turn {
             var death = Battle.attackEnemy(_player, attackable_enemy);
             if (death) {
                 _room.removeEnemy(attackable_enemy);
+                _room.dropLoot(attackable_enemy);
             }
             player_attacked = true;
         }
@@ -196,6 +197,11 @@ class Turn {
     function pickUpItem(map as Array<Array<Tile>>, new_pos as Point2D, map_element as Object?) as Void {
         if (map_element != null && map_element instanceof Item) {
             var item = map_element as Item;
+            if (item instanceof Gold) {
+                _player.doGoldDelta(item.amount);
+                _room.removeItem(item);
+                return;
+            }
             var success = _player.pickupItem(item);
             if (success) {
                 _room.removeItem(item);

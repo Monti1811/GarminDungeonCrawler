@@ -43,7 +43,10 @@ class Player extends Entity {
 	function initialize() {
 		Entity.initialize();
 	}
-	
+
+	function hashCode() {
+		return id;
+	}
 
 	function equipItem(item as Item, slot as ItemSlot, remove as Boolean?) as Boolean {
 		// Try to unequip item if slot is already equipped

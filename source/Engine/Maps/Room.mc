@@ -123,8 +123,7 @@ class Room {
         }
         var new_pos = enemy.getPos();
         loot.setPos(new_pos);
-        _items.put(new_pos, loot);
-        _map[new_pos[0]][new_pos[1]].content = loot;
+        addItem(loot);
     }
 
     function removeEnemy(enemy as Enemy) as Void {
@@ -392,6 +391,8 @@ class Room {
             }
             map.add(row);
         }
+        // TODO: player pos is not correctly saved and loaded
+        System.println("Save player pos: " + _player_pos);
         return {
             "size_x" => _size_x,
             "size_y" => _size_y,

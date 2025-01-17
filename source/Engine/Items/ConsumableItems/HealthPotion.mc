@@ -39,15 +39,15 @@ class HealthPotion extends ConsumableItem {
 	
 
 	function deepcopy() as Item {
-		var ring = new SteelRing1();
-		ring.name = name;
-		ring.description = description;
-		ring.value = value;
-		ring.amount = amount;
-		ring.pos = pos;
-		ring.equipped = equipped;
-		ring.in_inventory = in_inventory;
-		return ring;
+		var potion = new HealthPotion();
+		potion.name = name;
+		potion.description = description;
+		potion.value = value;
+		potion.amount = amount;
+		potion.pos = pos;
+		potion.equipped = equipped;
+		potion.in_inventory = in_inventory;
+		return potion;
 	}
 
 }

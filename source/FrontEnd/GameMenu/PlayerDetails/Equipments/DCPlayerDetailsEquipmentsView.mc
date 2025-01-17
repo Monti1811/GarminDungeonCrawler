@@ -82,7 +82,7 @@ class DCPlayerDetailsEquipmentsView extends WatchUi.View {
 		// Accessory
 		drawRectangle(dc, 100, 80, "Accessory", ACCESSORY);
 		// Munition
-		drawRectangle(dc, 260, 160, "Munition", MUNITION);
+		drawRectangle(dc, 260, 160, "Ammo", MUNITION);
 
 	}
 

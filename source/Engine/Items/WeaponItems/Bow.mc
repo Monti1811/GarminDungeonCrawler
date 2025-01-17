@@ -3,8 +3,8 @@ import Toybox.Lang;
 
 class Bow extends WeaponItem {
 	var id as Number = 0;
-	var name as String = "Steel Bow";
-	var description as String = "A simple steel bow";
+	var name as String = "Bow";
+	var description as String = "A simple bow";
 	var slot as ItemSlot = RIGHT_HAND;
 	var value as Number = 10;
 	var weight as Number = 10;
@@ -66,7 +66,7 @@ class Bow extends WeaponItem {
 	}
 
 	function deepcopy() as Item {
-		var bow = new SteelBow();
+		var bow = new Bow();
 		bow.name = name;
 		bow.description = description;
 		bow.value = value;

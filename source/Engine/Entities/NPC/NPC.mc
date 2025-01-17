@@ -12,6 +12,10 @@ class NPC extends Entity {
 		Entity.initialize();
 	}
 
+	function hashCode() {
+		return id;
+	}
+
 	function onInteract() as Void {
 		// Do nothing
 	}
