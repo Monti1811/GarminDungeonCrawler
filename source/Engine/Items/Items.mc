@@ -21,6 +21,8 @@ module Items {
         1005 => :createSteelRing2,
 
         2000 => :createHealthPotion,
+
+        5000 => :createGold,
     };
 
     var weights as Dictionary<Number, Number> = {
@@ -106,6 +108,10 @@ module Items {
 
     function createHealthPotion() as Item {
         return new HealthPotion();
+    }
+
+    function createGold() as Item {
+        return new Gold();
     }
 
     function createItemFromId(id as Number) as Item {

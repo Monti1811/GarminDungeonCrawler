@@ -413,7 +413,8 @@ class Player extends Entity {
 			"attributes" => convertAttributeSymbolToString(),
 			"attribute_points" => attribute_points,
 			"inventory" => inventory.save(),
-			"equipped" => {}
+			"equipped" => {},
+			"gold" => gold
 		};
 		for (var i = 0; i < equipped.size(); i++) {
 			var slot = equipped.keys()[i];
@@ -471,6 +472,9 @@ class Player extends Entity {
 					equipped[slot] = item;
 				}
 			}
+		}
+		if (save_data["gold"] != null) {
+			gold = save_data["gold"] as Number;
 		}
 
 	}
