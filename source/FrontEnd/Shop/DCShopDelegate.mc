@@ -3,12 +3,10 @@ import Toybox.Lang;
 
 class DCShopDelegate extends WatchUi.Menu2InputDelegate {
 
-    private var shopMenu as WatchUi.Menu2;
     private var merchant as Merchant;
 
-    function initialize(shopMenu as WatchUi.Menu2, merchant as Merchant) {
+    function initialize(merchant as Merchant) {
         Menu2InputDelegate.initialize();
-        self.shopMenu = shopMenu;
         self.merchant = merchant;
     }
 
@@ -22,7 +20,7 @@ class DCShopDelegate extends WatchUi.Menu2InputDelegate {
                 showSellMenu();
                 break;
             case :talk:
-                var dialog = new WatchUi.Confirmation(merchant.getDialog());
+                WatchUi.pushView(new TextView(merchant.getDialog()), new TextDelegate(), WatchUi.SLIDE_UP);
                 break;
         }
     }
@@ -32,7 +30,9 @@ class DCShopDelegate extends WatchUi.Menu2InputDelegate {
         var buyMenu = new WatchUi.Menu2({:title=>"Buy"});
         for (var i = 0; i < items.size(); i++) {
             var item = items[i];
-            buyMenu.addItem(new WatchUi.MenuItem(item.getName(), "Cost: " + item.getValue() + " gold", item, null));
+            var amount = item.getAmount();
+            var icon = new DCItemIcon(item);
+            buyMenu.addItem(new WatchUi.IconMenuItem(item.getName() + " x" + amount, "Cost: " + item.getValue() + " gold", item, icon, null));
         }
         WatchUi.pushView(buyMenu, new DCShopBuyDelegate(buyMenu, merchant), WatchUi.SLIDE_UP);
     }
@@ -43,7 +43,9 @@ class DCShopDelegate extends WatchUi.Menu2InputDelegate {
         var sellMenu = new WatchUi.Menu2({:title=>"Sell"});
         for (var i = 0; i < items.size(); i++) {
             var item = items[i];
-            sellMenu.addItem(new WatchUi.MenuItem(item.getName(), "Value: " + item.getSellValue() + " gold", item, null));
+            var amount = item.getAmount();
+            var icon = new DCItemIcon(item);
+            sellMenu.addItem(new WatchUi.IconMenuItem(item.getName() + " x" + amount, "Value: " + item.getSellValue() + " gold", item, icon, null));
         }
         WatchUi.pushView(sellMenu, new DCShopSellDelegate(sellMenu, merchant), WatchUi.SLIDE_UP);
     }
@@ -88,7 +90,7 @@ class DCShopBuyOptionsDelegate extends WatchUi.Menu2InputDelegate {
         var type = menuItem.getId() as Symbol;
         switch (type) {
             case :buy:
-                doBuy();
+                WatchUi.pushView(new DCAmountPicker(self.item.getAmount()), new DCAmountPickerDelegate(new Method(self, :doBuy)), WatchUi.SLIDE_UP);
                 break;
             case :info:
                 showInfo(self.item);
@@ -96,20 +98,24 @@ class DCShopBuyOptionsDelegate extends WatchUi.Menu2InputDelegate {
         }  
     }
 
-    function doBuy() as Void {
+    function doBuy(amount as Number) as Void {
         var player = getApp().getPlayer();
-        var cost = item.getValue();
+        var cost = item.getValue() * amount;
         var can_buy = player.doGoldDelta(-cost);
         if (can_buy) {
-            player.addInventoryItem(item);
-            merchant.removeSellableItem(item);
+            var purchased_item = item.deepcopy();
+            purchased_item.setAmount(amount);
+            player.addInventoryItem(purchased_item);
+            item.setAmount(item.getAmount() - amount);
             var index = buyMenu.findItemById(item);
-            buyMenu.deleteItem(index);
-            WatchUi.popView(WatchUi.SLIDE_DOWN);
-            WatchUi.popView(WatchUi.SLIDE_DOWN);
+            if (item.getAmount() == 0) {
+                buyMenu.deleteItem(index);
+                merchant.removeSellableItem(item);
+            } else {
+                buyMenu.updateItem(new WatchUi.IconMenuItem(item.getName() + " x" + item.getAmount(), "Cost: " + item.getValue() + " gold", item, new DCItemIcon(item), null), index);
+            }
         } else {
-            var dialog = new WatchUi.Confirmation("You don't have enough gold to buy this item.");
-            // TODO create a new view that shows text and an accept icon at the bottom
+            WatchUi.showToast("Not enough gold", {:icon=>Rez.Drawables.cancelToastIcon});
         }
     }
 

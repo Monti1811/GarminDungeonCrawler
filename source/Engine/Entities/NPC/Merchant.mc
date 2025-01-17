@@ -39,7 +39,7 @@ class Merchant extends NPC {
 		shopMenu.addItem(new WatchUi.MenuItem("Buy", "Buy an item", :buy, null));
 		shopMenu.addItem(new WatchUi.MenuItem("Sell", "Sell an item", :sell, null));
 		shopMenu.addItem(new WatchUi.MenuItem("Talk", "Talk with the merchant", :talk, null));
-		WatchUi.pushView(shopMenu, new DCShopDelegate(shopMenu, self), WatchUi.SLIDE_UP);
+		WatchUi.pushView(shopMenu, new DCShopDelegate(self), WatchUi.SLIDE_UP);
 	}
 
 	function deepcopy() as Entity {

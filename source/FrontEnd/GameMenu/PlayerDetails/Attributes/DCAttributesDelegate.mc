@@ -4,7 +4,7 @@ import Toybox.WatchUi;
 
 class DCPlayerDetailsAttributesDelegate extends WatchUi.BehaviorDelegate {
 
-    private var action_menu_area = [90, 260, 290, 360] as Array<Numeric>;
+    private const action_menu_area = [90, 260, 290, 360] as Array<Numeric>;
 
     public var changed_attributes as Dictionary<Symbol, Number>;
 
