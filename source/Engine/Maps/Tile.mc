@@ -12,6 +12,7 @@ class Tile {
 	public var x as Number = 0;
 	public var y as Number = 0;
 	public var content as Object?;
+	public var player as Boolean = false;
 
 	function initialize(x as Number, y as Number) {
 		self.x = x;

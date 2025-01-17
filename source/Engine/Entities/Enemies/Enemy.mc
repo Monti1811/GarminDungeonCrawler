@@ -94,7 +94,10 @@ class Enemy extends Entity {
 		if (!MathUtil.isPointDirectAdjacent(pos, player_pos)) {
 			return false;
 		}
-		var player = map[player_pos[0]][player_pos[1]].content as Player?;
+		var player = null as Player?;
+		if (map[player_pos[0]][player_pos[1]].player) {
+			player = getApp().getPlayer();
+		}
 		if (player != null) {
 			Battle.attackPlayer(self, player, player_pos);
 			curr_attack_cooldown = attack_cooldown;

@@ -90,7 +90,7 @@ class DCShopBuyOptionsDelegate extends WatchUi.Menu2InputDelegate {
         var type = menuItem.getId() as Symbol;
         switch (type) {
             case :buy:
-                WatchUi.pushView(new DCAmountPicker(self.item.getAmount()), new DCAmountPickerDelegate(new Method(self, :doBuy)), WatchUi.SLIDE_UP);
+                WatchUi.pushView(new DCAmountPicker(self.item.getAmount(), self.item.getValue()), new DCAmountPickerDelegate(new Method(self, :doBuy)), WatchUi.SLIDE_UP);
                 break;
             case :info:
                 showInfo(self.item);
@@ -99,6 +99,9 @@ class DCShopBuyOptionsDelegate extends WatchUi.Menu2InputDelegate {
     }
 
     function doBuy(amount as Number) as Void {
+        if (amount <= 0) {
+            return;
+        }
         var player = getApp().getPlayer();
         var cost = item.getValue() * amount;
         var can_buy = player.doGoldDelta(-cost);
@@ -168,7 +171,7 @@ class DCShopSellOptionsDelegate extends WatchUi.Menu2InputDelegate {
         var type = menuItem.getId() as Symbol;
         switch (type) {
             case :sell:
-                doSell();
+                WatchUi.pushView(new DCAmountPicker(self.item.getAmount(), self.item.getSellValue()), new DCAmountPickerDelegate(new Method(self, :doSell)), WatchUi.SLIDE_UP);
                 break;
             case :info:
                 showInfo(self.item);
@@ -176,16 +179,21 @@ class DCShopSellOptionsDelegate extends WatchUi.Menu2InputDelegate {
         }  
     }
 
-    function doSell() as Void {
+    function doSell(amount as Number) as Void {
+        if (amount <= 0) {
+            return;
+        }
         var player = getApp().getPlayer();
         var value = item.getSellValue();
         player.doGoldDelta(value);
-        player.removeInventoryItem(item);
-        merchant.addSellableItem(item);
+        var sold_items = player.getInventory().removeMultiple(item, amount) as Item;
+        merchant.addSellableItem(sold_items);
         var index = sellMenu.findItemById(item);
-        sellMenu.deleteItem(index);
-        WatchUi.popView(WatchUi.SLIDE_DOWN);
-        WatchUi.popView(WatchUi.SLIDE_DOWN);
+        if (item.getAmount() == 0) {
+            sellMenu.deleteItem(index);
+        } else {
+            sellMenu.updateItem(new WatchUi.IconMenuItem(item.getName() + " x" + item.getAmount(), "Value: " + item.getSellValue() + " gold", item, new DCItemIcon(item), null), index);
+        }
     }
 
     function showInfo(item as Item) {

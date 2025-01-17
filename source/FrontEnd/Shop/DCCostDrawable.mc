@@ -18,8 +18,8 @@ class DCCostDrawable extends WatchUi.Drawable {
 		dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_BLACK);
 		dc.clear();
 
-		var amount_text = _amount.format("Amount: %d");
-		var cost_text = _cost.format("Cost: %d");
+		var amount_text = "Amount: " + _amount;
+		var cost_text = "Cost: " + _cost;
 		var font_height = dc.getFontHeight(_font) / 2;
 		dc.drawText(dc.getHeight() / 2, dc.getWidth() / 2 - font_height, _font, amount_text, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
 		dc.drawText(dc.getHeight() / 2, dc.getWidth() / 2 + font_height, _font, cost_text, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);

@@ -125,7 +125,7 @@ class DCGameView extends WatchUi.View {
         dc.drawLine(150, 11, 149, 5);
     }
 
-    var bar_to_fn as Dictionary<Symbol, Symbol> = {
+    private const bar_to_fn as Dictionary<Symbol, Symbol> = {
         :mana=>:drawManaBar
     };
 

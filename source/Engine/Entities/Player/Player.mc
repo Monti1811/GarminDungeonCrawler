@@ -94,7 +94,7 @@ class Player extends Entity {
 			return true;
 		}
 		
-		return true;
+		return false;
 	}
 
 	function addInventoryItem(item as Item) as Boolean {

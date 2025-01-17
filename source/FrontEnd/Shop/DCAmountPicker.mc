@@ -14,11 +14,11 @@ class DCAmountPicker extends WatchUi.Picker {
     var _amount as Number;
 
     //! Constructor
-    public function initialize(amount as Number) {
+    public function initialize(amount as Number, value as Number) {
         _amount = amount;
         var title = new WatchUi.Text({:text=>"Amount: ", :locX=>WatchUi.LAYOUT_HALIGN_CENTER,
             :locY=>WatchUi.LAYOUT_VALIGN_BOTTOM, :color=>Graphics.COLOR_WHITE});
-        var factory = new $.DCNumberFactory(0, _amount, 1, {});
+        var factory = new $.DCNumberFactory(0, _amount, 1, {:value=>value});
         Picker.initialize({:title=>title, :pattern=>[factory]});
     }
 

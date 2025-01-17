@@ -43,6 +43,23 @@ class Inventory {
 		return null;
 	}
 
+	function removeMultiple(item as Item, amount as Number) as Item? {
+		var existing_item = items[item.id];
+		if (existing_item != null) {
+			var new_amount = MathUtil.min(amount, existing_item.amount);
+			existing_item.amount -= new_amount;
+			if (existing_item.amount <= 0) {
+				items.remove(item.id);
+			}
+			current_items -= new_amount;
+			var new_item = item.deepcopy();
+			new_item.setIsInInventory(false);
+			new_item.amount = new_amount;
+			return new_item;
+		}
+		return null;
+	}
+
 	function getItems() as Array<Item> {
 		var item_list = items.values() as Array<Item>;
 		return item_list;

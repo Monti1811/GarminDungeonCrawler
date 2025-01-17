@@ -67,8 +67,8 @@ class Turn {
 	}
 
     function movePlayer(map as Array<Array<Tile>>, new_pos as Point2D) as Void {
-        map[_player_pos[0]][_player_pos[1]].content = null;
-        map[new_pos[0]][new_pos[1]].content = _player;
+        map[_player_pos[0]][_player_pos[1]].player = false;
+        map[new_pos[0]][new_pos[1]].player = true;
         _room.updatePlayerPos(new_pos);
         _player_pos = new_pos;
         _player.setPos(new_pos);
@@ -196,8 +196,10 @@ class Turn {
     function pickUpItem(map as Array<Array<Tile>>, new_pos as Point2D, map_element as Object?) as Void {
         if (map_element != null && map_element instanceof Item) {
             var item = map_element as Item;
-            _player.pickupItem(item);
-            _room.removeItem(item);
+            var success = _player.pickupItem(item);
+            if (success) {
+                _room.removeItem(item);
+            }
         }
     }
 

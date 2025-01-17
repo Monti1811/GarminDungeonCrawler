@@ -450,6 +450,7 @@ class Room {
         if (data["player_pos"] != null) {
             System.println("Set Player pos: " + data["player_pos"]);
             updatePlayerPos(data["player_pos"]);
+            _map[_player_pos[0]][_player_pos[1]].player = true;
         }
         if (data["stairs"] != null) {
             addStairs(data["stairs"], false);

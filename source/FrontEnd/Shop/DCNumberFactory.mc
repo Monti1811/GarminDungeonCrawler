@@ -14,7 +14,6 @@ class DCNumberFactory extends WatchUi.PickerFactory {
     private var _stop as Number;
     private var _increment as Number;
     private var _value as Number;
-    private var _formatString as String;
     private var _font as FontDefinition;
 
     //! Constructor
@@ -26,7 +25,6 @@ class DCNumberFactory extends WatchUi.PickerFactory {
     //! @option options :format The number format to display
     public function initialize(start as Number, stop as Number, increment as Number, options as {
         :font as FontDefinition,
-        :format as String,
         :value as Number
     }) {
         PickerFactory.initialize();
@@ -42,18 +40,11 @@ class DCNumberFactory extends WatchUi.PickerFactory {
             _value = 10;
         }
 
-        var format = options.get(:format);
-        if (format != null) {
-            _formatString = format;
-        } else {
-            _formatString = "%d";
-        }
-
         var font = options.get(:font);
         if (font != null) {
             _font = font;
         } else {
-            _font = Graphics.FONT_NUMBER_HOT;
+            _font = Graphics.FONT_SMALL;
         }
     }
 

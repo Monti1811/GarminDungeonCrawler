@@ -4,7 +4,7 @@ import Toybox.Math;
 module MapUtil {
 
 	function isPosPlayer(map as Array<Array<Tile>>, new_pos as Point2D) as Boolean {
-		if (map[new_pos[0]][new_pos[1]].content instanceof Player) {
+		if (map[new_pos[0]][new_pos[1]].player) {
 			return true;
 		}
 		return false;
@@ -15,7 +15,7 @@ module MapUtil {
 			return false;
 		}
 		var tile = map[point[0]][point[1]];
-		if (tile.type != PASSABLE || tile.content != null) {
+		if (tile.type != PASSABLE || tile.content != null || tile.player) {
 			return false;
 		}
 		return true;
@@ -26,7 +26,7 @@ module MapUtil {
 			return false;
 		}
 		var tile = map[point[0]][point[1]];
-		if (tile.content == null || !(tile.content instanceof Player)) {
+		if (tile.content == null || !tile.player) {
 			return false;
 		}
 		return true;
