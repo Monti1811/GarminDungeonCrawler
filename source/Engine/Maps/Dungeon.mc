@@ -12,6 +12,7 @@ class Dungeon {
 	private var _current_room_name as String?;
 	private var _current_room_position as Point2D?;
 	private var _size as Point2D;
+	private var _connections as Dictionary<String, Dictionary<WalkDirection, Boolean>> = {};
 
 	function initialize(size_x as Number, size_y as Number) {
 		_size = [size_x, size_y];
@@ -22,18 +23,88 @@ class Dungeon {
 
 	}
 
-	function addRoom(room as Room, pos as Point2D, connections as Dictionary<WalkDirection, Point2D>) {
-		// Add room to dungeon
-		var connection_keys = connections.keys();
-		for (var i = 0; i < connection_keys.size(); i++) {
-			var connection = connections[connection_keys[i]];
-			// Add connections to room
-			room.addConnection(connection_keys[i], _rooms[connection[0]][connection[1]]);
-		}
+	function addRoom(room as Room, pos as Point2D) {
 		// Save the room and save the save string of the room in the dungeon
-		var save_str = SaveData.chosen_save + "_dungeon_" + pos[0] + "_" + pos[1];
+		var save_str = $.SimUtil.getRoomName(pos[0], pos[1]);
 		Storage.setValue(save_str, room.save());
 		_rooms[pos[0]][pos[1]] = save_str;
+	}
+
+	function getConnections() as Dictionary<String, Dictionary<WalkDirection, Boolean>> {
+		return _connections;
+	}
+
+	function addToConnections(room_name as String, direction as WalkDirection) {
+		var room_connections = _connections[room_name];
+		if (room_connections == null) {
+			_connections[room_name] = {};
+			room_connections = _connections[room_name];
+		}
+		room_connections[direction] = true;
+	}
+
+	function getAdjacentRooms(x as Number, y as Number) as Array<Point2D> {
+		var adjacent_rooms = [];
+		if (x > 0) {
+			adjacent_rooms.add([x - 1, y]);
+		}
+		if (x < _size[0] - 1) {
+			adjacent_rooms.add([x + 1, y]);
+		}
+		if (y > 0) {
+			adjacent_rooms.add([x, y - 1]);
+		}
+		if (y < _size[1] - 1) {
+			adjacent_rooms.add([x, y + 1]);
+		}
+		return adjacent_rooms;
+	}
+
+	function getPossibleDirections(x as Number, y as Number) as Array<WalkDirection> {
+		var possible_directions = [];
+		if (x > 0) {
+			possible_directions.add(LEFT);
+		}
+		if (x < _size[0] - 1) {
+			possible_directions.add(RIGHT);
+		}
+		if (y > 0) {
+			possible_directions.add(UP);
+		}
+		if (y < _size[1] - 1) {
+			possible_directions.add(DOWN);
+		}
+		return possible_directions;
+	}
+
+	function connectRoomsRandomly() as Void {
+
+		for (var i = 0; i < _size[0]; i++) {
+			for (var j = 0; j < _size[1]; j++) {
+				_connections[$.SimUtil.getRoomName(i, j)] = {};
+			}
+		}
+
+		var start_room_pos = [MathUtil.random(0, _size[0] - 1), MathUtil.random(0, _size[1] - 1)];
+		var start_room = $.SimUtil.getRoomName(start_room_pos[0], start_room_pos[1]);
+		var connected_rooms = {start_room => true};
+		while (connected_rooms.size() < _size[0] * _size[1] - 1) {
+			var current_room = $.SimUtil.getRandomKeyFromDict(connected_rooms) as String;
+			var current_room_pos = $.SimUtil.getPosFromRoomName(current_room) as Point2D;
+			var possible_directions = getPossibleDirections(current_room_pos[0], current_room_pos[1]);
+			if (current_room == null) {
+				break;
+			}
+			var direction = $.SimUtil.getRandomFromArray(possible_directions);
+			if (_connections[current_room][direction] != null) {
+				continue;
+			}
+			var adjacent_room_pos = $.MapUtil.getCoordInDirection(current_room_pos, direction);
+			var adjacent_room_name = $.SimUtil.getRoomName(adjacent_room_pos[0], adjacent_room_pos[1]);
+			addToConnections(current_room, direction);
+			addToConnections(adjacent_room_name, $.MapUtil.getInversedDirection(direction));
+			connected_rooms[adjacent_room_name] = true;
+		}
 	}
 
 	function addStairs() as Void {

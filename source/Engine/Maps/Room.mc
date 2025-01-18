@@ -242,7 +242,7 @@ class Room {
         _map[npc_pos[0]][npc_pos[1]].content = npc;
     }
 
-    function addConnection(direction as WalkDirection, room as Room?) as Void {
+    function addConnection(direction as WalkDirection) as Void {
         // TODO: check if size_y is correct for up/down or not because of the way the map is drawn
         var tile_width = getApp().tile_width;
 		var tile_height = getApp().tile_height;

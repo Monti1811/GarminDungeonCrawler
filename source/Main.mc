@@ -54,28 +54,24 @@ module Main {
 		var size_x = MathUtil.random(2, 4);
 		var size_y = MathUtil.random(2, 4);
 		var dungeon = new Dungeon(size_x, size_y);
+		dungeon.connectRoomsRandomly();
 		return dungeon;
 	}
 
 	function createRoomForDungeon(dungeon as Dungeon, i as Number, j as Number) as Void {
-		var size_x = dungeon.getSize()[0];
-		var size_y = dungeon.getSize()[1];
 		var room = createRandomRoom();
-		var connections = {};
-		// Check for all walkdirections if a connection is possible and if yes, create a connection
-		if (i > 0 ){//&& (MathUtil.random(0,100) < 50)) {
-			connections[LEFT] = [i - 1, j];
+		var connections = dungeon.getConnections();
+		var room_name = $.SimUtil.getRoomName(i, j);
+		var room_connections = connections[room_name];
+		if (room_connections != null) {
+			var connections_keys = room_connections.keys();
+			for (var k = 0; k < connections_keys.size(); k++) {
+				var direction = connections_keys[k];
+				room.addConnection(direction);
+			}
 		}
-		if (i < size_x - 1){// && (MathUtil.random(0,100) < 50)) {
-			connections[RIGHT] = [i + 1, j];
-		}
-		if (j > 0){// && (MathUtil.random(0,100) < 50)) {
-			connections[UP] = [i, j - 1];
-		}
-		if (j < size_y - 1){// && (MathUtil.random(0,100) < 50)) {
-			connections[DOWN] = [i, j + 1];
-		}
-		dungeon.addRoom(room, [i, j], connections);
+		dungeon.addRoom(room, [i, j]);
+
 	}
 
 	function createRandomRoom() as Room {

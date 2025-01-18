@@ -31,6 +31,14 @@ class DCIntroDelegate extends WatchUi.BehaviorDelegate {
     }
 
     function onTap(evt as ClickEvent) as Boolean {
+        return advance();
+    }
+
+    function onBack() as Boolean {
+        return advance();
+    }
+
+    function advance() as Boolean {
         if (index < _story.size()) {
             _view.setText(_story[index], _font);
             index++;

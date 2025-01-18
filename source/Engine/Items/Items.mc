@@ -8,7 +8,7 @@ module Items {
     var total_weight as Numeric = 0;
     var character_items as Dictionary<Number, Dictionary<Number, [Numeric, Symbol]>> = {
         1 => {
-            2001 => [5, :createManaPotion],
+            2001 => [4, :createManaPotion],
         },
     };
 
@@ -51,7 +51,7 @@ module Items {
             1003 => 1,
             1004 => 1,
             1005 => 1,
-            2000 => 1,
+            2000 => 4,
         };
         var character_changes = character_items[player_id];
         if (character_changes != null) {
@@ -62,6 +62,7 @@ module Items {
                 weights[item_keys[j]] = item[0];
             }
         }
+        total_weight = 0;
         var weight_keys = weights.keys();
         for (var i = 0; i < weight_keys.size(); i++) {
             total_weight += weights[weight_keys[i]];
@@ -134,8 +135,7 @@ module Items {
     }
 
     function createManaPotion() as Item {
-        // TODO
-        return new HealthPotion();
+        return new ManaPotion();
     }
 
     function createGold() as Item {
