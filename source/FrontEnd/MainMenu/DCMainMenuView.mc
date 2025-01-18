@@ -10,12 +10,14 @@ class DCMainMenuView extends WatchUi.View {
     //private var _knight as AnimationLayer;
     //private var _font as FontResource;
     private var _icon as Bitmap;
+    private var rightLowHint as Bitmap;
 
 
     function initialize() {
         View.initialize();
         //_font = WatchUi.loadResource($.Rez.Fonts.small);
         _icon = new WatchUi.Bitmap({:rezId => $.Rez.Drawables.LauncherIcon, :locX => 150, :locY => 150});
+        rightLowHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightLow, :locX => 290, :locY => 220});
     }
 
     // Load your resources here
@@ -40,6 +42,8 @@ class DCMainMenuView extends WatchUi.View {
 
         drawButton(dc, Constants.COORDINATES_LOADGAME, "Load Game");
         drawButton(dc, Constants.COORDINATES_NEWGAME, "New Game");
+
+        rightLowHint.draw(dc);
 
     }
 

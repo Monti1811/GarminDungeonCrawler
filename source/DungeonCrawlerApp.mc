@@ -13,6 +13,7 @@ class DungeonCrawlerApp extends Application.AppBase {
     function initialize() {
         AppBase.initialize();
         SaveData.init();
+        Settings.init();
     }
 
     // onStart() is called on application start up

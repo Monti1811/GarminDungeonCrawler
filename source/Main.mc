@@ -71,7 +71,6 @@ module Main {
 			}
 		}
 		dungeon.addRoom(room, [i, j]);
-
 	}
 
 	function createRandomRoom() as Room {

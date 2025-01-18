@@ -22,7 +22,11 @@ class DCMainMenuDelegate extends WatchUi.BehaviorDelegate {
     }
 
     function onMenu() as Boolean {
-        //WatchUi.pushView(new Rez.Menus.MainMenu(), new RPGMenuDelegate(), WatchUi.SLIDE_UP);
+        var settingsMenu = new WatchUi.Menu2({:title=>"Settings"});
+        settingsMenu.addItem(new WatchUi.MenuItem("Room settings", null, :rooms, null));
+        settingsMenu.addItem(new WatchUi.MenuItem("Save settings", null, :save, null));
+
+        WatchUi.pushView(settingsMenu, new DCSettingsMenuDelegate(), SLIDE_UP);
         return true;
     }
 
