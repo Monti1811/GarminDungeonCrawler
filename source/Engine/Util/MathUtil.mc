@@ -20,7 +20,9 @@ module MathUtil {
 		return value2;
 	}
 
-	function random(min as Number, max as Number) as Number {
+	function random(min as Numeric, max as Numeric) as Number {
+		min = min.toNumber();
+		max = max.toNumber();
 		return min + Math.rand() % (max - min + 1);
 	}
 

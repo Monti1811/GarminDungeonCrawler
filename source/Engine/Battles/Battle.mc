@@ -15,7 +15,7 @@ module Battle {
 
 	function attackPlayer(attacker as Enemy, defender as Player, defender_pos as Point2D) as Boolean {
 		var damage = MathUtil.ceil(attacker.getAttack(defender) - defender.getDefense(attacker), 0);
-		showAttackString(defender_pos, damage);
+		defender.damage_received += damage;
 		Log.log(attacker.getName() + " attacks " + defender.getName() + " for " + damage + " damage");
 		var death = defender.takeDamage(damage, attacker);
 		return death;

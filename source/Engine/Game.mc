@@ -20,6 +20,11 @@ module Game {
 	var time_played as Number = 0;
 	var time_started as Time.Moment?;
 
+	function init(player_id as Number) as Void {
+		Items.init(player_id);
+		Enemies.init(player_id);
+	}
+
 	function save() as Dictionary {
 		return {
 			"difficulty" => difficulty,

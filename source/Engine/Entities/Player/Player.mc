@@ -365,6 +365,10 @@ class Player extends Entity {
 		}
 	}
 
+	function getId() as Number {
+		return id;
+	}
+
 	function getDescription() as String {
 		return description;
 	}

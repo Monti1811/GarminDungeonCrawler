@@ -98,7 +98,10 @@ module SaveData {
 		loadFromMemory();
 		var app = getApp();
 		var data = getSaveData();
-		var player = Player.load(data["player"] as Dictionary<PropertyKeyType, PropertyValueType>);
+		var player_data = data["player"] as Dictionary<PropertyKeyType, PropertyValueType>;
+		var player_id = player_data["id"] as Number;
+		$.Game.init(player_id);
+		var player = Player.load(player_data);
 		app.setPlayer(player);
 		app.setCurrentDungeon(Dungeon.load(data["dungeon"] as Dictionary<PropertyKeyType, PropertyValueType>));
 		$.Game.load(data["game"] as Dictionary<PropertyKeyType, PropertyValueType>);

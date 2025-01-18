@@ -3,6 +3,7 @@ import Toybox.Application;
 
 class Entity {
 	var name as String = "Entity";
+	var damage_received as Number = 0;
 
 	function initialize() {
 	}

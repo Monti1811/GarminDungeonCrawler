@@ -2,48 +2,71 @@ import Toybox.Lang;
 
 module Items {
 
-    var items as Dictionary<Number, Symbol> = {
-        0 => :createSteelAxe,
-        1 => :createSteelBow,
-        2 => :createSteelDagger,
-        3 => :createSteelGreatsword,
-        4 => :createSteelKatana,
-        5 => :createSteelLance,
-        6 => :createSteelSpell,
-        7 => :createSteelStaff,
-        8 => :createSteelSword,
+    var items as Dictionary<Number, Symbol>?;
 
-        1000 => :createSteelHelmet,
-        1001 => :createSteelBreastPlate,
-        1002 => :createSteelGauntlets,
-        1003 => :createSteelShoes,
-        1004 => :createSteelRing1,
-        1005 => :createSteelRing2,
-
-        2000 => :createHealthPotion,
-
-        5000 => :createGold,
+    var weights as Dictionary<Number, Numeric>?;
+    var total_weight as Numeric = 0;
+    var character_items as Dictionary<Number, Dictionary<Number, [Numeric, Symbol]>> = {
+        1 => {
+            2001 => [5, :createManaPotion],
+        },
     };
 
-    var weights as Dictionary<Number, Number> = {
-        0 => 1,
-        1 => 1,
-        2 => 1,
-        3 => 1,
-        4 => 1,
-        5 => 1,
-        6 => 1,
-        7 => 1,
-        8 => 1,
-        1000 => 1,
-        1001 => 1,
-        1002 => 1,
-        1003 => 1,
-        1004 => 1,
-        1005 => 1,
-        2000 => 1,
-    };
-    var total_weight = 16;
+    function init(player_id as Number) as Void {
+        items = {
+            0 => :createSteelAxe,
+            1 => :createSteelBow,
+            2 => :createSteelDagger,
+            3 => :createSteelGreatsword,
+            4 => :createSteelKatana,
+            5 => :createSteelLance,
+            6 => :createSteelSpell,
+            7 => :createSteelStaff,
+            8 => :createSteelSword,
+
+            1000 => :createSteelHelmet,
+            1001 => :createSteelBreastPlate,
+            1002 => :createSteelGauntlets,
+            1003 => :createSteelShoes,
+            1004 => :createSteelRing1,
+            1005 => :createSteelRing2,
+
+            2000 => :createHealthPotion,
+
+            5000 => :createGold,
+        };
+        weights = {
+            0 => 1,
+            1 => 1,
+            2 => 1,
+            3 => 1,
+            4 => 1,
+            5 => 1,
+            6 => 1,
+            7 => 1,
+            8 => 1,
+            1000 => 1,
+            1001 => 1,
+            1002 => 1,
+            1003 => 1,
+            1004 => 1,
+            1005 => 1,
+            2000 => 1,
+        };
+        var character_changes = character_items[player_id];
+        if (character_changes != null) {
+            var item_keys = character_changes.keys();
+            for (var j = 0; j < item_keys.size(); j++) {
+                var item = character_changes[item_keys[j]];
+                items[item_keys[j]] = item[1];
+                weights[item_keys[j]] = item[0];
+            }
+        }
+        var weight_keys = weights.keys();
+        for (var i = 0; i < weight_keys.size(); i++) {
+            total_weight += weights[weight_keys[i]];
+        }
+    }
 
 
     function createSteelAxe() as Item {
@@ -107,6 +130,11 @@ module Items {
     }
 
     function createHealthPotion() as Item {
+        return new HealthPotion();
+    }
+
+    function createManaPotion() as Item {
+        // TODO
         return new HealthPotion();
     }
 

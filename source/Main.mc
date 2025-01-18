@@ -15,6 +15,7 @@ module Main {
 	}
 
 	function createNewGame1(player as Player, progress_bar as WatchUi.ProgressBar) as Void {
+		$.Game.init(player.getId());
 		var app = getApp();
 		app.setPlayer(player);
 		progress_bar.setProgress(10.0);

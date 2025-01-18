@@ -99,7 +99,7 @@ class DCGameView extends WatchUi.View {
 		rightLowHint.draw(dc);
 
 		drawPlayer(dc);
-
+        addPlayerDamage();
         for (var i = 0; i < damage_texts.size(); i++) {
             damage_texts[i].draw(dc);
         }
@@ -154,6 +154,16 @@ class DCGameView extends WatchUi.View {
         var bar_percent = (70 * mana_percent).toNumber();
         return [Graphics.COLOR_DK_BLUE as Number, bar_percent];
         
+    }
+    function addPlayerDamage() as Void {
+        var player = getApp().getPlayer();
+        var player_pos = player.getPos();
+        var damage_received = player.damage_received;
+        player.damage_received = 0;
+        if (damage_received == 0) {
+            return;
+        }
+        addDamageText(damage_received, player_pos);
     }
 
     function drawPlayer(dc as Dc) as Void {
