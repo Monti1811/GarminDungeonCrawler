@@ -14,6 +14,7 @@ class DCGameView extends WatchUi.View {
     private var _player_sprite_offset as Point2D = [0,0];
 
 	private var _timer as Timer.Timer;
+    private var _autosave_timer as Timer.Timer?;
 
 	private var _turns as Turn;
 
@@ -38,6 +39,15 @@ class DCGameView extends WatchUi.View {
         });
 
 		_timer = new Timer.Timer();
+        var autosave = $.Settings.settings["autosave"] as Number;
+        if (autosave != -1) {
+            if (autosave == 0) {
+                _turns.setAutoSave(true);
+            } else {
+                _autosave_timer = new Timer.Timer();
+            _autosave_timer.start(method(:autoSave), autosave * 60 * 1000, false);
+            }  
+        }
         
         if (options != null) {
             // Load options
@@ -55,6 +65,15 @@ class DCGameView extends WatchUi.View {
             (player_sprite_dimensions[1] - _tile_height) / 2
         ];
 
+    }
+
+    function autoSave() as Void {
+        var app = $.getApp();
+        if (app.getPlayer != null && app.getCurrentDungeon() != null) {
+            $.SaveData.saveGame();
+            var autosave = $.Settings.settings["autosave"] as Number;
+            _autosave_timer.start(method(:autoSave), autosave * 60 * 1000, false);
+        }
     }
 
     function getRoomDrawable() as RoomDrawable {

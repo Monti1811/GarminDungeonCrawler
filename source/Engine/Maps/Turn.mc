@@ -7,6 +7,8 @@ class Turn {
     private var _player_pos as Point2D;
     private var _player as Player;
 
+    private var _autosave as Boolean = false;
+
     private var _room as Room;
     private var _map_data as Dictionary;
 
@@ -22,6 +24,10 @@ class Turn {
         // Add player position to map
         var map = _map_data[:map] as Array<Array<Tile>>;
         map[_player_pos[0]][_player_pos[1]].content = _player;
+    }
+
+    function setAutoSave(autosave as Boolean) as Void {
+        _autosave = autosave;
     }
 
     function doTurn(direction as WalkDirection) as Void {
@@ -62,6 +68,10 @@ class Turn {
 
         // Do stuff after the turn is over
         _player.onTurnDone();
+
+        if (_autosave) {
+            $.SaveData.saveGame();
+        }
 
 		WatchUi.requestUpdate();
 	}

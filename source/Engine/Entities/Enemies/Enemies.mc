@@ -33,6 +33,7 @@ module Enemies {
                 weights[enemy_keys[j]] = enemy[0];
             }
         }
+        total_weight = 0;
         var weight_keys = weights.keys();
         for (var i = 0; i < weight_keys.size(); i++) {
             total_weight += weights[weight_keys[i]];

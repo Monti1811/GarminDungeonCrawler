@@ -10,6 +10,9 @@ module Items {
         1 => {
             2001 => [4, :createManaPotion],
         },
+         999 => {
+            2001 => [4, :createManaPotion],
+        },
     };
 
     function init(player_id as Number) as Void {

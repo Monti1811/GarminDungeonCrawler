@@ -8,26 +8,39 @@ module Settings {
         "rooms_amount"=> 4,
         "min_room_size"=> 5,
         "max_room_size"=> 15,
-        "save_on_exit"=> false
+        "save_on_exit"=> false,
+        "autosave"=> -1
     };
 
+    function initSetting(key as String, default_value as PropertyValueType) as Void {
+        var value = Storage.getValue(key) as PropertyValueType?;
+        if (value == null) {
+            Storage.setValue(key, default_value);
+        } else {
+            settings[key] = value;
+        }
+    }
+
     function init() as Void {
-        if (Storage.getValue("rooms_amount") == null) {
-            Storage.setValue("rooms_amount", 4);
-        }
-        if (Storage.getValue("min_room_size") == null) {
-            Storage.setValue("min_room_size", 5);
-        }
-        if (Storage.getValue("max_room_size") == null) {
-            Storage.setValue("max_room_size", 15);
-        }
-        if (Storage.getValue("save_on_exit") == null) {
-            Storage.setValue("save_on_exit", false);
+        var setting_keys = settings.keys();
+        for (var i = 0; i < setting_keys.size(); i++) {
+            initSetting(setting_keys[i], settings[setting_keys[i]]);
         }
     }
 
     function setValue(key as String, value as PropertyValueType) as Void {
         settings[key] = value;
         Storage.setValue(key, value);
+    }
+
+    function getAutoSaveString(val as Number) as String {
+        switch (val) {
+            case -1:
+                return "Off";
+            case 0:
+                return "Every turn";
+            default:
+                return "Every " + val + " minutes";
+        }
     }
 }
