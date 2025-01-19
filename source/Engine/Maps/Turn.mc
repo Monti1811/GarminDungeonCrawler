@@ -59,7 +59,7 @@ class Turn {
 
 		System.println("Old pos: " + _player_pos);
         System.println("New pos: " + new_pos);
-
+        // Resolve player actions
         resolvePlayerActions(map, new_pos, direction, map_element);
         // Resolve enemy actions
         resolveEnemyActions(_room.getEnemies().values(), _player_pos);

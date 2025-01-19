@@ -45,7 +45,7 @@ class DCGameView extends WatchUi.View {
                 _turns.setAutoSave(true);
             } else {
                 _autosave_timer = new Timer.Timer();
-            _autosave_timer.start(method(:autoSave), autosave * 60 * 1000, false);
+                _autosave_timer.start(method(:autoSave), autosave * 60 * 1000, false);
             }  
         }
         

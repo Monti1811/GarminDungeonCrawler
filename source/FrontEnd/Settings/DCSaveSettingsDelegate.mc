@@ -29,6 +29,7 @@ class DCSaveSettingsDelegate extends WatchUi.Menu2InputDelegate {
         var autoSaveSettings = new WatchUi.Menu2({:title=>"Autosave settings"});
         autoSaveSettings.addItem(new WatchUi.MenuItem("Off", null, -1, null));
         autoSaveSettings.addItem(new WatchUi.MenuItem("Every turn", null, 0, null));
+        autoSaveSettings.addItem(new WatchUi.MenuItem("Every 1 minute", null, 1, null));
         autoSaveSettings.addItem(new WatchUi.MenuItem("Every 5 minutes", null, 5, null));
         autoSaveSettings.addItem(new WatchUi.MenuItem("Every 10 minutes", null, 10, null));
         autoSaveSettings.addItem(new WatchUi.MenuItem("Every 15 minutes", null, 15, null));
