@@ -1,7 +1,15 @@
 import Toybox.Lang;
+import Toybox.Application;
 import Toybox.Application.Storage;
 
 module Settings {
+
+    var settings as Dictionary<String, PropertyValueType> = {
+        "rooms_amount"=> 4,
+        "min_room_size"=> 5,
+        "max_room_size"=> 15,
+        "save_on_exit"=> false
+    };
 
     function init() as Void {
         if (Storage.getValue("rooms_amount") == null) {
@@ -16,5 +24,10 @@ module Settings {
         if (Storage.getValue("save_on_exit") == null) {
             Storage.setValue("save_on_exit", false);
         }
+    }
+
+    function setValue(key as String, value as PropertyValueType) as Void {
+        settings[key] = value;
+        Storage.setValue(key, value);
     }
 }

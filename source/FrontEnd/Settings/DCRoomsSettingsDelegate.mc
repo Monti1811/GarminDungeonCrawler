@@ -66,7 +66,7 @@ class DCRoomsAmountSettingsDelegate extends WatchUi.Menu2InputDelegate {
     }
 
     function onSelect(item as MenuItem) as Void {
-        Storage.setValue("rooms_amount", item.getId());
+        $.Settings.setValue("rooms_amount", item.getId());
         WatchUi.popView(WatchUi.SLIDE_DOWN);
         var size = item.getId().toString() as String;
         parent.updateItem(new MenuItem("Max rooms per dungeon", size + "x" + size, :amount, null), 0);
@@ -85,7 +85,7 @@ class DCRoomsSizeSettingsDelegate extends WatchUi.Menu2InputDelegate {
     function onSelect(item as MenuItem) as Void {
         var symbol = item.getId() as Symbol;
         var value = item.getLabel().toNumber();
-        Storage.setValue(symbol == :min ? "min_room_size" : "max_room_size", value);
+        $.Settings.setValue(symbol == :min ? "min_room_size" : "max_room_size", value);
         WatchUi.popView(WatchUi.SLIDE_DOWN);
         parent.updateItem(new MenuItem(symbol == :min ? "Min room size" : "Max room size", value.toString() + "x" + value.toString(), symbol, null), symbol == :min ? 1 : 2);
     }

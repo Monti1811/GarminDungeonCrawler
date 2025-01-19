@@ -12,7 +12,8 @@ class DCSaveSettingsDelegate extends WatchUi.Menu2InputDelegate {
         switch (type) {
             case :exit:
                 item = item as ToggleMenuItem;
-                Storage.setValue("save_on_exit", item.isEnabled());
+                var val = item.isEnabled();
+                Settings.setValue("save_on_exit", val);
                 break;
         }
     }

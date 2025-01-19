@@ -51,8 +51,9 @@ module Main {
 	}
 
 	function createNewDungeon(progress_bar as WatchUi.ProgressBar) as Dungeon {
-		var size_x = MathUtil.random(2, 4);
-		var size_y = MathUtil.random(2, 4);
+		var max_rooms = Settings.settings["rooms_amount"];
+		var size_x = MathUtil.random(2, max_rooms);
+		var size_y = MathUtil.random(2, max_rooms);
 		var dungeon = new Dungeon(size_x, size_y);
 		dungeon.connectRoomsRandomly();
 		return dungeon;
@@ -78,8 +79,10 @@ module Main {
 		var tile_height = getApp().tile_height;
 		var screen_size_x = Math.ceil(360.0/tile_width).toNumber();
 		var screen_size_y = Math.ceil(360.0/tile_height).toNumber();
-		var room_size_x = MathUtil.random(5, 15);
-		var room_size_y = MathUtil.random(5, 15);
+		var min_room_size = Settings.settings["min_room_size"];
+		var max_room_size = Settings.settings["max_room_size"];
+		var room_size_x = MathUtil.random(min_room_size, max_room_size);
+		var room_size_y = MathUtil.random(min_room_size, max_room_size);
 
 		var middle_of_screen = [Math.floor(screen_size_x/2), Math.floor(screen_size_y/2)];
 		var left = middle_of_screen[0] - Math.floor(room_size_x/2);

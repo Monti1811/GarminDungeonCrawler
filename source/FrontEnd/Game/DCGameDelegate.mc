@@ -95,12 +95,19 @@ class DCGameExitConfirmDelegate extends WatchUi.ConfirmationDelegate {
 
     public function onResponse(value as Confirm) as Boolean {
         if (value == WatchUi.CONFIRM_YES) {
+            if ($.Settings.settings["save_on_exit"]) {
+                saveGame();
+            }
             WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
             var app = getApp();
             app.setPlayer(null);
             app.setCurrentDungeon(null);
         }
         return true;
+    }
+
+    function saveGame() as Void {
+        $.SaveData.saveGame();
     }
 
 }
