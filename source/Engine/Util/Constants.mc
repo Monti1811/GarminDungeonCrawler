@@ -44,7 +44,7 @@ module Constants {
 		LEFT_HAND => "Left Hand",
 		RIGHT_HAND => "Right Hand",
 		ACCESSORY => "Accessory",
-		MUNITION => "Munition",
+		AMMUNITION => "Ammunition",
 		NONE => "None"
 	};
 
@@ -57,7 +57,7 @@ module Constants {
 		"Left Hand" => LEFT_HAND,
 		"Right Hand" => RIGHT_HAND,
 		"Accessory" => ACCESSORY,
-		"Munition" => MUNITION,
+		"Ammunition" => AMMUNITION,
 		"None" => NONE
 	};
 }

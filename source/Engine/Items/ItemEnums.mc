@@ -27,7 +27,7 @@ enum ItemSlot {
 	LEFT_HAND = 5,
 	RIGHT_HAND = 6,
 	ACCESSORY = 7,
-	MUNITION = 8,
+	AMMUNITION = 8,
 	NONE = 9
 }
 
@@ -37,7 +37,7 @@ enum WeaponType {
 	RANGED
 }
 
-enum MunitionType {
+enum AmmunitionType {
 	ARROW,
 	FIRE_ARROW,
 	ICE_ARROW

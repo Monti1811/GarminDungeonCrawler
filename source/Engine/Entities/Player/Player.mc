@@ -34,7 +34,7 @@ class Player extends Entity {
 		LEFT_HAND => null,
 		RIGHT_HAND => null,
 		ACCESSORY => null,
-		MUNITION => null,
+		AMMUNITION => null,
 	};
 	var gold as Number = 0;
 	var sprite as ResourceId = $.Rez.Drawables.Player;

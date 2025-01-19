@@ -10,7 +10,7 @@ class Bow extends WeaponItem {
 	var weight as Number = 10;
 	var attribute_bonus as Dictionary<Symbol, Number> = {
 	};
-	var munition_type as MunitionType = ARROW;
+	var ammunition_type as AmmunitionType = ARROW;
 
 	function initialize() {
 		WeaponItem.initialize();
@@ -50,17 +50,17 @@ class Bow extends WeaponItem {
 
 	function canAttack(enemy as Enemy?) as Boolean {
 		var player = getApp().getPlayer();
-		var munition = player.getEquip(MUNITION) as Munition?;
-		return munition != null && munition.isType(self.munition_type);
+		var ammunition = player.getEquip(AMMUNITION) as Ammunition?;
+		return ammunition != null && ammunition.isType(self.ammunition_type);
 	}
 
 	function onDamageDone(damage as Number, enemy as Enemy?) as Void {
 		var player = getApp().getPlayer();
-		var munition = player.getEquip(MUNITION) as Munition?;
-		if (munition != null) {
-			munition.amount -= 1;
-			if (munition.amount <= 0) {
-				player.equipped.remove(MUNITION);
+		var ammunition = player.getEquip(AMMUNITION) as Ammunition?;
+		if (ammunition != null) {
+			ammunition.amount -= 1;
+			if (ammunition.amount <= 0) {
+				player.equipped.remove(AMMUNITION);
 			}
 		}
 	}

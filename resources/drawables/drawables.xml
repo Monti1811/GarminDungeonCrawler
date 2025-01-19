@@ -234,6 +234,7 @@
     <bitmap id="chest_golden_closed" filename="items/chest_golden_closed.png" />
     <bitmap id="chest_golden_open_empty" filename="items/chest_golden_open_empty.png" />
     <bitmap id="chest_golden_open_full" filename="items/chest_golden_open_full.png" />
+    <bitmap id="arrow" filename="items/arrow.png" />
 
     <!-- Enemies -->
     <bitmap id="monster_tentackle" filename="monsters/monster_tentackle.png" />

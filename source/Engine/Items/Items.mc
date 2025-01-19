@@ -26,6 +26,7 @@ module Items {
             6 => :createSteelSpell,
             7 => :createSteelStaff,
             8 => :createSteelSword,
+            9 => :createArrow,
 
             1000 => :createSteelHelmet,
             1001 => :createSteelBreastPlate,
@@ -48,6 +49,7 @@ module Items {
             6 => 1,
             7 => 1,
             8 => 1,
+            9 => 1,
             1000 => 1,
             1001 => 1,
             1002 => 1,
@@ -107,6 +109,10 @@ module Items {
 
     function createSteelSword() as Item {
         return new SteelSword();
+    }
+
+    function createArrow() as Item {
+        return new Arrow();
     }
 
     function createSteelHelmet() as Item {
