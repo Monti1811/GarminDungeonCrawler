@@ -2,18 +2,19 @@ import Toybox.Lang;
 
 
 class SteelLance extends WeaponItem {
-	var id as Number = 5;
-	var name as String = "Steel Spear";
-	var description as String = "A simple steel spear";
-	var slot as ItemSlot = RIGHT_HAND;
-	var value as Number = 10;
-	var weight as Number = 10;
-	var attribute_bonus as Dictionary<Symbol, Number> = {
-		:luck => 2
-	};
 
 	function initialize() {
 		WeaponItem.initialize();
+		id = 5;
+		name = "Steel Spear";
+		description = "A simple steel spear";
+		slot = RIGHT_HAND;
+		value = 10;
+		weight = 10;
+		attribute_bonus = {
+			:luck => 2
+		};
+
 		attack = 10;
 		range = 2;
 		range_type = LINEAR;

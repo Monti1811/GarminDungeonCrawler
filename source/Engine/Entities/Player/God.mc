@@ -14,7 +14,7 @@ class God extends Player {
 		self.level = 100;
 		self.experience = 124;
 		self.second_bar = :mana;
-		self.next_level_experience = self.level * 100;
+		self.next_level_experience = 130;
 		self.attributes = {
 			:strength => 100,
 			:constitution => 100,
@@ -27,11 +27,14 @@ class God extends Player {
 		self.current_health = 1000;
 		self.maxHealth = 1000;
 
+		var arrows = new Arrow();
+		arrows.amount = 100;
 		self.equipped = {
 			HEAD => new SteelHelmet(),
 			CHEST => new SteelBreastPlate(),
 			FEET => new SteelShoes(),
 			RIGHT_HAND => new SteelAxe(),
+			AMMUNITION => arrows,
 			ACCESSORY => new SteelRing1()
 		};
 		self.gold = 99999;

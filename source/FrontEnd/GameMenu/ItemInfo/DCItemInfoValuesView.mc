@@ -45,34 +45,52 @@ class DCItemInfoValuesView extends WatchUi.View {
 	}
 
 	function drawCommonAttributes(dc, text_left, text_right, counter, distance) as Void {
-		dc.drawText(120, 70 + distance * counter, Graphics.FONT_XTINY, text_left, Graphics.TEXT_JUSTIFY_LEFT);
-		dc.drawText(220, 70 + distance * counter, Graphics.FONT_XTINY, text_right, Graphics.TEXT_JUSTIFY_LEFT);
+		dc.drawText(80, 70 + distance * counter, Graphics.FONT_XTINY, text_left, Graphics.TEXT_JUSTIFY_LEFT);
+		dc.drawText(180, 70 + distance * counter, Graphics.FONT_XTINY, text_right, Graphics.TEXT_JUSTIFY_LEFT);
 	}
 
-	function drawAttributes(dc, text_left, text_right, counter, distance, left as Boolean) as Void {
-		if (left) {
-			dc.drawText(60, 180 + distance * counter, small_font, text_left, Graphics.TEXT_JUSTIFY_LEFT);
-			dc.drawText(140, 180 + distance * counter, small_font, text_right, Graphics.TEXT_JUSTIFY_LEFT);
-		} else {
-			dc.drawText(180, 180 + distance * counter, small_font, text_left, Graphics.TEXT_JUSTIFY_LEFT);
-			dc.drawText(260, 180 + distance * counter, small_font, text_right, Graphics.TEXT_JUSTIFY_LEFT);
-		}
+	function drawAttributes(dc, text_left, text_right, counter, distance, x_axis as Number) as Void {
+		dc.drawText(x_axis, 200 + distance * counter, small_font, text_left, Graphics.TEXT_JUSTIFY_LEFT);
+		dc.drawText(x_axis + 40, 200 + distance * counter, small_font, text_right, Graphics.TEXT_JUSTIFY_LEFT);
+	}
+
+	function drawAttributeTable(dc as Dc) {
+		dc.drawRectangle(90, 200, 175, 65);
+
 	}
 
 	function showWeaponStats(dc) {
 		var weapon = _item as WeaponItem;
-		drawCommonAttributes(dc, "Damage", ": " + weapon.getAttack(null), 0, 25);
-		drawCommonAttributes(dc, "Equip Slot", ": " + Constants.EQUIPSLOT_TO_STR[weapon.getItemSlot()], 1, 25);
-		drawCommonAttributes(dc, "Value", ": " + weapon.getValue(), 2, 25);
+		drawCommonAttributes(dc, "Damage", ": " + weapon.getAttack(null), 0, 30);
+		drawCommonAttributes(dc, "Equip Slot", ": " + Constants.EQUIPSLOT_TO_STR[weapon.getItemSlot()], 1, 30);
+		drawCommonAttributes(dc, "Value", ": " + weapon.getValue(), 2, 30);
 		var attribute_bonus = weapon.getAllAttributeBonuses();
 		var bonus_keys = attribute_bonus.keys() as Array<Symbol>;
 		if (bonus_keys.size() > 0) {
 			dc.drawText(180, 165, Graphics.FONT_XTINY, "Attribute Bonus: ", Graphics.TEXT_JUSTIFY_CENTER);
-			var attribute_keys = Constants.ATT_SYMBOL_TO_STR.keys() as Array<Symbol>;
+			drawAttributeTable(dc);
+			var attribute_keys = [
+				:strength,
+				:constitution,
+				:dexterity,
+				:intelligence,
+				:wisdom,
+				:charisma,
+				:luck
+			];
 			for (var i = 0; i < attribute_keys.size(); i++) {
 				var symbol = attribute_keys[i];
 				var attribute_bonus_value = weapon.getAttributeBonus(symbol);
-				drawAttributes(dc, Constants.ATT_SYMBOL_TO_STR[symbol], ": " + attribute_bonus_value, i % 3, 15, i < 3);
+				if (attribute_bonus_value > 0) {
+					attribute_bonus_value = "+" + attribute_bonus_value;
+				}
+				if (i == 6) {
+					drawAttributes(dc, Constants.ATT_SYMBOL_TO_STR_SHORT[symbol], ": " + attribute_bonus_value, 3, 15, 150);
+				} else if (i < 3) {
+					drawAttributes(dc, Constants.ATT_SYMBOL_TO_STR_SHORT[symbol], ": " + attribute_bonus_value, i % 3, 15, 107);
+				} else {
+					drawAttributes(dc, Constants.ATT_SYMBOL_TO_STR_SHORT[symbol], ": " + attribute_bonus_value, i % 3, 15, 187);
+				}
 			}
 		}
 
@@ -80,15 +98,46 @@ class DCItemInfoValuesView extends WatchUi.View {
 
 	function showArmorStats(dc) {
 		var armor = _item as ArmorItem;
-		drawText(dc, "Defense: " + armor.getDefense(null), 0, 60, null, null);
-		drawText(dc, "Equip Slot: " + Constants.EQUIPSLOT_TO_STR[armor.getItemSlot()], 1, 60, null, null);
-		drawText(dc, "Value: " + armor.getValue(), 2, 60, null, null);
+		drawCommonAttributes(dc, "Defense", ": " + armor.getDefense(null), 0, 30);
+		drawCommonAttributes(dc, "Equip Slot", ": " + Constants.EQUIPSLOT_TO_STR[armor.getItemSlot()], 1, 30);
+		drawCommonAttributes(dc, "Value", ": " + armor.getValue(), 2, 30);
+		var attribute_bonus = armor.getAllAttributeBonuses();
+		var bonus_keys = attribute_bonus.keys() as Array<Symbol>;
+		if (bonus_keys.size() > 0) {
+			dc.drawText(180, 165, Graphics.FONT_XTINY, "Attribute Bonus: ", Graphics.TEXT_JUSTIFY_CENTER);
+			drawAttributeTable(dc);
+			var attribute_keys = [
+				:strength,
+				:constitution,
+				:dexterity,
+				:intelligence,
+				:wisdom,
+				:charisma,
+				:luck
+			];
+			for (var i = 0; i < attribute_keys.size(); i++) {
+				var symbol = attribute_keys[i];
+				var attribute_bonus_value = armor.getAttributeBonus(symbol);
+				if (attribute_bonus_value > 0) {
+					attribute_bonus_value = "+" + attribute_bonus_value;
+				}
+				if (i == 6) {
+					drawAttributes(dc, Constants.ATT_SYMBOL_TO_STR_SHORT[symbol], ": " + attribute_bonus_value, 3, 15, 150);
+				} else if (i < 3) {
+					drawAttributes(dc, Constants.ATT_SYMBOL_TO_STR_SHORT[symbol], ": " + attribute_bonus_value, i % 3, 15, 107);
+				} else {
+					drawAttributes(dc, Constants.ATT_SYMBOL_TO_STR_SHORT[symbol], ": " + attribute_bonus_value, i % 3, 15, 187);
+				}
+			}
+		}
 	}
 
 	function showConsumableStats(dc) {
 		var consumable = _item as ConsumableItem;
-		drawText(dc, "Effect: " + consumable.getEffectDescription(), 0, 60, null, null);
-		drawText(dc, "Value: " + consumable.getValue(), 1, 60, null, null);
+		drawCommonAttributes(dc, "Value", ": " + consumable.getValue(), 0, 30);
+		dc.drawText(180, 125, Graphics.FONT_XTINY, "Effect: ", Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
+		var formatted_text = Graphics.fitTextToArea(consumable.getEffectDescription(), Graphics.FONT_XTINY, 260, 150, false);
+		dc.drawText(180, 150, Graphics.FONT_XTINY, formatted_text, Graphics.TEXT_JUSTIFY_CENTER);
 
 	}
 

@@ -2,12 +2,13 @@ import Toybox.Lang;
 
 
 class ArmorItem extends EquippableItem {
-	var type as ItemType = ARMOR;
-	var slot as ItemSlot = CHEST;
+
 	var defense as Number = 5;
 
 	function initialize() {
 		EquippableItem.initialize();
+		type = ARMOR;
+		slot = CHEST;
 	}
 
 	function onEquipItem(player as Player) as Void {

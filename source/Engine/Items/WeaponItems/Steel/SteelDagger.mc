@@ -14,8 +14,18 @@ class SteelDagger extends WeaponItem {
 
 	function initialize() {
 		WeaponItem.initialize();
+		id = 2;
+		name = "Steel Dagger";
+		description = "A simple steel dagger";
+		slot = RIGHT_HAND;
+		value = 10;
+		weight = 10;
+		attribute_bonus = {
+			:luck => 2
+		};
+
 		attack = 7;
-		range = 1;
+		// range = 1;
 	}
 
 	function onEquipItem(player as Player) as Void {

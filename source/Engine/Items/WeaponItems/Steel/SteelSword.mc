@@ -2,18 +2,19 @@ import Toybox.Lang;
 
 
 class SteelSword extends WeaponItem {
-	var id as Number = 8;
-	var name as String = "Steel Sword";
-	var description as String = "A simple steel sword";
-	var slot as ItemSlot = RIGHT_HAND;
-	var value as Number = 10;
-	var weight as Number = 10;
-	var attribute_bonus as Dictionary<Symbol, Number> = {
-		:strength => 2
-	};
 
 	function initialize() {
 		WeaponItem.initialize();
+		id = 8;
+		name = "Steel Sword";
+		description = "A simple steel sword";
+		slot = RIGHT_HAND;
+		value = 10;
+		weight = 10;
+		attribute_bonus = {
+			:strength => 2
+		};
+
 		attack = 10;
 		range = 1;
 	}

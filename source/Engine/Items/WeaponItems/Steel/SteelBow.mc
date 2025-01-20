@@ -8,8 +8,20 @@ class SteelBow extends Bow {
 
 	function initialize() {
 		Bow.initialize();
+		id = 1;
+		name = "Steel Bow";
+		description = "A simple steel bow";
+		slot = RIGHT_HAND;
+		value = 10;
+		weight = 10;
+		attribute_bonus = {
+			:dexterity => 2
+		};
+
 		attack = 3;
 		range = 3;
+		range_type = LINEAR;
+
 	}
 
 	function onEquipItem(player as Player) as Void {

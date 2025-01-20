@@ -112,7 +112,9 @@ module Items {
     }
 
     function createArrow() as Item {
-        return new Arrow();
+        var arrow = new Arrow();
+        arrow.setAmount(MathUtil.random(1, 10));
+        return arrow;
     }
 
     function createSteelHelmet() as Item {

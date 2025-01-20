@@ -2,18 +2,19 @@ import Toybox.Lang;
 
 
 class SteelSpell extends Spell {
-	var id as Number = 6;
-	var name as String = "Steel Spell";
-	var description as String = "A simple steel spell";
-	var slot as ItemSlot = RIGHT_HAND;
-	var value as Number = 10;
-	var weight as Number = 10;
-	var attribute_bonus as Dictionary<Symbol, Number> = {
-		:intelligence => 2
-	};
 
 	function initialize() {
 		Spell.initialize();
+		id = 6;
+		name = "Steel Spell";
+		description = "A simple steel spell";
+		slot = RIGHT_HAND;
+		value = 10;
+		weight = 10;
+		attribute_bonus = {
+			:intelligence => 2
+		};
+
 		attack = 10;
 		range = 2;
 		range_type = LINEAR;

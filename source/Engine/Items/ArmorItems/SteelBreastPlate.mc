@@ -2,18 +2,19 @@ import Toybox.Lang;
 
 
 class SteelBreastPlate extends ArmorItem {
-	var id as Number = 1001;
-	var name as String = "Steel Breastplate";
-	var slot as ItemSlot = CHEST;
-	var description as String = "A simple steel breastplate";
-	var value as Number = 10;
-	var weight as Number = 15;
-	var attribute_bonus as Dictionary<Symbol, Number> = {
-		:constitution => 2
-	};
 
 	function initialize() {
 		ArmorItem.initialize();
+		id = 1001;
+		name = "Steel Breastplate";
+		description = "A simple steel breastplate";
+		value = 10;
+		weight = 15;
+		slot = CHEST;
+		defense = 5;
+		attribute_bonus = {
+			:constitution => 2
+		};
 	}
 
 	function onEquipItem(player as Player) as Void {

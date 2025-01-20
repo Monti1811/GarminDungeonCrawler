@@ -2,20 +2,21 @@ import Toybox.Lang;
 
 
 class SteelAxe extends WeaponItem {
-	var id as Number = 0;
-	var name as String = "Steel Axe";
-	var description as String = "A simple steel axe";
-	var slot as ItemSlot = RIGHT_HAND;
-	var value as Number = 10;
-	var weight as Number = 10;
-	var attribute_bonus as Dictionary<Symbol, Number> = {
-		:strength => 2
-	};
 
 	function initialize() {
 		WeaponItem.initialize();
-		attack = 10;
-		range = 1;
+		id = 0;
+		name = "Steel Axe";
+		description = "A simple steel axe";
+		value = 10;
+		weight = 10;
+		slot = RIGHT_HAND;
+		attribute_bonus = {
+			:strength => 2
+		};
+
+		attack = 8;
+
 	}
 
 	function onEquipItem(player as Player) as Void {

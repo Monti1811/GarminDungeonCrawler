@@ -2,18 +2,19 @@ import Toybox.Lang;
 
 
 class SteelShoes extends ArmorItem {
-	var id as Number = 1003;
-	var name as String = "Steel Shoes";
-	var slot as ItemSlot = HEAD;
-	var description as String = "A simple steel shoes";
-	var value as Number = 10;
-	var weight as Number = 10;
-	var attribute_bonus as Dictionary<Symbol, Number> = {
-		:constitution => 2
-	};
 
 	function initialize() {
 		ArmorItem.initialize();
+		id = 1003;
+		name = "Steel Shoes";
+		description = "A simple steel shoes";
+		value = 10;
+		weight = 10;
+		slot = FEET;
+		defense = 3;
+		attribute_bonus = {
+			:constitution => 2
+		};
 	}
 
 	function onEquipItem(player as Player) as Void {

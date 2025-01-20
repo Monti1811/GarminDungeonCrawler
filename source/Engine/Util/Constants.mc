@@ -25,6 +25,16 @@ module Constants {
         :luck => "Luck"
     };
 
+	public const ATT_SYMBOL_TO_STR_SHORT = {
+        :strength => "STR",
+        :constitution => "CON",
+        :dexterity => "DEX",
+        :intelligence => "INT",
+        :wisdom => "WIS",
+        :charisma => "CHA",
+        :luck => "LCK"
+    };
+
 	public const ATT_STR_TO_SYMBOL = {
 		"Strength" => :strength,
 		"Constitution" => :constitution,

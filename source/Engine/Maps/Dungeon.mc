@@ -105,6 +105,21 @@ class Dungeon {
 			addToConnections(adjacent_room_name, $.MapUtil.getInversedDirection(direction));
 			connected_rooms[adjacent_room_name] = true;
 		}
+		// Check if all rooms have a connection
+		for (var i = 0; i < _size[0]; i++) {
+			for (var j = 0; j < _size[1]; j++) {
+				var room_name = $.SimUtil.getRoomName(i, j);
+				var room_connections = _connections[room_name];
+				if (room_connections.size() == 0) {
+					var possible_directions = getPossibleDirections(i, j);
+					var direction = $.SimUtil.getRandomFromArray(possible_directions);
+					var adjacent_room_pos = $.MapUtil.getCoordInDirection([i, j], direction);
+					var adjacent_room_name = $.SimUtil.getRoomName(adjacent_room_pos[0], adjacent_room_pos[1]);
+					addToConnections(room_name, direction);
+					addToConnections(adjacent_room_name, $.MapUtil.getInversedDirection(direction));
+				}
+			}
+		}
 	}
 
 	function addStairs() as Void {

@@ -2,20 +2,11 @@ import Toybox.Lang;
 
 
 class Bow extends WeaponItem {
-	var id as Number = 0;
-	var name as String = "Bow";
-	var description as String = "A simple bow";
-	var slot as ItemSlot = RIGHT_HAND;
-	var value as Number = 10;
-	var weight as Number = 10;
-	var attribute_bonus as Dictionary<Symbol, Number> = {
-	};
+
 	var ammunition_type as AmmunitionType = ARROW;
 
 	function initialize() {
 		WeaponItem.initialize();
-		attack = 3;
-		range = 3;
 	}
 
 	function onEquipItem(player as Player) as Void {

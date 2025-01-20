@@ -2,18 +2,19 @@ import Toybox.Lang;
 
 
 class SteelGauntlets extends ArmorItem {
-	var id as Number = 1002;
-	var name as String = "Steel Gauntlets";
-	var slot as ItemSlot = HEAD;
-	var description as String = "Simple steel gauntlets";
-	var value as Number = 10;
-	var weight as Number = 10;
-	var attribute_bonus as Dictionary<Symbol, Number> = {
-		:constitution => 2
-	};
 
 	function initialize() {
 		ArmorItem.initialize();
+		id = 1002;
+		name = "Steel Gauntlets";
+		description = "Simple steel gauntlets";
+		value = 10;
+		weight = 10;
+		slot = LEFT_HAND;
+		defense = 3;
+		attribute_bonus = {
+			:constitution => 2
+		};
 	}
 
 	function onEquipItem(player as Player) as Void {

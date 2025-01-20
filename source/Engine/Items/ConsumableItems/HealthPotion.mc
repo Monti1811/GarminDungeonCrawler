@@ -2,15 +2,15 @@ import Toybox.Lang;
 
 
 class HealthPotion extends ConsumableItem {
-	var id as Number = 2000;
-	var name as String = "Health Potion";
-	var description as String = "A simple health potion";
-	var effect_description as String = "Restores 20 health";
-	var value as Number = 20;
-	var weight as Number = 1;
 
 	function initialize() {
 		ConsumableItem.initialize();
+		self.id = 2000;
+		self.name = "Health Potion";
+		self.description = "A simple health potion";
+		self.effect_description = "Restores 20 health";
+		self.value = 20;
+		self.weight = 1;
 	}
 
 	function onUseItem(player as Player) as Void {

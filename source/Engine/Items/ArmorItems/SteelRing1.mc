@@ -2,18 +2,19 @@ import Toybox.Lang;
 
 
 class SteelRing1 extends ArmorItem {
-	var id as Number = 1004;
-	var name as String = "Steel Ring";
-	var slot as ItemSlot = HEAD;
-	var description as String = "A simple steel ring";
-	var value as Number = 10;
-	var weight as Number = 10;
-	var attribute_bonus as Dictionary<Symbol, Number> = {
-		:constitution => 2
-	};
 
 	function initialize() {
 		ArmorItem.initialize();
+		id = 1004;
+		name = "Steel Ring";
+		description = "A simple steel ring";
+		slot = ACCESSORY;
+		value = 10;
+		weight = 10;
+		defense = 0;
+		attribute_bonus = {
+			:constitution => 2
+		};
 	}
 
 	function onEquipItem(player as Player) as Void {

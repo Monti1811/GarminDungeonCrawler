@@ -50,6 +50,8 @@ class DCMainMenuDelegate extends WatchUi.BehaviorDelegate {
         var loadMenu = new WatchUi.Menu2({:title=>"Load Game"});
         var saves = SaveData.saves;
         var save_keys = saves.keys();
+        // Sort by highest number first
+        save_keys.sort(new SaveCompare());
         for (var i = 0; i < save_keys.size(); i++) {
             var save_key = save_keys[i] as String;
             var save = SaveData.getSaveInfo(save_key);

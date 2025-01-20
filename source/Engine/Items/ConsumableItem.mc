@@ -2,10 +2,11 @@ import Toybox.Lang;
 
 class ConsumableItem extends Item {
 
-	private var effect_description as String = "No effect";
+	var effect_description as String = "No effect";
 	
 	function initialize() {
 		Item.initialize();
+		type = CONSUMABLE;
 	}
 
 	function onUseItem(player as Player) as Void {
@@ -14,7 +15,7 @@ class ConsumableItem extends Item {
 	}
 
 	function getEffectDescription() as String {
-		return effect_description;
+		return self.effect_description;
 	}
 	
 }

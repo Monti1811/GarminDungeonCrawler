@@ -2,18 +2,19 @@ import Toybox.Lang;
 
 
 class SteelHelmet extends ArmorItem {
-	var id as Number = 1000;
-	var name as String = "Steel Helmet";
-	var slot as ItemSlot = HEAD;
-	var description as String = "A simple steel helmet";
-	var value as Number = 10;
-	var weight as Number = 10;
-	var attribute_bonus as Dictionary<Symbol, Number> = {
-		:constitution => 2
-	};
 
 	function initialize() {
 		ArmorItem.initialize();
+		id = 1000;
+		name = "Steel Helmet";
+		description = "A simple steel helmet";
+		value = 10;
+		weight = 10;
+		slot = HEAD;
+		defense = 3;
+		attribute_bonus = {
+			:constitution => 2
+		};
 	}
 
 	function onEquipItem(player as Player) as Void {

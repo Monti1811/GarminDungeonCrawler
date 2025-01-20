@@ -2,19 +2,21 @@ import Toybox.Lang;
 
 
 class SteelGreatsword extends WeaponItem {
-	var id as Number = 3;
-	var name as String = "Steel Greatsword";
-	var description as String = "A simple steel greatsword";
-	var slot as ItemSlot = RIGHT_HAND;
-	var value as Number = 20;
-	var weight as Number = 25;
-	var attribute_bonus as Dictionary<Symbol, Number> = {
-		:strength => 4
-	};
 
 	function initialize() {
 		WeaponItem.initialize();
-		attack = 10;
+		id = 3;
+		name = "Steel Greatsword";
+		description = "A simple steel greatsword";
+		slot = RIGHT_HAND;
+		value = 20;
+		weight = 25;
+		attribute_bonus = {
+			:strength => 4,
+			:dexterity => -2
+		};
+
+		attack = 12;
 		range = 2;
 		weapon_type = TWOHAND;
 		cooldown = 1;

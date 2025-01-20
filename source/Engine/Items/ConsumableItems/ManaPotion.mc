@@ -2,20 +2,20 @@ import Toybox.Lang;
 
 
 class ManaPotion extends ConsumableItem {
-	var id as Number = 2001;
-	var name as String = "Mana Potion";
-	var description as String = "A simple mana potion";
-	var effect_description as String = "Restores 20 mana";
-	var value as Number = 20;
-	var weight as Number = 1;
 
 	function initialize() {
 		ConsumableItem.initialize();
+		id = 2001;
+		name = "Mana Potion";
+		description = "A simple mana potion";
+		effect_description = "Restores 20 mana";
+		value = 20;
+		weight = 1;
 	}
 
 	function onUseItem(player as Player) as Void {
 		ConsumableItem.onUseItem(player);
-		player.onGainHealth(20);
+		//player.onGainMana(20);
 	}
 	function onPickupItem(player as Player) as Void {
 		ConsumableItem.onPickupItem(player);

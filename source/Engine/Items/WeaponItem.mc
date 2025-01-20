@@ -7,13 +7,7 @@ enum RangeType {
 }
 
 class WeaponItem extends EquippableItem {
-	var id as Number = 0;
-	var name as String = "Weapon";
-	var description as String = "";
-	var type as ItemType = WEAPON;
-	var slot as ItemSlot = RIGHT_HAND;
-	var value as Number = 10;
-	var weight as Number = 20;
+
 	var attack as Number = 10;
 	var range as Numeric = 1;
 	var range_type as RangeType = SURROUNDING;
@@ -23,6 +17,8 @@ class WeaponItem extends EquippableItem {
 
 	function initialize() {
 		EquippableItem.initialize();
+		type = WEAPON;
+		slot = RIGHT_HAND;
 	}
 
 	function onEquipItem(player as Player) as Void {
