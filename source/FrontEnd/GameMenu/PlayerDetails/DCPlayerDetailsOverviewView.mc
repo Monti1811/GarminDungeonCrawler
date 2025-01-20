@@ -7,17 +7,17 @@ class DCPlayerDetailsOverviewView extends WatchUi.View {
 	private var _player as Player;
 	private var _playerIcon as BitmapReference;
 
-	private const x_axis as Number = 180;
+	private const x_axis as Number = 160;
 	private const y_axis as Number = 90;
-	private const space_between as Number = 15;
+	private const space_between as Number = 25;
 
-	private var _font as FontReference;
+	private var _font as FontReference | FontDefinition;
 	
 	function initialize(player as Player) {
 		View.initialize();
 		_player = player;
 		_playerIcon = WatchUi.loadResource(_player.getSprite());
-		_font = WatchUi.loadResource($.Rez.Fonts.small);
+		_font = Graphics.FONT_XTINY; //WatchUi.loadResource($.Rez.Fonts.small);
 	}
 	
 	
@@ -27,7 +27,7 @@ class DCPlayerDetailsOverviewView extends WatchUi.View {
 		dc.drawScaledBitmap(50, 150, 60, 60, _playerIcon);
 		dc.drawText(180, y_axis, Graphics.FONT_MEDIUM, _player.getName(), Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER);
 		var left_text_x = x_axis;
-		var right_text_x = x_axis + 50; // Adjust this value as needed for spacing
+		var right_text_x = x_axis + 60; // Adjust this value as needed for spacing
 
 		// Current level
 		dc.drawText(left_text_x, y_axis + 60, _font, "LVL", Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER);

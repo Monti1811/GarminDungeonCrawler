@@ -27,7 +27,11 @@ class EquippableItem extends Item {
 	}
 
 	function getAttributeBonus(slot as Symbol) as Number {
-		return attribute_bonus[slot];
+		var res = attribute_bonus[slot];
+		if (res == null) {
+			return 0;
+		}
+		return res;
 	}
 
 	function getAllAttributeBonuses() as Dictionary<Symbol, Number> {

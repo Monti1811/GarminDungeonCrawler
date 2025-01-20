@@ -17,7 +17,7 @@ class DCItemInfoOverviewView extends WatchUi.View {
 	function onUpdate(dc) {
 		dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_BLACK);
         dc.clear();
-		dc.drawScaledBitmap(60, 150, 60, 60, _itemIcon);
+		dc.drawScaledBitmap(150, 90, 60, 60, _itemIcon);
 		dc.drawText(180, 180, Graphics.FONT_MEDIUM, _item.getName(), Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
 	}
 	
