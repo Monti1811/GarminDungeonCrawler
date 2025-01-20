@@ -52,6 +52,12 @@ module SaveData {
 		_save_data = {};
 	}
 
+	public function clearValues() {
+		clear();
+		saves = {};
+		current_save_num = 0;
+	}
+
 	public function loadFromMemory() {
 		var save_data = Storage.getValue(chosen_save) as Dictionary<PropertyKeyType, PropertyValueType>?;
 		if (save_data != null) {

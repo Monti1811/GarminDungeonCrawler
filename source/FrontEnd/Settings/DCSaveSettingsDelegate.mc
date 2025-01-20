@@ -22,6 +22,10 @@ class DCSaveSettingsDelegate extends WatchUi.Menu2InputDelegate {
             case :autosave:
                 showAutoSaveSettings();
                 break;
+            case :reset:
+                var dialog = new WatchUi.Confirmation("Do you want to reset all data?");
+                WatchUi.pushView(dialog, new DCConfirmResetData(), WatchUi.SLIDE_UP);
+                break;
         }
     }
 
@@ -36,6 +40,30 @@ class DCSaveSettingsDelegate extends WatchUi.Menu2InputDelegate {
         autoSaveSettings.addItem(new WatchUi.MenuItem("Every 15 minutes", null, 15, null));
 
         WatchUi.pushView(autoSaveSettings, new DCAutoSaveSettingsDelegate(_saveSettings), WatchUi.SLIDE_UP);
+    }
+}
+
+class DCConfirmResetData extends WatchUi.ConfirmationDelegate {
+
+    function initialize() {
+        ConfirmationDelegate.initialize();
+    }
+
+    function onResponse(value as Confirm) as Boolean {
+        if (value == WatchUi.CONFIRM_YES) {
+            Storage.clearValues();
+            $.SaveData.clearValues();
+            // Reset default settings
+            $.Settings.init();
+            WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
+            WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
+            WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
+            WatchUi.pushView(new TextView("All data has been reset"), new TextDelegate(), WatchUi.SLIDE_UP);
+            WatchUi.pushView(new EmptyView(), null, WatchUi.SLIDE_UP);
+        } else {
+            WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
+        }
+        return true;
     }
 }
 

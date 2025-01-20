@@ -39,6 +39,7 @@ class DCSettingsMenuDelegate extends WatchUi.Menu2InputDelegate {
         var saveSettings = new WatchUi.Menu2({:title=>"Save settings"});
         saveSettings.addItem(new WatchUi.ToggleMenuItem("Save on exit", {:enabled=>"Automatic save when exiting",:disabled=>"No save when exiting"}, :exit, exit_enabled, null));
         saveSettings.addItem(new WatchUi.MenuItem("Autosave", $.Settings.getAutoSaveString(auto_save), :autosave, null));
+        saveSettings.addItem(new WatchUi.MenuItem("Reset all data", "Reset all saves and configurations", :reset, null));
 
         WatchUi.pushView(saveSettings, new DCSaveSettingsDelegate(saveSettings), WatchUi.SLIDE_UP);
     }
