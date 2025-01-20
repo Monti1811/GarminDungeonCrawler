@@ -48,6 +48,14 @@ class God extends Player {
 		maxHealth += 100;
 	}
 
+	function getCurrentMana() as Number {
+		return current_mana;
+	}
+
+	function getMaxMana() as Number {
+		return maxMana;
+	}
+
 	function getManaPercent() as Float {
 		return current_mana.toFloat() / maxMana.toFloat();
 	}

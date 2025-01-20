@@ -2,6 +2,7 @@ import Toybox.Lang;
 
 
 enum RangeType {
+	DIRECTIONAL,
 	SURROUNDING,
 	LINEAR
 }
@@ -10,7 +11,7 @@ class WeaponItem extends EquippableItem {
 
 	var attack as Number = 10;
 	var range as Numeric = 1;
-	var range_type as RangeType = SURROUNDING;
+	var range_type as RangeType = DIRECTIONAL;
 	var weapon_type as WeaponType = MELEE;
 	var cooldown as Number = 0;
 	var current_cooldown as Number = 0;

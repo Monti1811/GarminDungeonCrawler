@@ -64,6 +64,7 @@ class RoomDrawable extends WatchUi.Drawable {
                 enemy_pos[1] * _tile_height - enemy_sprite_offset[1], 
                 enemy_sprite_ref
         );
+        drawEnemyHealth(dc, enemy);
     }
 
     function drawEnemies(dc as Dc, enemies as Dictionary<Point2D, Enemy>) as Void {
@@ -72,6 +73,15 @@ class RoomDrawable extends WatchUi.Drawable {
             var enemy = enemy_values[i];
             drawEnemy(dc, enemy);
         }
+    }
+
+    function drawEnemyHealth(dc as Dc, enemy as Enemy) as Void {
+        // Draw a small healthbar below the enemy, size 16x2
+        var enemy_pos = enemy.getPos();
+        var health_percent = enemy.getHealthPercent();
+        var bar_percent = (16 * health_percent).toNumber();
+        dc.setColor(Graphics.COLOR_DK_RED, Graphics.COLOR_BLACK);
+        dc.fillRectangle(enemy_pos[0] * _tile_width, enemy_pos[1] * _tile_height + _tile_height, bar_percent, 2);
     }
 
     function drawNPC(dc as Dc, npc as NPC) as Void {

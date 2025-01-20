@@ -1,10 +1,10 @@
 import Toybox.Lang;
 
 
-class SteelStaff extends WeaponItem {
+class SteelStaff extends Staff {
 	
 	function initialize() {
-		WeaponItem.initialize();
+		Staff.initialize();
 		id = 7;
 		name = "Steel Staff";
 		description = "A simple steel staff";
@@ -17,32 +17,48 @@ class SteelStaff extends WeaponItem {
 
 		attack = 2;
 		range = 1;
+		range_type = LINEAR;
+
+		mana_loss = 15;
+	}
+
+	function activateStaff() as Void {
+		Staff.activateStaff();
+		attack = 20;
+		range = 3;
+	}
+
+	function deactivateStaff() as Void {
+		Staff.deactivateStaff();
+		attack = 2;
+		range = 1;
 	}
 
 	function onEquipItem(player as Player) as Void {
-		WeaponItem.onEquipItem(player);
+		Staff.onEquipItem(player);
+
 	}
 	function onUnequipItem(player as Player) as Void {
-		WeaponItem.onUnequipItem(player);
+		Staff.onUnequipItem(player);
 	}
 
 	function onUseItem(player as Player) as Void {
-		WeaponItem.onUseItem(player);
+		Staff.onUseItem(player);
 	}
 	function onPickupItem(player as Player) as Void {
-		WeaponItem.onPickupItem(player);
+		Staff.onPickupItem(player);
 	}
 
 	function onDropItem(player as Player) as Void {
-		WeaponItem.onDropItem(player);
+		Staff.onDropItem(player);
 	}
 
 	function onSellItem(player as Player) as Void {
-		WeaponItem.onSellItem(player);
+		Staff.onSellItem(player);
 	}
 
 	function onBuyItem(player as Player) as Void {
-		WeaponItem.onBuyItem(player);
+		Staff.onBuyItem(player);
 	}
 	
 	function getSprite() as ResourceId {
@@ -69,7 +85,7 @@ class SteelStaff extends WeaponItem {
 	}
 
 	function onLoad(save_data as Dictionary) as Void {
-		WeaponItem.onLoad(save_data);
+		Staff.onLoad(save_data);
 	}
 
 }

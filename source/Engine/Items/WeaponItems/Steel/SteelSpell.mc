@@ -10,15 +10,15 @@ class SteelSpell extends Spell {
 		description = "A simple steel spell";
 		slot = RIGHT_HAND;
 		value = 10;
-		weight = 10;
+		weight = 2;
 		attribute_bonus = {
 			:intelligence => 2
 		};
 
-		attack = 10;
-		range = 2;
-		range_type = LINEAR;
-		cooldown = 3;
+		attack = 8;
+		range = 1;
+		range_type = SURROUNDING;
+		cooldown = 1;
 	}
 
 	function onEquipItem(player as Player) as Void {

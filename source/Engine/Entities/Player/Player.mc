@@ -180,6 +180,18 @@ class Player extends Entity {
 		return next_level_experience - experience;
 	}
 
+	function getCurrentMana() as Number {
+		return 0;
+	}
+
+	function getMaxMana() as Number {
+		return 0;
+	}
+
+	function getManaPercent() as Float {
+		return 0.0;
+	}
+
 	function onGainHealth(amount as Number) as Void {
 		current_health = MathUtil.floor(current_health + amount, maxHealth);
 	}
@@ -336,7 +348,7 @@ class Player extends Entity {
 		var weapon_right = equipped[RIGHT_HAND] as WeaponItem?;
 		var range_left = 1;
 		var range_right = 1;
-		var range_type = SURROUNDING;
+		var range_type = DIRECTIONAL;
 		if (weapon_left != null && weapon_left.canAttack(enemy)) {
 			range_left = weapon_left.getRange();
 		}
@@ -350,7 +362,7 @@ class Player extends Entity {
 			range_type = weapon_right.getRangeType() as RangeType;
 			return [range_right, range_type];
 		} else {
-			return [1, SURROUNDING];
+			return [1, DIRECTIONAL];
 		}
 	}
 

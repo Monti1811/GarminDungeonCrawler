@@ -77,8 +77,12 @@ class Turn {
 	}
 
     function movePlayer(map as Array<Array<Tile>>, new_pos as Point2D) as Void {
+        var new_tile = map[new_pos[0]][new_pos[1]];
+        if (new_tile.content != null) {
+            return;
+        }
         map[_player_pos[0]][_player_pos[1]].player = false;
-        map[new_pos[0]][new_pos[1]].player = true;
+        new_tile.player = true;
         _room.updatePlayerPos(new_pos);
         _player_pos = new_pos;
         _player.setPos(new_pos);
@@ -184,17 +188,23 @@ class Turn {
 
         // Check if player can attack enemy, if yes do so and don't move
         var range = _player.getRange(null) as [Numeric, RangeType];
-        var attackable_enemy = MapUtil.getEnemyInRange(
+        var attackable_enemies = MapUtil.getEnemyInRange(
             map, _player_pos, range[0], range[1], direction
         );
         var player_attacked = false;
-        if (attackable_enemy != null) {
-            var death = Battle.attackEnemy(_player, attackable_enemy);
-            if (death) {
-                _room.removeEnemy(attackable_enemy);
-                _room.dropLoot(attackable_enemy);
+        if (attackable_enemies != null) {
+            for (var i = 0; i < attackable_enemies.size(); i++) {
+                var attackable_enemy = attackable_enemies[i];
+                if (attackable_enemy == null) {
+                    continue;
+                }
+                var death = Battle.attackEnemy(_player, attackable_enemy);
+                if (death) {
+                    _room.removeEnemy(attackable_enemy);
+                    _room.dropLoot(attackable_enemy);
+                }
+                player_attacked = true;
             }
-            player_attacked = true;
         }
         // If the player did not attack, try to move
         if (!player_attacked) {

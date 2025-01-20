@@ -41,46 +41,35 @@ module MapUtil {
         }
         return null;
     }
-	
-    function getEnemyInRange(map as Array<Array<Tile>>, pos as Point2D, range as Number, range_type as RangeType, direction as WalkDirection) as Enemy? {
-		/*
-		Range 1, direction left:
-		[ ][ ][ ][ ][ ]
-		[ ][ ][ ][ ][ ]
-		[ ][x][P][ ][ ]
-		[ ][ ][ ][ ][ ]
-		[ ][ ][ ][ ][ ]
-		Range 1.5, direction left:
-		[ ][ ][ ][ ][ ]
-		[ ][x][ ][ ][ ]
-		[ ][x][P][ ][ ]
-		[ ][x][ ][ ][ ]
-		[ ][ ][ ][ ][ ]
-		Range 2, direction left:
-		[ ][ ][ ][ ][ ]
-		[ ][x][ ][ ][ ]
-		[x][x][P][ ][ ]
-		[ ][x][ ][ ][ ]
-		[ ][ ][ ][ ][ ]
-		Range 2.5, direction left:
-		[ ][ ][ ][ ][ ]
-		[x][x][ ][ ][ ]
-		[x][x][P][ ][ ]
-		[x][x][ ][ ][ ]
-		[ ][ ][ ][ ][ ]
-		Range 3, direction left:
-		[ ][ ][x][ ][ ][ ]
-		[ ][x][x][ ][ ][ ]
-		[x][x][x][P][ ][ ]
-		[ ][x][x][ ][ ][ ]
-		[ ][ ][x][ ][ ][ ]
-		Range 3.5, direction left:
-		[ ][x][x][ ][ ][ ]
-		[x][x][x][ ][ ][ ]
-		[x][x][x][P][ ][ ]
-		[x][x][x][ ][ ][ ]
-		[ ][x][x][ ][ ][ ]
-		*/
+
+	function getEnemyInRangeLinear(map as Array<Array<Tile>>, pos as Point2D, range as Number, direction as WalkDirection) as Enemy? {
+		var x = pos[0];
+		var y = pos[1];
+		var dx = 0, dy = 0;
+		if (direction == UP) {
+			dy = -1;
+		} else if (direction == DOWN) {
+			dy = 1;
+		} else if (direction == LEFT) {
+			dx = -1;
+		} else if (direction == RIGHT) {
+			dx = 1;
+		}
+		for (var i = 1; i <= range; i++) {
+			var enemy;
+			if (direction == UP || direction == DOWN) {
+				enemy = checkEnemy(map, x, y + i * dy);
+			} else {
+				enemy = checkEnemy(map, x + i * dx, y);
+			}
+			if (enemy != null) {
+				return enemy;
+			}
+		}
+		return null;
+	}
+
+	function getEnemyInRangeDirectional(map as Array<Array<Tile>>, pos as Point2D, range as Number, direction as WalkDirection) as Enemy? {
 		var range_int = Math.floor(range).toNumber() as Number;
 		var range_float = range - range_int;
 		var x = pos[0];
@@ -100,9 +89,6 @@ module MapUtil {
 		// Check integer range
 		for (var i = 1; i <= range_int; i++) {
 			var reduced_i = i - 1;
-			if (range_type == LINEAR) {
-				reduced_i = 0;
-			}
 			for (var j = -reduced_i; j <= reduced_i; j++) {
 				var enemy;
 				if (direction == UP || direction == DOWN) {
@@ -143,6 +129,76 @@ module MapUtil {
 		return null;
 	}
 
+	function getEnemyInRangeSurrounding(map as Array<Array<Tile>>, pos as Point2D, range as Number) as Array<Enemy?> {
+		var x = pos[0];
+		var y = pos[1];
+		// Check every field around the position for enemies and add them to the list
+		var enemies = [];
+		for (var i = -range; i <= range; i++) {
+			for (var j = -range; j <= range; j++) {
+				if (i == 0 && j == 0) {
+					continue;
+				}
+				var enemy = checkEnemy(map, x + i, y + j);
+				if (enemy != null) {
+					enemies.add(enemy);
+				}
+			}
+		}
+		return enemies;
+	}
+	
+    function getEnemyInRange(map as Array<Array<Tile>>, pos as Point2D, range as Number, range_type as RangeType, direction as WalkDirection) as Array<Enemy?> {
+		/*
+		Range 1, direction left:
+		[ ][ ][ ][ ][ ]
+		[ ][ ][ ][ ][ ]
+		[ ][x][P][ ][ ]
+		[ ][ ][ ][ ][ ]
+		[ ][ ][ ][ ][ ]
+		Range 1.5, direction left:
+		[ ][ ][ ][ ][ ]
+		[ ][x][ ][ ][ ]
+		[ ][x][P][ ][ ]
+		[ ][x][ ][ ][ ]
+		[ ][ ][ ][ ][ ]
+		Range 2, direction left:
+		[ ][ ][ ][ ][ ]
+		[ ][x][ ][ ][ ]
+		[x][x][P][ ][ ]
+		[ ][x][ ][ ][ ]
+		[ ][ ][ ][ ][ ]
+		Range 2.5, direction left:
+		[ ][ ][ ][ ][ ]
+		[x][x][ ][ ][ ]
+		[x][x][P][ ][ ]
+		[x][x][ ][ ][ ]
+		[ ][ ][ ][ ][ ]
+		Range 3, direction left:
+		[ ][ ][x][ ][ ][ ]
+		[ ][x][x][ ][ ][ ]
+		[x][x][x][P][ ][ ]
+		[ ][x][x][ ][ ][ ]
+		[ ][ ][x][ ][ ][ ]
+		Range 3.5, direction left:
+		[ ][x][x][ ][ ][ ]
+		[x][x][x][ ][ ][ ]
+		[x][x][x][P][ ][ ]
+		[x][x][x][ ][ ][ ]
+		[ ][x][x][ ][ ][ ]
+		*/
+		switch (range_type) {
+			case LINEAR:
+				return [getEnemyInRangeLinear(map, pos, range, direction)];
+			case DIRECTIONAL:
+				return [getEnemyInRangeDirectional(map, pos, range, direction)];
+			case SURROUNDING:
+				return getEnemyInRangeSurrounding(map, pos, range);
+		}
+		return [];
+		
+	}
+
 	function getRangeCoords(map as Array<Array<Tile>>, pos as Point2D, range as Number, range_type as RangeType, direction as WalkDirection) as Array<Point2D> {
 		var range_int = Math.floor(range).toNumber() as Number;
 		var range_float = range - range_int;
@@ -164,9 +220,6 @@ module MapUtil {
 		// Check integer range
 		for (var i = 1; i <= range_int; i++) {
 			var reduced_i = i - 1;
-			if (range_type == LINEAR) {
-				reduced_i = 0;
-			}
 			for (var j = -reduced_i; j <= reduced_i; j++) {
 				if (direction == UP || direction == DOWN) {
 					coords.add([x + j, y + i * dy]);

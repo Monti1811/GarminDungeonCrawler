@@ -60,6 +60,10 @@ class Enemy extends Entity {
 		return $.Rez.Drawables.LauncherIcon;
 	}
 
+	function getHealthPercent() as Float {
+		return current_health.toFloat() / maxHealth.toFloat();
+	}
+
 	function takeDamage(damage as Number, enemy as Player) as Boolean {
 		current_health -= damage;
 		if (current_health < 0) {
