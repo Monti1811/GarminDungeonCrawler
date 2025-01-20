@@ -23,6 +23,10 @@ module Game {
 	function init(player_id as Number) as Void {
 		Items.init(player_id);
 		Enemies.init(player_id);
+		time_played = 0;
+		depth = 0;
+		difficulty = MEDIUM;
+		game_mode = NORMAL;
 	}
 
 	function save() as Dictionary {
