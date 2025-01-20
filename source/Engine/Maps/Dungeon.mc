@@ -88,7 +88,7 @@ class Dungeon {
 		var start_room_pos = [MathUtil.random(0, _size[0] - 1), MathUtil.random(0, _size[1] - 1)];
 		var start_room = $.SimUtil.getRoomName(start_room_pos[0], start_room_pos[1]);
 		var connected_rooms = {start_room => true};
-		while (connected_rooms.size() < _size[0] * _size[1] - 1) {
+		while (connected_rooms.size() < _size[0] * _size[1]) {
 			var current_room = $.SimUtil.getRandomKeyFromDict(connected_rooms) as String;
 			var current_room_pos = $.SimUtil.getPosFromRoomName(current_room) as Point2D;
 			var possible_directions = getPossibleDirections(current_room_pos[0], current_room_pos[1]);
