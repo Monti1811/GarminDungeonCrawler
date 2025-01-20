@@ -10,6 +10,9 @@ module Battle {
 		Log.log(attacker.getName() + " attacks " + defender.getName() + " for " + damage + " damage");
 		var death = defender.takeDamage(damage, attacker);
 		attacker.onDamageDone(damage, defender);
+		if (death) {
+			attacker.onGainExperience(defender.getKillExperience());
+		}
 		return death;
 	}
 
