@@ -13,7 +13,7 @@ var itemslot as ItemSlot = HEAD;
 //! and indicates the current page
 class DCPlayerDetailsEquipmentDelegate extends WatchUi.BehaviorDelegate {
 
-    private const num_to_equipslot as Array<ItemSlot> = [HEAD, CHEST, BACK, LEGS, FEET, LEFT_HAND, RIGHT_HAND, ACCESSORY];
+    private const num_to_equipslot as Array<ItemSlot> = [HEAD, CHEST, BACK, LEGS, FEET, LEFT_HAND, RIGHT_HAND, ACCESSORY, AMMUNITION];
 
     function initialize() {
         BehaviorDelegate.initialize();
@@ -23,7 +23,7 @@ class DCPlayerDetailsEquipmentDelegate extends WatchUi.BehaviorDelegate {
     function onKey(keyEvent as KeyEvent) as Boolean {
         if (keyEvent.getKey() == KEY_ENTER) {
             var menu = new WatchUi.Menu2({:title=>"Equipped Items"});
-            for (var i = 0; i < 8; i++) {
+            for (var i = 0; i < 9; i++) {
                 var slot = num_to_equipslot[i] as ItemSlot;
                 var item = getApp().getPlayer().getEquip(slot) as Item?;
                 var name = "No equipped item";

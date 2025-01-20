@@ -6,7 +6,7 @@ class Arrow extends Ammunition {
 		Ammunition.initialize();
 		id = 9;
 		type = ARROW;
-		damage = 4;
+		attack = 4;
 	}
 
 	function getSprite() as ResourceId {

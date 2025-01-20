@@ -9,7 +9,7 @@ class DCPlayerDetailsEquipmentsView extends WatchUi.View {
 	private var small_font as FontResource;
 	private var _hint as Bitmap?;
 	private var equipped_res as Dictionary<ItemSlot, BitmapReference?> = {};
-	private const num_to_equipslot as Array<ItemSlot> = [HEAD, CHEST, BACK, LEGS, FEET, LEFT_HAND, RIGHT_HAND, ACCESSORY];
+	private const num_to_equipslot as Array<ItemSlot> = [HEAD, CHEST, BACK, LEGS, FEET, LEFT_HAND, RIGHT_HAND, ACCESSORY, AMMUNITION];
 	
 	function initialize(player as Player, withHint as Boolean) {
 		View.initialize();
@@ -17,13 +17,6 @@ class DCPlayerDetailsEquipmentsView extends WatchUi.View {
 		small_font = WatchUi.loadResource($.Rez.Fonts.small);
 		if (withHint) {
 			_hint = new WatchUi.Bitmap({:rezId => $.Rez.Drawables.rightTop, :locX => 300, :locY => 60});
-		}
-		for (var i = 0; i < 8; i++) {
-			var slot = num_to_equipslot[i];
-			var item = _player.getEquip(slot);
-			if (item != null) {
-				equipped_res[slot] = WatchUi.loadResource(item.getSprite());
-			}
 		}
 	}
 
@@ -37,7 +30,7 @@ class DCPlayerDetailsEquipmentsView extends WatchUi.View {
 		var res = equipped_res[equipslot];
 		if (res != null) {
 			var new_size = size_rectangles * 3/5;
-			dc.drawScaledBitmap(x - new_size/2, y_start + new_size/2 - 3*size_rectangles/10, new_size, new_size, res);
+			dc.drawScaledBitmap(x - new_size/2, y_start + new_size/2 - size_rectangles/4, new_size, new_size, res);
 		}
 	}
 
@@ -47,7 +40,7 @@ class DCPlayerDetailsEquipmentsView extends WatchUi.View {
 
 	function updateEquipped() {
 		equipped_res = {};
-		for (var i = 0; i < 8; i++) {
+		for (var i = 0; i < 9; i++) {
 			var slot = num_to_equipslot[i];
 			var item = _player.getEquip(slot);
 			if (item != null) {

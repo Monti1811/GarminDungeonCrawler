@@ -1,12 +1,12 @@
 import Toybox.Lang;
 
-class Ammunition extends Item {
+class Ammunition extends WeaponItem {
 
 	var type as AmmunitionType = ARROW;
-	var damage as Number = 1;
 
 	function initialize() {
-		Item.initialize();
+		WeaponItem.initialize();
+		attack = 1;
 	}
 
 	function getType() as AmmunitionType {
