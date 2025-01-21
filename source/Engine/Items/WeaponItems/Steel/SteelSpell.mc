@@ -21,14 +21,14 @@ class SteelSpell extends Spell {
 	}
 
 	function activateSpell() as Void {
-		Spell.activateStaff();
+		Spell.activateSpell();
 		attack = 10;
 		range = 3;
 		range_type = SURROUNDING;
 	}
 
 	function deactivateSpell() as Void {
-		Spell.deactivateStaff();
+		Spell.deactivateSpell();
 		attack = 2;
 		range = 1;
 		range_type = DIRECTIONAL;
@@ -66,7 +66,7 @@ class SteelSpell extends Spell {
 	}
 
 	function deepcopy() as Item {
-		var spell = new SteelLance();
+		var spell = new SteelSpell();
 		spell.name = name;
 		spell.description = description;
 		spell.value = value;
@@ -77,6 +77,9 @@ class SteelSpell extends Spell {
 		spell.in_inventory = in_inventory;
 		spell.attack = attack;
 		spell.range = range;
+		spell.range_type = range_type;
+		spell.active = active;
+		spell.current_cooldown = current_cooldown;
 		return spell;
 	}
 

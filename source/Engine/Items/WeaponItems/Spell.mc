@@ -32,11 +32,20 @@ class Spell extends WeaponItem {
 	}
 
 	function onTurnDone() as Void {
+		WeaponItem.onTurnDone();
         var player = $.getApp().getPlayer();
         if (active && player.getCurrentMana() < mana_loss) {
             deactivateSpell();
-        }
+        } else if (!active && player.getCurrentMana() >= mana_loss) {
+			activateSpell();
+		}
     }
+
+	function onDamageDone(damage as Number, enemy as Enemy?) {
+		WeaponItem.onDamageDone(damage, enemy);
+		var player = $.getApp().getPlayer();
+		player.doManaDelta(-mana_loss);
+	}
 
 	function save() as Dictionary {
         var data = WeaponItem.save();

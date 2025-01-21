@@ -192,6 +192,9 @@ class Player extends Entity {
 		return 0.0;
 	}
 
+	function doManaDelta(amount as Number) as Void {
+	}
+
 	function onGainHealth(amount as Number) as Void {
 		current_health = MathUtil.floor(current_health + amount, maxHealth);
 	}

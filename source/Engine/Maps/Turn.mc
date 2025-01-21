@@ -23,7 +23,7 @@ class Turn {
 
         // Add player position to map
         var map = _map_data[:map] as Array<Array<Tile>>;
-        map[_player_pos[0]][_player_pos[1]].content = _player;
+        map[_player_pos[0]][_player_pos[1]].player = true;
     }
 
     function setAutoSave(autosave as Boolean) as Void {
@@ -60,7 +60,9 @@ class Turn {
 		System.println("Old pos: " + _player_pos);
         System.println("New pos: " + new_pos);
         // Resolve player actions
-        resolvePlayerActions(map, new_pos, direction, map_element);
+        if (direction != SKIPPING) {
+            resolvePlayerActions(map, new_pos, direction, map_element);
+        }
         // Resolve enemy actions
         resolveEnemyActions(_room.getEnemies().values(), _player_pos);
 
@@ -101,7 +103,7 @@ class Turn {
         room.updatePlayerPos(_player_pos);
         _view.setPlayerSpritePos(_player_pos);
         var map = _map_data[:map] as Array<Array<Tile>>;
-        map[_player_pos[0]][_player_pos[1]].content = _player;
+        map[_player_pos[0]][_player_pos[1]].player = true;
     }
 
     private function getNewPlayerPosInNextRoom(next_pos as Point2D, direction as WalkDirection) as Point2D {
@@ -124,6 +126,7 @@ class Turn {
                 new_pos = [0, next_pos[1]];
                 break;
             case STANDING:
+			case SKIPPING:
                 new_pos = next_pos;
                 break;
         }
@@ -146,6 +149,7 @@ class Turn {
                 new_pos = [pos[0] + 1, pos[1]];
                 break;
             case STANDING:
+			case SKIPPING:
                 new_pos = pos;
                 break;
         }

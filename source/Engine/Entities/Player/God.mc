@@ -2,7 +2,7 @@ import Toybox.Lang;
 
 class God extends Player {
 
-	var current_mana as Number = 1000;
+	var current_mana as Number = 15;
 	var maxMana as Number = 1000;
 
 	function initialize(name as String) {
@@ -40,6 +40,11 @@ class God extends Player {
 		self.gold = 99999;
 		self.sprite = $.Rez.Drawables.Wrestler;
 
+		self.inventory.add(new SteelSpell());
+		self.inventory.add(new SteelStaff());
+		self.inventory.add(new ManaPotion());
+		self.inventory.add(new HealthPotion());
+
 	}
 
 	function onLevelUp() as Void {
@@ -58,6 +63,35 @@ class God extends Player {
 
 	function getManaPercent() as Float {
 		return current_mana.toFloat() / maxMana.toFloat();
+	}
+
+	function doManaDelta(delta as Number) as Void {
+		current_mana += delta;
+		if (current_mana < 0) {
+			current_mana = 0;
+		}
+		if (current_mana > maxMana) {
+			current_mana = maxMana;
+		}
+	}
+
+
+	function save() as Dictionary {
+		var save_data = Player.save();
+		save_data["current_mana"] = current_mana;
+		save_data["maxMana"] = maxMana;
+		return save_data;
+	}
+
+
+	function onLoad(save_data as Dictionary) as Void {
+		Player.onLoad(save_data);
+		if (save_data["current_mana"] != null) {
+			self.current_mana = save_data["current_mana"];
+		}
+		if (save_data["maxMana"] != null) {
+			self.maxMana = save_data["maxMana"];
+		}
 	}
 
 	

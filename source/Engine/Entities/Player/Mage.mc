@@ -44,6 +44,16 @@ class Mage extends Player {
 		return current_mana.toFloat() / maxMana.toFloat();
 	}
 
+	function doManaDelta(delta as Number) as Void {
+		current_mana += delta;
+		if (current_mana < 0) {
+			current_mana = 0;
+		}
+		if (current_mana > maxMana) {
+			current_mana = maxMana;
+		}
+	}
+
 	function onLevelUp() as Void {
 		Player.onLevelUp();
 		// Increase max health and mana

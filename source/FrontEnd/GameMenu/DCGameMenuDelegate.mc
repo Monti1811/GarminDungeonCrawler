@@ -208,6 +208,7 @@ class DCConfirmUseItem extends WatchUi.ConfirmationDelegate {
             switch (_action) {
                 case :use:
                     _player.onUseItem(_item);
+                    $.Game.turns.doTurn(SKIPPING);
                     break;
                 case :drop:
                     if (_item.isEquipped()) {

@@ -31,23 +31,10 @@ class Staff extends WeaponItem {
         }
 	}
 
-	function onUseItem(player as Player) as Void {
-		WeaponItem.onUseItem(player);
-	}
-	function onPickupItem(player as Player) as Void {
-		WeaponItem.onPickupItem(player);
-	}
-
-	function onDropItem(player as Player) as Void {
-		WeaponItem.onDropItem(player);
-	}
-
-	function onSellItem(player as Player) as Void {
-		WeaponItem.onSellItem(player);
-	}
-
-	function onBuyItem(player as Player) as Void {
-		WeaponItem.onBuyItem(player);
+	function onDamageDone(damage as Number, enemy as Enemy?) {
+		WeaponItem.onDamageDone(damage, enemy);
+		var player = $.getApp().getPlayer();
+		player.doManaDelta(-mana_loss);
 	}
 	
 	function getSprite() as ResourceId {
@@ -55,10 +42,13 @@ class Staff extends WeaponItem {
 	}
 
     function onTurnDone() as Void {
+		WeaponItem.onTurnDone();
         var player = $.getApp().getPlayer();
         if (active && player.getCurrentMana() < mana_loss) {
             deactivateStaff();
-        }
+        } else if (!active && player.getCurrentMana() >= mana_loss) {
+			activateStaff();
+		}
     }
 
 	function deepcopy() as Item {

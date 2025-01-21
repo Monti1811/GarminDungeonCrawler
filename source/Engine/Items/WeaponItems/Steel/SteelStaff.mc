@@ -77,6 +77,9 @@ class SteelStaff extends Staff {
 		staff.in_inventory = in_inventory;
 		staff.attack = attack;
 		staff.range = range;
+		staff.range_type = range_type;
+		staff.active = active;
+		staff.current_cooldown = current_cooldown;
 		return staff;
 	}
 

@@ -244,6 +244,7 @@ class Dungeon {
 				new_pos[0] += 1;
 				break;
 			case STANDING:
+			case SKIPPING:
 				return null;
 		}
 		if (new_pos[0] >= 0 && new_pos[0] < _size[0] && new_pos[1] >= 0 && new_pos[1] < _size[1]) {

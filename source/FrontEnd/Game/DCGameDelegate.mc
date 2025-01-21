@@ -7,6 +7,7 @@ enum WalkDirection {
     LEFT,
     RIGHT,
     STANDING,
+    SKIPPING
 }
 
 class DCGameDelegate extends WatchUi.BehaviorDelegate {

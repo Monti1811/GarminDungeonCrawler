@@ -15,7 +15,7 @@ class ManaPotion extends ConsumableItem {
 
 	function onUseItem(player as Player) as Void {
 		ConsumableItem.onUseItem(player);
-		//player.onGainMana(20);
+		player.doManaDelta(20);
 	}
 	function onPickupItem(player as Player) as Void {
 		ConsumableItem.onPickupItem(player);

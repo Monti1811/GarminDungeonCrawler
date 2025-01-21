@@ -29,6 +29,7 @@ class DCGameView extends WatchUi.View {
         _tile_width = map_data[:tile_width] as Number;
         _tile_height = map_data[:tile_height] as Number;
         _turns = new Turn(self, player, _room, map_data);
+        $.Game.turns = _turns;
         var player_pos = map_data[:player_pos] as Point2D;
 
         _room_drawable = new RoomDrawable({
@@ -110,6 +111,9 @@ class DCGameView extends WatchUi.View {
     // Update the view
     function onUpdate(dc as Dc) as Void {
         // Call the parent onUpdate function to redraw the layout
+        if (getApp().getPlayer() == null) {
+            return;
+        }
 
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_BLACK);
         dc.clear();
@@ -153,24 +157,24 @@ class DCGameView extends WatchUi.View {
             return;
         }
         var method = new Method(self, bar_to_fn[player.second_bar]);
-        var bar_values = method.invoke(player) as [Number, Number];
+        var bar_values = method.invoke(player) as [Numeric, Numeric];
         // Draw second bar
         dc.setColor(bar_values[0], Graphics.COLOR_BLACK);
         dc.setPenWidth(5);
-        dc.drawArc(180, 180, 175, Graphics.ARC_COUNTER_CLOCKWISE, 80 - bar_values[1], 80);
+        dc.drawArc(180, 180, 175, Graphics.ARC_CLOCKWISE, 11.0 + bar_values[1], 10);
         // Draw health bar outline
         dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_BLACK);
         dc.setPenWidth(1);
-        dc.drawArc(180, 180, 178, Graphics.ARC_COUNTER_CLOCKWISE, 10, 80);
-        dc.drawArc(180, 180, 172, Graphics.ARC_COUNTER_CLOCKWISE, 10, 80);
+        dc.drawArc(180, 180, 178, Graphics.ARC_CLOCKWISE, 80, 10);
+        dc.drawArc(180, 180, 172, Graphics.ARC_CLOCKWISE, 80, 10);
         dc.drawLine(355, 149, 349, 150);
         dc.drawLine(210, 11, 211, 5);
     }
 
-    function drawManaBar(player as Player) as [Number, Number] {
+    function drawManaBar(player as Player) as [Numeric, Numeric] {
         player = player as Mage;
         var mana_percent = player.getManaPercent();
-        var bar_percent = (70 * mana_percent).toNumber();
+        var bar_percent = (70 * mana_percent);
         return [Graphics.COLOR_DK_BLUE as Number, bar_percent];
         
     }
