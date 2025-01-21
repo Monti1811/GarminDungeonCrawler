@@ -268,9 +268,18 @@ class Player extends Entity {
 		self.sprite = sprite;
 	}
 
+	function getWeaponItem(slot as ItemSlot) as WeaponItem? {
+		var weapon = null;
+		var item = equipped[slot];
+		if (item.type == WEAPON) {
+			weapon = item as WeaponItem;
+		} 
+		return weapon;
+	}
+
 	function canAttack(enemy as Enemy?) as Boolean {
-		var weapon_left = equipped[LEFT_HAND] as WeaponItem?;
-		var weapon_right = equipped[RIGHT_HAND] as WeaponItem?;
+		var weapon_left = getWeaponItem(LEFT_HAND);
+		var weapon_right = getWeaponItem(RIGHT_HAND);
 		if (weapon_left != null && weapon_left.canAttack(enemy)) {
 			return true;
 		}
@@ -282,8 +291,8 @@ class Player extends Entity {
 
 	function getAttack(enemy as Enemy?) as Number {
 		var base_attack = attributes[:strength];
-		var weapon_left = equipped[LEFT_HAND] as WeaponItem?;
-		var weapon_right = equipped[RIGHT_HAND] as WeaponItem?;
+		var weapon_left = getWeaponItem(LEFT_HAND);
+		var weapon_right = getWeaponItem(RIGHT_HAND);
 		if (weapon_left != null && weapon_left.canAttack(enemy)) {
 			base_attack += weapon_left.getAttack(enemy);
 		}
@@ -329,8 +338,8 @@ class Player extends Entity {
 	}
 
 	function onDamageDone(damage as Number, enemy as Enemy?) as Void {
-		var weapon_left = equipped[LEFT_HAND] as WeaponItem?;
-		var weapon_right = equipped[RIGHT_HAND] as WeaponItem?;
+		var weapon_left = getWeaponItem(LEFT_HAND);
+		var weapon_right = getWeaponItem(RIGHT_HAND);
 		if (weapon_left != null && weapon_left.canAttack(enemy)) {
 			weapon_left.onDamageDone(damage, enemy);
 		}
@@ -352,8 +361,8 @@ class Player extends Entity {
 	}
 
 	function getRange(enemy as Enemy?) as [Numeric, RangeType] {
-		var weapon_left = equipped[LEFT_HAND] as WeaponItem?;
-		var weapon_right = equipped[RIGHT_HAND] as WeaponItem?;
+		var weapon_left = getWeaponItem(LEFT_HAND);
+		var weapon_right = getWeaponItem(RIGHT_HAND);
 		var range_left = 1;
 		var range_right = 1;
 		var range_type = DIRECTIONAL;
