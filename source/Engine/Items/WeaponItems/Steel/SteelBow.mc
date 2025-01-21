@@ -21,6 +21,7 @@ class SteelBow extends Bow {
 		attack = 3;
 		range = 3;
 		range_type = LINEAR;
+		damage_type = DEXTERITY;
 
 	}
 

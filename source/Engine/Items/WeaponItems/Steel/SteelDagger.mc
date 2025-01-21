@@ -26,6 +26,7 @@ class SteelDagger extends WeaponItem {
 
 		attack = 7;
 		// range = 1;
+		damage_type = DEXTERITY;
 	}
 
 	function onEquipItem(player as Player) as Void {

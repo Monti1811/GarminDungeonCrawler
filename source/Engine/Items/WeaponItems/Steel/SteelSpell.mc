@@ -18,6 +18,7 @@ class SteelSpell extends Spell {
 		attack = 8;
 		range = 1;
 		cooldown = 1;
+		damage_type = INTELLIGENCE;
 
 		mana_loss = 25;
 	}

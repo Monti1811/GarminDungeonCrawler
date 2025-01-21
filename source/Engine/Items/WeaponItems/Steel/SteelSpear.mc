@@ -18,6 +18,7 @@ class SteelLance extends WeaponItem {
 		attack = 10;
 		range = 2;
 		range_type = LINEAR;
+		damage_type = DEXTERITY;
 	}
 
 	function onEquipItem(player as Player) as Void {

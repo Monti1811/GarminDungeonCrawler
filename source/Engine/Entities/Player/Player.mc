@@ -271,7 +271,7 @@ class Player extends Entity {
 	function getWeaponItem(slot as ItemSlot) as WeaponItem? {
 		var weapon = null;
 		var item = equipped[slot];
-		if (item.type == WEAPON) {
+		if (item != null && item.type == WEAPON) {
 			weapon = item as WeaponItem;
 		} 
 		return weapon;
@@ -290,7 +290,7 @@ class Player extends Entity {
 	}
 
 	function getAttack(enemy as Enemy?) as Number {
-		var base_attack = attributes[:strength];
+		var base_attack = 0;
 		var weapon_left = getWeaponItem(LEFT_HAND);
 		var weapon_right = getWeaponItem(RIGHT_HAND);
 		if (weapon_left != null && weapon_left.canAttack(enemy)) {
@@ -302,28 +302,33 @@ class Player extends Entity {
 		return base_attack;
 	}
 
+	function getArmorItem(slot as ItemSlot) as WeaponItem? {
+		var armor = null;
+		var item = equipped[slot];
+		if (item != null && item.type == ARMOR) {
+			armor = item as ArmorItem;
+		} 
+		return armor;
+	}
+
 	function getDefense(enemy as Enemy?) as Number {
 		var base_defense = attributes[:constitution];
-		var armor_head = equipped[HEAD] as ArmorItem?;
-		var armor_chest = equipped[CHEST] as ArmorItem?;
-		var armor_back = equipped[BACK] as ArmorItem?;
-		var armor_legs = equipped[LEGS] as ArmorItem?;
-		var armor_feet = equipped[FEET] as ArmorItem?;
+		var armors = [
+			equipped[HEAD] as ArmorItem?,
+			equipped[CHEST] as ArmorItem?,
+			equipped[BACK] as ArmorItem?,
+			equipped[LEGS] as ArmorItem?,
+			equipped[FEET] as ArmorItem?,
+			equipped[ACCESSORY] as ArmorItem?,
+			getArmorItem(LEFT_HAND),
+			getArmorItem(RIGHT_HAND),
+		];
 
-		if (armor_head != null) {
-			base_defense += armor_head.getDefense(enemy);
-		}
-		if (armor_chest != null) {
-			base_defense += armor_chest.getDefense(enemy);
-		}
-		if (armor_back != null) {
-			base_defense += armor_back.getDefense(enemy);
-		}
-		if (armor_legs != null) {
-			base_defense += armor_legs.getDefense(enemy);
-		}
-		if (armor_feet != null) {
-			base_defense += armor_feet.getDefense(enemy);
+		for (var i = 0; i < armors.size(); i++) {
+			var armor = armors[i];
+			if (armor != null) {
+				base_defense += armor.getDefense(enemy);
+			}
 		}
 
 		return base_defense;

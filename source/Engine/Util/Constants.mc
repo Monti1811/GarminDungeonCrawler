@@ -70,4 +70,34 @@ module Constants {
 		"Ammunition" => AMMUNITION,
 		"None" => NONE
 	};
+
+	public const ATTRIBUTE_WEIGHTS as Dictionary<AttackType, Dictionary> = {
+		STRENGTH => {
+			:strength => 1.0,
+			:constitution => 0.5,
+			:dexterity => 0.25,
+			:intelligence => 0.1,
+			:wisdom => 0.05,
+			:charisma => 0.01,
+			:luck => 0.1
+		},
+		DEXTERITY => {
+			:strength => 0.25,
+			:constitution => 0.5,
+			:dexterity => 1.0,
+			:intelligence => 0.25,
+			:wisdom => 0.1,
+			:charisma => 0.05,
+			:luck => 0.1
+		},
+		INTELLIGENCE => {
+			:strength => 0.1,
+			:constitution => 0.25,
+			:dexterity => 0.5,
+			:intelligence => 1.0,
+			:wisdom => 0.5,
+			:charisma => 0.25,
+			:luck => 1.0
+		}
+	};
 }

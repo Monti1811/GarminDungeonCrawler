@@ -15,6 +15,7 @@ class WeaponItem extends EquippableItem {
 	var weapon_type as WeaponType = MELEE;
 	var cooldown as Number = 0;
 	var current_cooldown as Number = 0;
+	var damage_type as AttackType = STRENGTH;
 
 	function initialize() {
 		EquippableItem.initialize();
@@ -72,7 +73,28 @@ class WeaponItem extends EquippableItem {
 	}
 
 	function getAttack(enemy as Enemy?) as Number {
-		return attack;
+		var player = $.getApp().getPlayer();
+		var attribute_modifiers = $.Constants.ATTRIBUTE_WEIGHTS[damage_type] as Dictionary<Symbol, Float>;
+		var attack = self.attack;
+		var attribute_keys = [
+			:strength,
+			:dexterity,
+			:intelligence,
+			:constitution,
+			:wisdom,
+			:charisma,
+		];
+		for (var i = 0; i < attribute_keys.size(); i++) {
+			var attribute = attribute_keys[i] as Symbol;
+			var weight = attribute_modifiers[attribute];
+			attack += player.getAttribute(attribute) * weight / 2;
+		}
+
+		var luck = player.getAttribute(:luck) * attribute_modifiers[:luck];
+		if (MathUtil.random(0, 100) < luck) {
+			attack *= 1.25;
+		}
+		return attack.toNumber();
 	}
 
 	function onDamageDone(damage as Number, enemy as Enemy?) as Void {

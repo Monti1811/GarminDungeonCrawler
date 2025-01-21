@@ -37,6 +37,12 @@ enum WeaponType {
 	RANGED
 }
 
+enum AttackType {
+	STRENGTH,
+	DEXTERITY,
+	INTELLIGENCE,
+}
+
 enum AmmunitionType {
 	ARROW,
 	FIRE_ARROW,
