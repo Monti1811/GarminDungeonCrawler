@@ -112,7 +112,7 @@ class Enemy extends Entity {
 			player = getApp().getPlayer();
 		}
 		if (player != null) {
-			Battle.attackPlayer(self, player, player_pos);
+			Battle.attackPlayer(self, player);
 			curr_attack_cooldown = attack_cooldown;
 		}
 		return true;

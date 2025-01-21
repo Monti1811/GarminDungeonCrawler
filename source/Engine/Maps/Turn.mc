@@ -257,7 +257,7 @@ class Turn {
                 var next_pos = enemy.findNextMove(_map_data[:map]);
                 if (next_pos != curr_pos) {
                     if (MapUtil.isPosPlayer(_map_data[:map], next_pos)) {
-                        Battle.attackPlayer(enemy, _player, target_pos);
+                        Battle.attackPlayer(enemy, _player);
                         enemies.remove(enemy);
                     } else {
                         _room.moveEnemy(enemy);

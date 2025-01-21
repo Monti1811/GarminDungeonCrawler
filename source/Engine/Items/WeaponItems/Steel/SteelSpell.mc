@@ -17,9 +17,23 @@ class SteelSpell extends Spell {
 
 		attack = 8;
 		range = 1;
-		range_type = SURROUNDING;
 		cooldown = 1;
 	}
+
+	function activateSpell() as Void {
+		Spell.activateStaff();
+		attack = 10;
+		range = 3;
+		range_type = SURROUNDING;
+	}
+
+	function deactivateSpell() as Void {
+		Spell.deactivateStaff();
+		attack = 2;
+		range = 1;
+		range_type = DIRECTIONAL;
+	}
+
 
 	function onEquipItem(player as Player) as Void {
 		Spell.onEquipItem(player);
