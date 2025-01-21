@@ -14,8 +14,8 @@ class Mage extends Player {
 		self.second_bar = :mana;
 
 		// Give starting items
-		self.equipped[RIGHT_HAND] = new SteelStaff();
-		self.equipped[ACCESSORY] = new SteelRing2();
+		self.equipItem(new SteelStaff(), RIGHT_HAND, null);
+		self.equipItem(new SteelRing2(), ACCESSORY, null);
 
 		// Set attributes
 		self.attributes = {

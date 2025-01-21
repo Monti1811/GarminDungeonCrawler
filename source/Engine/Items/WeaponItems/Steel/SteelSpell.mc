@@ -7,7 +7,7 @@ class SteelSpell extends Spell {
 		Spell.initialize();
 		id = 6;
 		name = "Steel Spell";
-		description = "A simple steel spell";
+		description = "A simple steel spell. If the player has mana available, uses it to perform a more powerful AoE attack.";
 		slot = RIGHT_HAND;
 		value = 10;
 		weight = 2;
@@ -18,6 +18,8 @@ class SteelSpell extends Spell {
 		attack = 8;
 		range = 1;
 		cooldown = 1;
+
+		mana_loss = 25;
 	}
 
 	function activateSpell() as Void {

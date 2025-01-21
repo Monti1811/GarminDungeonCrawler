@@ -197,6 +197,8 @@ class Room {
     }
 
     function updatePlayerPos(new_pos as Point2D) as Void {
+        _map[_player_pos[0]][_player_pos[1]].player = false;
+        _map[new_pos[0]][new_pos[1]].player = true;
         _player_pos = new_pos;
     }
 
@@ -206,19 +208,19 @@ class Room {
 
     function getNearbyFreePos(pos as Point2D) as Point2D? {
         var new_pos = [pos[0], pos[1] - 1];
-        if (new_pos[1] >= 0 && _map[new_pos[0]][new_pos[1]].content == null) {
+        if (new_pos[1] >= 0 && _map[new_pos[0]][new_pos[1]].type == PASSABLE && _map[new_pos[0]][new_pos[1]].content == null) {
             return new_pos;
         }
         new_pos = [pos[0], pos[1] + 1];
-        if (new_pos[1] < _size_y && _map[new_pos[0]][new_pos[1]].content == null) {
+        if (new_pos[1] < _size_y && _map[new_pos[0]][new_pos[1]].type == PASSABLE && _map[new_pos[0]][new_pos[1]].content == null) {
             return new_pos;
         }
         new_pos = [pos[0] - 1, pos[1]];
-        if (new_pos[0] >= 0 && _map[new_pos[0]][new_pos[1]].content == null) {
+        if (new_pos[0] >= 0 && _map[new_pos[0]][new_pos[1]].type == PASSABLE && _map[new_pos[0]][new_pos[1]].content == null) {
             return new_pos;
         }
         new_pos = [pos[0] + 1, pos[1]];
-        if (new_pos[0] < _size_x && _map[new_pos[0]][new_pos[1]].content == null) {
+        if (new_pos[0] < _size_x && _map[new_pos[0]][new_pos[1]].type == PASSABLE && _map[new_pos[0]][new_pos[1]].content == null) {
             return new_pos;
         }
         return null;
@@ -451,7 +453,6 @@ class Room {
         if (data["player_pos"] != null) {
             System.println("Set Player pos: " + data["player_pos"]);
             updatePlayerPos(data["player_pos"]);
-            _map[_player_pos[0]][_player_pos[1]].player = true;
         }
         if (data["stairs"] != null) {
             addStairs(data["stairs"], false);

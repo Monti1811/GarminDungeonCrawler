@@ -66,7 +66,7 @@ class Enemy extends Entity {
 
 	function takeDamage(damage as Number, enemy as Player) as Boolean {
 		current_health -= damage;
-		if (current_health < 0) {
+		if (current_health <= 0) {
 			current_health = 0;
 			return true;
 		}

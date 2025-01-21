@@ -6,6 +6,7 @@ class Ammunition extends WeaponItem {
 
 	function initialize() {
 		WeaponItem.initialize();
+		slot = AMMUNITION;
 		attack = 1;
 	}
 

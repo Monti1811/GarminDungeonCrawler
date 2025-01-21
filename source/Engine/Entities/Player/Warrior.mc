@@ -10,8 +10,8 @@ class Warrior extends Player {
 		self.description = "A warrior character";
 
 		// Give starting items
-		self.equipped[RIGHT_HAND] = new SteelAxe();
-		self.equipped[CHEST] = new SteelBreastPlate();
+		self.equipItem(new SteelAxe(), RIGHT_HAND, null);
+		self.equipItem(new SteelBreastPlate(), CHEST, null);
 
 		// Set attributes
 		self.attributes = {

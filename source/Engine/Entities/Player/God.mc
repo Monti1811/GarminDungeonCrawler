@@ -29,17 +29,17 @@ class God extends Player {
 
 		var arrows = new Arrow();
 		arrows.amount = 100;
-		self.equipped = {
-			HEAD => new SteelHelmet(),
-			CHEST => new SteelBreastPlate(),
-			FEET => new SteelShoes(),
-			RIGHT_HAND => new SteelAxe(),
-			AMMUNITION => arrows,
-			ACCESSORY => new SteelRing1()
-		};
+		self.equipItem(new SteelAxe(), RIGHT_HAND, null);
+		self.equipItem(new SteelBreastPlate(), CHEST, null);
+		self.equipItem(new SteelHelmet(), HEAD, null);
+		self.equipItem(new SteelShoes(), FEET, null);
+		self.equipItem(new SteelRing1(), ACCESSORY, null);
+		self.equipItem(arrows, AMMUNITION, null);
+
 		self.gold = 99999;
 		self.sprite = $.Rez.Drawables.Wrestler;
 
+		self.inventory.add(new SteelBow());
 		self.inventory.add(new SteelSpell());
 		self.inventory.add(new SteelStaff());
 		self.inventory.add(new ManaPotion());
@@ -92,6 +92,7 @@ class God extends Player {
 		if (save_data["maxMana"] != null) {
 			self.maxMana = save_data["maxMana"];
 		}
+		self.inventory.add(new SteelBow());
 	}
 
 	

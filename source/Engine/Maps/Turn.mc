@@ -20,10 +20,6 @@ class Turn {
         _map_data = map_data;
         _player_pos = _map_data[:player_pos] as Point2D;
         _player.setPos(_player_pos);
-
-        // Add player position to map
-        var map = _map_data[:map] as Array<Array<Tile>>;
-        map[_player_pos[0]][_player_pos[1]].player = true;
     }
 
     function setAutoSave(autosave as Boolean) as Void {
@@ -80,11 +76,9 @@ class Turn {
 
     function movePlayer(map as Array<Array<Tile>>, new_pos as Point2D) as Void {
         var new_tile = map[new_pos[0]][new_pos[1]];
-        if (new_tile.content != null) {
+        if (new_tile.content != null && !(new_tile.content instanceof Item)) {
             return;
         }
-        map[_player_pos[0]][_player_pos[1]].player = false;
-        new_tile.player = true;
         _room.updatePlayerPos(new_pos);
         _player_pos = new_pos;
         _player.setPos(new_pos);
@@ -102,8 +96,6 @@ class Turn {
         _player.setPos(_player_pos);
         room.updatePlayerPos(_player_pos);
         _view.setPlayerSpritePos(_player_pos);
-        var map = _map_data[:map] as Array<Array<Tile>>;
-        map[_player_pos[0]][_player_pos[1]].player = true;
     }
 
     private function getNewPlayerPosInNextRoom(next_pos as Point2D, direction as WalkDirection) as Point2D {

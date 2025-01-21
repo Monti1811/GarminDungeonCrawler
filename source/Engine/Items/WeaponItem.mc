@@ -27,10 +27,8 @@ class WeaponItem extends EquippableItem {
 		if (slot == LEFT_HAND) {
 			var right_hand = player.getEquip(RIGHT_HAND) as WeaponItem?;
 			if (right_hand != null && right_hand.weapon_type == TWOHAND) {
-				player.unequipItem(RIGHT_HAND);
+				player.unequipItem(LEFT_HAND);
 			}
-		} else if (slot == RIGHT_HAND) {
-			player.unequipItem(LEFT_HAND);
 		}
 	}
 	function onUnequipItem(player as Player) as Void {

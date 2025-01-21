@@ -34,6 +34,17 @@ class DCPlayerDetailsEquipmentsView extends WatchUi.View {
 		}
 	}
 
+	function drawAmmo(dc as Dc, x as Number, y as Number, name as String, equipslot as ItemSlot) as Void {
+		drawRectangle(dc, x, y, name, equipslot);
+		var ammo = _player.getEquip(AMMUNITION);
+		if (ammo != null) {
+			var x_text = x + size_rectangles/2;
+			var y_text = y - size_rectangles/2;
+			var amount = ammo.getAmount();
+			dc.drawText(x_text - 1, y_text, small_font, "x" + amount, Graphics.TEXT_JUSTIFY_RIGHT);
+		}
+	}
+
 	function onLayout(dc) {
 		
 	}
@@ -75,7 +86,7 @@ class DCPlayerDetailsEquipmentsView extends WatchUi.View {
 		// Accessory
 		drawRectangle(dc, 100, 80, "Accessory", ACCESSORY);
 		// Ammunition
-		drawRectangle(dc, 260, 160, "Ammo", AMMUNITION);
+		drawAmmo(dc, 260, 160, "Ammo", AMMUNITION);
 
 	}
 

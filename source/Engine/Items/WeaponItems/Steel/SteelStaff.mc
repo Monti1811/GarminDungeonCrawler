@@ -7,7 +7,7 @@ class SteelStaff extends Staff {
 		Staff.initialize();
 		id = 7;
 		name = "Steel Staff";
-		description = "A simple steel staff";
+		description = "A simple steel staff. If the player has mana available, uses it to perform more powerful attacks.";
 		slot = RIGHT_HAND;
 		value = 10;
 		weight = 10;

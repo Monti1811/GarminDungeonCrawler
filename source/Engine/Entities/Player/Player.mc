@@ -87,16 +87,17 @@ class Player extends Entity {
 	}
 
 	function pickupItem(item as Item) as Boolean {
-		if (!inventory.isFull() && item.canBePickedUp(me)) {
-			item.onPickupItem(me);
+		if (item.canBePickedUp(me)) {
 			if (item instanceof EquippableItem && equipped[item.slot] == null) {
 				equipItem(item, item.slot, false);
-			} else {
+				item.onPickupItem(me);
+				return true;
+			} else if (!inventory.isFull()) {
 				inventory.add(item);
+				item.onPickupItem(me);
+				return true;
 			}
-			return true;
 		}
-		
 		return false;
 	}
 
@@ -126,6 +127,10 @@ class Player extends Entity {
 
 	function dropItem(item as Item) as Boolean {
 		var dropped_item = inventory.remove(item);
+		// Case where item was equipped and could not be added to inventory as it was full
+		if (dropped_item == null) {
+			dropped_item = item;
+		}
 		dropped_item.onDropItem(me);
 		var room = getApp().getCurrentDungeon().getCurrentRoom();
 		var player_pos = room.getPlayerPos();
@@ -481,14 +486,17 @@ class Player extends Entity {
 		if (save_data["inventory"] != null) {
 			inventory = Inventory.load(save_data["inventory"] as Dictionary);
 		}
-		if (save_data["equipped"] != null) {
-			for (var i = 0; i < equipped.size(); i++) {
-				var slot = equipped.keys()[i];
-				var item_data = (save_data["equipped"] as Dictionary)[slot] as Dictionary?;
+		var equipped_save = save_data["equipped"] as Dictionary?;
+		if (equipped_save != null) {
+			self.equipped = {};
+			var equipped_save_keys = equipped_save.keys();
+			for (var i = 0; i < equipped_save_keys.size(); i++) {
+				var slot = equipped_save_keys[i] as ItemSlot;
+				var item_data = equipped_save[slot] as Dictionary?;
 				if (item_data != null && item_data["id"] != null) {
 					var item = Items.createItemFromId(item_data["id"]);
 					item.onLoad(item_data);
-					equipped[slot] = item;
+					self.equipItem(item, slot, null);
 				}
 			}
 		}

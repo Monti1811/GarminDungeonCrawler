@@ -337,4 +337,13 @@ module MapUtil {
 		return STANDING;
 	}
 
+	function getAllDirectionPoints(pos as Point2D) as Array<Point2D> {
+		var points = [];
+		points.add(getCoordInDirection(pos, UP));
+		points.add(getCoordInDirection(pos, DOWN));
+		points.add(getCoordInDirection(pos, LEFT));
+		points.add(getCoordInDirection(pos, RIGHT));
+		return points;
+	}
+
 }
