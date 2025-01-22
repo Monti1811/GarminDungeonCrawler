@@ -38,6 +38,9 @@ class Turn {
             return;
         }
 
+        if (new_pos[0] >= map.size() || new_pos[1] >= map[0].size()) {
+            return;
+        }
         var tile = map[new_pos[0]][new_pos[1]];
         var map_element = tile.content as Object?;
         if (tile.type == STAIRS) {

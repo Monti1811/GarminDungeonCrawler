@@ -40,6 +40,9 @@ class Bow extends WeaponItem {
 	}
 
 	function canAttack(enemy as Enemy?) as Boolean {
+		if (!WeaponItem.canAttack(enemy)) {
+			return false;
+		}
 		var player = getApp().getPlayer();
 		var ammunition = player.getEquip(AMMUNITION) as Ammunition?;
 		return ammunition != null && ammunition.isType(self.ammunition_type);
