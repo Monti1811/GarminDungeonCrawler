@@ -26,9 +26,10 @@ enum ItemSlot {
 	FEET = 4,
 	LEFT_HAND = 5,
 	RIGHT_HAND = 6,
-	ACCESSORY = 7,
-	AMMUNITION = 8,
-	NONE = 9
+	EITHER_HAND = 7,  // Represents items equippable in either hand
+	ACCESSORY = 8,
+	AMMUNITION = 9,
+	NONE = 10
 }
 
 enum WeaponType {
@@ -41,6 +42,12 @@ enum AttackType {
 	STRENGTH,
 	DEXTERITY,
 	INTELLIGENCE,
+}
+
+enum DefenseType {
+	CONSTITUTION,
+	WISDOM,
+	CHARISMA
 }
 
 enum AmmunitionType {

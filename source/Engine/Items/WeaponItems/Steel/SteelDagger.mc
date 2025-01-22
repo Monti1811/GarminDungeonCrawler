@@ -2,31 +2,23 @@ import Toybox.Lang;
 
 
 class SteelDagger extends WeaponItem {
-	var id as Number = 2;
-	var name as String = "Steel Dagger";
-	var description as String = "A simple steel dagger";
-	var slot as ItemSlot = RIGHT_HAND;
-	var value as Number = 10;
-	var weight as Number = 10;
-	var attribute_bonus as Dictionary<Symbol, Number> = {
-		:luck => 2
-	};
 
 	function initialize() {
 		WeaponItem.initialize();
 		id = 2;
 		name = "Steel Dagger";
 		description = "A simple steel dagger";
-		slot = RIGHT_HAND;
+		slot = EITHER_HAND;
 		value = 10;
 		weight = 10;
 		attribute_bonus = {
+			:dexterity => 2,
 			:luck => 2
 		};
 
 		attack = 7;
 		// range = 1;
-		damage_type = DEXTERITY;
+		attack_type = DEXTERITY;
 	}
 
 	function onEquipItem(player as Player) as Void {

@@ -1,21 +1,21 @@
 import Toybox.Lang;
 
 
-class HealthPotion extends ConsumableItem {
+class MaxManaPotion extends ConsumableItem {
 
 	function initialize() {
 		ConsumableItem.initialize();
-		self.id = 2000;
-		self.name = "Health Potion";
-		self.description = "A small health potion";
-		self.effect_description = "Restores 20 health";
-		self.value = 20;
+		self.id = 2005;
+		self.name = "Max Mana Potion";
+		self.description = "An enormous mana potion";
+		self.effect_description = "Restores all mana";
+		self.value = 200;
 		self.weight = 1;
 	}
 
 	function onUseItem(player as Player) as Void {
 		ConsumableItem.onUseItem(player);
-		player.onGainHealth(20);
+		player.doManaDelta(player.getMaxMana());
 	}
 	function onPickupItem(player as Player) as Void {
 		ConsumableItem.onPickupItem(player);
@@ -34,12 +34,12 @@ class HealthPotion extends ConsumableItem {
 	}
 
 	function getSprite() as ResourceId {
-		return $.Rez.Drawables.potion_health;
+		return $.Rez.Drawables.potion_mana_max;
 	}
 	
 
 	function deepcopy() as Item {
-		var potion = new HealthPotion();
+		var potion = new MaxManaPotion();
 		potion.name = name;
 		potion.description = description;
 		potion.value = value;

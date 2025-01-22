@@ -31,6 +31,13 @@
         system_size__toast_icon
     "/>
 
+    <bitmap id="aboutToastIcon" personality="
+        system_icon_dark__about
+        system_size__toast_icon
+    "/>
+
+    
+
     <!-- Players/NPCs -->
     <bitmap id="Basic" filename="players/hero_basic.png" />
     <bitmap id="Barbarian" filename="players/npc_barbarian.png" />
@@ -223,7 +230,11 @@
     <bitmap id="blood_ring1" filename="items/blood_ring1.png" />
     <bitmap id="blood_ring2" filename="items/blood_ring2.png" />
     <bitmap id="potion_health" filename="items/potion_health.png" />
+    <bitmap id="potion_health_greater" filename="items/potion_health_greater.png" />
+    <bitmap id="potion_health_max" filename="items/potion_health_max.png" />
     <bitmap id="potion_mana" filename="items/potion_mana.png" />
+    <bitmap id="potion_mana_greater" filename="items/potion_mana_greater.png" />
+    <bitmap id="potion_mana_max" filename="items/potion_mana_max.png" />
     <bitmap id="key" filename="items/key.png" />
     <bitmap id="gold" filename="items/gold.png" />
     <bitmap id="diamond" filename="items/diamond.png" />
@@ -235,6 +246,12 @@
     <bitmap id="chest_golden_open_empty" filename="items/chest_golden_open_empty.png" />
     <bitmap id="chest_golden_open_full" filename="items/chest_golden_open_full.png" />
     <bitmap id="arrow" filename="items/arrow.png" />
+    <bitmap id="crossbow" filename="items/crossbow.png" />
+    <bitmap id="crossbow_oak" filename="items/crossbow_oak.png" />
+    <bitmap id="crossbow_hell" filename="items/crossbow_hell.png" />
+    <bitmap id="shield_silver" filename="items/shield_silver.png" />
+    <bitmap id="shield_gold" filename="items/shield_gold.png" />
+    <bitmap id="shield_wood" filename="items/shield_wood.png" />
 
     <!-- Enemies -->
     <bitmap id="monster_tentackle" filename="monsters/monster_tentackle.png" />

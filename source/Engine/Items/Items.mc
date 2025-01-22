@@ -9,9 +9,13 @@ module Items {
     var character_items as Dictionary<Number, Dictionary<Number, [Numeric, Symbol]>> = {
         1 => {
             2001 => [4, :createManaPotion],
+            2003 => [2, :createGreaterManaPotion],
+            2005 => [1, :createMaxManaPotion],
         },
          999 => {
             2001 => [4, :createManaPotion],
+            2003 => [2, :createGreaterManaPotion],
+            2005 => [1, :createMaxManaPotion],
         },
     };
 
@@ -27,6 +31,7 @@ module Items {
             7 => :createSteelStaff,
             8 => :createSteelSword,
             9 => :createArrow,
+            10 => :createCrossBow,
 
             1000 => :createSteelHelmet,
             1001 => :createSteelBreastPlate,
@@ -34,8 +39,11 @@ module Items {
             1003 => :createSteelShoes,
             1004 => :createSteelRing1,
             1005 => :createSteelRing2,
+            1006 => :createWoodShield,
 
             2000 => :createHealthPotion,
+            2002 => :createGreaterHealthPotion,
+            2004 => :createMaxHealthPotion,
 
             5000 => :createGold,
         };
@@ -50,13 +58,17 @@ module Items {
             7 => 1,
             8 => 1,
             9 => 1,
+            10 => 1,
             1000 => 1,
             1001 => 1,
             1002 => 1,
             1003 => 1,
             1004 => 1,
             1005 => 1,
+            1006 => 1,
             2000 => 4,
+            2002 => 2,
+            2004 => 1,
         };
         var character_changes = character_items[player_id];
         if (character_changes != null) {
@@ -117,6 +129,10 @@ module Items {
         return arrow;
     }
 
+    function createCrossBow() as Item {
+        return new CrossBow();
+    }
+
     function createSteelHelmet() as Item {
         return new SteelHelmet();
     }
@@ -140,13 +156,33 @@ module Items {
     function createSteelRing2() as Item {
         return new SteelRing2();
     }
+    
+    function createWoodShield() as Item {
+        return new WoodShield();
+    }
 
     function createHealthPotion() as Item {
         return new HealthPotion();
     }
 
+    function createGreaterHealthPotion() as Item {
+        return new GreaterHealthPotion();
+    }
+
+    function createMaxHealthPotion() as Item {
+        return new MaxHealthPotion();
+    }
+
     function createManaPotion() as Item {
         return new ManaPotion();
+    }
+
+    function createGreaterManaPotion() as Item {
+        return new GreaterManaPotion();
+    }
+
+    function createMaxManaPotion() as Item {
+        return new MaxManaPotion();
     }
 
     function createGold() as Item {
@@ -161,6 +197,8 @@ module Items {
 
     function createRandomItem() as Item {
         var item_keys = items.keys();
+        // Remove gold from random items
+        item_keys.remove(5000);
         var rand = MathUtil.random(0, item_keys.size() - 1);
         var method = new Method(self, items[item_keys[rand]]);
         return method.invoke() as Item;

@@ -71,10 +71,19 @@ module Constants {
 		"None" => NONE
 	};
 
-	public const ATTRIBUTE_WEIGHTS as Dictionary<AttackType, Dictionary> = {
+	public const ATTRIBUTE_WEIGHTS as Dictionary<AttackType | DefenseType, Dictionary> = {
 		STRENGTH => {
 			:strength => 1.0,
 			:constitution => 0.5,
+			:dexterity => 0.25,
+			:intelligence => 0.1,
+			:wisdom => 0.05,
+			:charisma => 0.01,
+			:luck => 0.1
+		},
+		CONSTITUTION => {
+			:strength => 0.5,
+			:constitution => 1.0,
 			:dexterity => 0.25,
 			:intelligence => 0.1,
 			:wisdom => 0.05,
@@ -90,6 +99,15 @@ module Constants {
 			:charisma => 0.05,
 			:luck => 0.1
 		},
+		CHARISMA => {
+			:strength => 0.01,
+			:constitution => 0.05,
+			:dexterity => 0.1,
+			:intelligence => 0.25,
+			:wisdom => 0.5,
+			:charisma => 1.0,
+			:luck => 0.25
+		},
 		INTELLIGENCE => {
 			:strength => 0.1,
 			:constitution => 0.25,
@@ -98,6 +116,15 @@ module Constants {
 			:wisdom => 0.5,
 			:charisma => 0.25,
 			:luck => 1.0
-		}
+		},
+		WISDOM => {
+			:strength => 0.05,
+			:constitution => 0.1,
+			:dexterity => 0.25,
+			:intelligence => 0.5,
+			:wisdom => 1.0,
+			:charisma => 0.5,
+			:luck => 0.25
+		},
 	};
 }

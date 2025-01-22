@@ -70,6 +70,13 @@ class Item {
 		return slot;
 	}
 
+	function isItemSlot(slot as ItemSlot) as Boolean {
+		if (slot == EITHER_HAND) {
+			return self.slot == RIGHT_HAND || self.slot == LEFT_HAND;
+		}
+		return self.slot == slot;
+	}
+
 	function getValue() as Number {
 		return value;
 	}

@@ -13,6 +13,10 @@ class Mage extends Player {
 		self.description = "A mage character";
 		self.second_bar = :mana;
 
+		// Set health
+		self.current_health = 80;
+		self.maxHealth = 80;
+
 		// Give starting items
 		self.equipItem(new SteelStaff(), RIGHT_HAND, null);
 		self.equipItem(new SteelRing2(), ACCESSORY, null);

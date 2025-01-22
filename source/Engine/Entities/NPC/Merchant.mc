@@ -11,7 +11,8 @@ class Merchant extends NPC {
 	}
 
 	function addRandomItems() as Void {
-		for (var i = 0; i < 3; i++) {
+		var amount = MathUtil.random(1, 5);
+		for (var i = 0; i < amount; i++) {
 			var item = Items.createRandomItem();
 			items.add(item);
 		}
@@ -46,6 +47,7 @@ class Merchant extends NPC {
 		var npc = new Merchant();
 		npc.name = name;
 		npc.pos = pos;
+		npc.items = items;
 		return npc;
 	}
 

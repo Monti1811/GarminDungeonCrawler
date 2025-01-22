@@ -8,13 +8,14 @@ class SteelShoes extends ArmorItem {
 		id = 1003;
 		name = "Steel Shoes";
 		description = "A simple steel shoes";
-		value = 10;
-		weight = 10;
+		value = 7;
+		weight = 3;
 		slot = FEET;
 		defense = 3;
 		attribute_bonus = {
-			:constitution => 2
+			:dexterity => 2
 		};
+		defense_type = CHARISMA;
 	}
 
 	function onEquipItem(player as Player) as Void {

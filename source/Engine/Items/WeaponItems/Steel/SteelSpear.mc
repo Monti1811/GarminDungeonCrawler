@@ -12,13 +12,14 @@ class SteelLance extends WeaponItem {
 		value = 10;
 		weight = 10;
 		attribute_bonus = {
+			:dexterity => 2,
 			:luck => 2
 		};
 
 		attack = 10;
 		range = 2;
 		range_type = LINEAR;
-		damage_type = DEXTERITY;
+		attack_type = DEXTERITY;
 	}
 
 	function onEquipItem(player as Player) as Void {

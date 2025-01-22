@@ -8,13 +8,14 @@ class SteelGauntlets extends ArmorItem {
 		id = 1002;
 		name = "Steel Gauntlets";
 		description = "Simple steel gauntlets";
-		value = 10;
-		weight = 10;
-		slot = LEFT_HAND;
+		value = 5;
+		weight = 2;
+		slot = EITHER_HAND;
 		defense = 3;
 		attribute_bonus = {
-			:constitution => 2
+			:charisma => 2
 		};
+		defense_type = CHARISMA;
 	}
 
 	function onEquipItem(player as Player) as Void {

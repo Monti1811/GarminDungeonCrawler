@@ -12,7 +12,9 @@ class SteelAxe extends WeaponItem {
 		weight = 10;
 		slot = RIGHT_HAND;
 		attribute_bonus = {
-			:strength => 2
+			:strength => 4,
+			:dexterity => -1,
+			:luck => -1
 		};
 
 		attack = 8;

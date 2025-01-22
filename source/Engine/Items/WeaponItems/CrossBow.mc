@@ -1,24 +1,26 @@
 import Toybox.Lang;
 
 
-class SteelBow extends Bow {
+class CrossBow extends Bow {
 
 	function initialize() {
 		Bow.initialize();
-		id = 1;
-		name = "Steel Bow";
-		description = "A simple steel bow";
+		id = 10;
+		name = "Crossbow";
+		description = "A simple crossbow";
 		slot = RIGHT_HAND;
-		value = 10;
-		weight = 10;
+		value = 12;
+		weight = 4;
 		attribute_bonus = {
-			:dexterity => 2
+			:charisma => 2,
+			:strength => 2
 		};
 
-		attack = 3;
+		attack = 9;
 		range = 3;
 		range_type = LINEAR;
 		attack_type = DEXTERITY;
+		cooldown = 2;
 
 	}
 
@@ -49,11 +51,11 @@ class SteelBow extends Bow {
 	}
 	
 	function getSprite() as ResourceId {
-		return $.Rez.Drawables.steel_bow;
+		return $.Rez.Drawables.crossbow;
 	}
 
 	function deepcopy() as Item {
-		var bow = new SteelBow();
+		var bow = new CrossBow();
 		bow.name = name;
 		bow.description = description;
 		bow.value = value;

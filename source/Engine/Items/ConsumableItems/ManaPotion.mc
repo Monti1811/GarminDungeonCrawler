@@ -7,7 +7,7 @@ class ManaPotion extends ConsumableItem {
 		ConsumableItem.initialize();
 		id = 2001;
 		name = "Mana Potion";
-		description = "A simple mana potion";
+		description = "A small mana potion";
 		effect_description = "Restores 20 mana";
 		value = 20;
 		weight = 1;
@@ -39,7 +39,7 @@ class ManaPotion extends ConsumableItem {
 	
 
 	function deepcopy() as Item {
-		var potion = new HealthPotion();
+		var potion = new ManaPotion();
 		potion.name = name;
 		potion.description = description;
 		potion.value = value;

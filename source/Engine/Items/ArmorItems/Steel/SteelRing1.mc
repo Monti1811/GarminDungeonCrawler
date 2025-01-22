@@ -9,12 +9,15 @@ class SteelRing1 extends ArmorItem {
 		name = "Steel Ring";
 		description = "A simple steel ring";
 		slot = ACCESSORY;
-		value = 10;
-		weight = 10;
-		defense = 0;
+		value = 5;
+		weight = 1;
+		defense = 3;
 		attribute_bonus = {
-			:constitution => 2
+			:constitution => 2,
+			:wisdom => 2,
+			:charisma => 2
 		};
+		defense_type = WISDOM;
 	}
 
 	function onEquipItem(player as Player) as Void {

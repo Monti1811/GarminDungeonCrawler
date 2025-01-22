@@ -12,7 +12,8 @@ class SteelSword extends WeaponItem {
 		value = 10;
 		weight = 10;
 		attribute_bonus = {
-			:strength => 2
+			:strength => 2,
+			:constitution => 1
 		};
 
 		attack = 10;

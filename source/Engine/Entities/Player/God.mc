@@ -27,6 +27,7 @@ class God extends Player {
 		self.current_health = 1000;
 		self.maxHealth = 1000;
 
+		self.inventory = new Inventory(30);
 		var arrows = new Arrow();
 		arrows.amount = 100;
 		self.equipItem(new SteelAxe(), RIGHT_HAND, null);
@@ -44,13 +45,23 @@ class God extends Player {
 		self.inventory.add(new SteelStaff());
 		self.inventory.add(new ManaPotion());
 		self.inventory.add(new HealthPotion());
+		self.inventory.add(new SteelDagger());
+		self.inventory.add(new SteelDagger());
+		self.inventory.add(new WoodShield());
+		self.inventory.add(new CrossBow());
+		self.inventory.add(new GreaterHealthPotion());
+		self.inventory.add(new MaxHealthPotion());
+		self.inventory.add(new GreaterManaPotion());
+		self.inventory.add(new MaxManaPotion());
 
 	}
 
 	function onLevelUp() as Void {
 		// Increase max health
 		Player.onLevelUp();
+		current_health += 100;
 		maxHealth += 100;
+		WatchUi.showToast(self.name + " leveled up!", {:icon=>Rez.Drawables.aboutToastIcon});
 	}
 
 	function getCurrentMana() as Number {
@@ -92,7 +103,6 @@ class God extends Player {
 		if (save_data["maxMana"] != null) {
 			self.maxMana = save_data["maxMana"];
 		}
-		self.inventory.add(new SteelBow());
 	}
 
 	

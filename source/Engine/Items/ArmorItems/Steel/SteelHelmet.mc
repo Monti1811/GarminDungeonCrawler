@@ -8,8 +8,8 @@ class SteelHelmet extends ArmorItem {
 		id = 1000;
 		name = "Steel Helmet";
 		description = "A simple steel helmet";
-		value = 10;
-		weight = 10;
+		value = 7;
+		weight = 3;
 		slot = HEAD;
 		defense = 3;
 		attribute_bonus = {

@@ -149,6 +149,7 @@ class Player extends Entity {
 
 	function onLevelUp() as Void {
 		level++;
+		experience -= next_level_experience;
 		next_level_experience = level * 100;
 		attribute_points += 5;
 	}
@@ -167,10 +168,16 @@ class Player extends Entity {
 
 	function onGainExperience(amount as Number) as Void {
 		experience += amount;
+		while (experience >= next_level_experience) {
+			onLevelUp();
+		}
 	}
 
 	function onLoseExperience(amount as Number) as Void {
 		experience -= amount;
+		if (experience < 0) {
+			experience = 0;
+		}
 	}
 
 	function getExperience() as Number {
@@ -293,11 +300,16 @@ class Player extends Entity {
 		var base_attack = 0;
 		var weapon_left = getWeaponItem(LEFT_HAND);
 		var weapon_right = getWeaponItem(RIGHT_HAND);
+		var weapons = [];
 		if (weapon_left != null && weapon_left.canAttack(enemy)) {
-			base_attack += weapon_left.getAttack(enemy);
+			weapons.add(weapon_left);
 		}
 		if (weapon_right != null && weapon_right.canAttack(enemy)) {
-			base_attack += weapon_right.getAttack(enemy);
+			weapons.add(weapon_right);
+		}
+		for (var i = 0; i < weapons.size(); i++) {
+			var weapon = weapons[i];
+			base_attack += weapon.getAttack(enemy, weapons.size());
 		}
 		return base_attack;
 	}
@@ -324,10 +336,11 @@ class Player extends Entity {
 			getArmorItem(RIGHT_HAND),
 		];
 
-		for (var i = 0; i < armors.size(); i++) {
+		var armors_size = armors.size();
+		for (var i = 0; i < armors_size; i++) {
 			var armor = armors[i];
 			if (armor != null) {
-				base_defense += armor.getDefense(enemy);
+				base_defense += armor.getDefense(enemy, armors_size);
 			}
 		}
 

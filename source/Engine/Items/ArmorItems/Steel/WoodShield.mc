@@ -1,22 +1,22 @@
 import Toybox.Lang;
 
-
-class SteelRing2 extends ArmorItem {
-
+class WoodShield extends ArmorItem {
+	
 	function initialize() {
 		ArmorItem.initialize();
-		id = 1005;
-		name = "Amethyst Ring";
-		description = "A simple amethyst ring";
+		id = 1006;
+		name = "Shield";
+		description = "A simple shield";
 		value = 5;
-		weight = 1;
-		slot = ACCESSORY;
-		defense = 1;
+		weight = 3;
+		slot = LEFT_HAND;
 		attribute_bonus = {
-			:intelligence => 3,
-			:wisdom => 2
+			:constitution => 3,
+			:dexterity => -1
 		};
-		defense_type = WISDOM;
+
+		defense = 4;
+
 	}
 
 	function onEquipItem(player as Player) as Void {
@@ -44,23 +44,19 @@ class SteelRing2 extends ArmorItem {
 	function onBuyItem(player as Player) as Void {
 		ArmorItem.onBuyItem(player);
 	}
-	function getSprite() as ResourceId {
-		return $.Rez.Drawables.steel_ring1;
-	}
 	
+	function getSprite() as ResourceId {
+		return $.Rez.Drawables.shield_wood;
+	}
 
 	function deepcopy() as Item {
-		var ring = new SteelRing2();
-		ring.name = name;
-		ring.description = description;
-		ring.value = value;
-		ring.amount = amount;
-		ring.attribute_bonus = attribute_bonus;
-		ring.pos = pos;
-		ring.equipped = equipped;
-		ring.in_inventory = in_inventory;
-		ring.defense = defense;
-		return ring;
+		var shield = new WoodShield();
+		shield.name = name;
+		shield.description = description;
+		shield.value = value;
+		shield.amount = amount;
+		shield.attribute_bonus = attribute_bonus;
+		shield.defense = defense;
+		return shield;
 	}
-
 }

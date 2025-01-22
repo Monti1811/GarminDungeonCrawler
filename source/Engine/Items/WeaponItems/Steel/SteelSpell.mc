@@ -12,13 +12,13 @@ class SteelSpell extends Spell {
 		value = 10;
 		weight = 2;
 		attribute_bonus = {
-			:intelligence => 2
+			:wisdom => 2
 		};
 
 		attack = 8;
 		range = 1;
 		cooldown = 1;
-		damage_type = INTELLIGENCE;
+		attack_type = INTELLIGENCE;
 
 		mana_loss = 25;
 	}

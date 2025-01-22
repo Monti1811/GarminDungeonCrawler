@@ -18,7 +18,7 @@ class SteelStaff extends Staff {
 		attack = 2;
 		range = 1;
 		range_type = LINEAR;
-		damage_type = INTELLIGENCE;
+		attack_type = INTELLIGENCE;
 
 		mana_loss = 15;
 	}

@@ -10,6 +10,7 @@ class DCCharacterCreationDelegate extends WatchUi.Menu2InputDelegate {
 
     function onSelect(item as MenuItem) as Void {
         var character = item.getId() as Player;
+        getApp().setPlayer(character);
         showCharacterDetails(character);
     }
 
@@ -21,6 +22,7 @@ class DCCharacterCreationDelegate extends WatchUi.Menu2InputDelegate {
 
     function onBack() as Void {
         WatchUi.popView(WatchUi.SLIDE_DOWN);
+        getApp().setPlayer(null);
     }
 
 

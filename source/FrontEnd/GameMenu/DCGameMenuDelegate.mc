@@ -143,6 +143,13 @@ class DCOptionsDelegate extends WatchUi.Menu2InputDelegate {
         var type = item.getId() as Symbol;
         switch (type) {
             case :equip:
+                if (_item.getItemSlot() == EITHER_HAND) {
+                    var equipMenu = new WatchUi.Menu2({:title=>"Equip Slot"});
+                    equipMenu.addItem(new WatchUi.MenuItem("Left Hand", null, :left, null));
+                    equipMenu.addItem(new WatchUi.MenuItem("Right Hand", null, :right, null));
+                    WatchUi.pushView(equipMenu, new DCEquipOptionsDelegate(_item, _delegate), WatchUi.SLIDE_UP);
+                    break;
+                }
                 var success = getApp().getPlayer().equipItem(_item, _item.getItemSlot(), true);
                 if (!success) {
                     WatchUi.showToast("Could not equip item", {:icon=>Rez.Drawables.cancelToastIcon});
@@ -179,6 +186,42 @@ class DCOptionsDelegate extends WatchUi.Menu2InputDelegate {
         var factory = new DCGameMenuItemInfoFactory(item);
         var viewLoop = new WatchUi.ViewLoop(factory, {:wrap => true});
         WatchUi.pushView(viewLoop, new DCGameMenuItemInfoDelegate(viewLoop), WatchUi.SLIDE_IMMEDIATE);
+    }
+}
+
+class DCEquipOptionsDelegate extends WatchUi.Menu2InputDelegate {
+
+    private var _item as Item;
+    private var _delegate as DCGameMenuDelegate;
+
+    function initialize(item as Item, delegate as DCGameMenuDelegate) {
+        Menu2InputDelegate.initialize();
+        _item = item;
+        _delegate = delegate;
+    }
+
+    private function updateInventoryMenu() as Void {
+        _delegate.openInventory();
+    }
+
+    function onSelect(item as MenuItem) as Void {
+        var type = item.getId() as Symbol;
+        var success = false;
+        switch (type) {
+            case :left:
+                success = getApp().getPlayer().equipItem(_item, LEFT_HAND, true);
+                break;
+            case :right:
+                success = getApp().getPlayer().equipItem(_item, RIGHT_HAND, true); 
+                break;    
+        }
+        if (!success) {
+            WatchUi.showToast("Could not equip item", {:icon=>Rez.Drawables.cancelToastIcon});
+        }
+        WatchUi.popView(SLIDE_DOWN);
+        WatchUi.popView(SLIDE_DOWN);
+        WatchUi.popView(SLIDE_DOWN);
+        updateInventoryMenu();
     }
 }
 

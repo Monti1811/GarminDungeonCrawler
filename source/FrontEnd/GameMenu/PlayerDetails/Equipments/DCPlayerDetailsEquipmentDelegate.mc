@@ -106,12 +106,12 @@ class DCPlayerDetailsEquipmentOptionsDelegate extends WatchUi.Menu2InputDelegate
         var inventory_items = player.getInventory().getItems();
         for (var i = 0; i < inventory_items.size(); i++) {
             var item = inventory_items[i] as Item;
-            if (item.getItemSlot() == itemslot) {
+            if (item.isItemSlot(itemslot)) {
                 var amount = item.getAmount();
                 inventoryMenu.addItem(new WatchUi.MenuItem(item.getName() + " x" + amount, item.getDescription(), item, {:icon=>item.getSprite()}));
             }
         }
-        WatchUi.pushView(inventoryMenu, new DCInventoryEquipDelegate(), WatchUi.SLIDE_UP);
+        WatchUi.pushView(inventoryMenu, new DCInventoryEquipDelegate(itemslot), WatchUi.SLIDE_UP);
     }
 
     function showConfirmation(message as String, item as Item, action as Symbol) {
@@ -133,14 +133,17 @@ class DCPlayerDetailsEquipmentOptionsDelegate extends WatchUi.Menu2InputDelegate
 
 class DCInventoryEquipDelegate extends WatchUi.Menu2InputDelegate {
 
-    function initialize() {
+    private var itemslot as ItemSlot;
+
+    function initialize(itemslot as ItemSlot) {
         Menu2InputDelegate.initialize();
+        self.itemslot = itemslot;
     }
 
     function onSelect(item as MenuItem) as Void {
         item = item.getId() as Item;
         var player = getApp().getPlayer() as Player;
-        var success = player.equipItem(item, item.getItemSlot(), true);
+        var success = player.equipItem(item, self.itemslot, true);
         if (!success) {
             WatchUi.showToast("Could not equip item", {:icon=>Rez.Drawables.cancelToastIcon});
         }
