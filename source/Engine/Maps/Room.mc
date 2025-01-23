@@ -110,6 +110,10 @@ class Room {
         };
     }
 
+    function getSize() as Point2D {
+        return [_size_x, _size_y];
+    }
+
     function removeItem(item as Item) as Void {
         var item_pos = item.getPos();
         _map[item_pos[0]][item_pos[1]].content = null;

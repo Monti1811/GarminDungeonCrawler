@@ -11,7 +11,9 @@ module Main {
 		var app = getApp();
 		app.setCurrentDungeon(dungeon);
 		var start_room = MathUtil.random(0, dungeon.getSize()[0] * dungeon.getSize()[1] - 1);
-		dungeon.setCurrentRoomFromIndex(MathUtil.IndexToPos2D(start_room, dungeon.getSize()[0]));
+		var pos = MathUtil.IndexToPos2D(start_room, dungeon.getSize()[0]);
+		dungeon.setCurrentRoomFromIndex(pos);
+		$.Game.setRoomAsVisited(pos);
 	}
 
 	function createNewGame1(player as Player, progress_bar as WatchUi.ProgressBar) as Void {
@@ -56,6 +58,7 @@ module Main {
 		var size_y = MathUtil.random(2, max_rooms);
 		var dungeon = new Dungeon(size_x, size_y);
 		dungeon.connectRoomsRandomly();
+		$.Game.initMap(size_x, size_y);
 		return dungeon;
 	}
 
@@ -72,6 +75,7 @@ module Main {
 			}
 		}
 		dungeon.addRoom(room, [i, j]);
+		$.Game.addRoomToMap([i, j], room_name, room_connections, room.getSize());
 	}
 
 	function createRandomRoom() as Room {
