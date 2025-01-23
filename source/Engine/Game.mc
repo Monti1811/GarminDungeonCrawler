@@ -20,6 +20,7 @@ module Game {
 	var time_played as Number = 0;
 	var time_started as Time.Moment?;
 	var turns as Turn?;
+	var map as Array<Array<[String, Array<Point2D>, Point2D, Boolean]>> = [];
 
 	function init(player_id as Number) as Void {
 		Items.init(player_id);
@@ -28,6 +29,7 @@ module Game {
 		depth = 0;
 		difficulty = MEDIUM;
 		game_mode = NORMAL;
+		map = [];
 	}
 
 	function save() as Dictionary {
@@ -36,6 +38,7 @@ module Game {
 			"game_mode" => game_mode,
 			"depth" => depth,
 			"time_played" => time_played,
+			"map" => map,
 		};
 	}
 
@@ -51,6 +54,20 @@ module Game {
 		if (data["time_played"] != null) {
 			time_played = data["time_played"];
 		}
+		if (data["map"] != null) {
+			map = data["map"];
+		}
+	}
+
+	function addRoomToMap(room as String, pos as Point2D) as Void {
+		if (map[pos[0]] == null) {
+			map[pos[0]] = [];
+		}
+		map[pos[0]][pos[1]] = [room, false];
+	}
+
+	function addRoomAsVisited(pos as Point2D) as Void {
+		map[pos[0]][pos[1]][1] = true;
 	}
 
 	function addToDepth(amount as Number) as Void {
