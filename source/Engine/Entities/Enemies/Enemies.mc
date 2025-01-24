@@ -18,11 +18,13 @@ module Enemies {
             0 => :createFrog, 
             1 => :createBat,
             2 => :createDemon,
+            3 => :createOrc,
         };
         weights = {
             0 => 5,
             1 => 3,
             2 => 1,
+            3 => 5,
         };
         var character_changes = character_enemies[player_id]; 
         if (character_changes != null) {
@@ -51,6 +53,10 @@ module Enemies {
 
     function createDemon() as Enemy {
         return new Demon();
+    }
+
+    function createOrc() as Enemy {
+        return new Orc();
     }
 
     function createEnemyFromId(id as Number) as Enemy {

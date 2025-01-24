@@ -37,44 +37,21 @@ class DCMapDrawable extends WatchUi.Drawable {
 		var entire_room_y = locY + pos[1] * size_room;
 		var room_x = entire_room_x + middle_of_room - room_size[0] * size_tile / 2;
 		var room_y = entire_room_y + middle_of_room - room_size[1] * size_tile / 2;
+		dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
+		dc.drawRectangle(room_x - 1, room_y - 1, room_size[0] * size_tile + 2, room_size[1] * size_tile + 2);
 		dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
 		dc.fillRectangle(room_x, room_y, room_size[0] * size_tile, room_size[1] * size_tile);
 
 		// Draw the connections
 		dc.setPenWidth(size_tile);
-		if (room_connections[UP] == true) {
-			dc.drawLine(
-				entire_room_x + middle_of_room, 
-				entire_room_y + middle_of_room,
-				entire_room_x + middle_of_room, 
-				entire_room_y
-			);
-		}
-		if (room_connections[DOWN] == true) {
-			dc.drawLine(
-				entire_room_x + middle_of_room, 
-				entire_room_y + middle_of_room,
-				entire_room_x + middle_of_room, 
-				entire_room_y + size_room
-			);
-		}
 
-		if (room_connections[LEFT] == true) {
-			dc.drawLine(
-				entire_room_x + middle_of_room, 
-				entire_room_y + middle_of_room,
-				entire_room_x, 
-				entire_room_y + middle_of_room
-			);
-		}
-		if (room_connections[RIGHT] == true) {
-			dc.drawLine(
-				entire_room_x + middle_of_room, 
-				entire_room_y + middle_of_room,
-				entire_room_x + size_room, 
-				entire_room_y + middle_of_room
-			);
-		}
+		var middle_x = entire_room_x + middle_of_room;
+		var middle_y = entire_room_y + middle_of_room;
+
+		drawConnection(dc, room_connections, UP, middle_x, middle_y, middle_x, entire_room_y);
+		drawConnection(dc, room_connections, DOWN, middle_x, middle_y, middle_x, entire_room_y + size_room);
+		drawConnection(dc, room_connections, LEFT, middle_x, middle_y, entire_room_x, middle_y);
+		drawConnection(dc, room_connections, RIGHT, middle_x, middle_y, entire_room_x + size_room, middle_y);
 
 		// Draw the flags
 		var stairs_pos = flags[0];
@@ -87,6 +64,12 @@ class DCMapDrawable extends WatchUi.Drawable {
 		}
 
 	}
+
+	function drawConnection(dc as Dc, room_connections as Dictionary<WalkDirection, Boolean>, direction as WalkDirection, x1 as Number, y1 as Number, x2 as Number, y2 as Number) {
+			if (room_connections[direction] == true) {
+				dc.drawLine(x1, y1, x2, y2);
+			}
+		}
 
 	function drawFlag(dc as Dc, pos as Point2D, rez_id as ResourceId) {
 		dc.drawScaledBitmap(
@@ -106,8 +89,8 @@ class DCMapDrawable extends WatchUi.Drawable {
 		var entire_room_x = locX + current_room_pos[0] * size_room;
 		var entire_room_y = locY + current_room_pos[1] * size_room;
 		dc.drawScaledBitmap(
-			player_pos[0] * size_tile + entire_room_x - size_tile/2,
-			player_pos[1] * size_tile + entire_room_y - size_tile/2,
+			player_pos[0] * size_tile + entire_room_x - size_tile, //* 3/2,
+			player_pos[1] * size_tile + entire_room_y - size_tile, //* 3/2,
 			size_tile * 3,
 			size_tile * 3,
 			player.getSpriteRef()
@@ -131,6 +114,6 @@ class DCMapDrawable extends WatchUi.Drawable {
 	}
 
 	function getDrawableSize() as Point2D {
-		return [size[0] * size_room, size[1] * size_room];
+		return size;
 	}
 }

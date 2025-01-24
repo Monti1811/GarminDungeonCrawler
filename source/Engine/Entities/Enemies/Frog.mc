@@ -4,10 +4,10 @@ class Frog extends Enemy {
 
 	private var move_up = false;
 
-	var name as String = "Frog";
-
 	function initialize() {
 		Enemy.initialize();
+		id = 0;
+		name = "Frog";
 	}
 
 	function getSprite() as ResourceId {

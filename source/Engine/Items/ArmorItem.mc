@@ -61,7 +61,7 @@ class ArmorItem extends EquippableItem {
 		}
 
 		var luck = player.getAttribute(:luck) * attribute_modifiers[:luck];
-		if (MathUtil.random(0, 100) < luck) {
+		if (enemy != null && MathUtil.random(0, 100) < luck) {
 			defense *= 1.25;
 		}
 		return defense.toNumber();

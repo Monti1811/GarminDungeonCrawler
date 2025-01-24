@@ -95,7 +95,7 @@ class WeaponItem extends EquippableItem {
 		}
 
 		var luck = player.getAttribute(:luck) * attribute_modifiers[:luck];
-		if (MathUtil.random(0, 100) < luck) {
+		if (enemy != null && MathUtil.random(0, 100) < luck) {
 			attack *= 1.25;
 		}
 		return attack.toNumber();
