@@ -21,7 +21,15 @@ module Game {
 	var time_started as Time.Moment?;
 	var turns as Turn?;
 	// Room name, connections, size, visited
-	var map as Array<Array<[String, Dictionary<WalkDirection, Boolean>, Point2D, Boolean]>> = [];
+	var map as Array<Array<[
+		String, 							// Room name
+		Dictionary<WalkDirection, Boolean>, // Connections
+		Point2D, 							// Size of room
+		Boolean, 							// Visited
+		Array<Point2D?>]>> = []; 			// Special flags 
+		// [0] = Has stairs
+		// [1] = Has merchant
+		// [2] = Has boss
 
 	function init(player_id as Number) as Void {
 		Items.init(player_id);
@@ -68,11 +76,15 @@ module Game {
 	}
 
 	function addRoomToMap(pos as Point2D, room_name as String, connections as Dictionary<WalkDirection, Boolean>, size as Point2D) as Void {
-		map[pos[0]][pos[1]] = [room_name, connections, size, false];
+		map[pos[0]][pos[1]] = [room_name, connections, size, false, [null, null, null]];
 	}
 
 	function setRoomAsVisited(pos as Point2D) as Void {
 		map[pos[0]][pos[1]][3] = true;
+	}
+
+	function setRoomWithFlag(pos as Point2D, flag as Number, pos_flag as Point2D) as Void {
+		map[pos[0]][pos[1]][4][flag] = pos_flag;
 	}
 
 	function addToDepth(amount as Number) as Void {

@@ -3,34 +3,40 @@ import Toybox.Lang;
 
 class DCMapDelegate extends WatchUi.InputDelegate {
 
-	var _previous_coords as Point2D?;
+	private var _view as DCMapView;
+	private var _previous_coords as Point2D?;
 
-	function initialize() {
+	function initialize(view as DCMapView) {
 		InputDelegate.initialize();
+		_view = view;
 	}
 
 	function onDrag(dragEvent as DragEvent) as Boolean {
-		if (dragEvent.getType == DRAG_TYPE_START) {
-			_previous_coords = dragEvent.getCoordinates();
-			return true;
-		}
-		if (dragEvent.getType == DRAG_TYPE_CONTINUE) {
-			var coords = dragEvent.getCoordinates();
-			var dx = coords[0] - _previous_coords[0];
-			var dy = coords[1] - _previous_coords[1];
-			_previous_coords = coords;
-			// Move the map
-			
-			return true;
-		}
-		if (dragEvent.getType == DRAG_TYPE_STOP) {
-			return true;
+		var drag_type = dragEvent.getType();
+		switch (drag_type) {
+			case DRAG_TYPE_START:
+				_previous_coords = dragEvent.getCoordinates();
+				break;
+			case DRAG_TYPE_CONTINUE:
+				var coords = dragEvent.getCoordinates();
+				var dx = coords[0] - _previous_coords[0];
+				var dy = coords[1] - _previous_coords[1];
+				_previous_coords = coords;
+				// Move the map
+				_view.moveMap(dx, dy);
+				WatchUi.requestUpdate();
+				break;
+			case DRAG_TYPE_STOP:
+				break;
 		}
 		return true;
 	}
 
-	function onBack() as Boolean {
-		WatchUi.popView(WatchUi.SLIDE_DOWN);
-		return true;
-	}
+	// Detect Menu button input
+    function onKey(keyEvent as KeyEvent) as Boolean {
+        if (keyEvent.getKey() == KEY_ESC) {
+            WatchUi.popView(WatchUi.SLIDE_DOWN);
+        }
+        return true;
+    }
 }

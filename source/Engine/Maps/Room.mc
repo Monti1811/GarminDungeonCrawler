@@ -346,6 +346,11 @@ class Room {
         }
     }
 
+    function createStairs(room_pos as Point2D) as Void {
+        addStairs(null, true);
+        $.Game.setRoomWithFlag(room_pos, 0, _stairs);
+    }
+
     function addStairs(pos as Point2D?, reload as Boolean?) as Void {
         if (pos == null) {
             pos = MapUtil.getRandomPosFromRoom(self);
@@ -360,16 +365,17 @@ class Room {
         }
     }
 
-    function addMerchant() as Void {
+    function addMerchant(room_pos as Point2D) as Void {
         var pos = MapUtil.getRandomPosFromRoom(self);
         if (pos != null) {
             var merchant = new Merchant();
             merchant.setPos(pos);
+            $.Game.setRoomWithFlag(room_pos, 1, pos);
             _map[pos[0]][pos[1]].content = merchant;
             addNPC(merchant);
         }
     }
-
+    
     function saveEntityDict(dict as Dictionary) as Array<Dictionary> {
         var entities = [];
         var entity_keys = dict.keys() as Array<Point2D>;

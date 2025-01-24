@@ -130,7 +130,7 @@ class Dungeon {
 			var room_name = _rooms[rand_x][rand_y];
 			if (room_name != null) {
 				var room = loadRoom(room_name);
-				room.addStairs(null, true);
+				room.createStairs([rand_x, rand_y]);
 				saveRoom(room_name, room);
 				return;
 			}
@@ -150,7 +150,7 @@ class Dungeon {
 			var room_name = _rooms[rand_x][rand_y];
 			if (room_name != null) {
 				var room = loadRoom(room_name);
-				room.addMerchant();
+				room.addMerchant([rand_x, rand_y]);
 				saveRoom(room_name, room);
 				return;
 			}

@@ -6,18 +6,18 @@ typedef Point2D as [Numeric, Numeric];
 
 module MathUtil {
 
-	function floor(value1 as Number, value2 as Number) as Number {
-		if (value1 < value2) {
-			return value1;
+	function floor(value as Number, max as Number) as Number {
+		if (value < max) {
+			return value;
 		}
-		return value2;
+		return max;
 	}
 
-	function ceil(value1 as Number, value2 as Number) as Number {
-		if (value1 > value2) {
-			return value1;
+	function ceil(value as Number, min as Number) as Number {
+		if (value > min) {
+			return value;
 		}
-		return value2;
+		return min;
 	}
 
 	function random(min as Numeric, max as Numeric) as Number {

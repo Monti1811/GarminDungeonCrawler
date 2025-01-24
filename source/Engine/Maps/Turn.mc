@@ -99,7 +99,8 @@ class Turn {
         _player.setPos(_player_pos);
         room.updatePlayerPos(_player_pos);
         _view.setPlayerSpritePos(_player_pos);
-        $.Game.setRoomAsVisited(getApp().getCurrentDungeon().getCurrentRoomPosition());
+        var room_pos = getApp().getCurrentDungeon().getCurrentRoomPosition();
+        $.Game.setRoomAsVisited(room_pos);
     }
 
     private function getNewPlayerPosInNextRoom(next_pos as Point2D, direction as WalkDirection) as Point2D {

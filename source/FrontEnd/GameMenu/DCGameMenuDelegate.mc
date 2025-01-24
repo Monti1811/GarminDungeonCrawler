@@ -16,10 +16,12 @@ class DCGameMenuDelegate extends WatchUi.Menu2InputDelegate {
             openPlayerDetails();
         } else if (label == :inventory) {
             openInventory();
-        } else if (label == :log ) {
-            openLog();
+        } else if (label == :map ) {
+            openMap();
         } else if (label == :save) {
             saveGame();
+        } else if (label == :log ) {
+            openLog();
         } else if (label == :settings) {
             openSettings();
         }
@@ -52,6 +54,12 @@ class DCGameMenuDelegate extends WatchUi.Menu2InputDelegate {
             inventoryMenu.addItem(new WatchUi.IconMenuItem(item.getName() + " x" + amount, item.getDescription(), item, icon, null));
         }
         WatchUi.pushView(inventoryMenu, new DCInventoryDelegate(self), WatchUi.SLIDE_UP);
+    }
+
+    function openMap() as Void {
+        var map = new DCMapView();
+        var delegate = new DCMapDelegate(map);
+        WatchUi.pushView(map, delegate, WatchUi.SLIDE_UP);
     }
 
     function openLog() as Void {
