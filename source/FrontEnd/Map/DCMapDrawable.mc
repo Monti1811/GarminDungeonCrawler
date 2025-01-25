@@ -30,6 +30,8 @@ class DCMapDrawable extends WatchUi.Drawable {
 		if (room_data == null || room_data[3] == false) {
 			return;
 		}
+		dc.setPenWidth(size_tile);
+
 		var room_connections = room_data[1];
 		var room_size = room_data[2];
 		var flags = room_data[4];
@@ -43,8 +45,6 @@ class DCMapDrawable extends WatchUi.Drawable {
 		dc.fillRectangle(room_x, room_y, room_size[0] * size_tile, room_size[1] * size_tile);
 
 		// Draw the connections
-		dc.setPenWidth(size_tile);
-
 		var middle_x = entire_room_x + middle_of_room;
 		var middle_y = entire_room_y + middle_of_room;
 
