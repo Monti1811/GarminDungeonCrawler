@@ -20,12 +20,36 @@ module Enemies {
             2 => :createDemon,
             3 => :createOrc,
         };
-        weights = {
-            0 => 5,
-            1 => 3,
-            2 => 1,
-            3 => 5,
-        };
+        if (depth < 10) {
+            weights = {
+                0 => 5,
+                1 => 3,
+                2 => 1,
+                3 => 5,
+            };
+        } else if (depth < 20) {
+            weights = {
+                0 => 4,
+                1 => 3,
+                2 => 2,
+                3 => 5,
+            };
+        } else if (depth < 30) {
+            weights = {
+                0 => 3,
+                1 => 3,
+                2 => 3,
+                3 => 5,
+            };
+        } else {
+            weights = {
+                0 => 3,
+                1 => 3,
+                2 => 5,
+                3 => 3,
+            };
+        }
+        
         var character_changes = character_enemies[player_id]; 
         if (character_changes != null) {
             var enemy_keys = character_changes.keys();

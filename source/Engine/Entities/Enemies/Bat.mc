@@ -6,6 +6,8 @@ class Bat extends Enemy {
 		Enemy.initialize();
 		id = 1;
 		name = "Bat";
+		current_health = 25;
+		maxHealth = 25;
 	}
 
 	function getSprite() as ResourceId {

@@ -8,6 +8,7 @@ class Frog extends Enemy {
 		Enemy.initialize();
 		id = 0;
 		name = "Frog";
+		energy_per_turn = 50; // every 2 turns
 	}
 
 	function getSprite() as ResourceId {
