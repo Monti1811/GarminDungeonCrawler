@@ -12,6 +12,8 @@ class Turn {
     private var _room as Room;
     private var _map_data as Dictionary;
 
+    private const MIN_ENERGY = 100;
+
 
     function initialize(view as DCGameView, player as Player, room as Room, map_data as Dictionary) {
         _view = view;
@@ -69,6 +71,7 @@ class Turn {
 
         // Do stuff after the turn is over
         _player.onTurnDone();
+        _room.onTurnDone();
 
         if (_autosave) {
             $.SaveData.saveGame();
@@ -187,6 +190,10 @@ class Turn {
 
     function resolvePlayerActions(map as Array<Array<Tile>>, new_pos as Point2D, direction as WalkDirection, map_element as Object?) as Void {
 
+        if (_player.getEnergy() < MIN_ENERGY) {
+            return;
+        }
+
         // Check if player can attack enemy, if yes do so and don't move
         var range = _player.getRange(null) as [Numeric, RangeType];
         var attackable_enemies = MapUtil.getEnemyInRange(
@@ -240,6 +247,12 @@ class Turn {
     }
 
     function resolveEnemyActions(enemies as Array<Enemy>, target_pos as Point2D) as Void {
+        for (var i = enemies.size() - 1; i >= 0; i--) {
+            var enemy = enemies[i];
+            if (enemy.getEnergy() < MIN_ENERGY) {
+                enemies.remove(enemy);
+            }
+        }
         // Do enemy actions
         // Sort enemies by distance to player
         var comparator = new MapUtil.EnemyDistanceCompare(_player_pos);

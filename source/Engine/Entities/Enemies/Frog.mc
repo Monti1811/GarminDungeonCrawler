@@ -19,13 +19,17 @@ class Frog extends Enemy {
 		var new_pos = [pos[0], pos[1] + direction];
 		
 		if (MapUtil.canMoveToPoint(map, new_pos)) {
-			move_up = !move_up;
 			self.next_pos = new_pos;
 			return new_pos;
 		}
 
 		self.next_pos = pos;
 		return pos;
+	}
+
+	function onTurnDone() as Void {
+		Enemy.onTurnDone();
+		move_up = !move_up;
 	}
 
 	function onLoad(save_data as Dictionary) as Void {

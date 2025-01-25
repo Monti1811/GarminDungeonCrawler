@@ -4,6 +4,8 @@ import Toybox.Application;
 class Entity {
 	var name as String = "Entity";
 	var damage_received as Number = 0;
+	var energy as Number = 100;
+	var energy_per_turn as Number = 100;
 
 	function initialize() {
 	}
@@ -26,6 +28,22 @@ class Entity {
 
 	function getSpriteOffset() as Point2D {
 		return [0, 0];
+	}
+
+	function getEnergy() as Number {
+		return energy;
+	}
+
+	function addEnergy(energy as Number) {
+		self.energy += energy;
+	}
+
+	function addTurnEnergy() {
+		self.energy += energy_per_turn;
+	}
+
+	function onTurnDone() as Void {
+		self.addTurnEnergy();
 	}
 
 	function save() as Dictionary<PropertyKeyType, PropertyValueType> {

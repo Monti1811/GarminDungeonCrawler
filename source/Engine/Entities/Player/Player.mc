@@ -402,6 +402,7 @@ class Player extends Entity {
 	}
 
 	function onTurnDone() as Void {
+		Entity.onTurnDone();
 		var equip_keys = equipped.keys();
 		for (var i = 0; i < equip_keys.size(); i++) {
 			var slot = equip_keys[i];

@@ -196,6 +196,14 @@ class Room {
         }
     }
 
+    function onTurnDone() as Void {
+        var enemy_keys = _enemies.keys() as Array<Point2D>;
+        for (var i = 0; i < enemy_keys.size(); i++) {
+            var enemy = _enemies[enemy_keys[i]];
+            enemy.onTurnDone();
+        }
+    }
+
     function setStartPos(pos as Point2D) as Void {
         _start_pos = pos;
     }

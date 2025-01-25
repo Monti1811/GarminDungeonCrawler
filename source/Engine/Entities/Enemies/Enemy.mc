@@ -110,9 +110,16 @@ class Enemy extends Entity {
 		return self.next_pos;
 	}
 
+	function onTurnDone() as Void {
+		Entity.onTurnDone();
+		has_moved = false;
+		if (curr_attack_cooldown > 0) {
+			curr_attack_cooldown--;
+		}
+	}
+
 	function attackNearbyPlayer(map as Array<Array<Tile>>, player_pos as Point2D) as Boolean {
 		if (curr_attack_cooldown > 0) {
-			curr_attack_cooldown -= 1;
 			return false;
 		}
 		if (!MathUtil.isPointDirectAdjacent(pos, player_pos)) {
