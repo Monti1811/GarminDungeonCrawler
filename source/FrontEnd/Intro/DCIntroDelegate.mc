@@ -6,14 +6,14 @@ class DCIntroDelegate extends WatchUi.BehaviorDelegate {
 
     private var _view as DCIntroView;
     private var _story as Array<String> = [
-        "Once upon a time, in a land far away, there was a kingdom called Toybox.",
-        "The kingdom was ruled by a wise and just king, who was loved by all his subjects.",
-        "But one day, the king fell ill, and the kingdom was thrown into chaos.",
-        "The king's advisors, who were greedy and power-hungry, began to fight amongst themselves.",
-        "The people of Toybox were afraid, and the kingdom was on the brink of civil war.",
-        "But then, a hero appeared. A brave warrior, who had come from a distant land to save the kingdom.",
-        "The warrior's name was Sir Toyboxalot, and he was determined to restore peace to the kingdom.",
-        "And so, the adventure begins..."
+        "In the depths of a forgotten dungeon, a dark power stirs.",
+        "Long ago, this dungeon was sealed to contain the evil within.",
+        "But now, the seal has weakened, and the creatures of the dark have begun to emerge.",
+        "The nearby villages live in fear, as monsters raid their homes and steal their peace.",
+        "Hope seems lost, but a group of brave adventurers has risen to the challenge.",
+        "These heroes, each with their own unique skills and strengths, have ventured into the dungeon.",
+        "Their mission: to defeat the dark power and restore peace to the land.",
+        "And so, the dungeon crawl begins..."
     ];
     private var _font as FontDefinition | FontReference;
     private var index as Number = 0;
@@ -26,16 +26,16 @@ class DCIntroDelegate extends WatchUi.BehaviorDelegate {
             self._story = story;
         }
 
-        _view.setText(_story[index], _font);
+        self._view.setText(_story[index], _font);
         index++;
     }
 
     function onTap(evt as ClickEvent) as Boolean {
-        return advance();
+        return self.advance();
     }
 
     function onBack() as Boolean {
-        return advance();
+        return self.advance();
     }
 
     function advance() as Boolean {
@@ -46,7 +46,7 @@ class DCIntroDelegate extends WatchUi.BehaviorDelegate {
             return true;
         }
         // Start game
-        Main.startGame();
+        $.Main.startGame();
         return true;
     }
 
