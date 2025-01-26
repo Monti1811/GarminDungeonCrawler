@@ -8,6 +8,7 @@ class Ammunition extends WeaponItem {
 		WeaponItem.initialize();
 		slot = AMMUNITION;
 		attack = 1;
+		weight = 0.01;
 	}
 
 	function getType() as AmmunitionType {

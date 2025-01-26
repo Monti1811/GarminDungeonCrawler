@@ -10,7 +10,7 @@ class SteelBow extends Bow {
 		description = "A simple steel bow";
 		slot = RIGHT_HAND;
 		value = 10;
-		weight = 10;
+		weight = 1;
 		attribute_bonus = {
 			:dexterity => 2
 		};

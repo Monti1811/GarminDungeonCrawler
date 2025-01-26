@@ -10,7 +10,7 @@ class SteelGreatsword extends WeaponItem {
 		description = "A simple steel greatsword";
 		slot = RIGHT_HAND;
 		value = 20;
-		weight = 25;
+		weight = 5;
 		attribute_bonus = {
 			:strength => 4,
 			:dexterity => -2

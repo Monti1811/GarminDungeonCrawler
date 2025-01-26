@@ -10,7 +10,7 @@ class SteelKatana extends WeaponItem {
 		description = "A simple steel katana";
 		slot = RIGHT_HAND;
 		value = 10;
-		weight = 10;
+		weight = 3;
 		attribute_bonus = {
 			:strength => 2,
 			:dexterity => 2

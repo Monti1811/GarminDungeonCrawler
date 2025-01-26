@@ -50,12 +50,12 @@ class DCItemInfoValuesView extends WatchUi.View {
 	}
 
 	function drawAttributes(dc, text_left, text_right, counter, distance, x_axis as Number) as Void {
-		dc.drawText(x_axis, 200 + distance * counter, small_font, text_left, Graphics.TEXT_JUSTIFY_LEFT);
-		dc.drawText(x_axis + 40, 200 + distance * counter, small_font, text_right, Graphics.TEXT_JUSTIFY_LEFT);
+		dc.drawText(x_axis, 230 + distance * counter, small_font, text_left, Graphics.TEXT_JUSTIFY_LEFT);
+		dc.drawText(x_axis + 40, 230 + distance * counter, small_font, text_right, Graphics.TEXT_JUSTIFY_LEFT);
 	}
 
 	function drawAttributeTable(dc as Dc) {
-		dc.drawRectangle(90, 200, 175, 65);
+		dc.drawRectangle(90, 230, 175, 65);
 
 	}
 
@@ -64,10 +64,11 @@ class DCItemInfoValuesView extends WatchUi.View {
 		drawCommonAttributes(dc, "Damage", ": " + weapon.getBaseAttack(), 0, 30);
 		drawCommonAttributes(dc, "Equip Slot", ": " + Constants.EQUIPSLOT_TO_STR[weapon.getItemSlot()], 1, 30);
 		drawCommonAttributes(dc, "Value", ": " + weapon.getValue(), 2, 30);
+		drawCommonAttributes(dc, "Weight", ": " + weapon.getWeight(), 3, 30);
 		var attribute_bonus = weapon.getAllAttributeBonuses();
 		var bonus_keys = attribute_bonus.keys() as Array<Symbol>;
 		if (bonus_keys.size() > 0) {
-			dc.drawText(180, 165, Graphics.FONT_XTINY, "Attribute Bonus: ", Graphics.TEXT_JUSTIFY_CENTER);
+			dc.drawText(180, 195, Graphics.FONT_XTINY, "Attribute Bonus: ", Graphics.TEXT_JUSTIFY_CENTER);
 			drawAttributeTable(dc);
 			var attribute_keys = [
 				:strength,
@@ -101,10 +102,11 @@ class DCItemInfoValuesView extends WatchUi.View {
 		drawCommonAttributes(dc, "Defense", ": " + armor.getBaseDefense(), 0, 30);
 		drawCommonAttributes(dc, "Equip Slot", ": " + Constants.EQUIPSLOT_TO_STR[armor.getItemSlot()], 1, 30);
 		drawCommonAttributes(dc, "Value", ": " + armor.getValue(), 2, 30);
+		drawCommonAttributes(dc, "Weight", ": " + armor.getWeight(), 3, 30);
 		var attribute_bonus = armor.getAllAttributeBonuses();
 		var bonus_keys = attribute_bonus.keys() as Array<Symbol>;
 		if (bonus_keys.size() > 0) {
-			dc.drawText(180, 165, Graphics.FONT_XTINY, "Attribute Bonus: ", Graphics.TEXT_JUSTIFY_CENTER);
+			dc.drawText(180, 195, Graphics.FONT_XTINY, "Attribute Bonus: ", Graphics.TEXT_JUSTIFY_CENTER);
 			drawAttributeTable(dc);
 			var attribute_keys = [
 				:strength,
@@ -135,8 +137,9 @@ class DCItemInfoValuesView extends WatchUi.View {
 	function showConsumableStats(dc) {
 		var consumable = _item as ConsumableItem;
 		drawCommonAttributes(dc, "Value", ": " + consumable.getValue(), 0, 30);
-		dc.drawText(180, 125, Graphics.FONT_XTINY, "Effect: ", Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
-		var formatted_text = Graphics.fitTextToArea(consumable.getEffectDescription(), Graphics.FONT_XTINY, 260, 150, false);
+		drawCommonAttributes(dc, "Weight", ": " + consumable.getWeight(), 3, 30);
+		dc.drawText(180, 155, Graphics.FONT_XTINY, "Effect: ", Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
+		var formatted_text = Graphics.fitTextToArea(consumable.getEffectDescription(), Graphics.FONT_XTINY, 260, 130, false);
 		dc.drawText(180, 150, Graphics.FONT_XTINY, formatted_text, Graphics.TEXT_JUSTIFY_CENTER);
 
 	}

@@ -10,7 +10,7 @@ class HealthPotion extends ConsumableItem {
 		self.description = "A small health potion";
 		self.effect_description = "Restores 20 health";
 		self.value = 20;
-		self.weight = 1;
+		self.weight = 0.1;
 	}
 
 	function onUseItem(player as Player) as Void {

@@ -8,7 +8,7 @@ class GreenBackpack extends ArmorItem {
 		name = "Green Backpack";
 		description = "A simple backpack";
 		value = 100;
-		weight = 1;
+		weight = 0.5;
 		slot = BACK;
 		attribute_bonus = {};
 		defense = 0;

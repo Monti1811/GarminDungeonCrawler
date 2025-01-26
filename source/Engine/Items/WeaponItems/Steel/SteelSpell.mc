@@ -10,7 +10,7 @@ class SteelSpell extends Spell {
 		description = "A simple steel spell. If the player has mana available, uses it to perform a more powerful AoE attack.";
 		slot = RIGHT_HAND;
 		value = 10;
-		weight = 2;
+		weight = 0.5;
 		attribute_bonus = {
 			:wisdom => 2
 		};

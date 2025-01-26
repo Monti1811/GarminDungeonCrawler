@@ -10,7 +10,7 @@ class SteelDagger extends WeaponItem {
 		description = "A simple steel dagger";
 		slot = EITHER_HAND;
 		value = 10;
-		weight = 10;
+		weight = 0.5;
 		attribute_bonus = {
 			:dexterity => 2,
 			:luck => 2

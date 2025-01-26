@@ -9,7 +9,7 @@ class SteelAxe extends WeaponItem {
 		name = "Steel Axe";
 		description = "A simple steel axe";
 		value = 10;
-		weight = 10;
+		weight = 2;
 		slot = RIGHT_HAND;
 		attribute_bonus = {
 			:strength => 4,

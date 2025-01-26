@@ -9,7 +9,7 @@ class Item {
 	var slot as ItemSlot = NONE; 
 	var value as Number = 0;
 	var amount as Number = 1;
-	var weight as Number = 1;
+	var weight as Numeric = 1;
 	var pos as Point2D = [0, 0];
 	var equipped as Boolean = false;
 	var in_inventory as Boolean = false;
@@ -99,6 +99,10 @@ class Item {
 
 	function isInInventory() as Boolean {
 		return in_inventory;
+	}
+
+	function getWeight() as String {
+		return weight.format("%.2f");
 	}
 
 	function setIsInInventory(in_inventory as Boolean) as Void {

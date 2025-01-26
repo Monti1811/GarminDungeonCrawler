@@ -10,7 +10,7 @@ class SteelLance extends WeaponItem {
 		description = "A simple steel spear";
 		slot = RIGHT_HAND;
 		value = 10;
-		weight = 10;
+		weight = 2;
 		attribute_bonus = {
 			:dexterity => 2,
 			:luck => 2

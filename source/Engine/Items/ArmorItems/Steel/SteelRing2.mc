@@ -9,7 +9,7 @@ class SteelRing2 extends ArmorItem {
 		name = "Amethyst Ring";
 		description = "A simple amethyst ring";
 		value = 5;
-		weight = 1;
+		weight = 0.1;
 		slot = ACCESSORY;
 		defense = 1;
 		attribute_bonus = {

@@ -10,7 +10,7 @@ class SteelRing1 extends ArmorItem {
 		description = "A simple steel ring";
 		slot = ACCESSORY;
 		value = 5;
-		weight = 1;
+		weight = 0.1;
 		defense = 3;
 		attribute_bonus = {
 			:constitution => 2,

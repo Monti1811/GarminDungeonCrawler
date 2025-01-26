@@ -9,7 +9,7 @@ class SteelBreastPlate extends ArmorItem {
 		name = "Steel Breastplate";
 		description = "A simple steel breastplate";
 		value = 10;
-		weight = 15;
+		weight = 10;
 		slot = CHEST;
 		defense = 5;
 		attribute_bonus = {

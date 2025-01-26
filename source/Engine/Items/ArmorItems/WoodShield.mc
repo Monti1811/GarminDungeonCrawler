@@ -8,7 +8,7 @@ class WoodShield extends ArmorItem {
 		name = "Shield";
 		description = "A simple shield";
 		value = 5;
-		weight = 3;
+		weight = 1.5;
 		slot = LEFT_HAND;
 		attribute_bonus = {
 			:constitution => 3,

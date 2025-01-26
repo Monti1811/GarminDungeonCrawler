@@ -10,7 +10,7 @@ class ManaPotion extends ConsumableItem {
 		description = "A small mana potion";
 		effect_description = "Restores 20 mana";
 		value = 20;
-		weight = 1;
+		weight = 0.1;
 	}
 
 	function onUseItem(player as Player) as Void {

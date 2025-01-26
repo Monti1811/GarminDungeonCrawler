@@ -48,6 +48,7 @@ class Player extends Entity {
 		return id;
 	}
 
+	// TODO add equipped items to inventory and dont remove them unless dropped. so equipped and uneqiuped items are the same
 	function equipItem(item as Item, slot as ItemSlot, remove as Boolean?) as Boolean {
 		// Try to unequip item if slot is already equipped
 		if (equipped[slot] != null) {
@@ -59,6 +60,8 @@ class Player extends Entity {
 		if (equipped[slot] == null) {
 			if (remove) {
 				item = inventory.remove(item);
+			} else if (!inventory.addWeight(item.weight)) {
+				return false;
 			}
 			equipped[slot] = item;
 			item.onEquipItem(me);
@@ -70,11 +73,8 @@ class Player extends Entity {
 	function unequipItem(slot as ItemSlot) as Boolean {
 		var item = equipped[slot];
 		if (equipped[slot] != null) {
-			if (!inventory.isFull()) {
-				inventory.add(item);
-			} else if (!dropItem(item)) {
-				return false;
-			}
+			inventory.removeWeight(item.weight);
+			inventory.add(item);
 			equipped[slot].onUnequipItem(me);
 			equipped.remove(slot);
 			return true;
@@ -88,11 +88,12 @@ class Player extends Entity {
 
 	function pickupItem(item as Item) as Boolean {
 		if (item.canBePickedUp(me)) {
-			if (item instanceof EquippableItem && equipped[item.slot] == null) {
-				equipItem(item, item.slot, false);
+			if (item instanceof EquippableItem && 
+					equipped[item.slot] == null &&
+					equipItem(item, item.slot, false)) {
 				item.onPickupItem(me);
 				return true;
-			} else if (!inventory.isFull()) {
+			} else if (!inventory.wouldBeFull(item)) {
 				inventory.add(item);
 				item.onPickupItem(me);
 				return true;

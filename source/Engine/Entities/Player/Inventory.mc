@@ -72,6 +72,26 @@ class Inventory {
 		return current_weight >= max_weight;
 	}
 
+	function wouldBeFull(item as Item) as Boolean {
+		return current_weight + item.weight * item.amount > max_weight;
+	}
+
+	function addWeight(amount as Numeric) as Boolean {
+		if (current_weight + amount <= max_weight) {
+			current_weight += amount;
+			return true;
+		}
+		return false;
+	}
+
+	function removeWeight(amount as Numeric) as Boolean {
+		if (current_weight - amount >= 0) {
+			current_weight -= amount;
+			return true;
+		}
+		return false;
+	}
+
 	function getCurrentItemWeight() as Numeric {
 		return current_weight;
 	}
@@ -80,12 +100,12 @@ class Inventory {
 		return max_weight;
 	}
 
-	function addPermanentWeight(amount as Numeric) as Void {
+	function addPermanentBonusWeight(amount as Numeric) as Void {
 		permanent_increased_weight += amount;
 		max_weight += amount;
 	}
 
-	function removePermanentWeight(amount as Numeric) as Void {
+	function removePermanentBonusWeight(amount as Numeric) as Void {
 		permanent_increased_weight -= amount;
 		max_weight -= amount;
 		if (max_weight < 0) {
