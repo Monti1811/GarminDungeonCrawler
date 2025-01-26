@@ -40,6 +40,7 @@ module Items {
             1004 => :createSteelRing1,
             1005 => :createSteelRing2,
             1006 => :createWoodShield,
+            1007 => :createGreenBackpack,
 
             2000 => :createHealthPotion,
             2002 => :createGreaterHealthPotion,
@@ -159,6 +160,10 @@ module Items {
     
     function createWoodShield() as Item {
         return new WoodShield();
+    }
+
+    function createGreenBackpack() as Item {
+        return new GreenBackpack();
     }
 
     function createHealthPotion() as Item {

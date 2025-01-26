@@ -2,27 +2,30 @@ import Toybox.Lang;
 
 class Inventory {
 	private var items as Dictionary<Number, Item>;
-	private var current_items as Number = 0;
-	private var max_items as Number;
+	private var current_weight as Numeric = 0;
+	private var base_max_weight as Numeric;
+	private var max_weight as Numeric;
+	private var permanent_increased_weight as Numeric = 0;
 
-	function initialize(max_items as Number) {
+	function initialize(max_weight as Numeric) {
 		self.items = {};
-		self.max_items = max_items;
+		self.base_max_weight = max_weight;
+		self.max_weight = max_weight;
 	}
 
 	function add(item as Item) as Boolean {
-		if (items.size() < max_items) {
+		var item_weight = item.weight * item.amount;
+		if (current_weight < max_weight 
+				&& (current_weight + item_weight <= max_weight)) {
 			var existing_item = items[item.id];
 			if (existing_item != null) {
 				existing_item.amount += item.amount;
-				current_items += item.amount;
-				return true;
 			} else {
 				item.setIsInInventory(true);
-				items[item.id] = item;
-				current_items += item.amount;
-				return true;
+				items[item.id] = item;	
 			}
+			current_weight += item_weight;
+			return true;
 		}
 		return false;
 	}
@@ -34,7 +37,7 @@ class Inventory {
 			if (existing_item.amount <= 0) {
 				items.remove(item.id);
 			}
-			current_items -= 1;
+			current_weight -= item.weight;
 			var new_item = item.deepcopy();
 			new_item.setIsInInventory(false);
 			new_item.amount = 1;
@@ -46,15 +49,15 @@ class Inventory {
 	function removeMultiple(item as Item, amount as Number) as Item? {
 		var existing_item = items[item.id];
 		if (existing_item != null) {
-			var new_amount = MathUtil.min(amount, existing_item.amount);
-			existing_item.amount -= new_amount;
+			var dropped_amount = MathUtil.min(amount, existing_item.amount);
+			existing_item.amount -= dropped_amount;
 			if (existing_item.amount <= 0) {
 				items.remove(item.id);
 			}
-			current_items -= new_amount;
+			current_weight -= item.weight * dropped_amount;
 			var new_item = item.deepcopy();
 			new_item.setIsInInventory(false);
-			new_item.amount = new_amount;
+			new_item.amount = dropped_amount;
 			return new_item;
 		}
 		return null;
@@ -66,13 +69,46 @@ class Inventory {
 	}
 
 	function isFull() as Boolean {
-		return current_items >= max_items;
+		return current_weight >= max_weight;
+	}
+
+	function getCurrentItemWeight() as Numeric {
+		return current_weight;
+	}
+
+	function getMaxItemWeight() as Numeric {
+		return max_weight;
+	}
+
+	function addPermanentWeight(amount as Numeric) as Void {
+		permanent_increased_weight += amount;
+		max_weight += amount;
+	}
+
+	function removePermanentWeight(amount as Numeric) as Void {
+		permanent_increased_weight -= amount;
+		max_weight -= amount;
+		if (max_weight < 0) {
+			max_weight = 0;
+		}
+	}
+
+	function increaseWeight(amount as Numeric) as Void {
+		max_weight += amount;
+	}
+
+	function decreaseWeight(amount as Numeric) as Void {
+		max_weight -= amount;
+		if (max_weight < 0) {
+			max_weight = 0;
+		}
 	}
 
 	function save() as Dictionary {
 		var save_data = {};
-		save_data["max_items"] = max_items;
-		save_data["current_items"] = current_items;
+		save_data["permanent_increased_weight"] = permanent_increased_weight;
+		save_data["base_max_weight"] = base_max_weight;
+		save_data["current_weight"] = current_weight;
 		save_data["items"] = saveItems();
 		return save_data;
 	}
@@ -87,18 +123,22 @@ class Inventory {
 	}
 
 	static function load(save_data as Dictionary) as Inventory {
-		var max_items = save_data["max_items"] as Number;
-		if (max_items == null) {
-			max_items = 10;
+		var base_max_weight = save_data["base_max_weight"] as Numeric;
+		if (base_max_weight == null) {
+			base_max_weight = 30;
 		}
-		var inventory = new Inventory(save_data["max_items"]);
+		var inventory = new Inventory(base_max_weight);
 		inventory.onLoad(save_data);
 		return inventory;
 	}
 
 	function onLoad(save_data as Dictionary) as Void {
-		if (save_data["current_items"] != null) {
-			self.current_items = save_data["current_items"] as Number;
+		if (save_data["permanent_increased_weight"] != null) {
+			self.permanent_increased_weight = save_data["permanent_increased_weight"] as Number;
+			self.max_weight += permanent_increased_weight;
+		}
+		if (save_data["current_weight"] != null) {
+			self.current_weight = save_data["current_weight"] as Numeric;
 		}
 		var item_list = save_data["items"] as Array<Dictionary>;
 		for (var i = 0; i < item_list.size(); i++) {

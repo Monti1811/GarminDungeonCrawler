@@ -24,7 +24,7 @@ class Player extends Entity {
 		:luck=> 0
 	};
 	var attribute_points as Number = 5;
-	var inventory as Inventory = new Inventory(10);
+	var inventory as Inventory = new Inventory(30);
 	var equipped as Dictionary<ItemSlot, Item> = {
 		HEAD => null,
 		CHEST => null,

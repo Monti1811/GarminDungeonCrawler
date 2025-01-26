@@ -20,6 +20,7 @@ module Enemies {
             2 => :createDemon,
             3 => :createOrc,
         };
+        var depth = $.Game.depth;
         if (depth < 10) {
             weights = {
                 0 => 5,

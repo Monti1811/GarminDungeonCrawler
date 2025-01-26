@@ -80,6 +80,9 @@ class WeaponItem extends EquippableItem {
 		var player = $.getApp().getPlayer();
 		var attribute_modifiers = $.Constants.ATTRIBUTE_WEIGHTS[attack_type] as Dictionary<Symbol, Float>;
 		var attack = self.attack;
+		if (attack == 0) {
+			return 0;
+		}
 		var attribute_keys = [
 			:strength,
 			:dexterity,

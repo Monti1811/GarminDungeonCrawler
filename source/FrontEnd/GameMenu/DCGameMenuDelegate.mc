@@ -44,9 +44,13 @@ class DCGameMenuDelegate extends WatchUi.Menu2InputDelegate {
     }
 
     function openInventory() as Void {
-        var inventoryMenu = new WatchUi.Menu2({:title=>"Inventory"});
         var player = $.getApp().getPlayer() as Player;
-        var inventory_items = player.getInventory().getItems();
+        var inventory = player.getInventory();
+        var inventory_items =inventory.getItems();
+        var weight_items = inventory.getCurrentItemWeight() as Numeric;
+        var max_weight_items = inventory.getMaxItemWeight() as Numeric;
+        var inventoryMenu = new WatchUi.Menu2({:title=>"Inventory (" + weight_items + "/" + max_weight_items + ")"});
+        
         for (var i = 0; i < inventory_items.size(); i++) {
             var item = inventory_items[i] as Item;
             var amount = item.getAmount();

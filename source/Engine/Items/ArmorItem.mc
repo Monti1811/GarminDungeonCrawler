@@ -54,6 +54,9 @@ class ArmorItem extends EquippableItem {
 			:wisdom,
 			:charisma,
 		];
+		if (defense == 0) {
+			return 0;
+		}
 		for (var i = 0; i < attribute_keys.size(); i++) {
 			var attribute = attribute_keys[i] as Symbol;
 			var weight = attribute_modifiers[attribute];

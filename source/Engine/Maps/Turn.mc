@@ -12,7 +12,7 @@ class Turn {
     private var _room as Room;
     private var _map_data as Dictionary;
 
-    private const MIN_ENERGY = 100;
+    private var MIN_ENERGY = 100;
 
 
     function initialize(view as DCGameView, player as Player, room as Room, map_data as Dictionary) {

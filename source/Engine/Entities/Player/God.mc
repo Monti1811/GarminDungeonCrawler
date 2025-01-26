@@ -27,7 +27,7 @@ class God extends Player {
 		self.current_health = 1000;
 		self.maxHealth = 1000;
 
-		self.inventory = new Inventory(30);
+		self.inventory = new Inventory(100);
 		var arrows = new Arrow();
 		arrows.amount = 100;
 		self.equipItem(new SteelAxe(), RIGHT_HAND, null);
@@ -53,6 +53,7 @@ class God extends Player {
 		self.inventory.add(new MaxHealthPotion());
 		self.inventory.add(new GreaterManaPotion());
 		self.inventory.add(new MaxManaPotion());
+		self.inventory.add(new GreenBackpack());
 
 	}
 
