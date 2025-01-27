@@ -5,6 +5,8 @@ import Toybox.WatchUi;
 class DCGameMenuDelegate extends WatchUi.Menu2InputDelegate {
 
     private const LOG_AMOUNT = 20;
+    var inventory_filter as Symbol | ItemType = :all;
+    var item_list as Array<Item>?;
 
     function initialize() {
         Menu2InputDelegate.initialize();
@@ -43,19 +45,45 @@ class DCGameMenuDelegate extends WatchUi.Menu2InputDelegate {
         WatchUi.pushView(viewLoop, new DCPlayerDetailsDelegate(viewLoop), WatchUi.SLIDE_UP);
     }
 
+    function createInventoryMenuItem(item as Item) as MenuItem {
+        var amount = item.getAmount();
+        var icon = new DCItemIcon(item);
+        return new WatchUi.IconMenuItem(item.getName() + " x" + amount, item.getDescription(), item, icon, null);
+    }
+
     function openInventory() as Void {
+        if (inventory_filter != :all) {
+            openItemTypeInventory(inventory_filter, $.Constants.ITEMTYPE_TO_STR[inventory_filter] + " Items");
+            return;
+        }
         var player = $.getApp().getPlayer() as Player;
         var inventory = player.getInventory();
         var inventory_items = inventory.getItems();
         var weight_items = inventory.getCurrentItemWeight() as Numeric;
         var max_weight_items = inventory.getMaxItemWeight() as Numeric;
         var inventoryMenu = new WatchUi.Menu2({:title=>"Inventory (" + weight_items.format("%.1f") + "/" + max_weight_items + ")"});
+        inventoryMenu.addItem(new WatchUi.MenuItem("Filter/Sort", "All", :filter, null));
         
         for (var i = 0; i < inventory_items.size(); i++) {
             var item = inventory_items[i] as Item;
-            var amount = item.getAmount();
-            var icon = new DCItemIcon(item);
-            inventoryMenu.addItem(new WatchUi.IconMenuItem(item.getName() + " x" + amount, item.getDescription(), item, icon, null));
+            inventoryMenu.addItem(createInventoryMenuItem(item));
+        }
+        WatchUi.pushView(inventoryMenu, new DCInventoryDelegate(self), WatchUi.SLIDE_UP);
+    }
+
+    function openItemTypeInventory(item_type as ItemType, filter_str as String) as Void {
+        var player = $.getApp().getPlayer() as Player;
+        var inventory = player.getInventory();
+        var inventory_items = inventory.getItems();
+        var weight_items = inventory.getCurrentItemWeight() as Numeric;
+        var max_weight_items = inventory.getMaxItemWeight() as Numeric;
+        var inventoryMenu = new WatchUi.Menu2({:title=>"Inventory (" + weight_items.format("%.1f") + "/" + max_weight_items + ")"});
+        inventoryMenu.addItem(new WatchUi.MenuItem("Filter", filter_str, :filter, null));
+        for (var i = 0; i < inventory_items.size(); i++) {
+            var item = inventory_items[i] as Item;
+            if (item.type == item_type) {
+                inventoryMenu.addItem(createInventoryMenuItem(item));
+            }
         }
         WatchUi.pushView(inventoryMenu, new DCInventoryDelegate(self), WatchUi.SLIDE_UP);
     }
@@ -113,6 +141,10 @@ class DCInventoryDelegate extends WatchUi.Menu2InputDelegate {
     }
 
     function onSelect(item as MenuItem) as Void {
+        if (item.getId() == :filter) {
+            showFilter();
+            return;
+        }
         item = item.getId() as Item;
         var menuitems = [] as Array<MenuItem>;
         if (item instanceof WeaponItem || item instanceof ArmorItem) {
@@ -134,7 +166,94 @@ class DCInventoryDelegate extends WatchUi.Menu2InputDelegate {
         }
         WatchUi.pushView(optionsMenu, new DCOptionsDelegate(item, _delegate), WatchUi.SLIDE_UP);
     }
+
+    function showFilter() {
+        var player = $.getApp().getPlayer() as Player;
+        var inventoryMenu = new WatchUi.Menu2({:title=>"Filter/Sort"});
+        // Filters
+        inventoryMenu.addItem(new WatchUi.MenuItem("All", null, :all, null));
+        inventoryMenu.addItem(new WatchUi.MenuItem("Weapons", null, :weapons, null));
+        inventoryMenu.addItem(new WatchUi.MenuItem("Armor", null, :armor, null));
+        inventoryMenu.addItem(new WatchUi.MenuItem("Consumables", null, :consumables, null));
+        // Sort 
+        inventoryMenu.addItem(new WatchUi.MenuItem("Sort by name", null, :sort_name, null));
+        inventoryMenu.addItem(new WatchUi.MenuItem("Sort by weight", null, :sort_weight, null));
+        inventoryMenu.addItem(new WatchUi.MenuItem("Sort by value", null, :sort_value, null));
+        WatchUi.pushView(inventoryMenu, new DCInventoryFilterDelegate(_delegate), WatchUi.SLIDE_UP);
+    }
 }
+
+class DCInventoryFilterDelegate extends WatchUi.Menu2InputDelegate {
+
+    private var _delegate as DCGameMenuDelegate;
+
+    function initialize(delegate as DCGameMenuDelegate) {
+        Menu2InputDelegate.initialize();
+        _delegate = delegate;
+    }
+
+    function onSelect(item as MenuItem) as Void {
+        var type = item.getId() as Symbol;
+        switch (type) {
+            case :all:
+                _delegate.inventory_filter = :all;
+                break;
+            case :weapons:
+                _delegate.inventory_filter = WEAPON;
+                break;
+            case :armor:
+                _delegate.inventory_filter = ARMOR;
+                break;
+            case :consumables:
+                _delegate.inventory_filter = CONSUMABLE;
+                break;
+            case :sort_name:
+            case :sort_weight:
+            case :sort_value:
+                // Add menu where user is asked if they want to sort ascending or descending
+                var sortMenu = new WatchUi.Menu2({:title:"Sort by"});
+                sortMenu.addItem(new WatchUi.MenuItem("Ascending", null, true, null));
+                sortMenu.addItem(new WatchUi.MenuItem("Descending", null, false, null));
+                WatchUi.pushView(sortMenu, new DCInventorySortDelegate(_delegate, type), WatchUi.SLIDE_UP);
+                return;
+        }
+        WatchUi.popView(WatchUi.SLIDE_DOWN);
+        WatchUi.popView(WatchUi.SLIDE_DOWN);
+        _delegate.openInventory();
+    }
+}
+
+class DCInventorySortDelegate extends WatchUi.Menu2InputDelegate {
+
+    private var _delegate as DCGameMenuDelegate;
+    private var _sort_type as Symbol;
+
+    function initialize(delegate as DCGameMenuDelegate, sort_type as Symbol) {
+        Menu2InputDelegate.initialize();
+        _delegate = delegate;
+        _sort_type = sort_type;
+    }
+
+    function onSelect(item as MenuItem) as Void {
+        var is_ascending = item.getId() as Boolean;
+        var sort_comparator = null;
+        if (_sort_type == :sort_name) {
+            sort_comparator = new NameCompare(type);
+        } else if (_sort_type == :sort_weight) {
+            sort_comparator = new WeightCompare(type);
+        } else if (_sort_type == :sort_value) {
+            sort_comparator = new ValueCompare(type);
+        }
+        var player = $.getApp().getPlayer() as Player;
+        var inventory = player.getInventory();
+        inventory.sortItems(_sort_type, sort);
+        WatchUi.popView(WatchUi.SLIDE_DOWN);
+        WatchUi.popView(WatchUi.SLIDE_DOWN);
+        WatchUi.popView(WatchUi.SLIDE_DOWN);
+        _delegate.openInventory();
+    }
+}
+
 
 class DCOptionsDelegate extends WatchUi.Menu2InputDelegate {
 

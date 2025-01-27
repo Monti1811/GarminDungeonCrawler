@@ -23,9 +23,10 @@ class DCPlayerDetailsEquipmentDelegate extends WatchUi.BehaviorDelegate {
     function onKey(keyEvent as KeyEvent) as Boolean {
         if (keyEvent.getKey() == KEY_ENTER) {
             var menu = new WatchUi.Menu2({:title=>"Equipped Items"});
+            var player = getApp().getPlayer() as Player;
             for (var i = 0; i < 9; i++) {
                 var slot = num_to_equipslot[i] as ItemSlot;
-                var item = getApp().getPlayer().getEquip(slot) as Item?;
+                var item = player.getEquip(slot) as Item?;
                 var name = "No equipped item";
                 if (item != null) {
                     name = item.getName();

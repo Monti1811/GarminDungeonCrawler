@@ -15,6 +15,13 @@ module Constants {
 
 	public const TILE_SIZE = 16;
 
+	public const ITEMTYPE_TO_STR = {
+		WEAPON => "Weapon",
+		ARMOR => "Armor",
+		CONSUMABLE => "Consumable",
+		QUEST => "Key"
+	};
+
 	public const ATT_SYMBOL_TO_STR = {
         :strength => "Strength",
         :constitution => "Constitution",

@@ -128,7 +128,6 @@ class Inventory {
 		var save_data = {};
 		save_data["permanent_increased_weight"] = permanent_increased_weight;
 		save_data["base_max_weight"] = base_max_weight;
-		save_data["current_weight"] = current_weight;
 		save_data["items"] = saveItems();
 		return save_data;
 	}
@@ -157,13 +156,11 @@ class Inventory {
 			self.permanent_increased_weight = save_data["permanent_increased_weight"] as Number;
 			self.max_weight += permanent_increased_weight;
 		}
-		if (save_data["current_weight"] != null) {
-			self.current_weight = save_data["current_weight"] as Numeric;
-		}
 		var item_list = save_data["items"] as Array<Dictionary>;
 		for (var i = 0; i < item_list.size(); i++) {
 			var item = Item.load(item_list[i]);
 			items[item.id] = item;
+			current_weight += item.weight * item.amount;
 		}
 	}
 
