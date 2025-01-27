@@ -1,22 +1,22 @@
 import Toybox.Lang;
 
-class Arrow extends Ammunition {
+class FireArrow extends Ammunition {
 
 	function initialize() {
 		Ammunition.initialize();
-		id = 9;
-		name = "Arrow";
-		description = "A simple arrow";
+		id = 10;
+		name = "Fire Arrow";
+		description = "A fire arrow";
 		type = ARROW;
-		attack = 4;
+		attack = 2;
 	}
 
 	function getSprite() as ResourceId {
-		return $.Rez.Drawables.arrow;
+		return $.Rez.Drawables.arrow_fire;
 	}
 
 	function deepcopy() as Item {
-		var item = new Arrow();
+		var item = new FireArrow();
 		return item;
 	}
 

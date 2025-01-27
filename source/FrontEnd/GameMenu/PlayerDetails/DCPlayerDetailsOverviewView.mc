@@ -12,18 +12,29 @@ class DCPlayerDetailsOverviewView extends WatchUi.View {
 	private const space_between as Number = 25;
 
 	private var _font as FontReference | FontDefinition;
+
+	private var accept as Bitmap?;
+	private var cancel as Bitmap?;
 	
-	function initialize(player as Player) {
+	function initialize(player as Player, creation as Boolean) {
 		View.initialize();
 		_player = player;
 		_playerIcon = WatchUi.loadResource(_player.getSprite());
 		_font = Graphics.FONT_XTINY; //WatchUi.loadResource($.Rez.Fonts.small);
+		if (creation) {
+			accept = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTopAccept, :locX=>300, :locY=>60});
+			cancel = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightBottomCancel, :locX=>290, :locY=>220});
+		}
 	}
 	
 	
 	function onUpdate(dc) {
 		dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_BLACK);
 		dc.clear();
+		if (accept != null) {
+			accept.draw(dc);
+			cancel.draw(dc);
+		}
 		dc.drawScaledBitmap(50, 150, 60, 60, _playerIcon);
 		dc.drawText(180, y_axis, Graphics.FONT_MEDIUM, _player.getName(), Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER);
 		var left_text_x = x_axis;

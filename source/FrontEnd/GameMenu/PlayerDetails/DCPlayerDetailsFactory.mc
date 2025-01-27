@@ -15,14 +15,14 @@ class DCPlayerDetailsFactory extends WatchUi.ViewLoopFactory {
     function getView(page as Number) as [View] or [View, BehaviorDelegate] {
         switch (page) {
             case 0:
-                return [new $.DCPlayerDetailsOverviewView(_player), new WatchUi.BehaviorDelegate()];
+                return [new $.DCPlayerDetailsOverviewView(_player, false), new WatchUi.BehaviorDelegate()];
             case 1:
-                return [new $.DCPlayerDetailsAttributesView(_player, true), new DCPlayerDetailsAttributesDelegate()];
+                return [new $.DCPlayerDetailsAttributesView(_player, true, false), new DCPlayerDetailsAttributesDelegate()];
             case 2: 
-                var view = new $.DCPlayerDetailsEquipmentsView(_player, true);
+                var view = new $.DCPlayerDetailsEquipmentsView(_player, true, false);
                 return [view, new DCPlayerDetailsEquipmentDelegate()];
         }
-        return [new $.DCPlayerDetailsOverviewView(_player), new WatchUi.BehaviorDelegate()];
+        return [new $.DCPlayerDetailsOverviewView(_player, false), new WatchUi.BehaviorDelegate()];
     }
 
     //! Return the number of view/delegate pairs that are managed by this factory

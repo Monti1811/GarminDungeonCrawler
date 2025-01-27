@@ -15,8 +15,16 @@ class DCCharacterCreationDetailsLoopDelegate extends WatchUi.BehaviorDelegate {
         return true;
     }
 
+    // Detect Menu button input
+    function onKey(keyEvent as KeyEvent) as Boolean {
+        if (keyEvent.getKey() == KEY_ENTER) {
+            showConfirmation("Do you want to choose this character?");
+        }
+        return true;
+    }
+
     function onBack() as Boolean {
-        showConfirmation("Do you want to choose this character?");
+        WatchUi.popView(WatchUi.SLIDE_DOWN);
         return true;
     }
 
@@ -42,9 +50,6 @@ class DCCharacterCreationConfirmDelegate extends WatchUi.ConfirmationDelegate {
             WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
             WatchUi.pushView(new WatchUi.TextPicker(_player.getName()), new DCCharacterNamingDelegate(_player), WatchUi.SLIDE_UP);
             WatchUi.pushView(new EmptyView(), null, WatchUi.SLIDE_UP);
-        } else {
-            WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
-            
         }
         return true;
     }

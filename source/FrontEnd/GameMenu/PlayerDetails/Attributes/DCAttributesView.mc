@@ -18,12 +18,18 @@ class DCPlayerDetailsAttributesView extends WatchUi.View {
 	private const tableentry_size as Number = 30;
 
 	private var actionMenuHint as Bitmap?;
+	private var accept as Bitmap?;
+	private var cancel as Bitmap?;
 	
-	function initialize(player as Player, withHint as Boolean) {
+	function initialize(player as Player, withHint as Boolean, creation as Boolean) {
 		View.initialize();
 		_player = player;
 		if (withHint) {
 			actionMenuHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.actionMenu, :locX=>-30, :locY=>290});
+		}
+		if (creation) {
+			accept = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTopAccept, :locX=>300, :locY=>60});
+			cancel = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightBottomCancel, :locX=>290, :locY=>220});
 		}
 	}
 	
@@ -38,6 +44,10 @@ class DCPlayerDetailsAttributesView extends WatchUi.View {
 		if (actionMenuHint != null) {
 			actionMenuHint.draw(dc);
 		}	
+		if (accept != null) {
+			accept.draw(dc);
+			cancel.draw(dc);
+		}
 	}
 
 	function drawTable(dc as Dc) as Void {

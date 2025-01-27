@@ -10,13 +10,20 @@ class DCPlayerDetailsEquipmentsView extends WatchUi.View {
 	private var _hint as Bitmap?;
 	private var equipped_res as Dictionary<ItemSlot, BitmapReference?> = {};
 	private const num_to_equipslot as Array<ItemSlot> = [HEAD, CHEST, BACK, LEGS, FEET, LEFT_HAND, RIGHT_HAND, ACCESSORY, AMMUNITION];
+
+	private var accept as Bitmap?;
+	private var cancel as Bitmap?;
 	
-	function initialize(player as Player, withHint as Boolean) {
+	function initialize(player as Player, withHint as Boolean, creation as Boolean) {
 		View.initialize();
 		_player = player;
 		small_font = WatchUi.loadResource($.Rez.Fonts.small);
 		if (withHint) {
 			_hint = new WatchUi.Bitmap({:rezId => $.Rez.Drawables.rightTop, :locX => 300, :locY => 60});
+		}
+		if (creation) {
+			accept = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTopAccept, :locX=>300, :locY=>60});
+			cancel = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightBottomCancel, :locX=>290, :locY=>220});
 		}
 	}
 
@@ -69,6 +76,10 @@ class DCPlayerDetailsEquipmentsView extends WatchUi.View {
 		
 		if (_hint != null) {
 			_hint.draw(dc);
+		}
+		if (accept != null) {
+			accept.draw(dc);
+			cancel.draw(dc);
 		}
 		// Head
 		drawRectangle(dc, 180, 80, "Head", HEAD);

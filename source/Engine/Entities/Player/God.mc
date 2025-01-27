@@ -54,6 +54,9 @@ class God extends Player {
 		self.inventory.add(new GreaterManaPotion());
 		self.inventory.add(new MaxManaPotion());
 		self.inventory.add(new GreenBackpack());
+		var arrows2 = new Arrow();
+		arrows2.amount = 15;
+		self.inventory.add(arrows2);
 
 	}
 

@@ -98,8 +98,8 @@ class DCMapDrawable extends WatchUi.Drawable {
 	}
 
 	function draw(dc as Dc) {
-		dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_TRANSPARENT);
-		dc.fillRectangle(0, 0, size[0] * size_room, size[1] * size_room);
+		dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_BLACK);
+		dc.clear();
 		for (var i = 0; i < $.Game.map.size(); i++) {
 			for (var j = 0; j < $.Game.map[i].size(); j++) {
 				drawRoom(dc, [i, j]);

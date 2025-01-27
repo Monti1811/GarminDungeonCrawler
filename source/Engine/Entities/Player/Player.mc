@@ -48,34 +48,51 @@ class Player extends Entity {
 		return id;
 	}
 
-	// TODO add equipped items to inventory and dont remove them unless dropped. so equipped and uneqiuped items are the same
+	function isSameAmmunition(item as Item) as Boolean {
+		var ammunition = equipped[AMMUNITION];
+		if (ammunition != null && item != null) {
+			return ammunition.id == item.id;
+		}
+		return false;
+	}
+
+
 	function equipItem(item as Item, slot as ItemSlot, remove as Boolean?) as Boolean {
+		var is_same_ammunition = isSameAmmunition(item);
 		// Try to unequip item if slot is already equipped
-		if (equipped[slot] != null) {
+		if (equipped[slot] != null && !is_same_ammunition) {
 			var success = unequipItem(slot);
 			if (!success) {
 				return false;
 			}
 		}
-		if (equipped[slot] == null) {
-			if (remove) {
+		if (remove) {
+			// Move all ammunition to equip slot
+			if (slot == AMMUNITION) {
+				item = inventory.removeMultiple(item, item.amount) as Ammunition;
+			} else {
+			// Or only move one item to equip slot
 				item = inventory.remove(item);
-			} else if (!inventory.addWeight(item.weight)) {
-				return false;
 			}
-			equipped[slot] = item;
-			item.onEquipItem(me);
-			return true;
 		}
-		return false;
+		// Check if inventory has enough space for item
+		if (!inventory.addWeight(item.weight * item.amount)) {
+			return false;
+		}
+		if (is_same_ammunition) {
+			item.amount += equipped[AMMUNITION].amount;
+		}
+		equipped[slot] = item;
+		item.onEquipItem(me);
+		return true;
 	}
 
 	function unequipItem(slot as ItemSlot) as Boolean {
 		var item = equipped[slot];
-		if (equipped[slot] != null) {
-			inventory.removeWeight(item.weight);
+		if (item != null) {
+			inventory.removeWeight(item.weight * item.amount);
 			inventory.add(item);
-			equipped[slot].onUnequipItem(me);
+			item.onUnequipItem(me);
 			equipped.remove(slot);
 			return true;
 		}

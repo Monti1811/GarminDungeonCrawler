@@ -16,10 +16,21 @@
         system_icon_dark__hint_action_menu
         system_loc__hint_action_menu" />
 
-    <!-- Left top hint :locX => 300, :locY => 60 -->
+    <!-- Right top hint :locX => 300, :locY => 60 -->
     <bitmap id="rightTop" personality="
             system_icon_light__hint_button_right_top
             system_loc__hint_button_right_top" />
+
+    <!-- Right top accept :locX => 300, :locY => 60 -->
+    <bitmap id="rightTopAccept" personality="
+             system_icon_positive__hint_button_right_top
+            system_loc__hint_button_right_top" />
+
+    <!-- Right top cancel :locX => 290, :locY => 220 --> 
+    <bitmap id="rightBottomCancel" personality="
+             system_icon_destructive__hint_button_right_bottom
+            system_loc__hint_button_right_bottom" />
+   
     
     <bitmap id="saveToastIcon" personality="
         system_icon_dark__save
@@ -246,6 +257,9 @@
     <bitmap id="chest_golden_open_empty" filename="items/chest_golden_open_empty.png" />
     <bitmap id="chest_golden_open_full" filename="items/chest_golden_open_full.png" />
     <bitmap id="arrow" filename="items/arrow.png" />
+    <bitmap id="arrow_fire" filename="items/arrow_fire.png" />
+    <bitmap id="arrow_ice" filename="items/arrow_ice.png" />
+    <bitmap id="arrow_gold" filename="items/arrow_gold.png" />
     <bitmap id="crossbow" filename="items/crossbow.png" />
     <bitmap id="crossbow_oak" filename="items/crossbow_oak.png" />
     <bitmap id="crossbow_hell" filename="items/crossbow_hell.png" />
