@@ -1,15 +1,22 @@
 import Toybox.Lang;
 import Toybox.WatchUi;
 
+typedef ItemComparator as NameCompare | WeightCompare | ValueCompare;
 
 class DCGameMenuDelegate extends WatchUi.Menu2InputDelegate {
 
     private const LOG_AMOUNT = 20;
-    var inventory_filter as Symbol | ItemType = :all;
-    var item_list as Array<Item>?;
+    var inventory_filter as Array<ItemType>? = null;
+    var inventory_filter_str as String = "All Items";
+    var inventory_sort as String = "Name";
+    var inventory_sort_type as String = "Asc"; 
+    var inventory_sort_comparator as ItemComparator;
+    var item_list as Array<Item>;
 
     function initialize() {
         Menu2InputDelegate.initialize();
+        item_list = getApp().getPlayer().getInventory().getItems();
+        inventory_sort_comparator = new NameCompare(true);
     }
 
     function onSelect(item as MenuItem) as Void {
@@ -52,38 +59,22 @@ class DCGameMenuDelegate extends WatchUi.Menu2InputDelegate {
     }
 
     function openInventory() as Void {
-        if (inventory_filter != :all) {
-            openItemTypeInventory(inventory_filter, $.Constants.ITEMTYPE_TO_STR[inventory_filter] + " Items");
-            return;
-        }
         var player = $.getApp().getPlayer() as Player;
         var inventory = player.getInventory();
-        var inventory_items = inventory.getItems();
         var weight_items = inventory.getCurrentItemWeight() as Numeric;
         var max_weight_items = inventory.getMaxItemWeight() as Numeric;
         var inventoryMenu = new WatchUi.Menu2({:title=>"Inventory (" + weight_items.format("%.1f") + "/" + max_weight_items + ")"});
-        inventoryMenu.addItem(new WatchUi.MenuItem("Filter/Sort", "All", :filter, null));
+        inventoryMenu.addItem(new WatchUi.MenuItem(
+            "Filter/Sort", 
+            inventory_filter_str + "/" + inventory_sort + " " + inventory_sort_type, 
+            :filter, 
+            null
+        ));
         
-        for (var i = 0; i < inventory_items.size(); i++) {
-            var item = inventory_items[i] as Item;
+        item_list.sort(inventory_sort_comparator);
+        for (var i = 0; i < item_list.size(); i++) {
+            var item = item_list[i] as Item;
             inventoryMenu.addItem(createInventoryMenuItem(item));
-        }
-        WatchUi.pushView(inventoryMenu, new DCInventoryDelegate(self), WatchUi.SLIDE_UP);
-    }
-
-    function openItemTypeInventory(item_type as ItemType, filter_str as String) as Void {
-        var player = $.getApp().getPlayer() as Player;
-        var inventory = player.getInventory();
-        var inventory_items = inventory.getItems();
-        var weight_items = inventory.getCurrentItemWeight() as Numeric;
-        var max_weight_items = inventory.getMaxItemWeight() as Numeric;
-        var inventoryMenu = new WatchUi.Menu2({:title=>"Inventory (" + weight_items.format("%.1f") + "/" + max_weight_items + ")"});
-        inventoryMenu.addItem(new WatchUi.MenuItem("Filter", filter_str, :filter, null));
-        for (var i = 0; i < inventory_items.size(); i++) {
-            var item = inventory_items[i] as Item;
-            if (item.type == item_type) {
-                inventoryMenu.addItem(createInventoryMenuItem(item));
-            }
         }
         WatchUi.pushView(inventoryMenu, new DCInventoryDelegate(self), WatchUi.SLIDE_UP);
     }
@@ -168,7 +159,6 @@ class DCInventoryDelegate extends WatchUi.Menu2InputDelegate {
     }
 
     function showFilter() {
-        var player = $.getApp().getPlayer() as Player;
         var inventoryMenu = new WatchUi.Menu2({:title=>"Filter/Sort"});
         // Filters
         inventoryMenu.addItem(new WatchUi.MenuItem("All", null, :all, null));
@@ -192,26 +182,64 @@ class DCInventoryFilterDelegate extends WatchUi.Menu2InputDelegate {
         _delegate = delegate;
     }
 
+    function updateItemList() as Void {
+        var inventory = $.getApp().getPlayer().getInventory();
+        var items = inventory.getItems();
+        var inventory_filter = _delegate.inventory_filter as Array<ItemType>?;
+        if (inventory_filter != null) {
+            for (var i = items.size() - 1; i >= 0; i--) {
+                var item = items[i];
+                if (inventory_filter.indexOf(item.getItemType()) == -1) {
+                    items.remove(item);
+                }
+            }
+        }
+        _delegate.item_list = items;
+    }
+
+    function addInventoryFilter(filter as ItemType) as Void {
+        var inventory_filter = _delegate.inventory_filter as Array<ItemType>?;
+        if (inventory_filter == null) {
+            inventory_filter = [] as Array<ItemType>;
+        }
+        if (inventory_filter.indexOf(filter) == -1) {
+            inventory_filter.add(filter as ItemType);
+        }
+        _delegate.inventory_filter = inventory_filter;
+        _delegate.inventory_filter_str = "";
+        for (var i = 0; i < _delegate.inventory_filter.size(); i++) {
+            if (i > 0) {
+                _delegate.inventory_filter_str += "/";
+            }
+            _delegate.inventory_filter_str += $.Constants.ITEMTYPE_TO_STR[_delegate.inventory_filter[i]];
+        }
+        updateItemList();
+        //_delegate.inventory_filter_str += " Items";
+    }
+
     function onSelect(item as MenuItem) as Void {
         var type = item.getId() as Symbol;
+        var inventory = $.getApp().getPlayer().getInventory();
         switch (type) {
             case :all:
-                _delegate.inventory_filter = :all;
+                _delegate.inventory_filter_str = "All Items";
+                _delegate.inventory_filter = null;
+                _delegate.item_list = inventory.getItems();
                 break;
             case :weapons:
-                _delegate.inventory_filter = WEAPON;
+                addInventoryFilter(WEAPON);
                 break;
             case :armor:
-                _delegate.inventory_filter = ARMOR;
+                addInventoryFilter(ARMOR);
                 break;
             case :consumables:
-                _delegate.inventory_filter = CONSUMABLE;
+                addInventoryFilter(CONSUMABLE);
                 break;
             case :sort_name:
             case :sort_weight:
             case :sort_value:
                 // Add menu where user is asked if they want to sort ascending or descending
-                var sortMenu = new WatchUi.Menu2({:title:"Sort by"});
+                var sortMenu = new WatchUi.Menu2({:title =>"Sort by"});
                 sortMenu.addItem(new WatchUi.MenuItem("Ascending", null, true, null));
                 sortMenu.addItem(new WatchUi.MenuItem("Descending", null, false, null));
                 WatchUi.pushView(sortMenu, new DCInventorySortDelegate(_delegate, type), WatchUi.SLIDE_UP);
@@ -236,17 +264,17 @@ class DCInventorySortDelegate extends WatchUi.Menu2InputDelegate {
 
     function onSelect(item as MenuItem) as Void {
         var is_ascending = item.getId() as Boolean;
-        var sort_comparator = null;
         if (_sort_type == :sort_name) {
-            sort_comparator = new NameCompare(type);
+            _delegate.inventory_sort_comparator = new NameCompare(is_ascending);
+            _delegate.inventory_sort = "Name";
         } else if (_sort_type == :sort_weight) {
-            sort_comparator = new WeightCompare(type);
+            _delegate.inventory_sort_comparator = new WeightCompare(is_ascending);
+            _delegate.inventory_sort = "Weight";
         } else if (_sort_type == :sort_value) {
-            sort_comparator = new ValueCompare(type);
+            _delegate.inventory_sort_comparator = new ValueCompare(is_ascending);
+            _delegate.inventory_sort = "Value";
         }
-        var player = $.getApp().getPlayer() as Player;
-        var inventory = player.getInventory();
-        inventory.sortItems(_sort_type, sort);
+        _delegate.inventory_sort_type = is_ascending ? "Asc" : "Desc";
         WatchUi.popView(WatchUi.SLIDE_DOWN);
         WatchUi.popView(WatchUi.SLIDE_DOWN);
         WatchUi.popView(WatchUi.SLIDE_DOWN);
