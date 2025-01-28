@@ -14,7 +14,8 @@ class DCItemInfoDescriptionView extends WatchUi.View {
 	function onUpdate(dc) {
 		dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_BLACK);
 		dc.clear();
-		dc.drawText(180, 120, Graphics.FONT_MEDIUM, _item.getName(), Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
+		var formatted_name = Graphics.fitTextToArea(_item.getName(), Graphics.FONT_MEDIUM, 260, 150, false);
+		dc.drawText(180, 90, Graphics.FONT_MEDIUM, formatted_name, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
 		var formatted_text = Graphics.fitTextToArea(_item.getDescription(), Graphics.FONT_XTINY, 260, 150, false);
 		dc.drawText(180, 150, Graphics.FONT_TINY, formatted_text, Graphics.TEXT_JUSTIFY_CENTER);
 	}

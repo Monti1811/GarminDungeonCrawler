@@ -18,7 +18,8 @@ class DCItemInfoOverviewView extends WatchUi.View {
 		dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_BLACK);
         dc.clear();
 		dc.drawScaledBitmap(150, 90, 60, 60, _itemIcon);
-		dc.drawText(180, 180, Graphics.FONT_MEDIUM, _item.getName(), Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
+		var formatted_text = Graphics.fitTextToArea(_item.getName(), Graphics.FONT_MEDIUM, 260, 150, false);
+		dc.drawText(180, 160, Graphics.FONT_MEDIUM, formatted_text, Graphics.TEXT_JUSTIFY_CENTER);
 	}
 	
 }

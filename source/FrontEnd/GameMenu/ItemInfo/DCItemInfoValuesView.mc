@@ -137,10 +137,10 @@ class DCItemInfoValuesView extends WatchUi.View {
 	function showConsumableStats(dc) {
 		var consumable = _item as ConsumableItem;
 		drawCommonAttributes(dc, "Value", ": " + consumable.getValue(), 0, 30);
-		drawCommonAttributes(dc, "Weight", ": " + consumable.getWeight(), 3, 30);
+		drawCommonAttributes(dc, "Weight", ": " + consumable.getWeight(), 1, 30);
 		dc.drawText(180, 155, Graphics.FONT_XTINY, "Effect: ", Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
 		var formatted_text = Graphics.fitTextToArea(consumable.getEffectDescription(), Graphics.FONT_XTINY, 260, 130, false);
-		dc.drawText(180, 150, Graphics.FONT_XTINY, formatted_text, Graphics.TEXT_JUSTIFY_CENTER);
+		dc.drawText(180, 180, Graphics.FONT_XTINY, formatted_text, Graphics.TEXT_JUSTIFY_CENTER);
 
 	}
 
