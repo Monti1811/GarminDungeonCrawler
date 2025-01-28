@@ -95,6 +95,8 @@ module Main {
 		var top = middle_of_screen[1] - Math.floor(room_size_y/2);
 		var bottom = middle_of_screen[1] + Math.floor(room_size_y/2);
 		var map = createRandomMap(screen_size_x, screen_size_y, left, right, top, bottom);
+		var enemies = createRandomEnemies(map, left, right, top, bottom);
+		var items = createRandomItems(map, left, right, top, bottom, enemies.size());
 		var room = new Room({
 			:size_x => room_size_x, 
 			:size_y => room_size_y,
@@ -102,8 +104,8 @@ module Main {
 			:tile_height => tile_height,
 			:start_pos => middle_of_screen,
 			:map => map,
-			:items => createRandomItems(map, left, right, top, bottom),
-			:enemies => createRandomEnemies(map, left, right, top, bottom)
+			:items => items,
+			:enemies => enemies
 		});
 		
 		return room;
@@ -190,15 +192,40 @@ module Main {
         };
 	}*/
 
-	function getMaxItemsNumForRoom(size_x as Number, size_y as Number) as Number {
-		return Math.floor(size_x * size_y / 20);
+	function getItemsNumForRoom(enemy_count as Number, room_size as Number) as Number {
+		var depth = $.Game.depth;
+		var base_items = 0.5;                   // Minimum items per room
+		var scaling_factor = 0.15;              // Depth scaling factor
+		var room_size_factor = room_size / 100; // Larger rooms are more likely to have more items
+		var enemy_factor = enemy_count / 4;     // 1 item per 4 enemies
+
+		// Calculate base number of items
+		var items = base_items 
+					+ scaling_factor * Math.sqrt(depth)  // Depth scaling
+					+ enemy_factor                 // Enemies influence item count
+					+ room_size_factor;           // Larger rooms yield slightly more items
+
+		// Randomization
+		if (MathUtil.random(0, 100) < 30) {
+			// 30% chance of no items in the room
+			return 0;
+		}
+
+		// Ensure at least 1 item if enemies are present
+		items = enemy_count > 0 ? MathUtil.max(1, items) : items;
+
+		// Round down to avoid fractional items
+		return Math.floor(items);
 	}
 
-	function createRandomItems(map as Array<Array<Tile>>, left as Number, right as Number, top as Number, bottom as Number) as Dictionary<Point2D, Item> {
+
+	function createRandomItems(map as Array<Array<Tile>>, left as Number, right as Number, top as Number, bottom as Number, amount_enemies as Number) as Dictionary<Point2D, Item> {
 		var items = {};
-		var num_items = MathUtil.random(0, getMaxItemsNumForRoom(right - left - 1, bottom - top - 1));
+		var room_size = (right - left - 1) * (bottom - top - 1);
+		var num_items = getItemsNumForRoom(amount_enemies, room_size);
+		var type = 0;
 		for (var i = 0; i < num_items; i++) {
-			var item = createRandomItem();
+			var item = createRandomItem(type);
 			var item_pos = MapUtil.getRandomPos(map, left, right, top, bottom);
 			item.setPos(item_pos);
 			map[item_pos[0]][item_pos[1]].content = item;
@@ -207,25 +234,120 @@ module Main {
 		return items;
 	}
 
-	function createRandomItem() as Item {
-		return Items.createRandomWeightedItem();
+	function createRandomItem(type as Number) as Item {
+		return Items.createRandomWeightedItem(type);
 	}
 
 	function getMaxEnemiesNumForRoom(size_x as Number, size_y as Number) as Number {
 		return Math.floor(size_x * size_y / 10);
 	}
 
+	function calculateEnemiesForRoom(room_size, difficulty_factor) as Array {
+		var depth = $.Game.depth;
+		// Scaling factors
+		var base_enemies = 1;                         // Minimum enemies per room
+		var depth_sqrt = Math.sqrt(depth);             // Depth scaling factor
+		var room_size_scaling = room_size / 50;       // Larger rooms have more enemies
+		var depth_scaling = depth_sqrt / 2;          // Depth increases the number of enemies
+		var difficulty_scaling = 1 / difficulty_factor; // Higher difficulty reduces the number of enemies
+
+		// Calculate number of enemies
+		var num_enemies = base_enemies + room_size_scaling + depth_scaling * difficulty_scaling;
+
+		if (MathUtil.random(0, 100) < 10) {
+			// 30% chance of no enemies in the room
+			return [
+				0,
+				0
+			];
+		}
+
+		// Ensure a minimum of 1 enemy in the room
+		num_enemies = MathUtil.max(1, Math.floor(num_enemies));
+
+		// Determine enemy difficulty points
+		var enemy_points = Math.floor(depth * difficulty_factor + depth_sqrt * room_size_scaling);
+
+		return [
+			num_enemies,        // Number of enemies
+			enemy_points       // Points to distribute among enemy difficulties
+		];
+	}
+
+
 	function createRandomEnemies(map as Array<Array<Tile>>, left as Number, right as Number, top as Number, bottom as Number) as Dictionary<Point2D,Enemy> {
 		var enemies = {};
-		var num_enemies = MathUtil.random(0, getMaxEnemiesNumForRoom(right - left - 1, bottom - top - 1));
-		for (var i = 0; i < num_enemies; i++) {
-			var enemy = createRandomEnemy();
+		var diff = 1;
+		if (MathUtil.random(0, 100) < 10) {
+			diff = 2;
+		}
+		var values = calculateEnemiesForRoom((right - left - 1) * (bottom - top - 1), diff);
+		var possible_enemies = chooseEnemies(values[1]);
+		for (var i = 0; i < possible_enemies.size(); i++) {
+			var enemy = possible_enemies[i];
 			var enemy_pos = MapUtil.getRandomPos(map, left, right, top, bottom);
 			enemy.setPos(enemy_pos);
 			map[enemy_pos[0]][enemy_pos[1]].content = enemy;
 			enemies.put(enemy_pos, enemy);
 		}
 		return enemies;
+	}
+
+	function filterEnemiesByPoints(enemies as Array, points as Number) as Array {
+		var filtered = [];
+		for (var i = 0; i < enemies.size(); i++) {
+			if (enemies[i][:cost] <= points) {
+				filtered.add(enemies[i]);
+			}
+		}
+		return filtered;
+	}
+
+	function getTotalWeight(enemies as Array) as Number {
+		var total_weight = 0;
+		for (var i = 0; i < enemies.size(); i++) {
+			total_weight += enemies[i][:weight];
+		}
+		return total_weight;
+	}
+
+	function chooseEnemies(allocated_points as Number) as Array {
+		var chosen_enemies = [];
+		var remaining_points = allocated_points;
+
+		while (remaining_points > 0) {
+			// Filter enemies by remaining points
+			var available_enemies = filterEnemiesByPoints(Enemies.dungeon_enemies, remaining_points);
+
+			// If no enemies fit within the points, stop the loop
+			if (available_enemies.size() == 0) {
+				break;
+			}
+
+			// Calculate total weight for available enemies
+			var total_weight = getTotalWeight(available_enemies);
+
+			// Randomly select an enemy based on weights
+			var roll = MathUtil.rand() * total_weight;
+			var accumulated_weight = 0;
+			var chosen_enemy = null;
+
+			for (var i = 0; i < available_enemies.size(); i++) {
+				accumulated_weight += available_enemies[i][:weight];
+				if (roll <= accumulated_weight) {
+					chosen_enemy = available_enemies[i];
+					break;
+				}
+			}
+
+			// Add chosen enemy to the list and subtract its cost
+			if (chosen_enemy) {
+				chosen_enemies.add(chosen_enemy);
+				remaining_points -= chosen_enemy[:cost];
+			}
+		}
+
+		return chosen_enemies;
 	}
 
 	function createRandomEnemy() as Enemy {

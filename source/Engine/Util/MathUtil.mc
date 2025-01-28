@@ -6,14 +6,14 @@ typedef Point2D as [Numeric, Numeric];
 
 module MathUtil {
 
-	function floor(value as Number, max as Number) as Number {
+	function floor(value as Numeric, max as Numeric) as Numeric {
 		if (value < max) {
 			return value;
 		}
 		return max;
 	}
 
-	function ceil(value as Number, min as Number) as Number {
+	function ceil(value as Numeric, min as Numeric) as Numeric {
 		if (value > min) {
 			return value;
 		}
@@ -26,18 +26,32 @@ module MathUtil {
 		return min + Math.rand() % (max - min + 1);
 	}
 
-	function max(value1 as Number, value2 as Number) as Number {
+	function rand() as Numeric {
+		return (Math.rand() % 100).toFloat() / 100.0;
+	}
+
+	function max(value1 as Numeric, value2 as Numeric) as Numeric {
 		if (value1 > value2) {
 			return value1;
 		}
 		return value2;
 	}
 
-	function min(value1 as Number, value2 as Number) as Number {
+	function min(value1 as Numeric, value2 as Numeric) as Numeric {
 		if (value1 < value2) {
 			return value1;
 		}
 		return value2;
+	}
+
+	function clamp(value as Numeric, min as Numeric, max as Numeric) as Numeric {
+		if (value < min) {
+			return min;
+		}
+		if (value > max) {
+			return max;
+		}
+		return value;
 	}
 
 	//! Function to see if a tap falls within a given touch area

@@ -4,6 +4,13 @@ module Enemies {
 
     var enemies as Dictionary<Number, Symbol>?;
 
+    var dungeon_enemies as Array<Dictionary<Symbol, Numeric>> = [
+        { :id => 0, :cost => 3, :weight => 8 },
+        { :id => 1, :cost => 7, :weight => 8 },
+        { :id => 2, :cost => 25, :weight => 4 },
+        { :id => 3, :cost => 5, :weight => 8 }
+    ];
+
     var weights as Dictionary<Number, Numeric>?;
     var total_weight as Numeric = 0;
     var character_enemies as Dictionary<Number, Dictionary<Number, [Numeric, Symbol]>> = {

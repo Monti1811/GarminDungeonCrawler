@@ -1,5 +1,6 @@
 import Toybox.Lang;
 import Toybox.Time;
+import Toybox.Math;
 
 enum Difficulty {
 	EASY,
@@ -32,6 +33,8 @@ module Game {
 		// [2] = Has boss
 
 	function init(player_id as Number) as Void {
+		// Set the seed for random number generation
+		Math.srand(Time.now().value());
 		Items.init(player_id);
 		Enemies.init(player_id);
 		time_played = 0;

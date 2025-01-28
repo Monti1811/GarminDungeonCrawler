@@ -13,7 +13,7 @@ class Merchant extends NPC {
 	function addRandomItems() as Void {
 		var amount = MathUtil.random(1, 5);
 		for (var i = 0; i < amount; i++) {
-			var item = Items.createRandomItem();
+			var item = Items.createRandomWeightedItem(0);
 			items.add(item);
 		}
 	}	
