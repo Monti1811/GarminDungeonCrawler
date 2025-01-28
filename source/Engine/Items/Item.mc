@@ -34,6 +34,10 @@ class Item {
 		return id;
 	}
 
+	function isSameItem(item as Item) as Boolean {
+		return item.id == id;
+	}
+
 	function getPos() as Point2D {
 		return pos;
 	}

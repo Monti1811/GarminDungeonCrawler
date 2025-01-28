@@ -19,7 +19,8 @@ class Mage extends Player {
 
 		// Give starting items
 		self.equipItem(new SteelStaff(), RIGHT_HAND, null);
-		self.equipItem(new SteelRing2(), ACCESSORY, null);
+		self.equipItem(new LifeAmulet(), ACCESSORY, null);
+
 
 		// Set attributes
 		self.attributes = {
@@ -63,6 +64,11 @@ class Mage extends Player {
 		// Increase max health and mana
 		maxHealth += 5;
 		maxMana += 5;
+	}
+
+	function onNextDungeon() as Void {
+		Player.onNextDungeon();
+		current_mana = MathUtil.ceil(maxMana / 2, current_mana);
 	}
 
 	function save() as Dictionary {

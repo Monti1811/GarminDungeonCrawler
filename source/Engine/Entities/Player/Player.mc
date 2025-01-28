@@ -48,7 +48,7 @@ class Player extends Entity {
 		return id;
 	}
 
-	function isSameAmmunition(item as Item) as Boolean {
+	private function isSameAmmunition(item as Item) as Boolean {
 		var ammunition = equipped[AMMUNITION];
 		if (ammunition != null && item != null) {
 			return ammunition.id == item.id;
@@ -177,6 +177,13 @@ class Player extends Entity {
 	}
 
 	function onDeath() as Void {
+		// Check if a life amulet was equipped
+		var accessory = equipped[ACCESSORY] as Item;
+		if (accessory != null && accessory instanceof LifeAmulet) {
+			var amulet = accessory as LifeAmulet;
+			amulet.onDeath(me);
+			return;		
+		}
 		WatchUi.pushView(new DCGameOverView(), new DCGameOverDelegate(), WatchUi.SLIDE_UP);
 	}
 
@@ -429,6 +436,10 @@ class Player extends Entity {
 				item.onTurnDone();
 			}
 		}
+	}
+
+	function onNextDungeon() as Void {
+		self.current_health = MathUtil.ceil(maxHealth / 2, current_health);
 	}
 
 	function getId() as Number {

@@ -41,6 +41,7 @@ module Items {
             1005 => :createSteelRing2,
             1006 => :createWoodShield,
             1007 => :createGreenBackpack,
+            1008 => :createLifeAmulet,
 
             2000 => :createHealthPotion,
             2002 => :createGreaterHealthPotion,
@@ -88,6 +89,7 @@ module Items {
     }
 
 
+    // Weapons
     function createSteelAxe() as Item {
         return new SteelAxe();
     }
@@ -134,6 +136,8 @@ module Items {
         return new CrossBow();
     }
 
+
+    // Armors
     function createSteelHelmet() as Item {
         return new SteelHelmet();
     }
@@ -166,6 +170,11 @@ module Items {
         return new GreenBackpack();
     }
 
+    function createLifeAmulet() as Item {
+        return new LifeAmulet();
+    }
+
+    // Consumables
     function createHealthPotion() as Item {
         return new HealthPotion();
     }

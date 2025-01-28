@@ -270,6 +270,8 @@
     <bitmap id="backpack_green" filename="items/backpack_green.png" />
     <bitmap id="backpack_purple" filename="items/backpack_purple.png" />
 
+    <bitmap id="life_amulet" filename="items/life_amulet.png" />
+
     <!-- Enemies -->
     <bitmap id="monster_tentackle" filename="monsters/monster_tentackle.png" />
     <bitmap id="monster_demon" filename="monsters/monster_demon.png" />

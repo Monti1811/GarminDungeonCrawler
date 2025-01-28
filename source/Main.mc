@@ -41,6 +41,7 @@ module Main {
 
 	function createNextDungeon2(progress_bar as WatchUi.ProgressBar, dungeon as Dungeon) as Void {
 		prepareDungeon(dungeon);
+		getApp().getPlayer().onNextDungeon();
 		var view_delegate = getApp().showRoom() as [Views, InputDelegates];
 		WatchUi.switchToView(view_delegate[0], view_delegate[1], WatchUi.SLIDE_IMMEDIATE);
 	}
