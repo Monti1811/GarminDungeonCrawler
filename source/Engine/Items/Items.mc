@@ -36,7 +36,7 @@ module Items {
         };
 
     var weights as Array<Dictionary<Number, Numeric>>?;
-    var total_weight as Array<Numeric> = [0, 0, 0, 0];
+    var total_weight as Array<Numeric> = [0, 0, 0, 0, 0];
 
     function init(player_id as Number) as Void {
         

@@ -88,23 +88,57 @@ class ItemSpecificValues {
 			2003 => isBetweenDepth(depth, 1, 10) ? 1 + sqrt_depth : 0, // Greater Mana Potion (early-game only)
 		};
 
+		// Merchant weights
+		var merchant_weights = {
+			// Weapons
+			6 => isBetweenDepth(depth, 1, 10) ? 3 + sqrt_depth : 0, // Steel Spell (early-game only)
+			7 => isBetweenDepth(depth, 1, 10) ? 3 + sqrt_depth : 0, // Steel Staff (early-game only)
+			0 => isBetweenDepth(depth, 1, 10) ? 1 + sqrt_depth : 0, // Steel Axe (early-game only)
+			1 => isBetweenDepth(depth, 1, 10) ? 1 + sqrt_depth : 0, // Steel Bow (early-game only)
+			2 => isBetweenDepth(depth, 1, 10) ? 1 + sqrt_depth : 0, // Steel Dagger (early-game only)
+			5 => isBetweenDepth(depth, 1, 10) ? 1 + sqrt_depth : 0, // Steel Lance (early-game only)
+			8 => isBetweenDepth(depth, 1, 10) ? 1 + sqrt_depth : 0, // Steel Sword (early-game only)
+
+
+			// Armor
+			1004 => isBetweenDepth(depth, 1, 10) ? 3 + sqrt_depth : 0, // Steel Ring1 (early-game only)
+			1005 => isBetweenDepth(depth, 1, 10) ? 3 + sqrt_depth : 0, // Steel Ring2 (early-game only)
+			1000 => isBetweenDepth(depth, 1, 10) ? 1 + sqrt_depth : 0, // Steel Helmet (early-game only)
+			1001 => isBetweenDepth(depth, 1, 10) ? 1 + sqrt_depth : 0, // Steel Breastplate (early-game only)
+			1002 => isBetweenDepth(depth, 1, 10) ? 1 + sqrt_depth : 0, // Steel Gauntlets (early-game only)
+			1003 => isBetweenDepth(depth, 1, 10) ? 1 + sqrt_depth : 0, // Steel Shoes (early-game only)
+			1006 => isBetweenDepth(depth, 1, 10) ? 1 + sqrt_depth : 0, // Wood Shield (early-game only)
+			1007 => isBetweenDepth(depth, 1, 10) ? 1 + sqrt_depth : 0, // Green Backpack (early-game only)
+
+			1008 => depth >= 20 ? 1 + sqrt_depth : 0, // Life Amulet 
+			// Consumables
+			2000 => depth <= 20 ? 6 : 2 / sqrt_depth, // Health Potion (phased out as depth increases)
+			2001 => 9 + log_depth,                    // Mana Potion (scales well with mage needs)
+			2002 => depth >= 20 ? 4 + sqrt_depth : 0, // Greater Health Potion (appears at mid-depth)
+			2003 => depth >= 20 ? 5 + sqrt_depth : 0, // Greater Mana Potion (important for mages)
+			2004 => depth >= 50 ? 3 + log_depth : 0,  // Max Health Potion (rare, late-game only)
+			2005 => depth >= 50 ? 4 + log_depth : 0,  // Max Mana Potion (critical for mages)
+		};
+
 		var weights = [
 			weapon_weights,
 			armor_weights,
 			consumable_weights,
-			high_quality_weights
+			high_quality_weights,
+			merchant_weights
 		];
 
 		// Calculate total weights for each category
-		var total_weight = [0, 0, 0, 0];
+		var total_weight = [0, 0, 0, 0, 0];
 		var weight_keys = [
 			weapon_weights.keys(),
 			armor_weights.keys(),
 			consumable_weights.keys(),
-			high_quality_weights.keys()
+			high_quality_weights.keys(),
+			merchant_weights.keys()
 		];
 		
-		for (var i = 0; i < 4; i++) {
+		for (var i = 0; i < weight_keys.size(); i++) {
 			var keys = weight_keys[i];
 			for (var j = 0; j < keys.size(); j++) {
 				total_weight[i] += weights[i][keys[j]];

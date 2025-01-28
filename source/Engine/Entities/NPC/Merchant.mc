@@ -13,7 +13,7 @@ class Merchant extends NPC {
 	function addRandomItems() as Void {
 		var amount = MathUtil.random(1, 5);
 		for (var i = 0; i < amount; i++) {
-			var item = Items.createRandomWeightedItem(0);
+			var item = Items.createRandomWeightedItem(4);
 			items.add(item);
 		}
 	}	
@@ -59,6 +59,7 @@ class Merchant extends NPC {
 			items_data.add(item.save());
 		}
 		save_data["items"] = items_data;
+		save_data["dialog"] = dialog;
 		return save_data;
 	}
 
@@ -71,6 +72,9 @@ class Merchant extends NPC {
 				var item = Item.load(items_data[i]);
 				items.add(item);
 			}
+		}
+		if (save_data["dialog"] != null) {
+			dialog = save_data["dialog"] as String;
 		}
 	}
 	

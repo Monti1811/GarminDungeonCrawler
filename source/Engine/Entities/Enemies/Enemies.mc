@@ -2,7 +2,12 @@ import Toybox.Lang;
 
 module Enemies {
 
-    var enemies as Dictionary<Number, Symbol>?;
+    var enemies as Dictionary<Number, Symbol> = {
+        0 => :createFrog, 
+        1 => :createBat,
+        2 => :createDemon,
+        3 => :createOrc,
+    };
 
     var dungeon_enemies as Array<Dictionary<Symbol, Numeric>> = [
         { :id => 0, :cost => 3, :weight => 8 },
@@ -11,66 +16,14 @@ module Enemies {
         { :id => 3, :cost => 5, :weight => 8 }
     ];
 
-    var weights as Dictionary<Number, Numeric>?;
     var total_weight as Numeric = 0;
-    var character_enemies as Dictionary<Number, Dictionary<Number, [Numeric, Symbol]>> = {
-
-        1 => {
-            2 => [0.5, :createDemon],
-        },
-    };
 
     function init(player_id as Number) as Void {
-        enemies = {
-            0 => :createFrog, 
-            1 => :createBat,
-            2 => :createDemon,
-            3 => :createOrc,
-        };
-        var depth = $.Game.depth;
-        if (depth < 10) {
-            weights = {
-                0 => 5,
-                1 => 3,
-                2 => 1,
-                3 => 5,
-            };
-        } else if (depth < 20) {
-            weights = {
-                0 => 4,
-                1 => 3,
-                2 => 2,
-                3 => 5,
-            };
-        } else if (depth < 30) {
-            weights = {
-                0 => 3,
-                1 => 3,
-                2 => 3,
-                3 => 5,
-            };
-        } else {
-            weights = {
-                0 => 3,
-                1 => 3,
-                2 => 5,
-                3 => 3,
-            };
-        }
-        
-        var character_changes = character_enemies[player_id]; 
-        if (character_changes != null) {
-            var enemy_keys = character_changes.keys();
-            for (var j = 0; j < enemy_keys.size(); j++) {
-                var enemy = character_changes[enemy_keys[j]];
-                enemies[enemy_keys[j]] = enemy[1];
-                weights[enemy_keys[j]] = enemy[0];
-            }
-        }
+        var enemy_specific_values = new EnemySpecificValues(player_id);
+        var values = enemy_specific_values.getDungeonEnemyWeights();
         total_weight = 0;
-        var weight_keys = weights.keys();
-        for (var i = 0; i < weight_keys.size(); i++) {
-            total_weight += weights[weight_keys[i]];
+        for (var i = 0; i < dungeon_enemies.size(); i++) {
+            total_weight += dungeon_enemies[i][:weight];
         }
     }
 
@@ -106,11 +59,10 @@ module Enemies {
     function createRandomWeightedEnemy() as Enemy? {
         var rand = MathUtil.random(0, total_weight - 1);
         var current_weight = 0;
-        var weight_keys = weights.keys();
-        for (var i = 0; i < weight_keys.size(); i++) {
-            current_weight += weights[weight_keys[i]];
+        for (var i = 0; i < dungeon_enemies.size(); i++) {
+            current_weight += dungeon_enemies[i][:weight];
             if (rand < current_weight) {
-                var method = new Method(self, enemies[weight_keys[i]]);
+                var method = new Method(self, enemies[dungeon_enemies[i][:id]]);
                 return method.invoke() as Enemy;
             }
         }

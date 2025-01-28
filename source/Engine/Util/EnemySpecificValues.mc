@@ -1,0 +1,52 @@
+import Toybox.Lang;
+
+class EnemySpecificValues {
+
+	var _player_id as Number;
+
+	function initialize(player_id as Number) {
+		_player_id = player_id;
+	}
+
+	function getDungeonEnemyWeights() as [Array, Array] {
+		switch (_player_id) {
+			case 0:
+				return getDungeonEnemyWeightsWarrior();
+			case 1:
+				return getDungeonEnemyWeightsMage();
+			case 999:
+				return getDungeonEnemyWeightsGod();
+			default:
+				return [[], []];
+		}
+	}
+
+	private function isBetweenDepth(depth as Number, min as Number, max as Number) as Boolean {
+		return depth >= min && depth <= max;
+	}
+
+	function getDungeonEnemyWeightsWarrior() as [Array, Array] {
+		return [[], []]; 
+	}
+
+	function getDungeonEnemyWeightsGod() as [Array, Array] {
+		return [[], []];
+	}
+
+	function getDungeonEnemyWeightsMage() as [Array, Array] {
+		var depth = $.Game.depth;
+		
+		// Scaling functions
+		var log_depth = Math.log(depth + 1, 2);       // Logarithmic scaling
+		var sqrt_depth = Math.sqrt(depth);         // Square root scaling
+
+		var enemy_weights = [
+			{ :id => 0, :cost => 3, :weight => 8 },
+			{ :id => 1, :cost => 7, :weight => 8 },
+			{ :id => 2, :cost => 25, :weight => 4 },
+			{ :id => 3, :cost => 5, :weight => 8 }
+		];
+
+		return [enemy_weights, enemy_weights];
+	}
+}

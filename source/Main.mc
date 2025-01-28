@@ -311,7 +311,7 @@ module Main {
 		return total_weight;
 	}
 
-	function chooseEnemies(allocated_points as Number) as Array {
+	function chooseEnemies(allocated_points as Number) as Array<Enemy> {
 		var chosen_enemies = [];
 		var remaining_points = allocated_points;
 
@@ -342,7 +342,8 @@ module Main {
 
 			// Add chosen enemy to the list and subtract its cost
 			if (chosen_enemy) {
-				chosen_enemies.add(chosen_enemy);
+				var enemy = Enemies.createEnemyFromId(chosen_enemy[:id]);
+				chosen_enemies.add(enemy);
 				remaining_points -= chosen_enemy[:cost];
 			}
 		}
