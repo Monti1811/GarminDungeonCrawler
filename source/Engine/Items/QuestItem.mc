@@ -1,6 +1,6 @@
 import Toybox.Lang;
 
-class QuestItem extends Item {
+class KeyItem extends Item {
 	
 	function initialize() {
 		Item.initialize();

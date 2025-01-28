@@ -15,7 +15,7 @@ class DCItemInfoValuesView extends WatchUi.View {
 		WEAPON=> :showWeaponStats,
 		ARMOR=> :showArmorStats,
 		CONSUMABLE=> :showConsumableStats,
-		QUEST=> :showKeyStats,
+		KEY=> :showKeyStats,
 		CUSTOM=> :showCustomStats,
 	};
 	private var fn as Method;
@@ -145,8 +145,8 @@ class DCItemInfoValuesView extends WatchUi.View {
 	}
 
 	function showKeyStats(dc) {
-		var questItem = _item as QuestItem;
-		drawText(dc, "Key Item " + questItem.getName(), 0, 60, null, null);
+		var keyItem = _item as KeyItem;
+		drawText(dc, "Key Item " + keyItem.getName(), 0, 60, null, null);
 
 
 	}

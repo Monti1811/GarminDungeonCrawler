@@ -6,7 +6,7 @@ IDs for items
 0-999: Weapons
 1000-1999: Armor
 2000-2999: Consumables
-3000-3999: Quest Items
+3000-3999: Key Items
 
 */
 
@@ -14,7 +14,7 @@ enum ItemType {
 	WEAPON,
 	ARMOR,
 	CONSUMABLE,
-	QUEST,
+	KEY,
 	CUSTOM
 }
 

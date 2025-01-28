@@ -19,7 +19,7 @@ module Constants {
 		WEAPON => "Weapon",
 		ARMOR => "Armor",
 		CONSUMABLE => "Consumable",
-		QUEST => "Key"
+		KEY => "Key"
 	};
 
 	public const ATT_SYMBOL_TO_STR = {
