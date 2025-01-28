@@ -71,12 +71,28 @@ class DCGameMenuDelegate extends WatchUi.Menu2InputDelegate {
             null
         ));
         
+        updateItemList();
         item_list.sort(inventory_sort_comparator);
         for (var i = 0; i < item_list.size(); i++) {
             var item = item_list[i] as Item;
             inventoryMenu.addItem(createInventoryMenuItem(item));
         }
         WatchUi.pushView(inventoryMenu, new DCInventoryDelegate(self), WatchUi.SLIDE_UP);
+    }
+
+    function updateItemList() as Void {
+        var inventory = $.getApp().getPlayer().getInventory();
+        var items = inventory.getItems();
+        var inventory_filter = self.inventory_filter as Array<ItemType>?;
+        if (inventory_filter != null) {
+            for (var i = items.size() - 1; i >= 0; i--) {
+                var item = items[i];
+                if (inventory_filter.indexOf(item.getItemType()) == -1) {
+                    items.remove(item);
+                }
+            }
+        }
+        self.item_list = items;
     }
 
     function openMap() as Void {
@@ -182,21 +198,6 @@ class DCInventoryFilterDelegate extends WatchUi.Menu2InputDelegate {
         _delegate = delegate;
     }
 
-    function updateItemList() as Void {
-        var inventory = $.getApp().getPlayer().getInventory();
-        var items = inventory.getItems();
-        var inventory_filter = _delegate.inventory_filter as Array<ItemType>?;
-        if (inventory_filter != null) {
-            for (var i = items.size() - 1; i >= 0; i--) {
-                var item = items[i];
-                if (inventory_filter.indexOf(item.getItemType()) == -1) {
-                    items.remove(item);
-                }
-            }
-        }
-        _delegate.item_list = items;
-    }
-
     function addInventoryFilter(filter as ItemType) as Void {
         var inventory_filter = _delegate.inventory_filter as Array<ItemType>?;
         if (inventory_filter == null) {
@@ -213,7 +214,6 @@ class DCInventoryFilterDelegate extends WatchUi.Menu2InputDelegate {
             }
             _delegate.inventory_filter_str += $.Constants.ITEMTYPE_TO_STR[_delegate.inventory_filter[i]];
         }
-        updateItemList();
         //_delegate.inventory_filter_str += " Items";
     }
 
@@ -307,7 +307,7 @@ class DCOptionsDelegate extends WatchUi.Menu2InputDelegate {
                     equipMenu.addItem(new WatchUi.MenuItem("Left Hand", null, :left, null));
                     equipMenu.addItem(new WatchUi.MenuItem("Right Hand", null, :right, null));
                     WatchUi.pushView(equipMenu, new DCEquipOptionsDelegate(_item, _delegate), WatchUi.SLIDE_UP);
-                    break;
+                    return;
                 }
                 var success = getApp().getPlayer().equipItem(_item, _item.getItemSlot(), true);
                 if (!success) {
@@ -360,6 +360,7 @@ class DCEquipOptionsDelegate extends WatchUi.Menu2InputDelegate {
     }
 
     private function updateInventoryMenu() as Void {
+        
         _delegate.openInventory();
     }
 

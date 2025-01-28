@@ -16,7 +16,7 @@ class ValueCompare {
 		var val1 = item1.value;
 		var val2 = item2.value;
 
-		if (is_ascending) {
+		if (!is_ascending) {
 			if (val2 < val1) {
 				return -1;
 			} else if (val2 > val1) {
