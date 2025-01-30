@@ -193,7 +193,7 @@ class Turn {
         if (_player.getEnergy() < MIN_ENERGY) {
             return;
         }
-        _player.doTurnEnergyDelta(-MIN_ENERGY, 0, MIN_ENERGY);
+        _player.doTurnEnergyDelta(-MIN_ENERGY, 0, 2 * MIN_ENERGY);
 
         // Check if player can attack enemy, if yes do so and don't move
         var range = _player.getRange(null) as [Numeric, RangeType];
@@ -264,7 +264,7 @@ class Turn {
                 var enemy = enemies[i];
                 var curr_pos = enemy.getPos();
                 if (enemy.attackNearbyPlayer(_map_data[:map], target_pos)) {
-                    enemy.doTurnEnergyDelta(-MIN_ENERGY, 0, MIN_ENERGY);
+                    enemy.doTurnEnergyDelta(-MIN_ENERGY, 0, 2 * MIN_ENERGY);
                     enemies.remove(enemy);
                     continue;
                 }   
@@ -272,11 +272,11 @@ class Turn {
                 if (next_pos != curr_pos) {
                     if (MapUtil.isPosPlayer(_map_data[:map], next_pos)) {
                         Battle.attackPlayer(enemy, _player);
-                        enemy.doTurnEnergyDelta(-MIN_ENERGY, 0, MIN_ENERGY);
+                        enemy.doTurnEnergyDelta(-MIN_ENERGY, 0, 2 * MIN_ENERGY);
                         enemies.remove(enemy);
                     } else {
                         _room.moveEnemy(enemy);
-                        enemy.doTurnEnergyDelta(-MIN_ENERGY, 0, MIN_ENERGY);
+                        enemy.doTurnEnergyDelta(-MIN_ENERGY, 0, 2 * MIN_ENERGY);
                         enemies.remove(enemy);
                     }
                 }

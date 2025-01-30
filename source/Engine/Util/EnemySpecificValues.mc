@@ -44,7 +44,8 @@ class EnemySpecificValues {
 			{:id => 0, :cost => 3, :weight => depth <= 10 ? 16 : 16 / log_depth }, 		// Frog
 			{:id => 1, :cost => 7, :weight => depth <= 10 ? 16 : 16 / log_depth },		// Bat
 			{:id => 2, :cost => 25, :weight => depth <= 10 ? 0 : 0 + log_depth },		// Demon
-			{:id => 3, :cost => 5, :weight => depth <= 10 ? 16 : 16 / log_depth }		// Orc
+			{:id => 3, :cost => 5, :weight => depth <= 10 ? 16 : 16 / log_depth },		// Orc
+			{:id => 4, :cost => 5, :weight => depth <= 10 ? 16 : 16 / log_depth }		// Imp
 		];
 
 		return [enemy_weights, enemy_weights];

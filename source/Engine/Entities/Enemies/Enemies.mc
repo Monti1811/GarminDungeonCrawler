@@ -7,13 +7,15 @@ module Enemies {
         1 => :createBat,
         2 => :createDemon,
         3 => :createOrc,
+        4 => :createImp,
     };
 
     var dungeon_enemies as Array<Dictionary<Symbol, Numeric>> = [
         { :id => 0, :cost => 3, :weight => 8 },
         { :id => 1, :cost => 7, :weight => 8 },
         { :id => 2, :cost => 25, :weight => 4 },
-        { :id => 3, :cost => 5, :weight => 8 }
+        { :id => 3, :cost => 5, :weight => 8 },
+        { :id => 4, :cost => 5, :weight => 8 },
     ];
 
     var total_weight as Numeric = 0;
@@ -43,6 +45,10 @@ module Enemies {
 
     function createOrc() as Enemy {
         return new Orc();
+    }
+
+    function createImp() as Enemy {
+        return new Imp();
     }
 
     function createEnemyFromId(id as Number) as Enemy {

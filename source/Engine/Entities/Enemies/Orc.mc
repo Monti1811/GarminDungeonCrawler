@@ -11,7 +11,7 @@ class Orc extends Enemy {
         damage = 5;
         armor = 2;
         kill_experience = 10;
-        energy_per_turn = 50; // every 2 turns
+        energy_per_turn = 67; // every 3 turns
     }
 
     function getSprite() as ResourceId {
