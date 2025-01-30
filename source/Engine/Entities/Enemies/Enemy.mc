@@ -137,7 +137,7 @@ class Enemy extends Entity {
 	}
 
 	function save() as Dictionary {
-		var data = {};
+		var data = Entity.save();
 		data["id"] = id;
 		data["pos"] = pos;
 		data["next_pos"] = next_pos;
@@ -167,6 +167,7 @@ class Enemy extends Entity {
 	}
 
 	function onLoad(data as Dictionary) as Void {
+		Entity.onLoad(data);
 		if (data["pos"] != null) {
 			pos = data["pos"] as Point2D;
 		}

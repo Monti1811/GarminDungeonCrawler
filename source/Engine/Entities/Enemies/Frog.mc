@@ -29,8 +29,10 @@ class Frog extends Enemy {
 	}
 
 	function onTurnDone() as Void {
+		if (has_moved) {
+			move_up = !move_up;
+		}
 		Enemy.onTurnDone();
-		move_up = !move_up;
 	}
 
 	function onLoad(save_data as Dictionary) as Void {

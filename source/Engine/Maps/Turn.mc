@@ -67,7 +67,7 @@ class Turn {
         // Resolve enemy actions
         resolveEnemyActions(_room.getEnemies().values(), _player_pos);
 
-        _view.getTimer().start(new Method(_view, (:removeDamageTexts)), 1000, false);
+        _view.getTimer().start(new Lang.Method(_view, (:removeDamageTexts)), 1000, false);
 
         // Do stuff after the turn is over
         _player.onTurnDone();
@@ -114,16 +114,16 @@ class Turn {
 		var screen_size_y = Math.ceil(360.0/tile_height).toNumber();
         switch (direction) {
             case UP:
-                new_pos = [next_pos[0], screen_size_y - 1];
+                new_pos = [next_pos[0], screen_size_y - 1] as Point2D;
                 break;
             case DOWN:
-                new_pos = [next_pos[0], 0];
+                new_pos = [next_pos[0], 0] as Point2D;
                 break;
             case LEFT:
-                new_pos = [screen_size_x - 1, next_pos[1]];
+                new_pos = [screen_size_x - 1, next_pos[1]] as Point2D;
                 break;
             case RIGHT:
-                new_pos = [0, next_pos[1]];
+                new_pos = [0, next_pos[1]] as Point2D;
                 break;
             case STANDING:
 			case SKIPPING:
@@ -182,8 +182,8 @@ class Turn {
         app.setCurrentDungeon(null);
         $.Game.addToDepth(1);
         var progressBar = new WatchUi.ProgressBar(
-        "Creating next dungeon...",
-        0.0
+            "Creating next dungeon...",
+            0.0
         );
         WatchUi.switchToView(progressBar, new DCNewDungeonProgressDelegate(progressBar), WatchUi.SLIDE_UP);
     }
@@ -193,26 +193,25 @@ class Turn {
         if (_player.getEnergy() < MIN_ENERGY) {
             return;
         }
+        _player.doTurnEnergyDelta(-MIN_ENERGY, 0, MIN_ENERGY);
 
         // Check if player can attack enemy, if yes do so and don't move
         var range = _player.getRange(null) as [Numeric, RangeType];
         var attackable_enemies = MapUtil.getEnemyInRange(
             map, _player_pos, range[0], range[1], direction
-        );
+        ) ;
         var player_attacked = false;
-        if (attackable_enemies != null) {
-            for (var i = 0; i < attackable_enemies.size(); i++) {
-                var attackable_enemy = attackable_enemies[i];
-                if (attackable_enemy == null) {
-                    continue;
-                }
-                var death = Battle.attackEnemy(_player, attackable_enemy);
-                if (death) {
-                    _room.removeEnemy(attackable_enemy);
-                    _room.dropLoot(attackable_enemy);
-                }
-                player_attacked = true;
+        for (var i = 0; i < attackable_enemies.size(); i++) {
+            var attackable_enemy = attackable_enemies[i];
+            if (attackable_enemy == null) {
+                continue;
             }
+            var death = Battle.attackEnemy(_player, attackable_enemy);
+            if (death) {
+                _room.removeEnemy(attackable_enemy);
+                _room.dropLoot(attackable_enemy);
+            }
+            player_attacked = true;
         }
         // If the player did not attack, try to move
         if (!player_attacked) {
@@ -265,6 +264,7 @@ class Turn {
                 var enemy = enemies[i];
                 var curr_pos = enemy.getPos();
                 if (enemy.attackNearbyPlayer(_map_data[:map], target_pos)) {
+                    enemy.doTurnEnergyDelta(-MIN_ENERGY, 0, MIN_ENERGY);
                     enemies.remove(enemy);
                     continue;
                 }   
@@ -272,9 +272,11 @@ class Turn {
                 if (next_pos != curr_pos) {
                     if (MapUtil.isPosPlayer(_map_data[:map], next_pos)) {
                         Battle.attackPlayer(enemy, _player);
+                        enemy.doTurnEnergyDelta(-MIN_ENERGY, 0, MIN_ENERGY);
                         enemies.remove(enemy);
                     } else {
                         _room.moveEnemy(enemy);
+                        enemy.doTurnEnergyDelta(-MIN_ENERGY, 0, MIN_ENERGY);
                         enemies.remove(enemy);
                     }
                 }

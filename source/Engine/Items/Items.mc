@@ -163,7 +163,7 @@ module Items {
 
     function createItemFromId(id as Number) as Item {
         var symbol = items[id] as Symbol;
-        var method = new Method(self, symbol);
+        var method = new Lang.Method(self, symbol);
         return method.invoke() as Item;
     }
 
@@ -172,7 +172,7 @@ module Items {
         // Remove gold from random items
         item_keys.remove(5000);
         var rand = MathUtil.random(0, item_keys.size() - 1);
-        var method = new Method(self, items[item_keys[rand]]);
+        var method = new Lang.Method(self, items[item_keys[rand]]);
         return method.invoke() as Item;
     }
 
@@ -183,7 +183,7 @@ module Items {
         for (var i = 0; i < weight_keys.size(); i++) {
             current_weight += weights[type][weight_keys[i]];
             if (rand < current_weight) {
-                var method = new Method(self, items[weight_keys[i]]);
+                var method = new Lang.Method(self, items[weight_keys[i]]);
                 return method.invoke() as Item;
             }
         }

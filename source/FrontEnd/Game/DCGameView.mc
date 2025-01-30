@@ -156,7 +156,7 @@ class DCGameView extends WatchUi.View {
         if (player.second_bar == null) {
             return;
         }
-        var method = new Method(self, bar_to_fn[player.second_bar]);
+        var method = new Lang.Method(self, bar_to_fn[player.second_bar]);
         var bar_values = method.invoke(player) as [Numeric, Numeric];
         // Draw second bar
         dc.setColor(bar_values[0], Graphics.COLOR_BLACK);

@@ -90,7 +90,7 @@ class DCShopBuyOptionsDelegate extends WatchUi.Menu2InputDelegate {
         var type = menuItem.getId() as Symbol;
         switch (type) {
             case :buy:
-                WatchUi.pushView(new DCAmountPicker(self.item.getAmount(), self.item.getValue()), new DCAmountPickerDelegate(new Method(self, :doBuy)), WatchUi.SLIDE_UP);
+                WatchUi.pushView(new DCAmountPicker(self.item.getAmount(), self.item.getValue()), new DCAmountPickerDelegate(new Lang.Method(self, :doBuy)), WatchUi.SLIDE_UP);
                 break;
             case :info:
                 showInfo(self.item);
@@ -171,7 +171,7 @@ class DCShopSellOptionsDelegate extends WatchUi.Menu2InputDelegate {
         var type = menuItem.getId() as Symbol;
         switch (type) {
             case :sell:
-                WatchUi.pushView(new DCAmountPicker(self.item.getAmount(), self.item.getSellValue()), new DCAmountPickerDelegate(new Method(self, :doSell)), WatchUi.SLIDE_UP);
+                WatchUi.pushView(new DCAmountPicker(self.item.getAmount(), self.item.getSellValue()), new DCAmountPickerDelegate(new Lang.Method(self, :doSell)), WatchUi.SLIDE_UP);
                 break;
             case :info:
                 showInfo(self.item);

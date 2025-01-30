@@ -50,7 +50,7 @@ class Player extends Entity {
 
 	private function isSameAmmunition(item as Item) as Boolean {
 		var ammunition = equipped[AMMUNITION];
-		if (ammunition != null && item != null) {
+		if (ammunition != null) {
 			return ammunition.id == item.id;
 		}
 		return false;
@@ -178,7 +178,7 @@ class Player extends Entity {
 
 	function onDeath() as Void {
 		// Check if a life amulet was equipped
-		var accessory = equipped[ACCESSORY] as Item;
+		var accessory = equipped[ACCESSORY] as Item?;
 		if (accessory != null && accessory instanceof LifeAmulet) {
 			var amulet = accessory as LifeAmulet;
 			amulet.onDeath(me);
@@ -325,7 +325,7 @@ class Player extends Entity {
 		var base_attack = 0;
 		var weapon_left = getWeaponItem(LEFT_HAND);
 		var weapon_right = getWeaponItem(RIGHT_HAND);
-		var weapons = [];
+		var weapons = [] as Array<WeaponItem>;
 		if (weapon_left != null && weapon_left.canAttack(enemy)) {
 			weapons.add(weapon_left);
 		}
@@ -486,6 +486,7 @@ class Player extends Entity {
 		var save_data = {
 			"id" => id,
 			"name" => name,
+			"energy" => energy,
 			"current_health" => current_health,
 			"maxHealth" => maxHealth,
 			"level" => level,
@@ -519,6 +520,7 @@ class Player extends Entity {
 	}
 
 	function onLoad(save_data as Dictionary) as Void {
+		Entity.onLoad(save_data);
 		if (save_data["current_health"] != null) {
 			current_health = save_data["current_health"] as Number;
 		}

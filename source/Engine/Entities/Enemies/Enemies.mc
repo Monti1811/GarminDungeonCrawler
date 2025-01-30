@@ -46,14 +46,14 @@ module Enemies {
     }
 
     function createEnemyFromId(id as Number) as Enemy {
-        var method = new Method(self, enemies[id]);
+        var method = new Lang.Method(self, enemies[id]);
         return method.invoke() as Enemy;
     }
 
     function createRandomEnemy() as Enemy {
         var enemy_keys = enemies.keys();
         var rand = MathUtil.random(0, enemy_keys.size() - 1);
-        var method = new Method(self, enemies[rand]);
+        var method = new Lang.Method(self, enemies[rand]);
         return method.invoke() as Enemy;
     }
 
@@ -63,7 +63,7 @@ module Enemies {
         for (var i = 0; i < dungeon_enemies.size(); i++) {
             current_weight += dungeon_enemies[i][:weight];
             if (rand < current_weight) {
-                var method = new Method(self, enemies[dungeon_enemies[i][:id]]);
+                var method = new Lang.Method(self, enemies[dungeon_enemies[i][:id]]);
                 return method.invoke() as Enemy;
             }
         }

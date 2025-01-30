@@ -17,14 +17,14 @@ module NPCs {
 
 
 	function createNPCFromId(id as Number) as NPC {
-		var method = new Method(self, npcs[id]);
+		var method = new Lang.Method(self, npcs[id]);
 		return method.invoke() as NPC;
 	}
 
 	function createRandomNPC() as NPC {
 		var npc_keys = npcs.keys();
 		var rand = MathUtil.random(0, npc_keys.size() - 1);
-		var method = new Method(self, npcs[npc_keys[rand]]);
+		var method = new Lang.Method(self, npcs[npc_keys[rand]]);
 		return method.invoke() as NPC;
 	}
 
@@ -35,7 +35,7 @@ module NPCs {
 		for (var i = 0; i < weight_keys.size(); i++) {
 			current_weight += weights[weight_keys[i]];
 			if (rand < current_weight) {
-				var method = new Method(self, npcs[weight_keys[i]]);
+				var method = new Lang.Method(self, npcs[weight_keys[i]]);
 				return method.invoke() as NPC;
 			}
 		}

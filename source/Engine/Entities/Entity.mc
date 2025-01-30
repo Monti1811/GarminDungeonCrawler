@@ -38,23 +38,32 @@ class Entity {
 		self.energy += energy;
 	}
 
-	function addTurnEnergy() {
-		self.energy += energy_per_turn;
+	function doTurnEnergyDelta(delta as Number, min as Number, max as Number) as Boolean {
+		self.energy = MathUtil.clamp(self.energy + delta, min, max);
+		return true;
 	}
 
 	function onTurnDone() as Void {
-		self.addTurnEnergy();
+		self.doTurnEnergyDelta(energy_per_turn, 0, 100);
 	}
 
 	function save() as Dictionary<PropertyKeyType, PropertyValueType> {
 		var save_data = {};
 		save_data["name"] = name;
+		save_data["energy"] = energy;
 		return save_data;
 	}
 
 	static function load(save_data as Dictionary<PropertyKeyType, PropertyValueType>) as Entity {
 		var entity = new Entity();
-		entity.name = save_data["name"] as String;
+		entity.onLoad(save_data);
 		return entity;
+	}
+
+	function onLoad(save_data as Dictionary<PropertyKeyType, PropertyValueType>) as Void {
+		name = save_data["name"] as String;
+		if (save_data["energy"] != null) {
+			energy = save_data["energy"] as Number;
+		}
 	}
 }
