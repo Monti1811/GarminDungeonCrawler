@@ -246,6 +246,7 @@ module Main {
 		var depth = $.Game.depth;
 		// Scaling factors
 		var base_enemies = 1;                         // Minimum enemies per room
+		var base_enemy_points = 1;                    // Minimum enemy difficulty points
 		var depth_sqrt = Math.sqrt(depth);             // Depth scaling factor
 		var room_size_scaling = room_size / 50;       // Larger rooms have more enemies
 		var depth_scaling = depth_sqrt / 2;          // Depth increases the number of enemies
@@ -266,7 +267,7 @@ module Main {
 		num_enemies = MathUtil.max(1, Math.floor(num_enemies));
 
 		// Determine enemy difficulty points
-		var enemy_points = Math.floor(depth * difficulty_factor + depth_sqrt * room_size_scaling);
+		var enemy_points = base_enemy_points + Math.floor(depth * difficulty_factor + depth_sqrt * room_size_scaling);
 
 		return [
 			num_enemies,        // Number of enemies
@@ -293,17 +294,18 @@ module Main {
 		return enemies;
 	}
 
-	function filterEnemiesByPoints(enemies as Array, points as Number) as Array {
+	function filterEnemiesByPoints(enemies as Array<Dictionary<Symbol, Numeric>>, points as Number) as Array {
 		var filtered = [];
 		for (var i = 0; i < enemies.size(); i++) {
-			if (enemies[i][:cost] <= points) {
-				filtered.add(enemies[i]);
+			var enemy = enemies[i];
+			if (enemy[:cost] <= points) {
+				filtered.add(enemy);
 			}
 		}
 		return filtered;
 	}
 
-	function getTotalWeight(enemies as Array) as Number {
+	function getTotalWeight(enemies as Array<Dictionary<Symbol, Numeric>>) as Number {
 		var total_weight = 0;
 		for (var i = 0; i < enemies.size(); i++) {
 			total_weight += enemies[i][:weight];

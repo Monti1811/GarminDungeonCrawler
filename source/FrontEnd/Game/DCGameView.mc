@@ -161,7 +161,7 @@ class DCGameView extends WatchUi.View {
         // Draw second bar
         dc.setColor(bar_values[0], Graphics.COLOR_BLACK);
         dc.setPenWidth(5);
-        var val = MathUtil.floor(MathUtil.ceil(10 + bar_values[1], 80), 11);
+        var val = MathUtil.clamp(10 + bar_values[1], 11, 80);
         dc.drawArc(180, 180, 175, Graphics.ARC_CLOCKWISE, val, 10);
         // Draw health bar outline
         dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_BLACK);

@@ -34,7 +34,7 @@ class DCMapView extends WatchUi.View {
 		if (new_x > _drawable_size[0] || new_y > _drawable_size[1]) {
 			Toybox.System.println("Can't move map down in x or y direction");
 		}
-		_pos[0] = MathUtil.ceil(MathUtil.floor(new_x, _drawable_size[0]), 0);
-		_pos[1] = MathUtil.ceil(MathUtil.floor(new_y, _drawable_size[1]), 0);
+		_pos[0] = MathUtil.clamp(new_x, 0, _drawable_size[0]);
+		_pos[1] = MathUtil.clamp(new_y, 0, _drawable_size[1]);
 	}
 }
