@@ -332,18 +332,19 @@ module Main {
 			// Randomly select an enemy based on weights
 			var roll = MathUtil.rand() * total_weight;
 			var accumulated_weight = 0;
-			var chosen_enemy = null;
+			var chosen_enemy = null as Dictionary<Symbol, Numeric>?;
 
 			for (var i = 0; i < available_enemies.size(); i++) {
-				accumulated_weight += available_enemies[i][:weight];
+				var enemy = available_enemies[i] as Dictionary<Symbol, Numeric>;
+				accumulated_weight += enemy[:weight];
 				if (roll <= accumulated_weight) {
-					chosen_enemy = available_enemies[i];
+					chosen_enemy = enemy;
 					break;
 				}
 			}
 
 			// Add chosen enemy to the list and subtract its cost
-			if (chosen_enemy) {
+			if (chosen_enemy != null) {
 				var enemy = Enemies.createEnemyFromId(chosen_enemy[:id]);
 				chosen_enemies.add(enemy);
 				remaining_points -= chosen_enemy[:cost];

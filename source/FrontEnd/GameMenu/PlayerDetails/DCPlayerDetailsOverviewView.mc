@@ -28,6 +28,11 @@ class DCPlayerDetailsOverviewView extends WatchUi.View {
 	}
 	
 	
+	function drawTextPair(dc, left_text_x, right_text_x, y, label, value) {
+		dc.drawText(left_text_x, y, _font, label, Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER);
+		dc.drawText(right_text_x, y, _font, ": " + value, Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER);
+	}
+
 	function onUpdate(dc) {
 		dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_BLACK);
 		dc.clear();
@@ -40,29 +45,31 @@ class DCPlayerDetailsOverviewView extends WatchUi.View {
 		var left_text_x = x_axis;
 		var right_text_x = x_axis + 60; // Adjust this value as needed for spacing
 
-		// Current level
-		dc.drawText(left_text_x, y_axis + 60, _font, "LVL", Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER);
-		dc.drawText(right_text_x, y_axis + 60, _font, ": " + _player.getLevel().toString(), Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER);
 
-		// Current experience
-		dc.drawText(left_text_x, y_axis + 60 + space_between, _font, "EXP", Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER);
-		dc.drawText(right_text_x, y_axis + 60 + space_between, _font, ": " + _player.getExperience() + "/" + _player.getNextLevelExperience(), Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER);
+		var text_pairs = [
+			{ :label => "LVL", :value => _player.getLevel().toString() },
+			{ :label => "EXP", :value => _player.getExperience() + "/" + _player.getNextLevelExperience() },
+			{ :label => "HP", :value => _player.getHealth() + "/" + _player.getMaxHealth() },
+			{ :label => "ATK", :value => _player.getAttack(null).toString() },
+			{ :label => "DEF", :value => _player.getDefense(null).toString() },
+			{ :label => "GOLD", :value => _player.getGold().toString() }
+		];
 
-		// Current health
-		dc.drawText(left_text_x, y_axis + 60 + 2 * space_between, _font, "HP", Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER);
-		dc.drawText(right_text_x, y_axis + 60 + 2 * space_between, _font, ": " + _player.getHealth() + "/" + _player.getMaxHealth(), Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER);
+		if (_player.second_bar == :mana) {
+			text_pairs = [
+				{ :label => "LVL", :value => _player.getLevel().toString() },
+				{ :label => "EXP", :value => _player.getExperience() + "/" + _player.getNextLevelExperience() },
+				{ :label => "HP", :value => _player.getHealth() + "/" + _player.getMaxHealth() },
+				{ :label => "MP", :value => _player.getCurrentMana() + "/" + _player.getMaxMana() },
+				{ :label => "ATK", :value => _player.getAttack(null).toString() },
+				{ :label => "DEF", :value => _player.getDefense(null).toString() },
+				{ :label => "GOLD", :value => _player.getGold().toString() }
+			];
+		}
 
-		// Current attack
-		dc.drawText(left_text_x, y_axis + 60 + 3 * space_between, _font, "ATK", Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER);
-		dc.drawText(right_text_x, y_axis + 60 + 3 * space_between, _font, ": " + _player.getAttack(null).toString(), Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER);
-
-		// Current defense
-		dc.drawText(left_text_x, y_axis + 60 + 4 * space_between, _font, "DEF", Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER);
-		dc.drawText(right_text_x, y_axis + 60 + 4 * space_between, _font, ": " + _player.getDefense(null).toString(), Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER);
-
-		// Current gold
-		dc.drawText(left_text_x, y_axis + 60 + 5 * space_between, _font, "GOLD", Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER);
-		dc.drawText(right_text_x, y_axis + 60 + 5 * space_between, _font, ": " + _player.getGold().toString(), Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER);
+		for (var i = 0; i < text_pairs.size(); i++) {
+			drawTextPair(dc, left_text_x, right_text_x, y_axis + 60 + i * space_between, text_pairs[i][:label], text_pairs[i][:value]);
+		}
 	}
 
 	

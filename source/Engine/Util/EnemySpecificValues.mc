@@ -41,10 +41,10 @@ class EnemySpecificValues {
 		var sqrt_depth = Math.sqrt(depth);         // Square root scaling
 
 		var enemy_weights = [
-			{ :id => 0, :cost => 3, :weight => 8 },
-			{ :id => 1, :cost => 7, :weight => 8 },
-			{ :id => 2, :cost => 25, :weight => 4 },
-			{ :id => 3, :cost => 5, :weight => 8 }
+			{:id => 0, :cost => 3, :weight => depth <= 10 ? 8 : 8 / log_depth }, 		// Frog
+			{:id => 1, :cost => 7, :weight => depth <= 10 ? 8 : 8 / log_depth },		// Bat
+			{:id => 2, :cost => 25, :weight => depth <= 10 ? 0 : 0 + log_depth },		// Demon
+			{:id => 3, :cost => 5, :weight => depth <= 10 ? 8 : 8 / log_depth }		// Orc
 		];
 
 		return [enemy_weights, enemy_weights];

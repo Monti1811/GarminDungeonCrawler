@@ -21,6 +21,7 @@ module Enemies {
     function init(player_id as Number) as Void {
         var enemy_specific_values = new EnemySpecificValues(player_id);
         var values = enemy_specific_values.getDungeonEnemyWeights();
+        dungeon_enemies = values[0];
         total_weight = 0;
         for (var i = 0; i < dungeon_enemies.size(); i++) {
             total_weight += dungeon_enemies[i][:weight];
