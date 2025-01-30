@@ -6,6 +6,7 @@ module Players {
         0 => :createWarrior,
         1 => :createMage,
         2 => :createArcher,
+        3 => :createNameless,
 
         999 => :createGod,
     };
@@ -21,6 +22,10 @@ module Players {
 
     function createArcher(name as String) as Player {
         return new Archer(name);
+    }
+
+    function createNameless(name as String) as Player {
+        return new Nameless(name);
     }
 
     function createGod(name as String) as Player {

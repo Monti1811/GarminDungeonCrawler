@@ -246,7 +246,7 @@ module Main {
 		var depth = $.Game.depth;
 		// Scaling factors
 		var base_enemies = 1;                         // Minimum enemies per room
-		var base_enemy_points = 1;                    // Minimum enemy difficulty points
+		var base_enemy_points = 2;                    // Minimum enemy difficulty points
 		var depth_sqrt = Math.sqrt(depth);             // Depth scaling factor
 		var room_size_scaling = room_size / 50;       // Larger rooms have more enemies
 		var depth_scaling = depth_sqrt / 2;          // Depth increases the number of enemies
@@ -256,7 +256,7 @@ module Main {
 		var num_enemies = base_enemies + room_size_scaling + depth_scaling * difficulty_scaling;
 
 		if (MathUtil.random(0, 100) < 10) {
-			// 30% chance of no enemies in the room
+			// 10% chance of no enemies in the room
 			return [
 				0,
 				0

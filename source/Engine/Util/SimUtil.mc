@@ -15,6 +15,7 @@ module SimUtil {
             new Warrior("Warrior"),
             new Mage("Mage"),
             new Archer("Archer"),
+            new Nameless("Nameless"),
             new God("God"),
         ];
     }

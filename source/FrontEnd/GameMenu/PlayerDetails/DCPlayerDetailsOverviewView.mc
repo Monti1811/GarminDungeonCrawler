@@ -41,7 +41,7 @@ class DCPlayerDetailsOverviewView extends WatchUi.View {
 			cancel.draw(dc);
 		}
 		dc.drawScaledBitmap(50, 150, 60, 60, _playerIcon);
-		dc.drawText(180, y_axis, Graphics.FONT_MEDIUM, _player.getName(), Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER);
+		dc.drawText(180, y_axis, Graphics.FONT_MEDIUM, _player.getName(), Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
 		var left_text_x = x_axis;
 		var right_text_x = x_axis + 60; // Adjust this value as needed for spacing
 

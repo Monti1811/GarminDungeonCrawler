@@ -19,7 +19,7 @@ class Mage extends Player {
 
 		// Give starting items
 		self.equipItem(new SteelStaff(), RIGHT_HAND, null);
-		self.equipItem(new LifeAmulet(), ACCESSORY, null);
+		self.equipItem(new SteelRing1(), ACCESSORY, null);
 
 
 		// Set attributes
