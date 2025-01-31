@@ -97,6 +97,10 @@ class Item {
 		self.amount = amount;
 	}
 
+	function addAmount(amount as Number) as Void {
+		self.amount += amount;
+	}
+
 	function isEquipped() as Boolean {
 		return equipped;
 	}

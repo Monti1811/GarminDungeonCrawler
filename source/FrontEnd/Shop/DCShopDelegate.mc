@@ -184,7 +184,7 @@ class DCShopSellOptionsDelegate extends WatchUi.Menu2InputDelegate {
             return;
         }
         var player = getApp().getPlayer();
-        var value = item.getSellValue();
+        var value = item.getSellValue() * amount;
         player.doGoldDelta(value);
         var sold_items = player.getInventory().removeMultiple(item, amount) as Item;
         merchant.addSellableItem(sold_items);

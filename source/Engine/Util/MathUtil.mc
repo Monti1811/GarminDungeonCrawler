@@ -30,6 +30,22 @@ module MathUtil {
 		return (Math.rand() % 100).toFloat() / 100.0;
 	}
 
+	function weighted_random(weights as Dictionary) {
+		var total = 0;
+		for (var i = 0; i < weights.size(); i++) {
+			total += weights[i] as Numeric;
+		}
+
+		var random = MathUtil.random(0, total - 1);
+		for (var i = 0; i < weights.size(); i++) {
+			random -= weights[i] as Numeric;
+			if (random < 0) {
+				return i;
+			}
+		}
+		return 0;
+	}
+
 	function max(value1 as Numeric, value2 as Numeric) as Numeric {
 		if (value1 > value2) {
 			return value1;

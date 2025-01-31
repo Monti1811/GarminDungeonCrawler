@@ -364,10 +364,8 @@ class Room {
             pos = MapUtil.getRandomPosFromRoom(self);
         }
         System.println("Stairs pos: " + pos);
-        if (pos != null) {
-            _map[pos[0]][pos[1]].type = STAIRS;
-            _stairs = pos;
-        }
+        _map[pos[0]][pos[1]].type = STAIRS;
+        _stairs = pos;
         if (reload) {
             _map_string = mapToString();
         }
@@ -375,13 +373,11 @@ class Room {
 
     function addMerchant(room_pos as Point2D) as Void {
         var pos = MapUtil.getRandomPosFromRoom(self);
-        if (pos != null) {
-            var merchant = new Merchant();
-            merchant.setPos(pos);
-            $.Game.setRoomWithFlag(room_pos, 1, pos);
-            _map[pos[0]][pos[1]].content = merchant;
-            addNPC(merchant);
-        }
+        var merchant = new Merchant();
+        merchant.setPos(pos);
+        $.Game.setRoomWithFlag(room_pos, 1, pos);
+        _map[pos[0]][pos[1]].content = merchant;
+        addNPC(merchant);
     }
     
     function saveEntityDict(dict as Dictionary) as Array<Dictionary> {

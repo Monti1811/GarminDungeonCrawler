@@ -177,7 +177,7 @@ class DCInventoryDelegate extends WatchUi.Menu2InputDelegate {
     function showFilter() {
         var inventoryMenu = new WatchUi.Menu2({:title=>"Filter/Sort"});
         // Filters
-        inventoryMenu.addItem(new WatchUi.MenuItem("All", null, :all, null));
+        inventoryMenu.addItem(new WatchUi.MenuItem("All Items", null, :all, null));
         inventoryMenu.addItem(new WatchUi.MenuItem("Weapons", null, :weapons, null));
         inventoryMenu.addItem(new WatchUi.MenuItem("Armor", null, :armor, null));
         inventoryMenu.addItem(new WatchUi.MenuItem("Consumables", null, :consumables, null));

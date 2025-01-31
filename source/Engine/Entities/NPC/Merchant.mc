@@ -10,12 +10,34 @@ class Merchant extends NPC {
 		addRandomItems();
 	}
 
+	function combineItems(items as Array<Item>) as Array<Item> {
+		var combined = [] as Array<Item>;
+		for (var i = 0; i < items.size(); i++) {
+			var item = items[i];
+			var found = false;
+			for (var j = 0; j < combined.size(); j++) {
+				var combined_item = combined[j];
+				if (combined_item.id == item.id) {
+					combined_item.addAmount(item.getAmount());
+					found = true;
+					break;
+				}
+			}
+			if (!found) {
+				combined.add(item);
+			}
+		}
+		return combined;
+	}
+
 	function addRandomItems() as Void {
 		var amount = MathUtil.random(1, 5);
+		var temp_items = [] as Array<Item>;
 		for (var i = 0; i < amount; i++) {
 			var item = Items.createRandomWeightedItem(4);
-			items.add(item);
+			temp_items.add(item);
 		}
+		items = combineItems(temp_items);
 	}	
 
 	function getSellableItems() as Array<Item> {

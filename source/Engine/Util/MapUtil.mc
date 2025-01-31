@@ -257,7 +257,7 @@ module MapUtil {
 		do {
 			x = MathUtil.random(left + 1, right - 1);
 			y = MathUtil.random(top + 1, bottom - 1);
-		} while ((x != 11 && y != 11) && map[x][y].content != null);
+		} while ((x == 11 || y == 11) && map[x][y].content != null);
 		return [x, y];
 	}
 
@@ -338,7 +338,7 @@ module MapUtil {
 	}
 
 	function getAllDirectionPoints(pos as Point2D) as Array<Point2D> {
-		var points = [];
+		var points = [] as Array<Point2D>;
 		points.add(getCoordInDirection(pos, UP));
 		points.add(getCoordInDirection(pos, DOWN));
 		points.add(getCoordInDirection(pos, LEFT));

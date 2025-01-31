@@ -218,13 +218,23 @@ module Main {
 		return Math.floor(items);
 	}
 
+	function getItemType() as Number {
+		var weighted_types = {
+			0 => 20, // Weapons
+			1 => 20, // Armor
+			2 => 50, // Consumables
+			3 => 5  // High Quality
+		};
+		return MathUtil.weighted_random(weighted_types);
+	}
+
 
 	function createRandomItems(map as Array<Array<Tile>>, left as Number, right as Number, top as Number, bottom as Number, amount_enemies as Number) as Dictionary<Point2D, Item> {
 		var items = {};
 		var room_size = (right - left - 1) * (bottom - top - 1);
 		var num_items = getItemsNumForRoom(amount_enemies, room_size);
-		var type = 0;
 		for (var i = 0; i < num_items; i++) {
+			var type = getItemType();
 			var item = createRandomItem(type);
 			var item_pos = MapUtil.getRandomPos(map, left, right, top, bottom);
 			item.setPos(item_pos);

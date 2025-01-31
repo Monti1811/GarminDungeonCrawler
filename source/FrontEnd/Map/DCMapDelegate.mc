@@ -15,13 +15,13 @@ class DCMapDelegate extends WatchUi.InputDelegate {
 		var drag_type = dragEvent.getType();
 		switch (drag_type) {
 			case DRAG_TYPE_START:
-				_previous_coords = dragEvent.getCoordinates();
+				_previous_coords = dragEvent.getCoordinates() as Point2D;
 				break;
 			case DRAG_TYPE_CONTINUE:
 				var coords = dragEvent.getCoordinates();
 				var dx = coords[0] - _previous_coords[0];
 				var dy = coords[1] - _previous_coords[1];
-				_previous_coords = coords;
+				_previous_coords = coords as Point2D;
 				// Move the map
 				_view.moveMap(dx, dy);
 				WatchUi.requestUpdate();
@@ -29,6 +29,10 @@ class DCMapDelegate extends WatchUi.InputDelegate {
 			case DRAG_TYPE_STOP:
 				break;
 		}
+		return true;
+	}
+
+	function onSwipe(swipeEvent) as Boolean {
 		return true;
 	}
 

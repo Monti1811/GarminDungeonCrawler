@@ -28,13 +28,18 @@ class DCMapView extends WatchUi.View {
 	function moveMap(dx as Number, dy as Number) {
 		var new_x = _pos[0] + dx;
 		var new_y = _pos[1] + dy;
-		if (new_x < 0 || new_y < 0 ) {	
+
+		var min_x = -_drawable_size[0] / 2;
+		var min_y = -_drawable_size[1] / 2;
+		var max_x = _drawable_size[0] * 3/2;
+		var max_y = _drawable_size[1] * 3/2;
+		if (new_x < min_x || new_y < min_y) {	
 			Toybox.System.println("Can't move map up in x or y direction");
 		}
-		if (new_x > _drawable_size[0] || new_y > _drawable_size[1]) {
+		if (new_x > max_x || new_y > max_y) {
 			Toybox.System.println("Can't move map down in x or y direction");
 		}
-		_pos[0] = MathUtil.clamp(new_x, 0, _drawable_size[0]);
-		_pos[1] = MathUtil.clamp(new_y, 0, _drawable_size[1]);
+		_pos[0] = MathUtil.clamp(new_x, min_x, max_x);
+		_pos[1] = MathUtil.clamp(new_y, min_y, max_y);
 	}
 }
