@@ -263,7 +263,8 @@ class Turn {
             for (var i = 0; i < enemies.size(); i++) {
                 var enemy = enemies[i];
                 var curr_pos = enemy.getPos();
-                if (enemy.attackNearbyPlayer(_map_data[:map], target_pos)) {
+                if (enemy.doAction(_map_data[:map]) || 
+                        enemy.attackNearbyPlayer(_map_data[:map], target_pos)) {
                     enemy.doTurnEnergyDelta(-MIN_ENERGY, 0, 2 * MIN_ENERGY);
                     enemies.remove(enemy);
                     continue;

@@ -39,7 +39,11 @@ class ItemSpecificValues {
 			3 => 5 + log_depth, // Steel Greatsword
 			5 => 5 + log_depth, // Steel Lance
 			8 => 3 + log_depth, // Steel Sword
-			// ...other weapons with lower priority...
+			1 => depth <= 10 ? 1 : 1 / log_depth, // Steel Bow
+			2 => depth <= 10 ? 1 : 1 / sqrt_depth, // Steel Dagger
+			4 => depth <= 10 ? 1 : 1 / log_depth, // Steel Katana
+			6 => depth <= 10 ? 1 : 1 / log_depth, // Steel Spell
+			7 => depth <= 10 ? 1 : 1 / log_depth, // Steel Staff
 		};
 
 		var armor_weights = {
@@ -132,7 +136,11 @@ class ItemSpecificValues {
 			3 => 10 + log_depth, // Divine Greatsword
 			5 => 10 + log_depth, // Divine Lance
 			8 => 10 + log_depth, // Divine Sword
-			// ...other weapons with lower priority...
+			1 => 10 + log_depth, // Divine Bow
+			2 => 10 + log_depth, // Divine Dagger
+			4 => 10 + log_depth, // Divine Katana
+			6 => 10 + log_depth, // Divine Spell
+			7 => 10 + log_depth, // Divine Staff
 		};
 
 		var armor_weights = {
@@ -223,7 +231,14 @@ class ItemSpecificValues {
 		var weapon_weights = {
 			// ...nameless-specific weapon weights...
 			4 => 5 + log_depth, // Steel Katana
-			// ...other weapons with lower priority...
+			0 => depth <= 10 ? 1 : 1 / log_depth, // Steel Axe
+			1 => depth <= 10 ? 1 : 1 / log_depth, // Steel Bow
+			2 => depth <= 10 ? 1 : 1 / sqrt_depth, // Steel Dagger
+			3 => depth <= 10 ? 1 : 1 / log_depth, // Steel Greatsword
+			5 => depth <= 10 ? 1 : 1 / log_depth, // Steel Lance
+			6 => depth <= 10 ? 1 : 1 / log_depth, // Steel Spell
+			7 => depth <= 10 ? 1 : 1 / log_depth, // Steel Staff
+			8 => depth <= 10 ? 1 : 1 / log_depth, // Steel Sword
 		};
 
 		var armor_weights = {
@@ -313,7 +328,13 @@ class ItemSpecificValues {
 		var weapon_weights = {
 			1 => 5 + log_depth, // Steel Bow
 			2 => 5 + log_depth, // Steel Dagger
-			// ...other weapons with lower priority...
+			0 => depth <= 10 ? 1 : 1 / log_depth, // Steel Axe
+			3 => depth <= 10 ? 1 : 1 / log_depth, // Steel Greatsword
+			4 => depth <= 10 ? 1 : 1 / log_depth, // Steel Katana
+			5 => depth <= 10 ? 1 : 1 / log_depth, // Steel Lance
+			6 => depth <= 10 ? 1 : 1 / log_depth, // Steel Spell
+			7 => depth <= 10 ? 1 : 1 / log_depth, // Steel Staff
+			8 => depth <= 10 ? 1 : 1 / log_depth, // Steel Sword
 		};
 
 		var armor_weights = {

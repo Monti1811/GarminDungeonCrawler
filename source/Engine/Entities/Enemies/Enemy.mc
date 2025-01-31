@@ -110,6 +110,50 @@ class Enemy extends Entity {
 		return self.next_pos;
 	}
 
+	function randomMovement(map as Array<Array<Tile>>) as Point2D {
+		var next_pos = Pathfinder.randomMovement(map, pos);
+		if (next_pos != null) {
+			self.next_pos = next_pos;
+			return next_pos;
+		}
+		self.next_pos = self.pos;
+		return self.next_pos;
+	}
+
+	function randomTeleport(map as Array<Array<Tile>>) as Point2D {
+		var next_pos = Pathfinder.randomTeleport(map, pos);
+		if (next_pos != null) {
+			self.next_pos = next_pos;
+			return next_pos;
+		}
+		self.next_pos = self.pos;
+		return self.next_pos;
+	}
+
+	function toPlayerTeleport(map as Array<Array<Tile>>) as Point2D {
+		var next_pos = Pathfinder.teleportToPlayer(map, pos);
+		if (next_pos != null) {
+			self.next_pos = next_pos;
+			return next_pos;
+		}
+		self.next_pos = self.pos;
+		return self.next_pos;
+	}
+
+	function walkAwayFromPlayer(map as Array<Array<Tile>>) as Point2D {
+		var next_pos = Pathfinder.walkAwayFromPlayer(map, pos);
+		if (next_pos != null) {
+			self.next_pos = next_pos;
+			return next_pos;
+		}
+		self.next_pos = self.pos;
+		return self.next_pos;
+	}
+
+	function doAction(map as Array<Array<Tile>>) as Boolean {
+		return false;
+	}
+
 	function onTurnDone() as Void {
 		Entity.onTurnDone();
 		has_moved = false;

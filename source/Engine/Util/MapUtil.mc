@@ -21,6 +21,33 @@ module MapUtil {
 		return true;
 	}
 
+	function shuffle(array as Array) as Array {
+		for (var i = array.size() - 1; i > 0; i--) {
+			var j = MathUtil.random(0, i);
+			var temp = array[i];
+			array[i] = array[j];
+			array[j] = temp;
+		}
+		return array;
+	}
+
+	function findRandomEmptyTileAround(map as Array<Array<Tile>>, pos as Point2D) as Point2D? {
+		var directions = [
+			[0, -1],
+			[0, 1],
+			[-1, 0],
+			[1, 0]
+		] as Array<Point2D>;
+		var random_directions = shuffle(directions) as Array<Point2D>;
+		for (var i = 0; i < random_directions.size(); i++) {
+			var new_pos = [pos[0] + random_directions[i][0], pos[1] + random_directions[i][1]];
+			if (canMoveToPoint(map, new_pos)) {
+				return new_pos;
+			}
+		}
+		return null;
+	}
+
 	function canMoveToPlayer(map as Array<Array<Tile>>, point as Point2D) as Boolean {
 		if (point[0] < 0 || point[0] >= map.size() || point[1] < 0 || point[1] >= map[0].size()) {
 			return false;
