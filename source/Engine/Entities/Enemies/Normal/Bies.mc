@@ -1,21 +1,21 @@
 import Toybox.Lang;
 
-class ElementalWaterSmall extends Enemy {
+class Bies extends Enemy {
 
 	function initialize() {
 		Enemy.initialize();
-		id = 17;
-		name = "Small Water Elemental";
-		damage = 15;
-		current_health = 50;
+		id = 29;
+		name = "Bies";
+		damage = 20;
+		current_health = 250;
 		maxHealth = current_health;
-		energy_per_turn = 50;
-		armor = 5;
-        kill_experience = 15;
+		energy_per_turn = 67;
+		armor = 20;
+        kill_experience = 200;
 	}
 
 	function getSprite() as ResourceId {
-		return $.Rez.Drawables.monster_elemental_water_small;
+		return $.Rez.Drawables.monster_bies;
 	}
 
 	function findNextMove(map) as Point2D {

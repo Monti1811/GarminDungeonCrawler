@@ -82,7 +82,8 @@ module SaveData {
 			"player" => player.save(),
 			"level" => player.getLevel(),
 			"dungeon" => app.getCurrentDungeon().save(),
-			"game" => $.Game.save()
+			"game" => $.Game.save(),
+			"entitymanager" => $.EntityManager.save(),
 		} as Dictionary<PropertyKeyType, PropertyValueType>;
 		Toybox.System.println("Saving game to " + chosen_save);
 		Toybox.System.println("Data: " + data);
@@ -111,6 +112,7 @@ module SaveData {
 		app.setPlayer(player);
 		app.setCurrentDungeon(Dungeon.load(data["dungeon"] as Dictionary));
 		$.Game.load(data["game"] as Dictionary);
+		$.EntityManager.load(data["entitymanager"] as Dictionary);
 	}
 
 	public function isEmpty() as Boolean {

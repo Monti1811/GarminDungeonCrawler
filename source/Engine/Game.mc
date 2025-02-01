@@ -35,6 +35,7 @@ module Game {
 	function init(player_id as Number) as Void {
 		// Set the seed for random number generation
 		Math.srand(Time.now().value());
+		EntityManager.init();
 		Items.init(player_id);
 		Enemies.init(player_id);
 		time_played = 0;

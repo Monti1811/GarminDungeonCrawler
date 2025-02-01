@@ -6,11 +6,11 @@ class Ogre extends Enemy {
         Enemy.initialize();
         id = 10;
         name = "Ogre";
-        current_health = 500;
+        current_health = 1000;
         maxHealth = current_health;
-        damage = 100;
-        armor = 10;
-        kill_experience = 500;
+        damage = 200;
+        armor = 60;
+        kill_experience = 1000;
         energy_per_turn = 34; // every 3 turns
     }
 

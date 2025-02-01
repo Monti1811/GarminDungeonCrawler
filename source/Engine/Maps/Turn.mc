@@ -266,7 +266,9 @@ class Turn {
                 if (enemy.doAction(_map_data[:map]) || 
                         enemy.attackNearbyPlayer(_map_data[:map], target_pos)) {
                     enemy.doTurnEnergyDelta(-MIN_ENERGY, 0, 2 * MIN_ENERGY);
-                    enemies.remove(enemy);
+                    if (enemy.energy <= 0) {
+                        enemies.remove(enemy);
+                    }
                     continue;
                 }   
                 var next_pos = enemy.findNextMove(_map_data[:map]);
@@ -274,11 +276,15 @@ class Turn {
                     if (MapUtil.isPosPlayer(_map_data[:map], next_pos)) {
                         Battle.attackPlayer(enemy, _player);
                         enemy.doTurnEnergyDelta(-MIN_ENERGY, 0, 2 * MIN_ENERGY);
-                        enemies.remove(enemy);
+                        if (enemy.energy <= 0) {
+                            enemies.remove(enemy);
+                        }
                     } else {
                         _room.moveEnemy(enemy);
                         enemy.doTurnEnergyDelta(-MIN_ENERGY, 0, 2 * MIN_ENERGY);
-                        enemies.remove(enemy);
+                        if (enemy.energy <= 0) {
+                            enemies.remove(enemy);
+                        }
                     }
                 }
             }

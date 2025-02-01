@@ -1,6 +1,6 @@
 import Toybox.Lang;
 
-class Necromancer extends Enemy {
+class Demonolog extends Enemy {
 
     var summon_cooldown as Number = 0;
     var summon_cooldown_max as Number = 5;
@@ -9,18 +9,18 @@ class Necromancer extends Enemy {
 
 	function initialize() {
 		Enemy.initialize();
-		id = 6;
-		name = "Necromancer";
+		id = 27;
+		name = "Demonolog";
 		damage = 20;
-		current_health = 50;
-		maxHealth = 50;
+		current_health = 200;
+		maxHealth = current_health;
 		energy_per_turn = 100; 
         armor = 0;
-        kill_experience = 125;
+        kill_experience = 300;
 	}
 
 	function getSprite() as ResourceId {
-		return $.Rez.Drawables.monster_necromancer;
+		return $.Rez.Drawables.monster_demonolog;
 	}
 
 	function findNextMove(map as Array<Array<Tile>>) as Point2D {
@@ -37,9 +37,9 @@ class Necromancer extends Enemy {
             return false;
         }
         var summons = {
-            5 => 5,
-            6 => 5,
-            7 => 1,
+            9 => 1,     // Wogol
+            7 => 5,     // Zombie
+            28 => 5,    // Chort
         };
         var chosen_summon = $.MathUtil.weighted_random(summons);
         var summon_pos = $.MapUtil.findRandomEmptyTileAround(map, pos);
