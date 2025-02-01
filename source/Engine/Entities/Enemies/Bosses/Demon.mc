@@ -7,11 +7,11 @@ class Demon extends Enemy {
         id = 2;
 		name = "Demon";
         attack_cooldown = 0;
-        damage = 25;
-        armor = 10;
-        current_health = 250;
-        maxHealth = 250;
-		kill_experience = 200;
+        damage = 125;
+        armor = 50;
+        current_health = 750;
+        maxHealth = current_health;
+		kill_experience = 1000;
 	}
 
 	function getSprite() as ResourceId {

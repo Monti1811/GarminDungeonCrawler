@@ -26,10 +26,11 @@ class Enemy extends Entity {
 
 	function setLevel(level as Number) as Void {
 		self.level = level;
-		self.maxHealth = 100 * level;
+		self.maxHealth = self.maxHealth + 100 * (level - 1);
 		self.current_health = self.maxHealth;
-		self.damage = 10 * level/2;
-		self.armor = 5 * level/2;
+		self.damage = self.damage * level/2;
+		self.armor = self.armor * level/2;
+		self.kill_experience = self.kill_experience * level;
 	}
 
 	function hashCode() {
@@ -64,13 +65,18 @@ class Enemy extends Entity {
 		return current_health.toFloat() / maxHealth.toFloat();
 	}
 
-	function takeDamage(damage as Number, enemy as Player) as Boolean {
+	function takeDamage(damage as Number, enemy as Player?) as Boolean {
 		current_health -= damage;
 		if (current_health <= 0) {
 			current_health = 0;
+			self.onDeath();
 			return true;
 		}
 		return false;
+	}
+
+	function onDeath() as Void {
+		
 	}
 
 	function getAttack(enemy as Player?) as Number {
@@ -162,11 +168,18 @@ class Enemy extends Entity {
 		}
 	}
 
-	function attackNearbyPlayer(map as Array<Array<Tile>>, player_pos as Point2D) as Boolean {
+	function canAttackPlayer(map as Array<Array<Tile>>, player_pos as Point2D) as Boolean {
 		if (curr_attack_cooldown > 0) {
 			return false;
 		}
 		if (!MathUtil.isPointDirectAdjacent(pos, player_pos)) {
+			return false;
+		}
+		return true;
+	}
+
+	function attackNearbyPlayer(map as Array<Array<Tile>>, player_pos as Point2D) as Boolean {
+		if (!canAttackPlayer(map, player_pos)) {
 			return false;
 		}
 		var player = null as Player?;
@@ -212,6 +225,9 @@ class Enemy extends Entity {
 
 	function onLoad(data as Dictionary) as Void {
 		Entity.onLoad(data);
+		if (data["level"] != null) {
+			self.setLevel(data["level"] as Number);
+		}
 		if (data["pos"] != null) {
 			pos = data["pos"] as Point2D;
 		}
@@ -233,14 +249,8 @@ class Enemy extends Entity {
 		if (data["maxHealth"] != null) {
 			maxHealth = data["maxHealth"] as Number;
 		}
-		if (data["kill_experience"] != null) {
-			kill_experience = data["kill_experience"] as Number;
-		}
 		if (data["name"] != null) {
 			name = data["name"] as String;
-		}
-		if (data["level"] != null) {
-			level = data["level"] as Number;
 		}
 		if (data["experience"] != null) {
 			experience = data["experience"] as Number;

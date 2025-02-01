@@ -9,6 +9,11 @@ class Frog extends Enemy {
 		id = 0;
 		name = "Frog";
 		energy_per_turn = 50; // every 2 turns
+		damage = 10;
+		current_health = 35;
+		maxHealth = current_health;
+		armor = 0;
+        kill_experience = 10;
 	}
 
 	function getSprite() as ResourceId {

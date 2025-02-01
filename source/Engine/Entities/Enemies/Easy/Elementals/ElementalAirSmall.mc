@@ -1,19 +1,21 @@
 import Toybox.Lang;
 
-class Imp extends Enemy {
+class ElementalAirSmall extends Enemy {
 
 	function initialize() {
 		Enemy.initialize();
-		id = 4;
-		name = "Imp";
-		damage = 12;
-		current_health = 25;
-		maxHealth = 25;
-		energy_per_turn = 100;
+		id = 12;
+		name = "Small Air Elemental";
+		damage = 15;
+		current_health = 50;
+		maxHealth = current_health;
+		energy_per_turn = 50;
+		armor = 5;
+        kill_experience = 15;
 	}
 
 	function getSprite() as ResourceId {
-		return $.Rez.Drawables.monster_imp;
+		return $.Rez.Drawables.monster_elemental_air_small;
 	}
 
 	function findNextMove(map) as Point2D {

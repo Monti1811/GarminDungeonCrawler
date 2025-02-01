@@ -1,17 +1,21 @@
 import Toybox.Lang;
 
-class Bat extends Enemy {
+class ElementalGoldSmall extends Enemy {
 
 	function initialize() {
 		Enemy.initialize();
-		id = 1;
-		name = "Bat";
-		current_health = 25;
-		maxHealth = 25;
+		id = 15;
+		name = "Small Gold Elemental";
+		damage = 15;
+		current_health = 50;
+		maxHealth = current_health;
+		energy_per_turn = 50;
+		armor = 5;
+        kill_experience = 15;
 	}
 
 	function getSprite() as ResourceId {
-		return $.Rez.Drawables.monster_bat;
+		return $.Rez.Drawables.monster_elemental_gold_short;
 	}
 
 	function findNextMove(map) as Point2D {

@@ -6,8 +6,10 @@ class Entity {
 	var damage_received as Number = 0;
 	var energy as Number = 100;
 	var energy_per_turn as Number = 100;
+	var guid as Number = 0;
 
 	function initialize() {
+		$.EntityManager.addEntity(self);
 	}
 
 	function getName() as String {
@@ -51,6 +53,7 @@ class Entity {
 		var save_data = {};
 		save_data["name"] = name;
 		save_data["energy"] = energy;
+		save_data["guid"] = guid;
 		return save_data;
 	}
 
@@ -62,6 +65,9 @@ class Entity {
 
 	function onLoad(save_data as Dictionary) as Void {
 		name = save_data["name"] as String;
+		if (save_data["guid"] != null) {
+			guid = save_data["guid"] as Number;
+		}
 		if (save_data["energy"] != null) {
 			energy = save_data["energy"] as Number;
 		}

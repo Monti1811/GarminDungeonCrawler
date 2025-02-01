@@ -97,6 +97,10 @@ class Room {
         return map_string; 
     }
 
+    function getMap() as Array<Array<Tile>> {
+        return _map;
+    }
+
     function getMapData() as Dictionary {
         return {
             :size_x => _size_x,
