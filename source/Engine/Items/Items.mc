@@ -177,7 +177,7 @@ module Items {
     }
 
     function createRandomWeightedItem(type as Number) as Item? {
-        var rand = MathUtil.random(0, total_weight[type] - 1);
+        var rand = MathUtil.random(0, total_weight[type]);
         var current_weight = 0;
         var weight_keys = weights[type].keys();
         for (var i = 0; i < weight_keys.size(); i++) {

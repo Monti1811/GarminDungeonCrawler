@@ -4,7 +4,7 @@ class ElementalPlantSmall extends Enemy {
 
 	function initialize() {
 		Enemy.initialize();
-		id = 16;
+		id = 30;
 		name = "Small Plant Elemental";
 		damage = 15;
 		current_health = 50;

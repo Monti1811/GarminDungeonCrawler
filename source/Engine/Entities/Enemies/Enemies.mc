@@ -8,6 +8,32 @@ module Enemies {
         2 => :createDemon,
         3 => :createOrc,
         4 => :createImp,
+        5 => :createSkeleton,
+        6 => :createNecromancer,
+        7 => :createZombieSmall,
+        8 => :createZombie,
+        9 => :createWogol,
+        10 => :createOgre,
+        11 => :createDarkKnight,
+        12 => :createElementalAirSmall,
+        13 => :createElementalEarthSmall,
+        14 => :createElementalFireSmall,
+        15 => :createElementalGoldSmall,
+        16 => :createElementalGooSmall,
+        30 => :createElementalPlantSmall,
+        17 => :createElementalWaterSmall,
+        18 => :createElementalAir,
+        19 => :createElementalEarth,
+        20 => :createElementalFire,
+        21 => :createElementalGold,
+        22 => :createElementalGoo,
+        23 => :createElementalPlant,
+        24 => :createElementalWater,
+        25 => :createGoblin,
+        26 => :createTentackle,
+        27 => :createDemonolog,
+        28 => :createChort,
+        29 => :createBies
     };
 
     var dungeon_enemies as Array<Dictionary<Symbol, Numeric>> = [
@@ -51,6 +77,110 @@ module Enemies {
         return new Imp();
     }
 
+    function createSkeleton() as Enemy {
+        return new Skeleton();
+    }
+
+    function createNecromancer() as Enemy {
+        return new Necromancer();
+    }
+
+    function createZombieSmall() as Enemy {
+        return new ZombieSmall();
+    }
+
+    function createZombie() as Enemy {
+        return new Zombie();
+    }
+
+    function createWogol() as Enemy {
+        return new Wogol();
+    }
+
+    function createOgre() as Enemy {
+        return new Ogre();
+    }
+
+    function createDarkKnight() as Enemy {
+        return new DarkKnight();
+    }
+
+    function createElementalAirSmall() as Enemy {
+        return new ElementalAirSmall();
+    }
+
+    function createElementalEarthSmall() as Enemy {
+        return new ElementalEarthSmall();
+    }
+
+    function createElementalFireSmall() as Enemy {
+        return new ElementalFireSmall();
+    }
+
+    function createElementalGoldSmall() as Enemy {
+        return new ElementalGoldSmall();
+    }
+
+    function createElementalGooSmall() as Enemy {
+        return new ElementalGooSmall();
+    }
+
+    function createElementalPlantSmall() as Enemy {
+        return new ElementalPlantSmall();
+    }
+
+    function createElementalWaterSmall() as Enemy {
+        return new ElementalWaterSmall();
+    }
+
+    function createElementalAir() as Enemy {
+        return new ElementalAir();
+    }
+
+    function createElementalEarth() as Enemy {
+        return new ElementalEarth();
+    }
+
+    function createElementalFire() as Enemy {
+        return new ElementalFire();
+    }
+
+    function createElementalGold() as Enemy {
+        return new ElementalGold();
+    }
+
+    function createElementalGoo() as Enemy {
+        return new ElementalGoo();
+    }
+
+    function createElementalPlant() as Enemy {
+        return new ElementalPlant();
+    }
+
+    function createElementalWater() as Enemy {
+        return new ElementalWater();
+    }
+
+    function createGoblin() as Enemy {
+        return new Goblin();
+    }
+
+    function createTentackle() as Enemy {
+        return new Tentackle();
+    }
+
+    function createDemonolog() as Enemy {
+        return new Demonolog();
+    }
+
+    function createChort() as Enemy {
+        return new Chort();
+    }
+
+    function createBies() as Enemy {
+        return new Bies();
+    }
+
     function createEnemyFromId(id as Number) as Enemy {
         var method = new Lang.Method(self, enemies[id]);
         return method.invoke() as Enemy;
@@ -64,7 +194,7 @@ module Enemies {
     }
 
     function createRandomWeightedEnemy() as Enemy? {
-        var rand = MathUtil.random(0, total_weight - 1);
+        var rand = MathUtil.random(0, total_weight);
         var current_weight = 0;
         for (var i = 0; i < dungeon_enemies.size(); i++) {
             current_weight += dungeon_enemies[i][:weight];

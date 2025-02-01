@@ -67,7 +67,7 @@ class Entity {
 		name = save_data["name"] as String;
 		if (save_data["guid"] != null) {
 			guid = save_data["guid"] as Number;
-			$.EntityManager.entities[guid] = self;
+			$.EntityManager.entities[guid] = self as Entity;
 		}
 		if (save_data["energy"] != null) {
 			energy = save_data["energy"] as Number;
