@@ -131,7 +131,7 @@ class Item {
 		return new_item;
 	}
 
-	function save() as Dictionary<PropertyKeyType, PropertyValueType> {
+	function save() as Dictionary {
 		var save_data = {};
 		save_data["id"] = id;
 		save_data["pos"] = pos;
@@ -141,7 +141,7 @@ class Item {
 		return save_data;
 	}
 
-	static function load(save_data as Dictionary<PropertyKeyType, PropertyValueType>) as Item {
+	static function load(save_data as Dictionary) as Item {
 		// TODO remove later
 		if (save_data["id"] == null) {
 			save_data["id"] = 0;
@@ -151,7 +151,7 @@ class Item {
 		return item;
 	}
 
-	function onLoad(save_data as Dictionary<PropertyKeyType, PropertyValueType>) as Void {
+	function onLoad(save_data as Dictionary) as Void {
 		if (save_data["pos"] != null) {
 			pos = save_data["pos"] as Point2D;
 		}

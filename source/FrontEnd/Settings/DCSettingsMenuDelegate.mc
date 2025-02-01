@@ -35,7 +35,7 @@ class DCSettingsMenuDelegate extends WatchUi.Menu2InputDelegate {
 
     function showSaveSettings() as Void {
         var exit_enabled = Storage.getValue("save_on_exit");
-        var auto_save = Storage.getValue("autosave");
+        var auto_save = Storage.getValue("autosave") as Number;
         var saveSettings = new WatchUi.Menu2({:title=>"Save settings"});
         saveSettings.addItem(new WatchUi.ToggleMenuItem("Save on exit", {:enabled=>"Automatic save when exiting",:disabled=>"No save when exiting"}, :exit, exit_enabled, null));
         saveSettings.addItem(new WatchUi.MenuItem("Autosave", $.Settings.getAutoSaveString(auto_save), :autosave, null));

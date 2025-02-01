@@ -67,7 +67,7 @@ module Pathfinder {
 
 
     function getNeighbors(map as Array<Array<Tile>>, pos_num as Number) as Array<Number> {
-        var neighbors = [];
+        var neighbors = [] as Array<Number>;
         var pos = fromIntPoint2D(pos_num);
         if (pos[0] > 0 && MapUtil.canMoveToPlayer(map, [pos[0] - 1, pos[1]])) {
             neighbors.add(toIntPoint2D([pos[0] - 1, pos[1]]));
@@ -117,7 +117,7 @@ module Pathfinder {
 		return best_move;
 	}
 
-    function randomMovement(map as Array<Array<Tile>>, pos as Point2D) as Point2D {
+    function randomMovement(map as Array<Array<Tile>>, pos as Point2D) as Point2D? {
         var directions = [
             [0, 1],
             [0, -1],
@@ -138,7 +138,7 @@ module Pathfinder {
         return new_pos;
     }
 
-    function randomTeleport(map as Array<Array<Tile>>, pos as Point2D) as Point2D {
+    function randomTeleport(map as Array<Array<Tile>>, pos as Point2D) as Point2D? {
         var new_pos = null as Point2D?;
         var max_iterations = 10;
         var iteration = 0;
@@ -149,7 +149,7 @@ module Pathfinder {
             var x = MathUtil.random(coords_room[0] + 1, coords_room[1] - 1);
             var y = MathUtil.random(coords_room[2] + 1, coords_room[3] - 1);
             if (MapUtil.canMoveToPoint(map, [x, y])) {
-                new_pos = [x, y];
+                new_pos = [x, y] as Point2D;
             }
             iteration++;
         }
@@ -166,7 +166,7 @@ module Pathfinder {
             var x = MathUtil.random(player_pos[0] - 1, player_pos[0] + 1);
             var y = MathUtil.random(player_pos[1] - 1, player_pos[1] + 1);
             if (MapUtil.canMoveToPoint(map, [x, y])) {
-                new_pos = [x, y];
+                new_pos = [x, y] as Point2D;
             }
             iteration++;
         }

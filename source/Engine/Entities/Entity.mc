@@ -47,20 +47,20 @@ class Entity {
 		self.doTurnEnergyDelta(energy_per_turn, 0, 100);
 	}
 
-	function save() as Dictionary<PropertyKeyType, PropertyValueType> {
+	function save() as Dictionary {
 		var save_data = {};
 		save_data["name"] = name;
 		save_data["energy"] = energy;
 		return save_data;
 	}
 
-	static function load(save_data as Dictionary<PropertyKeyType, PropertyValueType>) as Entity {
+	static function load(save_data as Dictionary) as Entity {
 		var entity = new Entity();
 		entity.onLoad(save_data);
 		return entity;
 	}
 
-	function onLoad(save_data as Dictionary<PropertyKeyType, PropertyValueType>) as Void {
+	function onLoad(save_data as Dictionary) as Void {
 		name = save_data["name"] as String;
 		if (save_data["energy"] != null) {
 			energy = save_data["energy"] as Number;

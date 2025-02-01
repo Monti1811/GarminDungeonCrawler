@@ -34,18 +34,21 @@ module SimUtil {
         ];*/
     }
 
-    function getRandomFromArray(arr as Array) {
+    function getRandomFromArray(arr) {
+        arr = arr as Array;
         var rand = MathUtil.random(0, arr.size() - 1);
         return arr[rand];
     }
 
-    function getRandomKeyFromDict(dict as Dictionary) {
+    function getRandomKeyFromDict(dict) {
+        dict = dict as Dictionary;
         var keys = dict.keys();
         var rand = MathUtil.random(0, keys.size() - 1);
         return keys[rand];
     }
 
-    function getRandomFromDict(dict as Dictionary) {
+    function getRandomFromDict(dict) {
+        dict = dict as Dictionary;
         var keys = dict.keys();
         var rand = MathUtil.random(0, keys.size() - 1);
         return dict[keys[rand]];

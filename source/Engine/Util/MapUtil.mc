@@ -21,7 +21,7 @@ module MapUtil {
 		return true;
 	}
 
-	function shuffle(array as Array) as Array {
+	function shuffle(array as Array<Point2D>) as Array<Point2D> {
 		for (var i = array.size() - 1; i > 0; i--) {
 			var j = MathUtil.random(0, i);
 			var temp = array[i];

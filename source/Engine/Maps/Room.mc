@@ -380,7 +380,8 @@ class Room {
         addNPC(merchant);
     }
     
-    function saveEntityDict(dict as Dictionary) as Array<Dictionary> {
+    function saveEntityDict(dict) as Array<Dictionary> {
+        dict = dict as Dictionary<Point2D, Entity>;
         var entities = [];
         var entity_keys = dict.keys() as Array<Point2D>;
         for (var i = 0; i < entity_keys.size(); i++) {

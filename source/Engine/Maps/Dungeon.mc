@@ -44,7 +44,7 @@ class Dungeon {
 	}
 
 	function getAdjacentRooms(x as Number, y as Number) as Array<Point2D> {
-		var adjacent_rooms = [];
+		var adjacent_rooms = [] as Array<Point2D>;
 		if (x > 0) {
 			adjacent_rooms.add([x - 1, y]);
 		}
@@ -61,7 +61,7 @@ class Dungeon {
 	}
 
 	function getPossibleDirections(x as Number, y as Number) as Array<WalkDirection> {
-		var possible_directions = [];
+		var possible_directions = [] as Array<WalkDirection>;
 		if (x > 0) {
 			possible_directions.add(LEFT);
 		}
@@ -89,7 +89,7 @@ class Dungeon {
 		var start_room = $.SimUtil.getRoomName(start_room_pos[0], start_room_pos[1]);
 		var connected_rooms = {start_room => true};
 		while (connected_rooms.size() < _size[0] * _size[1]) {
-			var current_room = $.SimUtil.getRandomKeyFromDict(connected_rooms) as String;
+			var current_room = $.SimUtil.getRandomKeyFromDict(connected_rooms) as String?;
 			var current_room_pos = $.SimUtil.getPosFromRoomName(current_room) as Point2D;
 			var possible_directions = getPossibleDirections(current_room_pos[0], current_room_pos[1]);
 			if (current_room == null) {

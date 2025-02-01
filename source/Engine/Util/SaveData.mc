@@ -104,13 +104,13 @@ module SaveData {
 		loadFromMemory();
 		var app = getApp();
 		var data = getSaveData();
-		var player_data = data["player"] as Dictionary<PropertyKeyType, PropertyValueType>;
+		var player_data = data["player"] as Dictionary;
 		var player_id = player_data["id"] as Number;
 		$.Game.init(player_id);
 		var player = Player.load(player_data);
 		app.setPlayer(player);
-		app.setCurrentDungeon(Dungeon.load(data["dungeon"] as Dictionary<PropertyKeyType, PropertyValueType>));
-		$.Game.load(data["game"] as Dictionary<PropertyKeyType, PropertyValueType>);
+		app.setCurrentDungeon(Dungeon.load(data["dungeon"] as Dictionary));
+		$.Game.load(data["game"] as Dictionary);
 	}
 
 	public function isEmpty() as Boolean {
@@ -118,7 +118,7 @@ module SaveData {
 	}
 
 	public function loadSaves() {
-		var save_data = Storage.getValue(STORAGE_STRING) as Dictionary<String, Array>?;
+		var save_data = Storage.getValue(STORAGE_STRING) as Dictionary?;
 		if (save_data != null) {
 			saves = save_data;
 		}
@@ -143,11 +143,12 @@ module SaveData {
 
 	public function deleteDungeonSave() as Void {
 		var dungeon = getApp().getCurrentDungeon();
-		var dungeon_save_keys = dungeon.getRooms();
+		var dungeon_save_keys = dungeon.getRooms() as Array<Array<String?>>;
 		for (var i = 0; i < dungeon_save_keys.size(); i++) {
-			if (dungeon_save_keys[i] != null) {
-				var room_name = dungeon_save_keys[i] as String;
-				Storage.deleteValue(room_name);
+			for (var j = 0; j < dungeon_save_keys[i].size(); j++) {
+				if (dungeon_save_keys[i][j] != null) {
+					Storage.deleteValue(dungeon_save_keys[i][j]);
+				}
 			}
 		}
 		Storage.deleteValue(chosen_save);

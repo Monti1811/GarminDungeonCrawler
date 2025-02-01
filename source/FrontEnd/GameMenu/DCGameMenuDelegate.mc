@@ -1,5 +1,6 @@
 import Toybox.Lang;
 import Toybox.WatchUi;
+import Toybox.Graphics;
 
 typedef ItemComparator as NameCompare | WeightCompare | ValueCompare;
 
@@ -126,11 +127,11 @@ class DCGameMenuDelegate extends WatchUi.Menu2InputDelegate {
 
 class DCItemIcon extends WatchUi.Drawable {
     
-    private var _icon as BitmapResource;
+    private var _icon as BitmapReference;
 
     function initialize(item as Item) {
         Drawable.initialize({});
-        _icon = item.getSpriteRef() as BitmapResource;
+        _icon = item.getSpriteRef() as BitmapReference;
     }
 
     function draw(dc as Toybox.Graphics.Dc) as Void {

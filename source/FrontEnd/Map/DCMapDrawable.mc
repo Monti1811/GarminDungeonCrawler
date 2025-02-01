@@ -25,7 +25,13 @@ class DCMapDrawable extends WatchUi.Drawable {
 	}
 
 	function drawRoom(dc as Dc, pos as Point2D) {
-		var room_data = $.Game.map[pos[0]][pos[1]];
+		var room_data = $.Game.map[pos[0]][pos[1]] as [
+			String, 							// Room name
+			Dictionary<WalkDirection, Boolean>, // Connections
+			Point2D, 							// Size of room
+			Boolean, 							// Visited
+			Array<Point2D?>						// Special flags
+		]?;
 		// Check if room data exists and if the room has been visited
 		if (room_data == null || room_data[3] == false) {
 			return;
