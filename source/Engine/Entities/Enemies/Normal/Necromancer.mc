@@ -46,6 +46,7 @@ class Necromancer extends Enemy {
         if (summon_pos != null) {
             var summon = $.Enemies.createEnemyFromId(chosen_summon);
             summon.setPos(summon_pos);
+            summon.register();
             children.add(summon.guid);
             var room = $.getApp().getCurrentDungeon().getCurrentRoom();
             room.addEnemy(summon);

@@ -7,18 +7,18 @@ class DCGameView extends WatchUi.View {
 
     private var _tile_width as Number;
     private var _tile_height as Number;
-    private var _room as Room;
-    private var _room_drawable as RoomDrawable;
+    private var _room as Room?;
+    private var _room_drawable as RoomDrawable?;
 
-	private var _player_sprite as Bitmap;
+	private var _player_sprite as Bitmap?;
     private var _player_sprite_offset as Point2D = [0,0];
 
-	private var _timer as Timer.Timer;
+	private var _timer as Timer.Timer?;
     private var _autosave_timer as Timer.Timer?;
 
-	private var _turns as Turn;
+	private var _turns as Turn?;
 
-    private var rightLowHint as Bitmap;
+    private var rightLowHint as Bitmap?;
 
     private var damage_texts as Array<Text> = [];
 
@@ -226,6 +226,17 @@ class DCGameView extends WatchUi.View {
     function setPlayerSpritePos(pos as Point2D) as Void {
         _player_sprite.locX = pos[0] * _tile_width - _player_sprite_offset[0];
         _player_sprite.locY = pos[1] * _tile_height - _player_sprite_offset[1];
+    }
+
+    function freeMemory() as Void {
+        _player_sprite = null;
+        _room_drawable.freeMemory();
+        _room_drawable = null;
+        _turns = null;
+        _timer = null;
+        _autosave_timer = null;
+        rightLowHint = null;
+        damage_texts = [];
     }
 
 }

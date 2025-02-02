@@ -9,8 +9,8 @@ class RoomDrawable extends WatchUi.Drawable {
     private var _tile_width as Number;
     private var _tile_height as Number;
 
-    private var _map_string as Array<String>;
-    private var _font as FontReference;
+    private var _map_string as Array<String>?;
+    private var _font as FontReference?;
 
 
     function initialize(options as Dictionary?) {
@@ -23,6 +23,11 @@ class RoomDrawable extends WatchUi.Drawable {
 
         _font = WatchUi.loadResource($.Rez.Fonts.dungeon);
 
+    }
+
+    function freeMemory() as Void {
+        _map_string = null;
+        _font = null;
     }
 
     function printRoom() as Void {

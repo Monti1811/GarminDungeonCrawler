@@ -35,14 +35,18 @@ module Game {
 	function init(player_id as Number) as Void {
 		// Set the seed for random number generation
 		Math.srand(Time.now().value());
-		EntityManager.init();
-		Items.init(player_id);
-		Enemies.init(player_id);
+		self.initModules(player_id);
 		time_played = 0;
 		depth = 0;
 		difficulty = MEDIUM;
 		game_mode = NORMAL;
 		map = [];
+	}
+
+	function initModules(player_id as Number) as Void {
+		EntityManager.init();
+		Items.init(player_id);
+		Enemies.init(player_id);
 	}
 
 	function initMap(x as Number, y as Number) as Void {

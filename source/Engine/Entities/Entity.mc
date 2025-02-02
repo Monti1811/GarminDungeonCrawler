@@ -9,6 +9,9 @@ class Entity {
 	var guid as Number = 0;
 
 	function initialize() {
+	}
+
+	function register() as Void {
 		$.EntityManager.addEntity(self);
 	}
 

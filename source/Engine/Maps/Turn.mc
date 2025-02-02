@@ -2,15 +2,15 @@ import Toybox.Lang;
 
 class Turn {
 
-    private var _view as DCGameView;
+    private var _view as DCGameView?;
 
     private var _player_pos as Point2D;
     private var _player as Player;
 
     private var _autosave as Boolean = false;
 
-    private var _room as Room;
-    private var _map_data as Dictionary;
+    private var _room as Room?;
+    private var _map_data as Dictionary?;
 
     private var MIN_ENERGY = 100;
 
@@ -177,6 +177,14 @@ class Turn {
         return false;
     }
 
+    function freeMemory() as Void {
+        _room.freeMemory();
+        _room = null;
+        _map_data = null;
+        _view.freeMemory();
+        _view = null;
+    }
+
     function goToNextDungeon() as Void {
         var app = getApp();
         app.setCurrentDungeon(null);
@@ -186,6 +194,7 @@ class Turn {
             0.0
         );
         WatchUi.switchToView(progressBar, new DCNewDungeonProgressDelegate(progressBar), WatchUi.SLIDE_UP);
+        freeMemory();
     }
 
     function resolvePlayerActions(map as Array<Array<Tile>>, new_pos as Point2D, direction as WalkDirection, map_element as Object?) as Void {

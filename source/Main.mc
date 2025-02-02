@@ -35,8 +35,7 @@ module Main {
 
 	function createNextDungeon1(progress_bar as WatchUi.ProgressBar) as Void {
 		var player_id = $.getApp().getPlayer().id;
-		$.Items.init(player_id);
-		$.Enemies.init(player_id);
+		$.Game.initModules(player_id);
 		progress_bar.setProgress(10.0);
 		progress_bar.setDisplayString("Creating dungeon");
 		
@@ -362,6 +361,7 @@ module Main {
 			// Add chosen enemy to the list and subtract its cost
 			if (chosen_enemy != null) {
 				var enemy = Enemies.createEnemyFromId(chosen_enemy[:id]);
+				enemy.register();
 				chosen_enemies.add(enemy);
 				remaining_points -= chosen_enemy[:cost];
 			}

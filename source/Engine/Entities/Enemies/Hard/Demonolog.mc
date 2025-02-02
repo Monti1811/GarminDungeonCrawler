@@ -45,6 +45,7 @@ class Demonolog extends Enemy {
         var summon_pos = $.MapUtil.findRandomEmptyTileAround(map, pos);
         if (summon_pos != null) {
             var summon = $.Enemies.createEnemyFromId(chosen_summon);
+            summon.register();
             summon.setPos(summon_pos);
             children.add(summon.guid);
             var room = $.getApp().getCurrentDungeon().getCurrentRoom();

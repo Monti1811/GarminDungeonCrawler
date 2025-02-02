@@ -383,6 +383,13 @@ class Room {
         _map[pos[0]][pos[1]].content = merchant;
         addNPC(merchant);
     }
+
+    function freeMemory() as Void {
+        _items = {};
+        _enemies = {};
+        _npcs = {};
+        _map = [];
+    }
     
     function saveEntityDict(dict) as Array<Dictionary> {
         dict = dict as Dictionary<Point2D, Entity>;
