@@ -21,7 +21,7 @@ class GoldShield extends ArmorItem {
 	}
 	
 	function getSprite() as ResourceId {
-		return $.Rez.Drawables.shield_gold
+		return $.Rez.Drawables.shield_gold;
 	}
 
 	function deepcopy() as Item {
