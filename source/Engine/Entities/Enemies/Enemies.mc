@@ -33,7 +33,12 @@ module Enemies {
         26 => :createTentackle,
         27 => :createDemonolog,
         28 => :createChort,
-        29 => :createBies
+        29 => :createBies,
+        31 => :createOrcArmored,
+        32 => :createOrcMasked,
+        33 => :createOrcShaman,
+        34 => :createOrcVeteran,
+        35 => :createRokita,
     };
 
     var dungeon_enemies as Array<Dictionary<Symbol, Numeric>> = [
@@ -179,6 +184,26 @@ module Enemies {
 
     function createBies() as Enemy {
         return new Bies();
+    }
+
+    function createOrcArmored() as Enemy {
+        return new OrcArmored();
+    }
+
+    function createOrcMasked() as Enemy {
+        return new OrcMasked();
+    }
+
+    function createOrcShaman() as Enemy {
+        return new OrcShaman();
+    }
+
+    function createOrcVeteran() as Enemy {
+        return new OrcVeteran();
+    }
+
+    function createRokita() as Enemy {
+        return new Rokita();
     }
 
     function createEnemyFromId(id as Number) as Enemy {

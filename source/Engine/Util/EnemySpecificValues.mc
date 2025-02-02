@@ -61,6 +61,11 @@ class EnemySpecificValues {
 			{:id => 22, :cost => 20, :weight => depth <= 10 ? 2 : 2 / log_depth },		// ElementalGoo
 			{:id => 23, :cost => 20, :weight => depth <= 10 ? 2 : 2 / log_depth },		// ElementalPlant
 			{:id => 24, :cost => 20, :weight => depth <= 10 ? 2 : 2 / log_depth },		// ElementalWater
+			{:id => 31, :cost => 50, :weight => depth <= 10 ? 4 : 4 / log_depth }, // OrcArmored
+			{:id => 32, :cost => 20, :weight => depth <= 10 ? 4 : 4 / log_depth }, // OrcMasked
+			{:id => 33, :cost => 20, :weight => depth <= 10 ? 4 : 4 / log_depth }, // OrcShaman
+			{:id => 34, :cost => 50, :weight => depth <= 10 ? 4 : 4 / log_depth }, // OrcVeteran
+			{:id => 35, :cost => 50, :weight => depth <= 10 ? 4 : 4 / log_depth }  // Rokita
 		];
 
 		return [enemy_weights, enemy_weights];
@@ -103,6 +108,11 @@ class EnemySpecificValues {
 			{:id => 27, :cost => 30, :weight => 10 + log_depth }, // Demonolog
 			{:id => 28, :cost => 40, :weight => 10 + log_depth }, // Chort
 			{:id => 29, :cost => 50, :weight => 10 + log_depth }, // Bies
+			{:id => 31, :cost => 50, :weight => depth <= 10 ? 4 : 4 / log_depth }, // OrcArmored
+			{:id => 32, :cost => 20, :weight => depth <= 10 ? 4 : 4 / log_depth }, // OrcMasked
+			{:id => 33, :cost => 20, :weight => depth <= 10 ? 4 : 4 / log_depth }, // OrcShaman
+			{:id => 34, :cost => 50, :weight => depth <= 10 ? 4 : 4 / log_depth }, // OrcVeteran
+			{:id => 35, :cost => 50, :weight => depth <= 10 ? 4 : 4 / log_depth }  // Rokita
 		];
 
 		return [enemy_weights, enemy_weights];
@@ -138,6 +148,11 @@ class EnemySpecificValues {
 			{:id => 22, :cost => 20, :weight => depth <= 10 ? 2 : 2 / log_depth },		// ElementalGoo
 			{:id => 23, :cost => 20, :weight => depth <= 10 ? 2 : 2 / log_depth },		// ElementalPlant
 			{:id => 24, :cost => 20, :weight => depth <= 10 ? 2 : 2 / log_depth },		// ElementalWater
+			{:id => 31, :cost => 50, :weight => depth <= 10 ? 4 : 4 / log_depth }, // OrcArmored
+			{:id => 32, :cost => 20, :weight => depth <= 10 ? 4 : 4 / log_depth }, // OrcMasked
+			{:id => 33, :cost => 20, :weight => depth <= 10 ? 4 : 4 / log_depth }, // OrcShaman
+			{:id => 34, :cost => 50, :weight => depth <= 10 ? 4 : 4 / log_depth }, // OrcVeteran
+			{:id => 35, :cost => 50, :weight => depth <= 10 ? 4 : 4 / log_depth }  // Rokita
 		];
 
 		return [enemy_weights, enemy_weights];
@@ -174,6 +189,11 @@ class EnemySpecificValues {
 			{:id => 22, :cost => 20, :weight => depth <= 10 ? 2 : 2 / log_depth },		// ElementalGoo
 			{:id => 23, :cost => 20, :weight => depth <= 10 ? 2 : 2 / log_depth },		// ElementalPlant
 			{:id => 24, :cost => 20, :weight => depth <= 10 ? 2 : 2 / log_depth },		// ElementalWater
+			{:id => 31, :cost => 50, :weight => depth <= 10 ? 4 : 4 / log_depth }, // OrcArmored
+			{:id => 32, :cost => 20, :weight => depth <= 10 ? 4 : 4 / log_depth }, // OrcMasked
+			{:id => 33, :cost => 20, :weight => depth <= 10 ? 4 : 4 / log_depth }, // OrcShaman
+			{:id => 34, :cost => 50, :weight => depth <= 10 ? 4 : 4 / log_depth }, // OrcVeteran
+			{:id => 35, :cost => 50, :weight => depth <= 10 ? 4 : 4 / log_depth }  // Rokita
 		];
 
 		return [enemy_weights, enemy_weights];
@@ -213,6 +233,11 @@ class EnemySpecificValues {
 			{:id => 24, :cost => 50, :weight => depth <= 10 ? 2 : 2 / log_depth }, // ElementalWater
 			{:id => 25, :cost => 10, :weight => depth <= 10 ? 8 : 8 / log_depth }, // Goblin
 			{:id => 26, :cost => 20, :weight => depth <= 10 ? 4 : 4 / log_depth }, // Tentackle
+			{:id => 31, :cost => 50, :weight => depth <= 10 ? 4 : 4 / log_depth }, // OrcArmored
+			{:id => 32, :cost => 20, :weight => depth <= 10 ? 4 : 4 / log_depth }, // OrcMasked
+			{:id => 33, :cost => 20, :weight => depth <= 10 ? 4 : 4 / log_depth }, // OrcShaman
+			{:id => 34, :cost => 50, :weight => depth <= 10 ? 4 : 4 / log_depth }, // OrcVeteran
+			{:id => 35, :cost => 50, :weight => depth <= 10 ? 4 : 4 / log_depth }  // Rokita
 		];
 
 		return [enemy_weights, enemy_weights];
