@@ -47,6 +47,20 @@ class EnemySpecificValues {
 			{:id => 9, :cost => 15, :weight => depth <= 10 ? 8 : 8 / log_depth },  // Wogol
 			{:id => 10, :cost => 20, :weight => depth <= 10 ? 4 : 4 / log_depth }, // Ogre
 			{:id => 11, :cost => 25, :weight => depth <= 10 ? 2 : 2 / log_depth }, // DarkKnight
+			{:id => 12, :cost => 5, :weight => depth <= 10 ? 4 : 4 / log_depth },		// ElementalAirSmall
+			{:id => 13, :cost => 5, :weight => depth <= 10 ? 4 : 4 / log_depth },		// ElementalEarthSmall
+			{:id => 14, :cost => 5, :weight => depth <= 10 ? 4 : 4 / log_depth },		// ElementalFireSmall
+			{:id => 15, :cost => 5, :weight => depth <= 10 ? 4 : 4 / log_depth },		// ElementalGoldSmall
+			{:id => 16, :cost => 5, :weight => depth <= 10 ? 4 : 4 / log_depth },		// ElementalGooSmall
+			{:id => 30, :cost => 5, :weight => depth <= 10 ? 4 : 4 / log_depth },		// ElementalPlantSmall
+			{:id => 17, :cost => 5, :weight => depth <= 10 ? 4 : 4 / log_depth },		// ElementalWaterSmall
+			{:id => 18, :cost => 20, :weight => depth <= 10 ? 2 : 2 / log_depth },		// ElementalAir
+			{:id => 19, :cost => 20, :weight => depth <= 10 ? 2 : 2 / log_depth },		// ElementalEarth
+			{:id => 20, :cost => 20, :weight => depth <= 10 ? 2 : 2 / log_depth },		// ElementalFire
+			{:id => 21, :cost => 20, :weight => depth <= 10 ? 2 : 2 / log_depth },		// ElementalGold
+			{:id => 22, :cost => 20, :weight => depth <= 10 ? 2 : 2 / log_depth },		// ElementalGoo
+			{:id => 23, :cost => 20, :weight => depth <= 10 ? 2 : 2 / log_depth },		// ElementalPlant
+			{:id => 24, :cost => 20, :weight => depth <= 10 ? 2 : 2 / log_depth },		// ElementalWater
 		];
 
 		return [enemy_weights, enemy_weights];
@@ -58,37 +72,37 @@ class EnemySpecificValues {
 		var sqrt_depth = Math.sqrt(depth);
 
 		var enemy_weights = [
-			{:id => 0, :cost => 3, :weight => 10 + log_depth }, // Divine Frog
-			{:id => 1, :cost => 7, :weight => 10 + log_depth }, // Divine Bat
-			{:id => 2, :cost => 25, :weight => 10 + log_depth }, // Divine Demon
-			{:id => 3, :cost => 5, :weight => 10 + log_depth }, // Divine Orc
-			{:id => 4, :cost => 5, :weight => 10 + log_depth }, // Divine Imp
-			{:id => 5, :cost => 10, :weight => 10 + log_depth }, // Divine Skeleton
-			{:id => 6, :cost => 20, :weight => 10 + log_depth }, // Divine Necromancer
-			{:id => 7, :cost => 3, :weight => 10 + log_depth }, // Divine ZombieSmall
-			{:id => 8, :cost => 5, :weight => 10 + log_depth }, // Divine Zombie
-			{:id => 9, :cost => 15, :weight => 10 + log_depth }, // Divine Wogol
-			{:id => 10, :cost => 20, :weight => 10 + log_depth }, // Divine Ogre
-			{:id => 11, :cost => 25, :weight => 10 + log_depth }, // Divine DarkKnight
-			{:id => 12, :cost => 30, :weight => 10 + log_depth }, // Divine ElementalAirSmall
-			{:id => 13, :cost => 30, :weight => 10 + log_depth }, // Divine ElementalEarthSmall
-			{:id => 14, :cost => 30, :weight => 10 + log_depth }, // Divine ElementalFireSmall
-			{:id => 15, :cost => 30, :weight => 10 + log_depth }, // Divine ElementalGoldSmall
-			{:id => 16, :cost => 30, :weight => 10 + log_depth }, // Divine ElementalGooSmall
-			{:id => 30, :cost => 30, :weight => 10 + log_depth }, // Divine ElementalPlantSmall
-			{:id => 17, :cost => 30, :weight => 10 + log_depth }, // Divine ElementalWaterSmall
-			{:id => 18, :cost => 50, :weight => 10 + log_depth }, // Divine ElementalAir
-			{:id => 19, :cost => 50, :weight => 10 + log_depth }, // Divine ElementalEarth
-			{:id => 20, :cost => 50, :weight => 10 + log_depth }, // Divine ElementalFire
-			{:id => 21, :cost => 50, :weight => 10 + log_depth }, // Divine ElementalGold
-			{:id => 22, :cost => 50, :weight => 10 + log_depth }, // Divine ElementalGoo
-			{:id => 23, :cost => 50, :weight => 10 + log_depth }, // Divine ElementalPlant
-			{:id => 24, :cost => 50, :weight => 10 + log_depth }, // Divine ElementalWater
-			{:id => 25, :cost => 10, :weight => 10 + log_depth }, // Divine Goblin
-			{:id => 26, :cost => 20, :weight => 10 + log_depth }, // Divine Tentackle
-			{:id => 27, :cost => 30, :weight => 10 + log_depth }, // Divine Demonolog
-			{:id => 28, :cost => 40, :weight => 10 + log_depth }, // Divine Chort
-			{:id => 29, :cost => 50, :weight => 10 + log_depth }, // Divine Bies
+			{:id => 0, :cost => 3, :weight => 10 + log_depth }, // Frog
+			{:id => 1, :cost => 7, :weight => 10 + log_depth }, // Bat
+			{:id => 2, :cost => 25, :weight => 10 + log_depth }, // Demon
+			{:id => 3, :cost => 5, :weight => 10 + log_depth }, // Orc
+			{:id => 4, :cost => 5, :weight => 10 + log_depth }, // Imp
+			{:id => 5, :cost => 10, :weight => 10 + log_depth }, // Skeleton
+			{:id => 6, :cost => 20, :weight => 10 + log_depth }, // Necromancer
+			{:id => 7, :cost => 3, :weight => 10 + log_depth }, // ZombieSmall
+			{:id => 8, :cost => 5, :weight => 10 + log_depth }, // Zombie
+			{:id => 9, :cost => 15, :weight => 10 + log_depth }, // Wogol
+			{:id => 10, :cost => 20, :weight => 10 + log_depth }, // Ogre
+			{:id => 11, :cost => 25, :weight => 10 + log_depth }, // DarkKnight
+			{:id => 12, :cost => 5, :weight => depth <= 10 ? 4 : 4 / log_depth },		// ElementalAirSmall
+			{:id => 13, :cost => 5, :weight => depth <= 10 ? 4 : 4 / log_depth },		// ElementalEarthSmall
+			{:id => 14, :cost => 5, :weight => depth <= 10 ? 4 : 4 / log_depth },		// ElementalFireSmall
+			{:id => 15, :cost => 5, :weight => depth <= 10 ? 4 : 4 / log_depth },		// ElementalGoldSmall
+			{:id => 16, :cost => 5, :weight => depth <= 10 ? 4 : 4 / log_depth },		// ElementalGooSmall
+			{:id => 30, :cost => 5, :weight => depth <= 10 ? 4 : 4 / log_depth },		// ElementalPlantSmall
+			{:id => 17, :cost => 5, :weight => depth <= 10 ? 4 : 4 / log_depth },		// ElementalWaterSmall
+			{:id => 18, :cost => 20, :weight => depth <= 10 ? 2 : 2 / log_depth },		// ElementalAir
+			{:id => 19, :cost => 20, :weight => depth <= 10 ? 2 : 2 / log_depth },		// ElementalEarth
+			{:id => 20, :cost => 20, :weight => depth <= 10 ? 2 : 2 / log_depth },		// ElementalFire
+			{:id => 21, :cost => 20, :weight => depth <= 10 ? 2 : 2 / log_depth },		// ElementalGold
+			{:id => 22, :cost => 20, :weight => depth <= 10 ? 2 : 2 / log_depth },		// ElementalGoo
+			{:id => 23, :cost => 20, :weight => depth <= 10 ? 2 : 2 / log_depth },		// ElementalPlant
+			{:id => 24, :cost => 20, :weight => depth <= 10 ? 2 : 2 / log_depth },		// ElementalWater
+			{:id => 25, :cost => 10, :weight => 10 + log_depth }, // Goblin
+			{:id => 26, :cost => 20, :weight => 10 + log_depth }, // Tentackle
+			{:id => 27, :cost => 30, :weight => 10 + log_depth }, // Demonolog
+			{:id => 28, :cost => 40, :weight => 10 + log_depth }, // Chort
+			{:id => 29, :cost => 50, :weight => 10 + log_depth }, // Bies
 		];
 
 		return [enemy_weights, enemy_weights];
@@ -104,26 +118,26 @@ class EnemySpecificValues {
 		var enemy_weights = [
 			{:id => 0, :cost => 3, :weight => depth <= 10 ? 16 : 16 / log_depth }, 		// Frog
 			{:id => 1, :cost => 7, :weight => depth <= 10 ? 16 : 16 / log_depth },		// Bat
-			{:id => 2, :cost => 25, :weight => depth <= 10 ? 0 : 0 + log_depth },		// Demon
+			{:id => 2, :cost => 100, :weight => depth <= 10 ? 0 : 0 + log_depth },		// Demon
 			{:id => 3, :cost => 5, :weight => depth <= 10 ? 16 : 16 / log_depth },		// Orc
 			{:id => 4, :cost => 5, :weight => depth <= 10 ? 16 : 16 / log_depth },		// Imp
 			{:id => 6, :cost => 20, :weight => depth <= 10 ? 4 : 4 / log_depth },		// Necromancer
 			{:id => 7, :cost => 3, :weight => depth <= 10 ? 16 : 16 / log_depth },		// ZombieSmall
 			{:id => 8, :cost => 5, :weight => depth <= 10 ? 16 : 16 / log_depth },		// Zombie
-			{:id => 12, :cost => 30, :weight => depth <= 10 ? 4 : 4 / log_depth },		// ElementalAirSmall
-			{:id => 13, :cost => 30, :weight => depth <= 10 ? 4 : 4 / log_depth },		// ElementalEarthSmall
-			{:id => 14, :cost => 30, :weight => depth <= 10 ? 4 : 4 / log_depth },		// ElementalFireSmall
-			{:id => 15, :cost => 30, :weight => depth <= 10 ? 4 : 4 / log_depth },		// ElementalGoldSmall
-			{:id => 16, :cost => 30, :weight => depth <= 10 ? 4 : 4 / log_depth },		// ElementalGooSmall
-			{:id => 30, :cost => 30, :weight => depth <= 10 ? 4 : 4 / log_depth },		// ElementalPlantSmall
-			{:id => 17, :cost => 30, :weight => depth <= 10 ? 4 : 4 / log_depth },		// ElementalWaterSmall
-			{:id => 18, :cost => 50, :weight => depth <= 10 ? 2 : 2 / log_depth },		// ElementalAir
-			{:id => 19, :cost => 50, :weight => depth <= 10 ? 2 : 2 / log_depth },		// ElementalEarth
-			{:id => 20, :cost => 50, :weight => depth <= 10 ? 2 : 2 / log_depth },		// ElementalFire
-			{:id => 21, :cost => 50, :weight => depth <= 10 ? 2 : 2 / log_depth },		// ElementalGold
-			{:id => 22, :cost => 50, :weight => depth <= 10 ? 2 : 2 / log_depth },		// ElementalGoo
-			{:id => 23, :cost => 50, :weight => depth <= 10 ? 2 : 2 / log_depth },		// ElementalPlant
-			{:id => 24, :cost => 50, :weight => depth <= 10 ? 2 : 2 / log_depth },		// ElementalWater
+			{:id => 12, :cost => 5, :weight => depth <= 10 ? 4 : 4 / log_depth },		// ElementalAirSmall
+			{:id => 13, :cost => 5, :weight => depth <= 10 ? 4 : 4 / log_depth },		// ElementalEarthSmall
+			{:id => 14, :cost => 5, :weight => depth <= 10 ? 4 : 4 / log_depth },		// ElementalFireSmall
+			{:id => 15, :cost => 5, :weight => depth <= 10 ? 4 : 4 / log_depth },		// ElementalGoldSmall
+			{:id => 16, :cost => 5, :weight => depth <= 10 ? 4 : 4 / log_depth },		// ElementalGooSmall
+			{:id => 30, :cost => 5, :weight => depth <= 10 ? 4 : 4 / log_depth },		// ElementalPlantSmall
+			{:id => 17, :cost => 5, :weight => depth <= 10 ? 4 : 4 / log_depth },		// ElementalWaterSmall
+			{:id => 18, :cost => 20, :weight => depth <= 10 ? 2 : 2 / log_depth },		// ElementalAir
+			{:id => 19, :cost => 20, :weight => depth <= 10 ? 2 : 2 / log_depth },		// ElementalEarth
+			{:id => 20, :cost => 20, :weight => depth <= 10 ? 2 : 2 / log_depth },		// ElementalFire
+			{:id => 21, :cost => 20, :weight => depth <= 10 ? 2 : 2 / log_depth },		// ElementalGold
+			{:id => 22, :cost => 20, :weight => depth <= 10 ? 2 : 2 / log_depth },		// ElementalGoo
+			{:id => 23, :cost => 20, :weight => depth <= 10 ? 2 : 2 / log_depth },		// ElementalPlant
+			{:id => 24, :cost => 20, :weight => depth <= 10 ? 2 : 2 / log_depth },		// ElementalWater
 		];
 
 		return [enemy_weights, enemy_weights];
@@ -146,6 +160,20 @@ class EnemySpecificValues {
 			{:id => 9, :cost => 15, :weight => depth <= 10 ? 8 : 8 / log_depth },  // Wogol
 			{:id => 10, :cost => 20, :weight => depth <= 10 ? 4 : 4 / log_depth }, // Ogre
 			{:id => 25, :cost => 10, :weight => depth <= 10 ? 8 : 8 / log_depth }, // Goblin
+			{:id => 12, :cost => 5, :weight => depth <= 10 ? 4 : 4 / log_depth },		// ElementalAirSmall
+			{:id => 13, :cost => 5, :weight => depth <= 10 ? 4 : 4 / log_depth },		// ElementalEarthSmall
+			{:id => 14, :cost => 5, :weight => depth <= 10 ? 4 : 4 / log_depth },		// ElementalFireSmall
+			{:id => 15, :cost => 5, :weight => depth <= 10 ? 4 : 4 / log_depth },		// ElementalGoldSmall
+			{:id => 16, :cost => 5, :weight => depth <= 10 ? 4 : 4 / log_depth },		// ElementalGooSmall
+			{:id => 30, :cost => 5, :weight => depth <= 10 ? 4 : 4 / log_depth },		// ElementalPlantSmall
+			{:id => 17, :cost => 5, :weight => depth <= 10 ? 4 : 4 / log_depth },		// ElementalWaterSmall
+			{:id => 18, :cost => 20, :weight => depth <= 10 ? 2 : 2 / log_depth },		// ElementalAir
+			{:id => 19, :cost => 20, :weight => depth <= 10 ? 2 : 2 / log_depth },		// ElementalEarth
+			{:id => 20, :cost => 20, :weight => depth <= 10 ? 2 : 2 / log_depth },		// ElementalFire
+			{:id => 21, :cost => 20, :weight => depth <= 10 ? 2 : 2 / log_depth },		// ElementalGold
+			{:id => 22, :cost => 20, :weight => depth <= 10 ? 2 : 2 / log_depth },		// ElementalGoo
+			{:id => 23, :cost => 20, :weight => depth <= 10 ? 2 : 2 / log_depth },		// ElementalPlant
+			{:id => 24, :cost => 20, :weight => depth <= 10 ? 2 : 2 / log_depth },		// ElementalWater
 		];
 
 		return [enemy_weights, enemy_weights];

@@ -374,6 +374,7 @@ class Player extends Entity {
 
 	function takeDamage(damage as Number, enemy as Enemy?) as Boolean {
 		onLoseHealth(damage);
+		self.damage_received += damage;
 		if (current_health == 0) {
 			return true;
 		}

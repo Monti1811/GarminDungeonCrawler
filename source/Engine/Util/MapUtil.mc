@@ -226,6 +226,37 @@ module MapUtil {
 		
 	}
 
+	function checkPlayer(map as Array<Array<Tile>>, x as Number, y as Number) as Boolean {
+        if (x >= 0 && x < map.size() && y >= 0 && y < map[0].size()) {
+            return map[x][y].player;
+            
+        }
+        return false;
+    }
+
+    function getPlayerInRangeLinear(map as Array<Array<Tile>>, pos as Point2D, range as Number) as Boolean {
+		var x = pos[0];
+		var y = pos[1];
+		var directions = [
+			[0, -1],
+			[0, 1],
+			[-1, 0],
+			[1, 0]
+		];
+		for (var i = 1; i <= range; i++) {
+			for (var j = 0; j < directions.size(); j++) {
+				var direction = directions[j];
+				var new_x = x + i * direction[0];
+				var new_y = y + i * direction[1];
+				if (checkPlayer(map, new_x, new_y)) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
 	function getRangeCoords(map as Array<Array<Tile>>, pos as Point2D, range as Number, range_type as RangeType, direction as WalkDirection) as Array<Point2D> {
 		var range_int = Math.floor(range).toNumber() as Number;
 		var range_float = range - range_int;

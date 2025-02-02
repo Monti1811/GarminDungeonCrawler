@@ -14,9 +14,6 @@ class Merchant extends NPC {
 		var combined = [] as Array<Item>;
 		for (var i = 0; i < items.size(); i++) {
 			var item = items[i];
-			if (item == null) {
-				continue; // Überspringen Sie null-Elemente
-			}
 			var found = false;
 			for (var j = 0; j < combined.size(); j++) {
 				var combined_item = combined[j];
@@ -38,6 +35,9 @@ class Merchant extends NPC {
 		var temp_items = [] as Array<Item>;
 		for (var i = 0; i < amount; i++) {
 			var item = Items.createRandomWeightedItem(4);
+			if (item == null) {
+				continue;
+			}
 			temp_items.add(item);
 		}
 		items = combineItems(temp_items);

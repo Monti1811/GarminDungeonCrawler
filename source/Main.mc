@@ -250,7 +250,7 @@ module Main {
 		return items;
 	}
 
-	function createRandomItem(type as Number) as Item {
+	function createRandomItem(type as Number) as Item? {
 		return Items.createRandomWeightedItem(type);
 	}
 

@@ -1,7 +1,7 @@
 import Toybox.Lang;
 
 module EntityManager {
-	var entity_num = 0;
+	var entity_num as Number = 0;
 	var entities as Dictionary<Number, Entity> = {};
 
 

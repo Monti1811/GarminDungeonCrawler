@@ -65,6 +65,11 @@ class Enemy extends Entity {
 		return current_health.toFloat() / maxHealth.toFloat();
 	}
 
+	function doHealthDelta(amount as Number) as Void {
+		amount = MathUtil.clamp(current_health + amount, -current_health, maxHealth - current_health);
+		self.current_health = amount;
+	}
+
 	function takeDamage(damage as Number, enemy as Player?) as Boolean {
 		current_health -= damage;
 		if (current_health <= 0) {
