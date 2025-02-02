@@ -263,6 +263,11 @@
     <bitmap id="crossbow" filename="items/crossbow.png" />
     <bitmap id="crossbow_oak" filename="items/crossbow_oak.png" />
     <bitmap id="crossbow_hell" filename="items/crossbow_hell.png" />
+    <bitmap id="bolt" filename="items/bolt.png" />
+    <bitmap id="bolt_fire" filename="items/bolt_fire.png" />
+    <bitmap id="bolt_ice" filename="items/bolt_ice.png" />
+    <bitmap id="bolt_gold" filename="items/bolt_gold.png" />
+    <bitmap id="shield_steel" filename="items/shield_steel.png" />
     <bitmap id="shield_silver" filename="items/shield_silver.png" />
     <bitmap id="shield_gold" filename="items/shield_gold.png" />
     <bitmap id="shield_wood" filename="items/shield_wood.png" />

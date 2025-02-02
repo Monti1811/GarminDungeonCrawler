@@ -52,6 +52,5 @@ enum DefenseType {
 
 enum AmmunitionType {
 	ARROW,
-	FIRE_ARROW,
-	ICE_ARROW
+	BOLT
 }

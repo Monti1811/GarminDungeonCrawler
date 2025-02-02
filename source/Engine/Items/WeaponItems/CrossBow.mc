@@ -7,7 +7,7 @@ class CrossBow extends Bow {
 		Bow.initialize();
 		id = 10;
 		name = "Crossbow";
-		description = "A simple crossbow";
+		description = "A simple crossbow, can attack every 3 turns.";
 		slot = RIGHT_HAND;
 		value = 12;
 		weight = 4;
@@ -21,6 +21,7 @@ class CrossBow extends Bow {
 		range_type = LINEAR;
 		attack_type = DEXTERITY;
 		cooldown = 2;
+		ammunition_type = BOLT;
 
 	}
 

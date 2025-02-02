@@ -48,6 +48,16 @@ class Bow extends WeaponItem {
 		return ammunition != null && ammunition.isType(self.ammunition_type);
 	}
 
+	function getAttack(enemy as Enemy?, weapons_size as Number) as Number {
+		var player = getApp().getPlayer();
+		var ammunition = player.getEquip(AMMUNITION) as Ammunition?;
+		var bow_attack = 0;
+		if (ammunition != null && ammunition.isType(self.ammunition_type)) {
+			bow_attack = attack;
+		}
+		return WeaponItem.getAttack(enemy, weapons_size) + bow_attack;
+	}
+
 	function onDamageDone(damage as Number, enemy as Enemy?) as Void {
 		var player = getApp().getPlayer();
 		var ammunition = player.getEquip(AMMUNITION) as Ammunition?;

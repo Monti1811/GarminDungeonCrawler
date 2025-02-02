@@ -9,6 +9,7 @@ class Ammunition extends WeaponItem {
 		slot = AMMUNITION;
 		attack = 1;
 		weight = 0.01;
+		value = 5;
 	}
 
 	function getType() as AmmunitionType {
