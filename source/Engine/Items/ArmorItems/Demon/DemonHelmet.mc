@@ -6,13 +6,15 @@ class DemonHelmet extends ArmorItem {
 		ArmorItem.initialize();
 		id = 1052;
 		name = "Demon Helmet";
-		description = "A simple demon helmet";
-		value = 40;
-		weight = 3;
+		description = "A demon helmet, forged in the fires of hell.";
+		value = 1000;
+		weight = 5;
 		slot = HEAD;
-		defense = 10;
+		defense = 18;
 		attribute_bonus = {
-			:constitution => 9
+			:charisma => 10,
+			:strength => 5,
+			:wisdom => -5,
 		};
 	}
 

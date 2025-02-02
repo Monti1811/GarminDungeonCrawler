@@ -1,20 +1,21 @@
 import Toybox.Lang;
 
-class BloodGauntlets extends ArmorItem {
+class DemonGauntlets extends ArmorItem {
 
 	function initialize() {
 		ArmorItem.initialize();
-		id = 1059;
-		name = "Blood Gauntlets";
-		description = "Some blood gauntlets, they are red and bloody looking";
-		value = 2000;
-		weight = 2;
+		id = 1029; // TODO: Set the correct ID
+		name = "Ice Gauntlets";
+		description = "Some demon gauntlets, forged in the fires of hell, and imbued with the power of the underworld.";
+		value = 500;
+		weight = 3;
 		slot = EITHER_HAND;
-		defense = 20;
+		defense = 15;
 		attribute_bonus = {
 			:charisma => 10,
-			:constitution => 5,
 			:strength => 5,
+			:intelligence => -5,
+			:wisdom => -5,
 		};
 		defense_type = CHARISMA;
 	}
@@ -24,11 +25,11 @@ class BloodGauntlets extends ArmorItem {
 	}
 	// ...existing code...
 	function getSprite() as ResourceId {
-		return $.Rez.Drawables.blood_gauntlets;
+		return $.Rez.Drawables.demon_gauntlets;
 	}
 	
 	function deepcopy() as Item {
-		var gauntlets = new BloodGauntlets();
+		var gauntlets = new DemonGauntlets();
 		// ...existing code...
 		return gauntlets;
 	}

@@ -1,19 +1,19 @@
 import Toybox.Lang;
 
-class BloodBreastPlate extends ArmorItem {
+class FireBreastPlate extends ArmorItem {
 
 	function initialize() {
 		ArmorItem.initialize();
-		id = 1060;
-		name = "Blood Breastplate";
-		description = "A blood breastplate";
-		value = 5000;
+		id = 1018; //TODO: Change this to a unique ID
+		name = "Fire Breastplate";
+		description = "A fire breastplate";
+		value = 100;
 		weight = 8;
 		slot = CHEST;
-		defense = 40;
+		defense = 10;
 		attribute_bonus = {
-			:constitution => 20,
-			:strength => 5,
+			:constitution => 4,
+			:strength => 4,
 		};
 	}
 
@@ -22,11 +22,11 @@ class BloodBreastPlate extends ArmorItem {
 	}
 	// ...existing code...
 	function getSprite() as ResourceId {
-		return $.Rez.Drawables.blood_armor;
+		return $.Rez.Drawables.fire_armor;
 	}
 
 	function deepcopy() as Item {
-		var breastplate = new BloodBreastPlate();
+		var breastplate = new FireBreastPlate();
 		// ...existing code...
 		return breastplate;
 	}

@@ -6,13 +6,15 @@ class IceHelmet extends ArmorItem {
 		ArmorItem.initialize();
 		id = 1028;
 		name = "Ice Helmet";
-		description = "A simple ice helmet";
-		value = 20;
+		description = "An ice helmet, it's a bit cold";
+		value = 70;
 		weight = 3;
 		slot = HEAD;
-		defense = 6;
+		defense = 7;
 		attribute_bonus = {
-			:constitution => 5
+			:constitution => 3,
+			:wisdom => 3,
+			:luck => 1
 		};
 	}
 

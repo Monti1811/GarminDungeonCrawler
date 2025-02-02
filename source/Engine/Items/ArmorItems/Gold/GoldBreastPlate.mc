@@ -6,14 +6,15 @@ class GoldBreastPlate extends ArmorItem {
 		ArmorItem.initialize();
 		id = 1048;
 		name = "Gold Breastplate";
-		description = "A simple gold breastplate";
-		value = 38;
-		weight = 10;
+		description = "A gold breastplate";
+		value = 500;
+		weight = 15;
 		slot = CHEST;
-		defense = 11;
+		defense = 20;
 		attribute_bonus = {
-			:constitution => 8,
-			:dexterity => -1
+			:constitution => 10,
+			:strength => 3,
+			:dexterity => -5
 		};
 	}
 

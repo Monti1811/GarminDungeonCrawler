@@ -6,11 +6,11 @@ class BronzeBreastPlate extends ArmorItem {
 		ArmorItem.initialize();
 		id = 1018;
 		name = "Bronze Breastplate";
-		description = "A simple bronze breastplate";
-		value = 12;
-		weight = 10;
+		description = "A bronze breastplate";
+		value = 25;
+		weight = 12;
 		slot = CHEST;
-		defense = 6;
+		defense = 8;
 		attribute_bonus = {
 			:constitution => 3,
 			:dexterity => -1

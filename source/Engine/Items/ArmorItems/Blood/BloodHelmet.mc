@@ -6,13 +6,14 @@ class BloodHelmet extends ArmorItem {
 		ArmorItem.initialize();
 		id = 1058;
 		name = "Blood Helmet";
-		description = "A simple blood helmet";
-		value = 45;
+		description = "A blood helmet, reflecting the blood of your enemies.";
+		value = 3000;
 		weight = 3;
 		slot = HEAD;
-		defense = 11;
+		defense = 25;
 		attribute_bonus = {
-			:constitution => 10
+			:constitution => 10,
+			:strength => 5,
 		};
 	}
 

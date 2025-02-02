@@ -7,12 +7,14 @@ class GrassHelmet extends ArmorItem {
 		id = 1034;
 		name = "Grass Helmet";
 		description = "A simple grass helmet";
-		value = 25;
+		value = 70;
 		weight = 3;
 		slot = HEAD;
 		defense = 7;
 		attribute_bonus = {
-			:constitution => 6
+			:constitution => 2,
+			:charisma => 2,
+			:luck => 2,
 		};
 	}
 

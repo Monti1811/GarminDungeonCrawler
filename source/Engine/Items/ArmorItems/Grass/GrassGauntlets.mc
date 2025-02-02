@@ -6,13 +6,14 @@ class GrassGauntlets extends ArmorItem {
 		ArmorItem.initialize();
 		id = 1035;
 		name = "Grass Gauntlets";
-		description = "Simple grass gauntlets";
-		value = 20;
-		weight = 2;
+		description = "Some grass gauntlets";
+		value = 50;
+		weight = 1.5;
 		slot = EITHER_HAND;
 		defense = 7;
 		attribute_bonus = {
-			:charisma => 6
+			:charisma => 5,
+			:luck => 1,
 		};
 		defense_type = CHARISMA;
 	}

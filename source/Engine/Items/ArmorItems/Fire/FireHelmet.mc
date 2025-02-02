@@ -6,13 +6,14 @@ class FireHelmet extends ArmorItem {
 		ArmorItem.initialize();
 		id = 1022;
 		name = "Fire Helmet";
-		description = "A simple fire helmet";
-		value = 15;
+		description = "A fire helmet, it's a bit hot";
+		value = 70;
 		weight = 3;
 		slot = HEAD;
-		defense = 5;
+		defense = 7;
 		attribute_bonus = {
-			:constitution => 4
+			:constitution => 3,
+			:strength => 3
 		};
 	}
 

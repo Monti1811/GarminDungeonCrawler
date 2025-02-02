@@ -6,13 +6,14 @@ class IceGauntlets extends ArmorItem {
 		ArmorItem.initialize();
 		id = 1029;
 		name = "Ice Gauntlets";
-		description = "Simple ice gauntlets";
-		value = 16;
+		description = "Some ice gauntlets";
+		value = 50;
 		weight = 2;
 		slot = EITHER_HAND;
-		defense = 6;
+		defense = 7;
 		attribute_bonus = {
-			:charisma => 5
+			:charisma => 3,
+			:wisdom => 4,
 		};
 		defense_type = CHARISMA;
 	}

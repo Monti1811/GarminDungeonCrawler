@@ -1,18 +1,19 @@
 import Toybox.Lang;
 
-class BronzeHelmet extends ArmorItem {
+class WaterHelmet extends ArmorItem {
 
 	function initialize() {
 		ArmorItem.initialize();
-		id = 1016;
-		name = "Bronze Helmet";
-		description = "A bronze helmet, it's a bit rusty";
-		value = 15;
-		weight = 3.5;
+		id = 1028;
+		name = "Water Helmet";
+		description = "An water helmet, very refreshing";
+		value = 70;
+		weight = 3;
 		slot = HEAD;
-		defense = 4;
+		defense = 7;
 		attribute_bonus = {
-			:constitution => 3
+			:constitution => 3,
+			:intelligence => 3
 		};
 	}
 
@@ -21,11 +22,11 @@ class BronzeHelmet extends ArmorItem {
 	}
 	// ...existing code...
 	function getSprite() as ResourceId {
-		return $.Rez.Drawables.bronze_helmet;
+		return $.Rez.Drawables.ice_helmet;
 	}
 	
 	function deepcopy() as Item {
-		var helmet = new BronzeHelmet();
+		var helmet = new WaterHelmet();
 		// ...existing code...
 		return helmet;
 	}

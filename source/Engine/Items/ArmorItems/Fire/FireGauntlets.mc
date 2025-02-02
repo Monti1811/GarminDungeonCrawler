@@ -1,18 +1,19 @@
 import Toybox.Lang;
 
-class BronzeGauntlets extends ArmorItem {
+class FireGauntlets extends ArmorItem {
 
 	function initialize() {
 		ArmorItem.initialize();
-		id = 1017;
-		name = "Bronze Gauntlets";
-		description = "Some bronze gauntlets";
-		value = 13;
-		weight = 2.5;
+		id = 1035; // TODO: Change this to a unique ID
+		name = "Fire Gauntlets";
+		description = "Some fire gauntlets";
+		value = 50;
+		weight = 1.5;
 		slot = EITHER_HAND;
-		defense = 4;
+		defense = 7;
 		attribute_bonus = {
-			:charisma => 3
+			:charisma => 3,
+			:strength => 3,
 		};
 		defense_type = CHARISMA;
 	}
@@ -22,11 +23,11 @@ class BronzeGauntlets extends ArmorItem {
 	}
 	// ...existing code...
 	function getSprite() as ResourceId {
-		return $.Rez.Drawables.bronze_gauntlets;
+		return $.Rez.Drawables.fire_gauntlets;
 	}
 	
 	function deepcopy() as Item {
-		var gauntlets = new BronzeGauntlets();
+		var gauntlets = new FireGauntlets();
 		// ...existing code...
 		return gauntlets;
 	}
