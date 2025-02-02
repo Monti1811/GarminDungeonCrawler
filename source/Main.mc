@@ -34,6 +34,9 @@ module Main {
 	}
 
 	function createNextDungeon1(progress_bar as WatchUi.ProgressBar) as Void {
+		var player_id = $.getApp().getPlayer().id;
+		$.Items.init(player_id);
+		$.Enemies.init(player_id);
 		progress_bar.setProgress(10.0);
 		progress_bar.setDisplayString("Creating dungeon");
 		
@@ -236,6 +239,9 @@ module Main {
 		for (var i = 0; i < num_items; i++) {
 			var type = getItemType();
 			var item = createRandomItem(type);
+			if (item == null) {
+				continue;
+			}
 			var item_pos = MapUtil.getRandomPos(map, left, right, top, bottom);
 			item.setPos(item_pos);
 			map[item_pos[0]][item_pos[1]].content = item;

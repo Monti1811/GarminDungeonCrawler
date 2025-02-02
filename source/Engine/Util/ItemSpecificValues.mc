@@ -68,28 +68,28 @@ class ItemSpecificValues {
 		};
 
 		var high_quality_weights = {
-			0 => isBetweenDepth(depth, 1, 10) ? 1 + sqrt_depth : 0, // Steel Axe
-			3 => isBetweenDepth(depth, 1, 10) ? 1 + sqrt_depth : 0, // Steel Greatsword
-			5 => isBetweenDepth(depth, 1, 10) ? 1 + sqrt_depth : 0, // Steel Lance
-			1004 => isBetweenDepth(depth, 1, 10) ? 1 + sqrt_depth : 0, // Steel Ring1
-			1005 => isBetweenDepth(depth, 1, 10) ? 1 + sqrt_depth : 0, // Steel Ring2
-			1008 => isBetweenDepth(depth, 1, 10) ? 1 + sqrt_depth : 0, // Life Amulet
-			2002 => isBetweenDepth(depth, 1, 10) ? 1 + sqrt_depth : 0, // Greater Health Potion
+			0 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Steel Axe
+			3 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Steel Greatsword
+			5 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Steel Lance
+			1004 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Steel Ring1
+			1005 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Steel Ring2
+			1008 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Life Amulet
+			2002 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Greater Health Potion
 		};
 
 		var merchant_weights = {
-			0 => isBetweenDepth(depth, 1, 10) ? 3 + sqrt_depth : 0, // Steel Axe
-			3 => isBetweenDepth(depth, 1, 10) ? 3 + sqrt_depth : 0, // Steel Greatsword
-			5 => isBetweenDepth(depth, 1, 10) ? 3 + sqrt_depth : 0, // Steel Lance
-			8 => isBetweenDepth(depth, 1, 10) ? 2 + sqrt_depth : 0, // Steel Sword
-			1004 => isBetweenDepth(depth, 1, 10) ? 3 + sqrt_depth : 0, // Steel Ring1
-			1005 => isBetweenDepth(depth, 1, 10) ? 3 + sqrt_depth : 0, // Steel Ring2
-			1000 => isBetweenDepth(depth, 1, 10) ? 1 + sqrt_depth : 0, // Steel Helmet
-			1001 => isBetweenDepth(depth, 1, 10) ? 1 + sqrt_depth : 0, // Steel Breastplate
-			1002 => isBetweenDepth(depth, 1, 10) ? 1 + sqrt_depth : 0, // Steel Gauntlets
-			1003 => isBetweenDepth(depth, 1, 10) ? 1 + sqrt_depth : 0, // Steel Shoes
-			1006 => isBetweenDepth(depth, 1, 10) ? 1 + sqrt_depth : 0, // Wood Shield
-			1007 => isBetweenDepth(depth, 1, 10) ? 1 + sqrt_depth : 0, // Green Backpack
+			0 => isBetweenDepth(depth, 0, 10) ? 3 + sqrt_depth : 0, // Steel Axe
+			3 => isBetweenDepth(depth, 0, 10) ? 3 + sqrt_depth : 0, // Steel Greatsword
+			5 => isBetweenDepth(depth, 0, 10) ? 3 + sqrt_depth : 0, // Steel Lance
+			8 => isBetweenDepth(depth, 0, 10) ? 2 + sqrt_depth : 0, // Steel Sword
+			1004 => isBetweenDepth(depth, 0, 10) ? 3 + sqrt_depth : 0, // Steel Ring1
+			1005 => isBetweenDepth(depth, 0, 10) ? 3 + sqrt_depth : 0, // Steel Ring2
+			1000 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Steel Helmet
+			1001 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Steel Breastplate
+			1002 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Steel Gauntlets
+			1003 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Steel Shoes
+			1006 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Wood Shield
+			1007 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Green Backpack
 			1008 => depth >= 20 ? 1 + sqrt_depth : 0, // Life Amulet
 			2000 => depth <= 20 ? 6 : 2 / sqrt_depth, // Health Potion
 			2001 => 4 + log_depth,                    // Mana Potion
@@ -165,28 +165,28 @@ class ItemSpecificValues {
 		};
 
 		var high_quality_weights = {
-			0 => isBetweenDepth(depth, 1, 10) ? 5 + sqrt_depth : 0, // Divine Axe
-			3 => isBetweenDepth(depth, 1, 10) ? 5 + sqrt_depth : 0, // Divine Greatsword
-			5 => isBetweenDepth(depth, 1, 10) ? 5 + sqrt_depth : 0, // Divine Lance
-			1004 => isBetweenDepth(depth, 1, 10) ? 5 + sqrt_depth : 0, // Divine Ring1
-			1005 => isBetweenDepth(depth, 1, 10) ? 5 + sqrt_depth : 0, // Divine Ring2
-			1008 => isBetweenDepth(depth, 1, 10) ? 5 + sqrt_depth : 0, // Divine Amulet
-			2002 => isBetweenDepth(depth, 1, 10) ? 5 + sqrt_depth : 0, // Greater Divine Health Potion
+			0 => isBetweenDepth(depth, 0, 10) ? 5 + sqrt_depth : 0, // Divine Axe
+			3 => isBetweenDepth(depth, 0, 10) ? 5 + sqrt_depth : 0, // Divine Greatsword
+			5 => isBetweenDepth(depth, 0, 10) ? 5 + sqrt_depth : 0, // Divine Lance
+			1004 => isBetweenDepth(depth, 0, 10) ? 5 + sqrt_depth : 0, // Divine Ring1
+			1005 => isBetweenDepth(depth, 0, 10) ? 5 + sqrt_depth : 0, // Divine Ring2
+			1008 => isBetweenDepth(depth, 0, 10) ? 5 + sqrt_depth : 0, // Divine Amulet
+			2002 => isBetweenDepth(depth, 0, 10) ? 5 + sqrt_depth : 0, // Greater Divine Health Potion
 		};
 
 		var merchant_weights = {
-			0 => isBetweenDepth(depth, 1, 10) ? 10 + sqrt_depth : 0, // Divine Axe
-			3 => isBetweenDepth(depth, 1, 10) ? 10 + sqrt_depth : 0, // Divine Greatsword
-			5 => isBetweenDepth(depth, 1, 10) ? 10 + sqrt_depth : 0, // Divine Lance
-			8 => isBetweenDepth(depth, 1, 10) ? 10 + sqrt_depth : 0, // Divine Sword
-			1004 => isBetweenDepth(depth, 1, 10) ? 10 + sqrt_depth : 0, // Divine Ring1
-			1005 => isBetweenDepth(depth, 1, 10) ? 10 + sqrt_depth : 0, // Divine Ring2
-			1000 => isBetweenDepth(depth, 1, 10) ? 5 + sqrt_depth : 0, // Divine Helmet
-			1001 => isBetweenDepth(depth, 1, 10) ? 5 + sqrt_depth : 0, // Divine Breastplate
-			1002 => isBetweenDepth(depth, 1, 10) ? 5 + sqrt_depth : 0, // Divine Gauntlets
-			1003 => isBetweenDepth(depth, 1, 10) ? 5 + sqrt_depth : 0, // Divine Shoes
-			1006 => isBetweenDepth(depth, 1, 10) ? 5 + sqrt_depth : 0, // Divine Shield
-			1007 => isBetweenDepth(depth, 1, 10) ? 5 + sqrt_depth : 0, // Divine Backpack
+			0 => isBetweenDepth(depth, 0, 10) ? 10 + sqrt_depth : 0, // Divine Axe
+			3 => isBetweenDepth(depth, 0, 10) ? 10 + sqrt_depth : 0, // Divine Greatsword
+			5 => isBetweenDepth(depth, 0, 10) ? 10 + sqrt_depth : 0, // Divine Lance
+			8 => isBetweenDepth(depth, 0, 10) ? 10 + sqrt_depth : 0, // Divine Sword
+			1004 => isBetweenDepth(depth, 0, 10) ? 10 + sqrt_depth : 0, // Divine Ring1
+			1005 => isBetweenDepth(depth, 0, 10) ? 10 + sqrt_depth : 0, // Divine Ring2
+			1000 => isBetweenDepth(depth, 0, 10) ? 5 + sqrt_depth : 0, // Divine Helmet
+			1001 => isBetweenDepth(depth, 0, 10) ? 5 + sqrt_depth : 0, // Divine Breastplate
+			1002 => isBetweenDepth(depth, 0, 10) ? 5 + sqrt_depth : 0, // Divine Gauntlets
+			1003 => isBetweenDepth(depth, 0, 10) ? 5 + sqrt_depth : 0, // Divine Shoes
+			1006 => isBetweenDepth(depth, 0, 10) ? 5 + sqrt_depth : 0, // Divine Shield
+			1007 => isBetweenDepth(depth, 0, 10) ? 5 + sqrt_depth : 0, // Divine Backpack
 			1008 => depth >= 20 ? 5 + sqrt_depth : 0, // Divine Amulet
 			2000 => depth <= 20 ? 10 : 5 / sqrt_depth, // Divine Health Potion
 			2001 => 10 + log_depth,                    // Divine Mana Potion
@@ -266,24 +266,24 @@ class ItemSpecificValues {
 
 		var high_quality_weights = {
 			// ...nameless-specific high-quality weights...
-			4 => isBetweenDepth(depth, 1, 10) ? 1 + sqrt_depth : 0, // Steel Katana
-			1004 => isBetweenDepth(depth, 1, 10) ? 1 + sqrt_depth : 0, // Steel Ring1
-			1005 => isBetweenDepth(depth, 1, 10) ? 1 + sqrt_depth : 0, // Steel Ring2
-			1008 => isBetweenDepth(depth, 1, 10) ? 1 + sqrt_depth : 0, // Life Amulet
-			2002 => isBetweenDepth(depth, 1, 10) ? 1 + sqrt_depth : 0, // Greater Health Potion
+			4 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Steel Katana
+			1004 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Steel Ring1
+			1005 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Steel Ring2
+			1008 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Life Amulet
+			2002 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Greater Health Potion
 		};
 
 		var merchant_weights = {
 			// ...nameless-specific merchant weights...
-			4 => isBetweenDepth(depth, 1, 10) ? 3 + sqrt_depth : 0, // Steel Katana
-			1004 => isBetweenDepth(depth, 1, 10) ? 3 + sqrt_depth : 0, // Steel Ring1
-			1005 => isBetweenDepth(depth, 1, 10) ? 3 + sqrt_depth : 0, // Steel Ring2
-			1000 => isBetweenDepth(depth, 1, 10) ? 1 + sqrt_depth : 0, // Steel Helmet
-			1001 => isBetweenDepth(depth, 1, 10) ? 1 + sqrt_depth : 0, // Steel Breastplate
-			1002 => isBetweenDepth(depth, 1, 10) ? 1 + sqrt_depth : 0, // Steel Gauntlets
-			1003 => isBetweenDepth(depth, 1, 10) ? 1 + sqrt_depth : 0, // Steel Shoes
-			1006 => isBetweenDepth(depth, 1, 10) ? 1 + sqrt_depth : 0, // Wood Shield
-			1007 => isBetweenDepth(depth, 1, 10) ? 1 + sqrt_depth : 0, // Green Backpack
+			4 => isBetweenDepth(depth, 0, 10) ? 3 + sqrt_depth : 0, // Steel Katana
+			1004 => isBetweenDepth(depth, 0, 10) ? 3 + sqrt_depth : 0, // Steel Ring1
+			1005 => isBetweenDepth(depth, 0, 10) ? 3 + sqrt_depth : 0, // Steel Ring2
+			1000 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Steel Helmet
+			1001 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Steel Breastplate
+			1002 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Steel Gauntlets
+			1003 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Steel Shoes
+			1006 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Wood Shield
+			1007 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Green Backpack
 			1008 => depth >= 20 ? 1 + sqrt_depth : 0, // Life Amulet
 			2000 => depth <= 20 ? 6 : 2 / sqrt_depth, // Health Potion
 			2001 => 4 + log_depth,                    // Mana Potion
@@ -359,25 +359,25 @@ class ItemSpecificValues {
 		};
 
 		var high_quality_weights = {
-			1 => isBetweenDepth(depth, 1, 10) ? 1 + sqrt_depth : 0, // Steel Bow
-			2 => isBetweenDepth(depth, 1, 10) ? 1 + sqrt_depth : 0, // Steel Dagger
-			1004 => isBetweenDepth(depth, 1, 10) ? 1 + sqrt_depth : 0, // Steel Ring1
-			1005 => isBetweenDepth(depth, 1, 10) ? 1 + sqrt_depth : 0, // Steel Ring2
-			1008 => isBetweenDepth(depth, 1, 10) ? 1 + sqrt_depth : 0, // Life Amulet
-			2002 => isBetweenDepth(depth, 1, 10) ? 1 + sqrt_depth : 0, // Greater Health Potion
+			1 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Steel Bow
+			2 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Steel Dagger
+			1004 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Steel Ring1
+			1005 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Steel Ring2
+			1008 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Life Amulet
+			2002 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Greater Health Potion
 		};
 
 		var merchant_weights = {
-			1 => isBetweenDepth(depth, 1, 10) ? 3 + sqrt_depth : 0, // Steel Bow
-			2 => isBetweenDepth(depth, 1, 10) ? 3 + sqrt_depth : 0, // Steel Dagger
-			1004 => isBetweenDepth(depth, 1, 10) ? 3 + sqrt_depth : 0, // Steel Ring1
-			1005 => isBetweenDepth(depth, 1, 10) ? 3 + sqrt_depth : 0, // Steel Ring2
-			1000 => isBetweenDepth(depth, 1, 10) ? 1 + sqrt_depth : 0, // Steel Helmet
-			1001 => isBetweenDepth(depth, 1, 10) ? 1 + sqrt_depth : 0, // Steel Breastplate
-			1002 => isBetweenDepth(depth, 1, 10) ? 1 + sqrt_depth : 0, // Steel Gauntlets
-			1003 => isBetweenDepth(depth, 1, 10) ? 1 + sqrt_depth : 0, // Steel Shoes
-			1006 => isBetweenDepth(depth, 1, 10) ? 1 + sqrt_depth : 0, // Wood Shield
-			1007 => isBetweenDepth(depth, 1, 10) ? 1 + sqrt_depth : 0, // Green Backpack
+			1 => isBetweenDepth(depth, 0, 10) ? 3 + sqrt_depth : 0, // Steel Bow
+			2 => isBetweenDepth(depth, 0, 10) ? 3 + sqrt_depth : 0, // Steel Dagger
+			1004 => isBetweenDepth(depth, 0, 10) ? 3 + sqrt_depth : 0, // Steel Ring1
+			1005 => isBetweenDepth(depth, 0, 10) ? 3 + sqrt_depth : 0, // Steel Ring2
+			1000 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Steel Helmet
+			1001 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Steel Breastplate
+			1002 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Steel Gauntlets
+			1003 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Steel Shoes
+			1006 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Wood Shield
+			1007 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Green Backpack
 			1008 => depth >= 20 ? 1 + sqrt_depth : 0, // Life Amulet
 			2000 => depth <= 20 ? 6 : 2 / sqrt_depth, // Health Potion
 			2001 => 4 + log_depth,                    // Mana Potion
@@ -461,35 +461,35 @@ class ItemSpecificValues {
 
 		// High-Quality weights
 		var high_quality_weights = {
-			6 => isBetweenDepth(depth, 1, 10) ? 1 + sqrt_depth : 0, // Steel Spell (early-game only)
-			7 => isBetweenDepth(depth, 1, 10) ? 1 + sqrt_depth : 0, // Steel Staff (early-game only)
-			1004 => isBetweenDepth(depth, 1, 10) ? 1 + sqrt_depth : 0, // Steel Ring1 (early-game only)
-			1005 => isBetweenDepth(depth, 1, 10) ? 1 + sqrt_depth : 0, // Steel Ring2 (early-game only)
-			1008 => isBetweenDepth(depth, 1, 10) ? 1 + sqrt_depth : 0, // Life Amulet (early-game only)
-			2003 => isBetweenDepth(depth, 1, 10) ? 1 + sqrt_depth : 0, // Greater Mana Potion (early-game only)
+			6 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Steel Spell (early-game only)
+			7 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Steel Staff (early-game only)
+			1004 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Steel Ring1 (early-game only)
+			1005 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Steel Ring2 (early-game only)
+			1008 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Life Amulet (early-game only)
+			2003 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Greater Mana Potion (early-game only)
 		};
 
 		// Merchant weights
 		var merchant_weights = {
 			// Weapons
-			6 => isBetweenDepth(depth, 1, 10) ? 3 + sqrt_depth : 0, // Steel Spell (early-game only)
-			7 => isBetweenDepth(depth, 1, 10) ? 3 + sqrt_depth : 0, // Steel Staff (early-game only)
-			0 => isBetweenDepth(depth, 1, 10) ? 1 + sqrt_depth : 0, // Steel Axe (early-game only)
-			1 => isBetweenDepth(depth, 1, 10) ? 1 + sqrt_depth : 0, // Steel Bow (early-game only)
-			2 => isBetweenDepth(depth, 1, 10) ? 1 + sqrt_depth : 0, // Steel Dagger (early-game only)
-			5 => isBetweenDepth(depth, 1, 10) ? 1 + sqrt_depth : 0, // Steel Lance (early-game only)
-			8 => isBetweenDepth(depth, 1, 10) ? 1 + sqrt_depth : 0, // Steel Sword (early-game only)
+			6 => isBetweenDepth(depth, 0, 10) ? 3 + sqrt_depth : 0, // Steel Spell (early-game only)
+			7 => isBetweenDepth(depth, 0, 10) ? 3 + sqrt_depth : 0, // Steel Staff (early-game only)
+			0 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Steel Axe (early-game only)
+			1 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Steel Bow (early-game only)
+			2 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Steel Dagger (early-game only)
+			5 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Steel Lance (early-game only)
+			8 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Steel Sword (early-game only)
 
 
 			// Armor
-			1004 => isBetweenDepth(depth, 1, 10) ? 3 + sqrt_depth : 0, // Steel Ring1 (early-game only)
-			1005 => isBetweenDepth(depth, 1, 10) ? 3 + sqrt_depth : 0, // Steel Ring2 (early-game only)
-			1000 => isBetweenDepth(depth, 1, 10) ? 1 + sqrt_depth : 0, // Steel Helmet (early-game only)
-			1001 => isBetweenDepth(depth, 1, 10) ? 1 + sqrt_depth : 0, // Steel Breastplate (early-game only)
-			1002 => isBetweenDepth(depth, 1, 10) ? 1 + sqrt_depth : 0, // Steel Gauntlets (early-game only)
-			1003 => isBetweenDepth(depth, 1, 10) ? 1 + sqrt_depth : 0, // Steel Shoes (early-game only)
-			1006 => isBetweenDepth(depth, 1, 10) ? 1 + sqrt_depth : 0, // Wood Shield (early-game only)
-			1007 => isBetweenDepth(depth, 1, 10) ? 1 + sqrt_depth : 0, // Green Backpack (early-game only)
+			1004 => isBetweenDepth(depth, 0, 10) ? 3 + sqrt_depth : 0, // Steel Ring1 (early-game only)
+			1005 => isBetweenDepth(depth, 0, 10) ? 3 + sqrt_depth : 0, // Steel Ring2 (early-game only)
+			1000 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Steel Helmet (early-game only)
+			1001 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Steel Breastplate (early-game only)
+			1002 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Steel Gauntlets (early-game only)
+			1003 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Steel Shoes (early-game only)
+			1006 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Wood Shield (early-game only)
+			1007 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Green Backpack (early-game only)
 
 			1008 => depth >= 20 ? 1 + sqrt_depth : 0, // Life Amulet 
 			// Consumables

@@ -194,7 +194,7 @@ module Enemies {
     }
 
     function createRandomWeightedEnemy() as Enemy? {
-        var rand = MathUtil.random(0, total_weight);
+        var rand = MathUtil.random(0, total_weight - 1);
         var current_weight = 0;
         for (var i = 0; i < dungeon_enemies.size(); i++) {
             current_weight += dungeon_enemies[i][:weight];

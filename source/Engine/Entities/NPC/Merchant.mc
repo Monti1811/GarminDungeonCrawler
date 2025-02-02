@@ -14,6 +14,9 @@ class Merchant extends NPC {
 		var combined = [] as Array<Item>;
 		for (var i = 0; i < items.size(); i++) {
 			var item = items[i];
+			if (item == null) {
+				continue; // Überspringen Sie null-Elemente
+			}
 			var found = false;
 			for (var j = 0; j < combined.size(); j++) {
 				var combined_item = combined[j];

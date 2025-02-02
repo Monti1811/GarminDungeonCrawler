@@ -177,7 +177,7 @@ module Items {
     }
 
     function createRandomWeightedItem(type as Number) as Item? {
-        var rand = MathUtil.random(0, total_weight[type]);
+        var rand = MathUtil.random(0, total_weight[type] - 1);
         var current_weight = 0;
         var weight_keys = weights[type].keys();
         for (var i = 0; i < weight_keys.size(); i++) {
@@ -187,6 +187,8 @@ module Items {
                 return method.invoke() as Item;
             }
         }
+        Toybox.System.println("Error: No item found for type " + type);
+        Toybox.System.println("Rand: " + rand + " Current Weight: " + current_weight + " Total Weight: " + total_weight[type]);
         return null;
     }
 }
