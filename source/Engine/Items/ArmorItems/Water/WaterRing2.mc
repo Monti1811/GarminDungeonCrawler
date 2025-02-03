@@ -1,20 +1,19 @@
 import Toybox.Lang;
 
-class DemonRing1 extends ArmorItem {
+class WaterRing2 extends ArmorItem {
 
 	function initialize() {
 		ArmorItem.initialize();
-		id = 1050;
-		name = "Demon Ring";
-		description = "A simple demon ring";
-		slot = ACCESSORY;
-		value = 700;
+		id = 1033;
+		name = "Obsidian Ring";
+		description = "An obsidian ring";
+		value = 50;
 		weight = 0.1;
-		defense = 7;
+		slot = ACCESSORY;
+		defense = 5;
 		attribute_bonus = {
-			:constitution => 5,
-			:strength => 7,
-			:wisdom => -5,
+			:intelligence => 4,
+			:wisdom => 5
 		};
 		defense_type = WISDOM;
 	}
@@ -24,11 +23,11 @@ class DemonRing1 extends ArmorItem {
 	}
 	// ...existing code...
 	function getSprite() as ResourceId {
-		return $.Rez.Drawables.demon_ring1;
+		return $.Rez.Drawables.water_ring2;
 	}
 	
 	function deepcopy() as Item {
-		var ring = new DemonRing1();
+		var ring = new WaterRing2();
 		// ...existing code...
 		return ring;
 	}

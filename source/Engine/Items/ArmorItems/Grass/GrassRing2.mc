@@ -5,15 +5,16 @@ class GrassRing2 extends ArmorItem {
 	function initialize() {
 		ArmorItem.initialize();
 		id = 1033;
-		name = "Amethyst Grass Ring";
-		description = "A simple amethyst grass ring";
-		value = 22;
+		name = "Corruption Ring";
+		description = "A corruption ring";
+		value = 50;
 		weight = 0.1;
 		slot = ACCESSORY;
 		defense = 5;
 		attribute_bonus = {
-			:intelligence => 7,
-			:wisdom => 6
+			:intelligence => 4,
+			:charisma => 4,
+			:luck => 2
 		};
 		defense_type = WISDOM;
 	}

@@ -7,12 +7,14 @@ class GrassShoes extends ArmorItem {
 		id = 1031;
 		name = "Grass Shoes";
 		description = "A simple grass shoes";
-		value = 25;
+		value = 75;
 		weight = 3;
 		slot = FEET;
 		defense = 7;
 		attribute_bonus = {
-			:dexterity => 6
+			:dexterity => 3,
+			:charisma => 3,
+			:luck => 1
 		};
 		defense_type = CHARISMA;
 	}

@@ -1,18 +1,19 @@
 import Toybox.Lang;
 
-class BronzeShoes extends ArmorItem {
+class BloodShoes extends ArmorItem {
 
 	function initialize() {
 		ArmorItem.initialize();
-		id = 1013;
-		name = "Bronze Shoes";
-		description = "Some bronze shoes";
-		value = 20;
+		id = 1049;
+		name = "Demon Shoes";
+		description = "Some demon shoes";
+		value = 1200;
 		weight = 3;
 		slot = FEET;
-		defense = 4;
+		defense = 15;
 		attribute_bonus = {
-			:dexterity => 3
+			:dexterity => 10,
+			:strength => 7
 		};
 		defense_type = CHARISMA;
 	}
@@ -22,11 +23,11 @@ class BronzeShoes extends ArmorItem {
 	}
 	// ...existing code...
 	function getSprite() as ResourceId {
-		return $.Rez.Drawables.bronze_leg_armor;
+		return $.Rez.Drawables.blood_leg_armor;
 	}
 	
 	function deepcopy() as Item {
-		var shoes = new BronzeShoes();
+		var shoes = new BloodShoes();
 		// ...existing code...
 		return shoes;
 	}

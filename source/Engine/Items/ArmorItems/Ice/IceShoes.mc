@@ -1,29 +1,32 @@
 import Toybox.Lang;
 
-class FireShoes extends ArmorItem {
+class IceShoes extends ArmorItem {
 
 	function initialize() {
 		ArmorItem.initialize();
-		id = 1019;
-		name = "Fire Shoes";
-		description = "Some fire shoes";
+		id = 1031;
+		name = "Ice Shoes";
+		description = "A simple ice shoes";
 		value = 75;
 		weight = 3;
 		slot = FEET;
 		defense = 7;
 		attribute_bonus = {
 			:dexterity => 3,
-			:strength => 3
+			:charisma => 3,
+			:luck => 1
 		};
 		defense_type = CHARISMA;
 	}
 
+	
+	// ...existing code...
 	function getSprite() as ResourceId {
-		return $.Rez.Drawables.fire_leg_armor;
+		return $.Rez.Drawables.ice_leg_armor;
 	}
 	
 	function deepcopy() as Item {
-		var shoes = new FireShoes();
+		var shoes = new IceShoes();
 		// ...existing code...
 		return shoes;
 	}

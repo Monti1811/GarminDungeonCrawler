@@ -8,13 +8,13 @@ class GrassRing1 extends ArmorItem {
 		name = "Grass Ring";
 		description = "A simple grass ring";
 		slot = ACCESSORY;
-		value = 20;
+		value = 50;
 		weight = 0.1;
-		defense = 7;
+		defense = 5;
 		attribute_bonus = {
-			:constitution => 6,
-			:wisdom => 6,
-			:charisma => 6
+			:constitution => 2,
+			:charisma => 6,
+			:luck => 2,
 		};
 		defense_type = WISDOM;
 	}

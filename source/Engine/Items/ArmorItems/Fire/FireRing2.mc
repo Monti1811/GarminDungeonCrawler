@@ -5,15 +5,15 @@ class FireRing2 extends ArmorItem {
 	function initialize() {
 		ArmorItem.initialize();
 		id = 1021;
-		name = "Amethyst Fire Ring";
-		description = "A simple amethyst fire ring";
-		value = 14;
+		name = "Tourmaline Ring";
+		description = "A tourmaline ring";
+		value = 50;
 		weight = 0.1;
 		slot = ACCESSORY;
 		defense = 3;
 		attribute_bonus = {
 			:intelligence => 5,
-			:wisdom => 4
+			:constitution => 4
 		};
 		defense_type = WISDOM;
 	}

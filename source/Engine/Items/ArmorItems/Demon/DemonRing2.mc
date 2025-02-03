@@ -5,15 +5,16 @@ class DemonRing2 extends ArmorItem {
 	function initialize() {
 		ArmorItem.initialize();
 		id = 1051;
-		name = "Amethyst Demon Ring";
-		description = "A simple amethyst demon ring";
-		value = 34;
+		name = "Death Ring";
+		description = "A ring showing the skull of a demon";
+		value = 700;
 		weight = 0.1;
 		slot = ACCESSORY;
-		defense = 8;
+		defense = 7;
 		attribute_bonus = {
-			:intelligence => 10,
-			:wisdom => 9
+			:intelligence => 5,
+			:strength => 7,
+			:wisdom => -5
 		};
 		defense_type = WISDOM;
 	}

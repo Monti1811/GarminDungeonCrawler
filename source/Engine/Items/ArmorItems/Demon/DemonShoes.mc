@@ -7,12 +7,14 @@ class DemonShoes extends ArmorItem {
 		id = 1049;
 		name = "Demon Shoes";
 		description = "A simple demon shoes";
-		value = 40;
+		value = 1200;
 		weight = 3;
 		slot = FEET;
-		defense = 10;
+		defense = 15;
 		attribute_bonus = {
-			:dexterity => 9
+			:dexterity => 7,
+			:strength => 7,
+			:wisdom => -5,
 		};
 		defense_type = CHARISMA;
 	}

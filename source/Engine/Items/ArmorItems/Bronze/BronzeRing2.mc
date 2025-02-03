@@ -5,9 +5,10 @@ class BronzeRing2 extends ArmorItem {
 	function initialize() {
 		ArmorItem.initialize();
 		id = 1015;
-		name = "Amethyst Bronze Ring";
-		description = "A simple amethyst bronze ring";
-		value = 9;
+		name = "Silver Ring";
+		description = "A silver ring";
+		slot = ACCESSORY;
+		value = 13;
 		weight = 0.1;
 		slot = ACCESSORY;
 		defense = 2;

@@ -1,20 +1,19 @@
 import Toybox.Lang;
 
-class DemonRing1 extends ArmorItem {
+class BloodRing2 extends ArmorItem {
 
 	function initialize() {
 		ArmorItem.initialize();
-		id = 1050;
-		name = "Demon Ring";
-		description = "A simple demon ring";
+		id = 1051; // TODO - unique ID for the item
+		name = "Blood Magic Ring";
+		description = "A blood magic ring";
 		slot = ACCESSORY;
-		value = 700;
+		value = 2500;
 		weight = 0.1;
 		defense = 7;
 		attribute_bonus = {
 			:constitution => 5,
-			:strength => 7,
-			:wisdom => -5,
+			:intelligence => 10,
 		};
 		defense_type = WISDOM;
 	}
@@ -24,11 +23,11 @@ class DemonRing1 extends ArmorItem {
 	}
 	// ...existing code...
 	function getSprite() as ResourceId {
-		return $.Rez.Drawables.demon_ring1;
+		return $.Rez.Drawables.blood_ring2;
 	}
 	
 	function deepcopy() as Item {
-		var ring = new DemonRing1();
+		var ring = new BloodRing2();
 		// ...existing code...
 		return ring;
 	}

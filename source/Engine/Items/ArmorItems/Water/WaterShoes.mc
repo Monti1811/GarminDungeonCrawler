@@ -7,19 +7,17 @@ class WaterShoes extends ArmorItem {
 		id = 1037;
 		name = "Water Shoes";
 		description = "A simple water shoes";
-		value = 30;
+		value = 75;
 		weight = 3;
 		slot = FEET;
 		defense = 8;
 		attribute_bonus = {
-			:dexterity => 7
+			:dexterity => 3,
+			:intelligence => 3,
 		};
 		defense_type = CHARISMA;
 	}
 
-	function onEquipItem(player as Player) as Void {
-		ArmorItem.onEquipItem(player);
-	}
 	// ...existing code...
 	function getSprite() as ResourceId {
 		return $.Rez.Drawables.water_leg_armor;
