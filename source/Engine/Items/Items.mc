@@ -3,6 +3,9 @@ import Toybox.Lang;
 module Items {
 
     var items as Dictionary<Number, Symbol> = {
+            // Weapons
+
+            // Steel Weapons
             0 => :createSteelAxe,
             1 => :createSteelBow,
             2 => :createSteelDagger,
@@ -12,6 +15,18 @@ module Items {
             6 => :createSteelSpell,
             7 => :createSteelStaff,
             8 => :createSteelSword,
+
+            // Bronze Weapons
+            10 => :createBronzeAxe,
+            11 => :createBronzeBow,
+            12 => :createBronzeDagger,
+            13 => :createBronzeGreatsword,
+            14 => :createBronzeKatana,
+            15 => :createBronzeLance,
+            16 => :createBronzeSpell,
+            17 => :createBronzeStaff,
+            18 => :createBronzeSword,
+
             9 => :createArrow,
             10 => :createCrossBow,
 
@@ -92,7 +107,6 @@ module Items {
             1252 => :createGoldBackpack,
 
             // Accessories
-            1300 => :createLifeAmulet,
             1301 => :createManaCrystal,
 
 
@@ -167,6 +181,42 @@ module Items {
         return new CrossBow();
     }
 
+    // Bronze Weapons
+    function createBronzeAxe() as Item {
+        return new BronzeAxe();
+    }
+
+    function createBronzeBow() as Item {
+        return new BronzeBow();
+    }
+
+    function createBronzeDagger() as Item {
+        return new BronzeDagger();
+    }
+
+    function createBronzeGreatsword() as Item {
+        return new BronzeGreatsword();
+    }
+
+    function createBronzeKatana() as Item {
+        return new BronzeKatana();
+    }
+
+    function createBronzeLance() as Item {
+        return new BronzeLance();
+    }
+
+    function createBronzeSpell() as Item {
+        return new BronzeSpell();
+    }
+
+    function createBronzeStaff() as Item {
+        return new BronzeStaff();
+    }
+
+    function createBronzeSword() as Item {
+        return new BronzeSword();
+    }
 
     // Steel Armors
     function createSteelHelmet() as Item {
