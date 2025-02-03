@@ -8,11 +8,11 @@ class BronzeLance extends WeaponItem {
         name = "Bronze Lance";
         description = "A simple bronze lance";
         slot = RIGHT_HAND;
-        value = 20;
+        value = 25;
         weight = 3;
         attribute_bonus = {
-            :dexterity => 4,
-            :luck => 4
+            :dexterity => 3,
+            :luck => 3        
         };
 
         attack = 12;

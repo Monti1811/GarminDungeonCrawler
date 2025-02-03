@@ -8,10 +8,10 @@ class BronzeStaff extends Staff {
         name = "Bronze Staff";
         description = "A simple bronze staff. If the player has mana available, uses it to perform more powerful attacks.";
         slot = RIGHT_HAND;
-        value = 20;
+        value = 25;
         weight = 2;
         attribute_bonus = {
-            :intelligence => 4
+            :intelligence => 3
         };
 
         attack = 4;
@@ -24,7 +24,7 @@ class BronzeStaff extends Staff {
 
     function activateStaff() as Void {
         Staff.activateStaff();
-        attack = 22;
+        attack = 23;
         range = 3;
     }
 

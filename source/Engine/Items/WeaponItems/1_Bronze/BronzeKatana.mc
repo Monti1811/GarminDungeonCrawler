@@ -8,11 +8,11 @@ class BronzeKatana extends WeaponItem {
         name = "Bronze Katana";
         description = "A simple bronze katana";
         slot = RIGHT_HAND;
-        value = 20;
+        value = 25;
         weight = 4;
         attribute_bonus = {
-            :strength => 4,
-            :dexterity => 4
+            :strength => 3,
+            :dexterity => 3
         };
 
         attack = 12;

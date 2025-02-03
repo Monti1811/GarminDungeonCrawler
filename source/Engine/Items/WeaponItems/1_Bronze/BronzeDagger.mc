@@ -8,14 +8,14 @@ class BronzeDagger extends WeaponItem {
         name = "Bronze Dagger";
         description = "A simple bronze dagger";
         slot = EITHER_HAND;
-        value = 20;
+        value = 25;
         weight = 1;
         attribute_bonus = {
-            :dexterity => 4,
-            :luck => 4
+            :dexterity => 3,
+            :luck => 3
         };
 
-        attack = 10;
+        attack = 8;
         attack_type = DEXTERITY;
     }
 

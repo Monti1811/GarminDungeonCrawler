@@ -8,14 +8,14 @@ class BronzeBow extends Bow {
         name = "Bronze Bow";
         description = "A simple bronze bow";
         slot = RIGHT_HAND;
-        value = 20;
+        value = 25;
         weight = 2;
         attribute_bonus = {
-            :dexterity => 4
+            :dexterity => 3
         };
 
-        attack = 5;
-        range = 4;
+        attack = 4;
+        range = 3;
         range_type = LINEAR;
         attack_type = DEXTERITY;
     }

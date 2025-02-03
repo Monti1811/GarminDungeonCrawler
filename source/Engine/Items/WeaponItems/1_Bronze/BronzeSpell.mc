@@ -8,14 +8,14 @@ class BronzeSpell extends Spell {
         name = "Bronze Spell";
         description = "A simple bronze spell. If the player has mana available, uses it to perform a more powerful AoE attack.";
         slot = RIGHT_HAND;
-        value = 20;
+        value = 25;
         weight = 1;
         attribute_bonus = {
-            :wisdom => 4
+            :wisdom => 3
         };
 
-        attack = 10;
-        range = 1;
+        attack = 12;
+        range = 3;
         cooldown = 1;
         attack_type = INTELLIGENCE;
 

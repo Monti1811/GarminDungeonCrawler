@@ -7,16 +7,16 @@ class BronzeAxe extends WeaponItem {
         id = 10;
         name = "Bronze Axe";
         description = "A simple bronze axe";
-        value = 20;
+        value = 25;
         weight = 3;
         slot = RIGHT_HAND;
         attribute_bonus = {
-            :strength => 6,
-            :dexterity => 0,
-            :luck => 0
+            :strength => 5,
+            :dexterity => -1,
+            :luck => -1
         };
 
-        attack = 12;
+        attack = 10;
     }
 
     function onEquipItem(player as Player) as Void {

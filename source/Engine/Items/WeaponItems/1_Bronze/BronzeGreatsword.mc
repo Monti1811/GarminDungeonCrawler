@@ -12,7 +12,7 @@ class BronzeGreatsword extends WeaponItem {
         weight = 6;
         attribute_bonus = {
             :strength => 6,
-            :dexterity => 0
+            :dexterity => -3
         };
 
         attack = 15;
