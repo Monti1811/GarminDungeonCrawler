@@ -15,16 +15,88 @@ module Items {
             9 => :createArrow,
             10 => :createCrossBow,
 
+            // Steel Armor
             1000 => :createSteelHelmet,
             1001 => :createSteelBreastPlate,
             1002 => :createSteelGauntlets,
             1003 => :createSteelShoes,
             1004 => :createSteelRing1,
             1005 => :createSteelRing2,
-            1006 => :createWoodShield,
-            1007 => :createGreenBackpack,
-            1008 => :createLifeAmulet,
 
+            // Bronze Armor
+            1010 => :createBronzeHelmet,
+            1011 => :createBronzeBreastPlate,
+            1012 => :createBronzeGauntlets,
+            1013 => :createBronzeShoes,
+            1014 => :createBronzeRing1,
+            1015 => :createBronzeRing2,
+            // Fire Armor
+            1020 => :createFireHelmet,
+            1021 => :createFireBreastPlate,
+            1022 => :createFireGauntlets,
+            1023 => :createFireShoes,
+            1024 => :createFireRing1,
+            1025 => :createFireRing2,
+            // Ice Armor
+            1030 => :createIceHelmet,
+            1031 => :createIceBreastPlate,
+            1032 => :createIceGauntlets,
+            1033 => :createIceShoes,
+            1034 => :createIceRing1,
+            1035 => :createIceRing2,
+            // Grass Armor
+            1040 => :createGrassHelmet,
+            1041 => :createGrassBreastPlate,
+            1042 => :createGrassGauntlets,
+            1043 => :createGrassShoes,
+            1044 => :createGrassRing1,
+            1045 => :createGrassRing2,
+            // Water Armor
+            1050 => :createWaterHelmet,
+            1051 => :createWaterBreastPlate,
+            1052 => :createWaterGauntlets,
+            1053 => :createWaterShoes,
+            1054 => :createWaterRing1,
+            1055 => :createWaterRing2,
+            // Gold Armor
+            1060 => :createGoldHelmet,
+            1061 => :createGoldBreastPlate,
+            1062 => :createGoldGauntlets,
+            1063 => :createGoldShoes,
+            1064 => :createGoldRing1,
+            1065 => :createGoldRing2,
+            // Demon Armor
+            1070 => :createDemonHelmet,
+            1071 => :createDemonBreastPlate,
+            1072 => :createDemonGauntlets,
+            1073 => :createDemonShoes,
+            1074 => :createDemonRing1,
+            1075 => :createDemonRing2,
+            // Blood Armor
+            1080 => :createBloodHelmet,
+            1081 => :createBloodBreastPlate,
+            1082 => :createBloodGauntlets,
+            1083 => :createBloodShoes,
+            1084 => :createBloodRing1,
+            1085 => :createBloodRing2,
+
+            // Shields
+            1200 => :createWoodShield,
+            1201 => :createSteelShield,
+            1202 => :createSilverShield,
+            1203 => :createGoldShield,
+
+            // Backpacks
+            1250 => :createGreenBackpack,
+            1251 => :createPurpleBackpack,
+            1252 => :createGoldBackpack,
+
+            // Accessories
+            1300 => :createLifeAmulet,
+            1301 => :createManaCrystal,
+
+
+            // Potions
             2000 => :createHealthPotion,
             2001 => :createManaPotion,
             2002 => :createGreaterHealthPotion,
@@ -32,6 +104,7 @@ module Items {
             2004 => :createMaxHealthPotion,
             2005 => :createMaxManaPotion,
 
+            // Gold
             5000 => :createGold,
         };
 
@@ -95,7 +168,7 @@ module Items {
     }
 
 
-    // Armors
+    // Steel Armors
     function createSteelHelmet() as Item {
         return new SteelHelmet();
     }
@@ -120,16 +193,244 @@ module Items {
         return new SteelRing2();
     }
     
+
+    // Bronze Armor
+    function createBronzeHelmet() as Item {
+        return new BronzeHelmet();
+    }
+
+    function createBronzeBreastPlate() as Item {
+        return new BronzeBreastPlate();
+    }
+
+    function createBronzeGauntlets() as Item {
+        return new BronzeGauntlets();
+    }
+
+    function createBronzeShoes() as Item {
+        return new BronzeShoes();
+    }
+
+    function createBronzeRing1() as Item {
+        return new BronzeRing1();
+    }
+
+    function createBronzeRing2() as Item {
+        return new BronzeRing2();
+    }
+
+    // Fire Armor
+    function createFireHelmet() as Item {
+        return new FireHelmet();
+    }
+
+    function createFireBreastPlate() as Item {
+        return new FireBreastPlate();
+    }
+
+    function createFireGauntlets() as Item {
+        return new FireGauntlets();
+    }
+
+    function createFireShoes() as Item {
+        return new FireShoes();
+    }
+
+    function createFireRing1() as Item {
+        return new FireRing1();
+    }
+
+    function createFireRing2() as Item {
+        return new FireRing2();
+    }
+
+    // Ice Armor
+    function createIceHelmet() as Item {
+        return new IceHelmet();
+    }
+
+    function createIceBreastPlate() as Item {
+        return new IceBreastPlate();
+    }
+
+    function createIceGauntlets() as Item {
+        return new IceGauntlets();
+    }
+
+    function createIceShoes() as Item {
+        return new IceShoes();
+    }
+
+    function createIceRing1() as Item {
+        return new IceRing1();
+    }
+
+    function createIceRing2() as Item {
+        return new IceRing2();
+    }
+
+    // Grass Armor
+    function createGrassHelmet() as Item {
+        return new GrassHelmet();
+    }
+
+    function createGrassBreastPlate() as Item {
+        return new GrassBreastPlate();
+    }
+
+    function createGrassGauntlets() as Item {
+        return new GrassGauntlets();
+    }
+
+    function createGrassShoes() as Item {
+        return new GrassShoes();
+    }
+
+    function createGrassRing1() as Item {
+        return new GrassRing1();
+    }
+
+    function createGrassRing2() as Item {
+        return new GrassRing2();
+    }
+
+    // Water Armor
+    function createWaterHelmet() as Item {
+        return new WaterHelmet();
+    }
+
+    function createWaterBreastPlate() as Item {
+        return new WaterBreastPlate();
+    }
+
+    function createWaterGauntlets() as Item {
+        return new WaterGauntlets();
+    }
+
+    function createWaterShoes() as Item {
+        return new WaterShoes();
+    }
+
+    function createWaterRing1() as Item {
+        return new WaterRing1();
+    }
+
+    function createWaterRing2() as Item {
+        return new WaterRing2();
+    }
+
+    // Gold Armor
+    function createGoldHelmet() as Item {
+        return new GoldHelmet();
+    }
+
+    function createGoldBreastPlate() as Item {
+        return new GoldBreastPlate();
+    }
+
+    function createGoldGauntlets() as Item {
+        return new GoldGauntlets();
+    }
+
+    function createGoldShoes() as Item {
+        return new GoldShoes();
+    }
+
+    function createGoldRing1() as Item {
+        return new GoldRing1();
+    }
+
+    function createGoldRing2() as Item {
+        return new GoldRing2();
+    }
+
+    // Demon Armor
+    function createDemonHelmet() as Item {
+        return new DemonHelmet();
+    }
+
+    function createDemonBreastPlate() as Item {
+        return new DemonBreastPlate();
+    }
+
+    function createDemonGauntlets() as Item {
+        return new DemonGauntlets();
+    }
+
+    function createDemonShoes() as Item {
+        return new DemonShoes();
+    }
+
+    function createDemonRing1() as Item {
+        return new DemonRing1();
+    }
+
+    function createDemonRing2() as Item {
+        return new DemonRing2();
+    }
+
+    // Blood Armor
+    function createBloodHelmet() as Item {
+        return new BloodHelmet();
+    }
+
+    function createBloodBreastPlate() as Item {
+        return new BloodBreastPlate();
+    }
+
+    function createBloodGauntlets() as Item {
+        return new BloodGauntlets();
+    }
+
+    function createBloodShoes() as Item {
+        return new BloodShoes();
+    }
+
+    function createBloodRing1() as Item {
+        return new BloodRing1();
+    }
+
+    function createBloodRing2() as Item {
+        return new BloodRing2();
+    }
+
+    // Shields
     function createWoodShield() as Item {
         return new WoodShield();
     }
 
+    function createSteelShield() as Item {
+        return new SteelShield();
+    }
+
+    function createSilverShield() as Item {
+        return new SilverShield();
+    }
+
+    function createGoldShield() as Item {
+        return new GoldShield();
+    }
+
+    // Backpacks
     function createGreenBackpack() as Item {
         return new GreenBackpack();
     }
 
+    function createPurpleBackpack() as Item {
+        return new PurpleBackpack();
+    }
+
+    function createGoldBackpack() as Item {
+        return new GoldBackpack();
+    }
+
+    // Accessories
     function createLifeAmulet() as Item {
         return new LifeAmulet();
+    }
+
+    function createManaCrystal() as Item {
+        return new ManaCrystal();
     }
 
     // Consumables

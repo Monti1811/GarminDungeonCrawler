@@ -4,7 +4,7 @@ class LifeAmulet extends ArmorItem {
 	
 	function initialize() {
 		ArmorItem.initialize();
-		id = 1008;
+		id = 1300;
 		name = "Life Amulet";
 		description = "An amulet that revives the wearer if equipped.";
 		value = 100;

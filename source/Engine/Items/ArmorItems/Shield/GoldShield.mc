@@ -4,7 +4,7 @@ class GoldShield extends ArmorItem {
 	
 	function initialize() {
 		ArmorItem.initialize();
-		id = 1012;
+		id = 1203;
 		name = "Gold Shield";
 		description = "A golden shield";
 		value = 500;

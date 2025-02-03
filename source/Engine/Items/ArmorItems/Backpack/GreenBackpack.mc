@@ -4,7 +4,7 @@ class GreenBackpack extends ArmorItem {
 
 	function initialize() {
 		ArmorItem.initialize();
-		id = 1007;
+		id = 1250;
 		name = "Green Backpack";
 		description = "A simple backpack";
 		value = 100;

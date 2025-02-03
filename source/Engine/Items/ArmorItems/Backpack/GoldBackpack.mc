@@ -6,7 +6,7 @@ class GoldBackpack extends ArmorItem {
 
 	function initialize() {
 		ArmorItem.initialize();
-		id = 1010;
+		id = 1252;
 		name = "Gold Backpack";
 		description = "The biggest backpack";
 		value = 2500;

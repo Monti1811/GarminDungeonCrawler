@@ -4,7 +4,7 @@ class SilverShield extends ArmorItem {
 	
 	function initialize() {
 		ArmorItem.initialize();
-		id = 1012;
+		id = 1202;
 		name = "Silver Shield";
 		description = "A silver shield";
 		value = 100;

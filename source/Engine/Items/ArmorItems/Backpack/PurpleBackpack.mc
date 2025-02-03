@@ -6,7 +6,7 @@ class PurpleBackpack extends ArmorItem {
 
 	function initialize() {
 		ArmorItem.initialize();
-		id = 1009;
+		id = 1251;
 		name = "Purple Backpack";
 		description = "A bigger backpack";
 		value = 500;

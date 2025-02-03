@@ -4,7 +4,7 @@ class WoodShield extends ArmorItem {
 	
 	function initialize() {
 		ArmorItem.initialize();
-		id = 1006;
+		id = 1200;
 		name = "Shield";
 		description = "A simple shield";
 		value = 5;

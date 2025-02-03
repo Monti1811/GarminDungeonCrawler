@@ -276,6 +276,7 @@
     <bitmap id="backpack_purple" filename="items/backpack_purple.png" />
 
     <bitmap id="life_amulet" filename="items/life_amulet.png" />
+    <bitmap id="mana_crystal" filename="items/mana_crystal.png" />
 
     <!-- Enemies -->
     <bitmap id="monster_tentackle" filename="monsters/monster_tentackle.png" />

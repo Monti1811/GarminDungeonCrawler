@@ -4,7 +4,7 @@ class SteelShield extends ArmorItem {
 	
 	function initialize() {
 		ArmorItem.initialize();
-		id = 1011;
+		id = 1201;
 		name = "Steel Shield";
 		description = "A simple shield";
 		value = 50;
