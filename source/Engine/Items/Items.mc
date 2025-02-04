@@ -27,6 +27,29 @@ module Items {
             17 => :createBronzeStaff,
             18 => :createBronzeSword,
 
+            // Fire Weapons
+            20 => :createFireAxe,
+            21 => :createFireBow,
+            22 => :createFireDagger,
+            23 => :createFireGreatsword,
+            24 => :createFireKatana,
+            25 => :createFireLance,
+            26 => :createFireSpell,
+            27 => :createFireStaff,
+            28 => :createFireSword,
+
+            // Ice Weapons
+            30 => :createIceAxe,
+            31 => :createIceBow,
+            32 => :createIceDagger,
+            33 => :createIceGreatsword,
+            34 => :createIceKatana,
+            35 => :createIceLance,
+            36 => :createIceSpell,
+            37 => :createIceStaff,
+            38 => :createIceSword,
+
+
             9 => :createArrow,
             10 => :createCrossBow,
 
@@ -134,7 +157,9 @@ module Items {
     }
 
 
-    // Weapons
+// Weapons
+
+    // Steel weapons
     function createSteelAxe() as Item {
         return new SteelAxe();
     }
@@ -171,17 +196,7 @@ module Items {
         return new SteelSword();
     }
 
-    function createArrow() as Item {
-        var arrow = new Arrow();
-        arrow.setAmount(MathUtil.random(1, 10));
-        return arrow;
-    }
-
-    function createCrossBow() as Item {
-        return new CrossBow();
-    }
-
-    // Bronze Weapons
+     // Bronze Weapons
     function createBronzeAxe() as Item {
         return new BronzeAxe();
     }
@@ -217,6 +232,94 @@ module Items {
     function createBronzeSword() as Item {
         return new BronzeSword();
     }
+
+    // Fire Weapons
+    function createFireAxe() as Item {
+        return new FireAxe();
+    }
+
+    function createFireBow() as Item {
+        return new FireBow();
+    }
+
+    function createFireDagger() as Item {
+        return new FireDagger();
+    }
+
+    function createFireGreatsword() as Item {
+        return new FireGreatsword();
+    }
+
+    function createFireKatana() as Item {
+        return new FireKatana();
+    }
+
+    function createFireLance() as Item {
+        return new FireLance();
+    }
+
+    function createFireSpell() as Item {
+        return new FireSpell();
+    }
+
+    function createFireStaff() as Item {
+        return new FireStaff();
+    }
+
+    function createFireSword() as Item {
+        return new FireSword();
+    }
+
+    // Ice Weapons
+    function createIceAxe() as Item {
+        return new IceAxe();
+    }
+
+    function createIceBow() as Item {
+        return new IceBow();
+    }
+
+    function createIceDagger() as Item {
+        return new IceDagger();
+    }
+
+    function createIceGreatsword() as Item {
+        return new IceGreatsword();
+    }
+
+    function createIceKatana() as Item {
+        return new IceKatana();
+    }
+
+    function createIceLance() as Item {
+        return new IceLance();
+    }
+
+    function createIceSpell() as Item {
+        return new IceSpell();
+    }
+
+    function createIceStaff() as Item {
+        return new IceStaff();
+    }
+
+    function createIceSword() as Item {
+        return new IceSword();
+    }
+
+    function createArrow() as Item {
+        var arrow = new Arrow();
+        arrow.setAmount(MathUtil.random(1, 10));
+        return arrow;
+    }
+
+    function createCrossBow() as Item {
+        return new CrossBow();
+    }
+
+   
+
+// Armors
 
     // Steel Armors
     function createSteelHelmet() as Item {
