@@ -555,8 +555,10 @@ class Player extends Entity {
 				var item_data = equipped_save[slot] as Dictionary?;
 				if (item_data != null && item_data["id"] != null) {
 					var item = Items.createItemFromId(item_data["id"]);
-					item.onLoad(item_data);
-					self.equipItem(item, slot, null);
+					if (item != null) {
+						item.onLoad(item_data);
+						self.equipItem(item, slot, null);
+					}
 				}
 			}
 		}

@@ -60,6 +60,17 @@ module Items {
             47 => :createGrassStaff,
             48 => :createGrassSword,
 
+            // Water Weapons
+            50 => :createWaterAxe,
+            51 => :createWaterBow,
+            52 => :createWaterDagger,
+            53 => :createWaterGreatsword,
+            54 => :createWaterKatana,
+            55 => :createWaterLance,
+            56 => :createWaterSpell,
+            57 => :createWaterStaff,
+            58 => :createWaterSword,
+
             9 => :createArrow,
             10 => :createCrossBow,
 
@@ -352,6 +363,43 @@ module Items {
 
     function createGrassSword() as Item {
         return new GrassSword();
+    }
+
+    // Water Weapons
+    function createWaterAxe() as Item {
+        return new WaterAxe();
+    }
+
+    function createWaterBow() as Item {
+        return new WaterBow();
+    }
+
+    function createWaterDagger() as Item {
+        return new WaterDagger();
+    }
+
+    function createWaterGreatsword() as Item {
+        return new WaterGreatsword();
+    }
+
+    function createWaterKatana() as Item {
+        return new WaterKatana();
+    }
+
+    function createWaterLance() as Item {
+        return new WaterLance();
+    }
+
+    function createWaterSpell() as Item {
+        return new WaterSpell();
+    }
+
+    function createWaterStaff() as Item {
+        return new WaterStaff();
+    }
+
+    function createWaterSword() as Item {
+        return new WaterSword();
     }
 
     function createArrow() as Item {
@@ -662,9 +710,13 @@ module Items {
         return new Gold();
     }
 
-    function createItemFromId(id as Number) as Item {
+    function createItemFromId(id as Number) as Item? {
         var symbol = items[id] as Symbol;
         var method = new Lang.Method(self, symbol);
+        if (method == null) {
+            Toybox.System.println("Error: No item found for id " + id);
+            return null;
+        }
         return method.invoke() as Item;
     }
 

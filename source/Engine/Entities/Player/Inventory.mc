@@ -159,8 +159,10 @@ class Inventory {
 		var item_list = save_data["items"] as Array<Dictionary>;
 		for (var i = 0; i < item_list.size(); i++) {
 			var item = Item.load(item_list[i]);
-			items[item.id] = item;
-			current_weight += item.weight * item.amount;
+			if (item != null) {
+				items[item.id] = item;
+				current_weight += item.weight * item.amount;
+			}
 		}
 	}
 

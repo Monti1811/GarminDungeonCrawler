@@ -141,12 +141,15 @@ class Item {
 		return save_data;
 	}
 
-	static function load(save_data as Dictionary) as Item {
+	static function load(save_data as Dictionary) as Item? {
 		// TODO remove later
 		if (save_data["id"] == null) {
 			save_data["id"] = 0;
 		}
 		var item = Items.createItemFromId(save_data["id"]);
+		if (item == null) {
+			return null;
+		}
 		item.onLoad(save_data);
 		return item;
 	}

@@ -487,6 +487,9 @@ class Room {
         var data_items = data["items"] as Array<Dictionary>;
         for (var i = 0; i < data_items.size(); i++) {
             var item = Item.load(data_items[i] as Dictionary);
+            if (item == null) {
+                continue;
+            }
             addItem(item);
         }
         _enemies = {};

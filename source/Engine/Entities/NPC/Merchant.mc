@@ -95,6 +95,9 @@ class Merchant extends NPC {
 			items = [] as Array<Item>;
 			for (var i = 0; i < items_data.size(); i++) {
 				var item = Item.load(items_data[i]);
+				if (item == null) {
+					continue;
+				}
 				items.add(item);
 			}
 		}
