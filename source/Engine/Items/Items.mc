@@ -49,6 +49,16 @@ module Items {
             37 => :createIceStaff,
             38 => :createIceSword,
 
+            // Grass Weapons
+            40 => :createGrassAxe,
+            41 => :createGrassBow,
+            42 => :createGrassDagger,
+            43 => :createGrassGreatsword,
+            44 => :createGrassKatana,
+            45 => :createGrassLance,
+            46 => :createGrassSpell,
+            47 => :createGrassStaff,
+            48 => :createGrassSword,
 
             9 => :createArrow,
             10 => :createCrossBow,
@@ -305,6 +315,43 @@ module Items {
 
     function createIceSword() as Item {
         return new IceSword();
+    }
+
+    // Grass Weapons
+    function createGrassAxe() as Item {
+        return new GrassAxe();
+    }
+
+    function createGrassBow() as Item {
+        return new GrassBow();
+    }
+
+    function createGrassDagger() as Item {
+        return new GrassDagger();
+    }
+
+    function createGrassGreatsword() as Item {
+        return new GrassGreatsword();
+    }
+
+    function createGrassKatana() as Item {
+        return new GrassKatana();
+    }
+
+    function createGrassLance() as Item {
+        return new GrassLance();
+    }
+
+    function createGrassSpell() as Item {
+        return new GrassSpell();
+    }
+
+    function createGrassStaff() as Item {
+        return new GrassStaff();
+    }
+
+    function createGrassSword() as Item {
+        return new GrassSword();
     }
 
     function createArrow() as Item {

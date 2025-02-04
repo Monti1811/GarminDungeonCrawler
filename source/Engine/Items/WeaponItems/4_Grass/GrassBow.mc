@@ -1,18 +1,19 @@
 import Toybox.Lang;
 
-class IceBow extends Bow {
+class GrassBow extends Bow {
 
     function initialize() {
         Bow.initialize();
-        id = 31;
-        name = "Ice Bow";
-        description = "A powerful ice bow";
+        id = 41;
+        name = "Grass Bow";
+        description = "A powerful grass bow";
         slot = RIGHT_HAND;
         value = 100;
         weight = 2;
         attribute_bonus = {
 			:dexterity => 3,
-            :wisdom => 2
+            :charisma => 2,
+            :luck => 1
         };
 
         attack = 5;
@@ -30,11 +31,11 @@ class IceBow extends Bow {
     }
 
     function getSprite() as ResourceId {
-        return $.Rez.Drawables.ice_bow;
+        return $.Rez.Drawables.grass_bow;
     }
 
     function deepcopy() as Item {
-        var bow = new IceBow();
+        var bow = new GrassBow();
         bow.name = name;
         bow.description = description;
         bow.value = value;
