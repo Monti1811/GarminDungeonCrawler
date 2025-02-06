@@ -71,6 +71,17 @@ module Items {
             57 => :createWaterStaff,
             58 => :createWaterSword,
 
+            // Gold Weapons
+            60 => :createGoldAxe,
+            61 => :createGoldBow,
+            62 => :createGoldDagger,
+            63 => :createGoldGreatsword,
+            64 => :createGoldKatana,
+            65 => :createGoldLance,
+            66 => :createGoldSpell,
+            67 => :createGoldStaff,
+            68 => :createGoldSword,
+
             9 => :createArrow,
             10 => :createCrossBow,
 
@@ -400,6 +411,43 @@ module Items {
 
     function createWaterSword() as Item {
         return new WaterSword();
+    }
+
+    // Gold Weapons
+    function createGoldAxe() as Item {
+        return new GoldAxe();
+    }
+
+    function createGoldBow() as Item {
+        return new GoldBow();
+    }
+
+    function createGoldDagger() as Item {
+        return new GoldDagger();
+    }
+
+    function createGoldGreatsword() as Item {
+        return new GoldGreatsword();
+    }
+
+    function createGoldKatana() as Item {
+        return new GoldKatana();
+    }
+
+    function createGoldLance() as Item {
+        return new GoldLance();
+    }
+
+    function createGoldSpell() as Item {
+        return new GoldSpell();
+    }
+
+    function createGoldStaff() as Item {
+        return new GoldStaff();
+    }
+
+    function createGoldSword() as Item {
+        return new GoldSword();
     }
 
     function createArrow() as Item {
