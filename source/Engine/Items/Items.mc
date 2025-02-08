@@ -856,10 +856,6 @@ module Items {
     function createItemFromId(id as Number) as Item? {
         var symbol = items[id] as Symbol;
         var method = new Lang.Method(self, symbol);
-        if (method == null) {
-            Toybox.System.println("Error: No item found for id " + id);
-            return null;
-        }
         return method.invoke() as Item;
     }
 
