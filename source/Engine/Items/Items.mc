@@ -82,6 +82,28 @@ module Items {
             67 => :createGoldStaff,
             68 => :createGoldSword,
 
+             // Demon Weapons
+            70 => :createDemonAxe,
+            71 => :createDemonBow,
+            72 => :createDemonDagger,
+            73 => :createDemonGreatsword,
+            74 => :createDemonKatana,
+            75 => :createDemonLance,
+            76 => :createDemonSpell,
+            77 => :createDemonStaff,
+            78 => :createDemonSword,
+
+            // Blood Weapons
+            80 => :createBloodAxe,
+            81 => :createBloodBow,
+            82 => :createBloodDagger,
+            83 => :createBloodGreatsword,
+            84 => :createBloodKatana,
+            85 => :createBloodLance,
+            86 => :createBloodSpell,
+            87 => :createBloodStaff,
+            88 => :createBloodSword,
+
             9 => :createArrow,
             10 => :createCrossBow,
 
@@ -448,6 +470,79 @@ module Items {
 
     function createGoldSword() as Item {
         return new GoldSword();
+    }
+    // Demon Weapons
+    function createDemonAxe() as WeaponItem {
+        return new DemonAxe();
+    }
+
+    function createDemonBow() as WeaponItem {
+        return new DemonBow();
+    }
+
+    function createDemonDagger() as WeaponItem {
+        return new DemonDagger();
+    }
+
+    function createDemonGreatsword() as WeaponItem {
+        return new DemonGreatsword();
+    }
+
+    function createDemonKatana() as WeaponItem {
+        return new DemonKatana();
+    }
+
+    function createDemonLance() as WeaponItem {
+        return new DemonLance();
+    }
+
+    function createDemonSpell() as WeaponItem {
+        return new DemonSpell();
+    }
+
+    function createDemonStaff() as WeaponItem {
+        return new DemonStaff();
+    }
+
+    function createDemonSword() as WeaponItem {
+        return new DemonSword();
+    }
+
+    // Blood Weapons
+    function createBloodAxe() as WeaponItem {
+        return new BloodAxe();
+    }
+
+    function createBloodBow() as WeaponItem {
+        return new BloodBow();
+    }
+
+    function createBloodDagger() as WeaponItem {
+        return new BloodDagger();
+    }
+
+    function createBloodGreatsword() as WeaponItem {
+        return new BloodGreatsword();
+    }
+
+    function createBloodKatana() as WeaponItem {
+        return new BloodKatana();
+    }
+
+    function createBloodLance() as WeaponItem {
+        return new BloodLance();
+    }
+
+    function createBloodSpell() as WeaponItem {
+        return new BloodSpell();
+    }
+
+    function createBloodStaff() as WeaponItem {
+        return new BloodStaff();
+    }
+
+    function createBloodSword() as WeaponItem {
+        return new BloodSword();
     }
 
     function createArrow() as Item {
