@@ -1,11 +1,11 @@
 import Toybox.Lang;
 
 
-class CrossBowOak extends Bow {
+class OakCrossBow extends Bow {
 
 	function initialize() {
 		Bow.initialize();
-		id = 14;
+		id = 301;
 		name = "Oak Crossbow";
 		description = "An oak crossbow, can attack every 3 turns.";
 		slot = RIGHT_HAND;
@@ -30,7 +30,7 @@ class CrossBowOak extends Bow {
 	}
 
 	function deepcopy() as Item {
-		var bow = new CrossBow();
+		var bow = new OakCrossBow();
 		bow.amount = amount;
 		bow.pos = pos;
 		bow.equipped = equipped;

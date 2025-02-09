@@ -89,6 +89,20 @@ class ItemSpecificValues {
             85 => 1 + log_depth, // Blood Lance
             88 => 1 + log_depth, // Blood Sword
             // ...other blood weapons...
+            // Arrows
+            200 => 1 + log_depth, // Arrow
+            201 => 1 + log_depth, // Fire Arrow
+            202 => 1 + log_depth, // Ice Arrow
+            203 => 1 + log_depth, // Gold Arrow
+            // Bolts
+            250 => 1 + log_depth, // Bolt
+            251 => 1 + log_depth, // Fire Bolt
+            252 => 1 + log_depth, // Ice Bolt
+            253 => 1 + log_depth, // Gold Bolt
+            // Crossbows
+            300 => 1 + log_depth, // CrossBow
+            301 => 1 + log_depth, // Oak CrossBow
+            302 => 1 + log_depth, // Hell CrossBow
         };
 
         var armor_weights = {
@@ -297,6 +311,20 @@ class ItemSpecificValues {
             85 => 1 + log_depth, // Blood Lance
             88 => 1 + log_depth, // Blood Sword
             // ...other blood weapons...
+            // Arrows
+            200 => 1 + log_depth, // Arrow
+            201 => 1 + log_depth, // Fire Arrow
+            202 => 1 + log_depth, // Ice Arrow
+            203 => 1 + log_depth, // Gold Arrow
+            // Bolts
+            250 => 1 + log_depth, // Bolt
+            251 => 1 + log_depth, // Fire Bolt
+            252 => 1 + log_depth, // Ice Bolt
+            253 => 1 + log_depth, // Gold Bolt
+            // Crossbows
+            300 => 1 + log_depth, // CrossBow
+            301 => 1 + log_depth, // Oak CrossBow
+            302 => 1 + log_depth, // Hell CrossBow
         };
 
         var armor_weights = {
@@ -407,9 +435,9 @@ class ItemSpecificValues {
             1001 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Steel Breastplate
             1002 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Steel Gauntlets
             1003 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Steel Shoes
-            1006 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Wood Shield
-            1007 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Green Backpack
-            1008 => depth >= 20 ? 1 + sqrt_depth : 0, // Life Amulet
+            1200 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Wood Shield
+            1250 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Green Backpack
+            1300 => depth >= 20 ? 1 + sqrt_depth : 0, // Life Amulet
             2000 => depth <= 20 ? 6 : 2 / sqrt_depth, // Health Potion
             2001 => 4 + log_depth,                    // Mana Potion
             2002 => depth >= 20 ? 4 + sqrt_depth : 0, // Greater Health Potion
@@ -505,6 +533,20 @@ class ItemSpecificValues {
             85 => 1 + log_depth, // Blood Lance
             88 => 1 + log_depth, // Blood Sword
             // ...other blood weapons...
+            // Arrows
+            200 => 1 + log_depth, // Arrow
+            201 => 1 + log_depth, // Fire Arrow
+            202 => 1 + log_depth, // Ice Arrow
+            203 => 1 + log_depth, // Gold Arrow
+            // Bolts
+            250 => 1 + log_depth, // Bolt
+            251 => 1 + log_depth, // Fire Bolt
+            252 => 1 + log_depth, // Ice Bolt
+            253 => 1 + log_depth, // Gold Bolt
+            // Crossbows
+            300 => 1 + log_depth, // CrossBow
+            301 => 1 + log_depth, // Oak CrossBow
+            302 => 1 + log_depth, // Hell CrossBow
         };
 
         var armor_weights = {
@@ -615,9 +657,9 @@ class ItemSpecificValues {
             1001 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Steel Breastplate
             1002 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Steel Gauntlets
             1003 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Steel Shoes
-            1006 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Wood Shield
-            1007 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Green Backpack
-            1008 => depth >= 20 ? 1 + sqrt_depth : 0, // Life Amulet
+            1200 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Wood Shield
+            1250 => isBetweenDepth(depth, 0, 10) ? 1 + sqrt_depth : 0, // Green Backpack
+            1300 => depth >= 20 ? 1 + sqrt_depth : 0, // Life Amulet
             2000 => depth <= 20 ? 6 : 2 / sqrt_depth, // Health Potion
             2001 => 4 + log_depth,                    // Mana Potion
             2002 => depth >= 20 ? 4 + sqrt_depth : 0, // Greater Health Potion
@@ -713,6 +755,20 @@ class ItemSpecificValues {
             85 => 1 + log_depth, // Blood Lance
             88 => 1 + log_depth, // Blood Sword
             // ...other blood weapons...
+            // Arrows
+            200 => 1 + log_depth, // Arrow
+            201 => 1 + log_depth, // Fire Arrow
+            202 => 1 + log_depth, // Ice Arrow
+            203 => 1 + log_depth, // Gold Arrow
+            // Bolts
+            250 => 1 + log_depth, // Bolt
+            251 => 1 + log_depth, // Fire Bolt
+            252 => 1 + log_depth, // Ice Bolt
+            253 => 1 + log_depth, // Gold Bolt
+            // Crossbows
+            300 => 1 + log_depth, // CrossBow
+            301 => 1 + log_depth, // Oak CrossBow
+            302 => 1 + log_depth, // Hell CrossBow
         };
 
         var armor_weights = {
@@ -921,6 +977,20 @@ class ItemSpecificValues {
             85 => 1 + log_depth, // Blood Lance
             88 => 1 + log_depth, // Blood Sword
             // ...other blood weapons...
+            // Arrows
+            200 => 1 + log_depth, // Arrow
+            201 => 1 + log_depth, // Fire Arrow
+            202 => 1 + log_depth, // Ice Arrow
+            203 => 1 + log_depth, // Gold Arrow
+            // Bolts
+            250 => 1 + log_depth, // Bolt
+            251 => 1 + log_depth, // Fire Bolt
+            252 => 1 + log_depth, // Ice Bolt
+            253 => 1 + log_depth, // Gold Bolt
+            // Crossbows
+            300 => 1 + log_depth, // CrossBow
+            301 => 1 + log_depth, // Oak CrossBow
+            302 => 1 + log_depth, // Hell CrossBow
         };
 
         var armor_weights = {

@@ -1,11 +1,11 @@
 import Toybox.Lang;
 
 
-class CrossBowHell extends Bow {
+class HellCrossBow extends Bow {
 
 	function initialize() {
 		Bow.initialize();
-		id = 15;
+		id = 302;
 		name = "Hell Crossbow";
 		description = "A hellish crossbow, can attack every 2 turns.";
 		slot = RIGHT_HAND;
@@ -30,7 +30,7 @@ class CrossBowHell extends Bow {
 	}
 
 	function deepcopy() as Item {
-		var bow = new CrossBowHell();
+		var bow = new HellCrossBow();
 		bow.amount = amount;
 		bow.pos = pos;
 		bow.equipped = equipped;

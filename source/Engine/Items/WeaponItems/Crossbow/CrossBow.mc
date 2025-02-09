@@ -5,7 +5,7 @@ class CrossBow extends Bow {
 
 	function initialize() {
 		Bow.initialize();
-		id = 10;
+		id = 300;
 		name = "Crossbow";
 		description = "A simple crossbow, can attack every 3 turns.";
 		slot = RIGHT_HAND;

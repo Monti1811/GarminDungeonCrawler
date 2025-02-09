@@ -377,6 +377,9 @@ class Room {
 
     function addMerchant(room_pos as Point2D) as Void {
         var pos = MapUtil.getRandomPosFromRoom(self);
+        if (pos[0] == 11 || pos[1] == 11) {
+            System.println("WTF????");
+        }
         var merchant = new Merchant();
         merchant.setPos(pos);
         $.Game.setRoomWithFlag(room_pos, 1, pos);

@@ -104,8 +104,22 @@ module Items {
             87 => :createBloodStaff,
             88 => :createBloodSword,
 
-            9 => :createArrow,
-            10 => :createCrossBow,
+            // Arrows
+            200 => :createArrow,
+            201 => :createFireArrow,
+            202 => :createIceArrow,
+            203 => :createGoldArrow,
+
+            // Bolts
+            250 => :createBolt,
+            251 => :createFireBolt,
+            252 => :createIceBolt,
+            253 => :createGoldBolt,
+
+            // Crossbows
+            300 => :createCrossBow,
+            301 => :createOakCrossBow,
+            302 => :createHellCrossBow,
 
             // Steel Armor
             1000 => :createSteelHelmet,
@@ -184,6 +198,7 @@ module Items {
             1252 => :createGoldBackpack,
 
             // Accessories
+            1300 => :createLifeAmulet,
             1301 => :createManaCrystal,
 
 
@@ -869,13 +884,16 @@ module Items {
     }
 
     function createRandomWeightedItem(type as Number) as Item? {
+        Toybox.System.println("createRandomWeightedItem: " + type);
         var rand = MathUtil.random(0, total_weight[type] - 1);
         var current_weight = 0;
         var weight_keys = weights[type].keys();
         for (var i = 0; i < weight_keys.size(); i++) {
             current_weight += weights[type][weight_keys[i]];
-            if (rand < current_weight) {
+            var symbol = items[weight_keys[i]];
+            if (rand < current_weight && symbol != null && self has symbol) {
                 var method = new Lang.Method(self, items[weight_keys[i]]);
+                Toybox.System.println("Item: " + items[weight_keys[i]] + " Rand: " + rand + " Current Weight: " + current_weight + " Total Weight: " + total_weight[type]);
                 return method.invoke() as Item;
             }
         }

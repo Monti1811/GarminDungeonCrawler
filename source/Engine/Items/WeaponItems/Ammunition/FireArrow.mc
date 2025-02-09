@@ -4,7 +4,7 @@ class FireArrow extends Ammunition {
 
 	function initialize() {
 		Ammunition.initialize();
-		id = 11;
+		id = 201;
 		name = "Fire Arrow";
 		description = "A fire arrow";
 		type = ARROW;

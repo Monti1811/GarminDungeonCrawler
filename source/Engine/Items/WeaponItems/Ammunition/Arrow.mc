@@ -4,7 +4,7 @@ class Arrow extends Ammunition {
 
 	function initialize() {
 		Ammunition.initialize();
-		id = 9;
+		id = 200;
 		name = "Arrow";
 		description = "A simple arrow";
 		type = ARROW;

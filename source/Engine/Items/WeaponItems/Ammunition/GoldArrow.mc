@@ -4,7 +4,7 @@ class GoldArrow extends Ammunition {
 
 	function initialize() {
 		Ammunition.initialize();
-		id = 13;
+		id = 203;
 		name = "Gold Arrow";
 		description = "A gold arrow";
 		type = ARROW;

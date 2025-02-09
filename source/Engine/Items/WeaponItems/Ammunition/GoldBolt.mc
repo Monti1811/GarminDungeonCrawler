@@ -4,7 +4,7 @@ class GoldBolt extends Ammunition {
 
 	function initialize() {
 		Ammunition.initialize();
-		id = 19;
+		id = 253;
 		name = "Gold Bolt";
 		description = "A gold bolt";
 		type = BOLT;

@@ -4,7 +4,7 @@ class IceArrow extends Ammunition {
 
 	function initialize() {
 		Ammunition.initialize();
-		id = 12;
+		id = 202;
 		name = "ice Arrow";
 		description = "An ice arrow";
 		type = ARROW;

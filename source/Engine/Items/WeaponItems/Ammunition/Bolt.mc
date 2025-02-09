@@ -4,7 +4,7 @@ class Bolt extends Ammunition {
 
 	function initialize() {
 		Ammunition.initialize();
-		id = 16;
+		id = 250;
 		name = "Bolt";
 		description = "A simple bolt";
 		type = BOLT;

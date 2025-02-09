@@ -4,7 +4,7 @@ class IceBolt extends Ammunition {
 
 	function initialize() {
 		Ammunition.initialize();
-		id = 18;
+		id = 252;
 		name = "Ice Bolt";
 		description = "An ice bolt";
 		type = BOLT;
