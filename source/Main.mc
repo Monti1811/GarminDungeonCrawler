@@ -96,7 +96,7 @@ module Main {
 		var right = middle_of_screen[0] + Math.floor(room_size_x/2);
 		var top = middle_of_screen[1] - Math.floor(room_size_y/2);
 		var bottom = middle_of_screen[1] + Math.floor(room_size_y/2);
-		var map = createRandomMap(screen_size_x, screen_size_y, left, right, top, bottom);
+		var map = Map.createRandomMap(screen_size_x, screen_size_y, left, right, top, bottom);
 		var enemies = createRandomEnemies(map, left, right, top, bottom);
 		var items = createRandomItems(map, left, right, top, bottom, enemies.size());
 		var room = new Room({
@@ -111,43 +111,6 @@ module Main {
 		});
 		
 		return room;
-	}
-
-	function createRandomMap(screen_size_x as Number, screen_size_y as Number, left as Number, right as Number, top as Number, bottom as Number) as  Array<Array<Tile>> {
-		var map = new Array<Array<Tile>>[screen_size_x];
-        for (var i = 0; i < screen_size_x; i++) {
-            map[i] = new Array<Tile>[screen_size_y];
-			for (var j = 0; j < screen_size_y; j++) {
-				map[i][j] = new Tile(i, j);
-			}
-        }
-
-		// Add walls to tiles by changing the type of the tile
-		// Top wall
-		for (var i = left; i <= right; i++) {
-			map[i][top].type = WALL;
-		}
-		// Bottom wall
-		for (var i = left; i <= right; i++) {
-			map[i][bottom].type = WALL;
-		}
-		// Left wall
-		for (var j = top; j <= bottom; j++) {
-			map[left][j].type = WALL;
-		}
-		// Right wall
-		for (var j = top; j <= bottom; j++) {
-			map[right][j].type = WALL;
-		}
-
-		// Add passable to tiles
-		for (var i = left + 1; i < right; i++) {
-			for (var j = top + 1; j < bottom; j++) {
-				map[i][j].type = PASSABLE;
-			}
-		}
-
-		return map;
 	}
 
 	/*function createRandomMap(left as Number, right as Number, top as Number, bottom as Number) as Dictionary {
@@ -231,7 +194,7 @@ module Main {
 	}
 
 
-	function createRandomItems(map as Array<Array<Tile>>, left as Number, right as Number, top as Number, bottom as Number, amount_enemies as Number) as Dictionary<Point2D, Item> {
+	function createRandomItems(map as Map, left as Number, right as Number, top as Number, bottom as Number, amount_enemies as Number) as Dictionary<Point2D, Item> {
 		var items = {};
 		var room_size = (right - left - 1) * (bottom - top - 1);
 		var num_items = getItemsNumForRoom(amount_enemies, room_size);
@@ -243,7 +206,7 @@ module Main {
 			}
 			var item_pos = MapUtil.getRandomPos(map, left, right, top, bottom);
 			item.setPos(item_pos);
-			map[item_pos[0]][item_pos[1]].content = item;
+			map.setContent(item_pos, item);
 			items.put(item_pos, item);
 		}
 		return items;
@@ -291,7 +254,7 @@ module Main {
 	}
 
 
-	function createRandomEnemies(map as Array<Array<Tile>>, left as Number, right as Number, top as Number, bottom as Number) as Dictionary<Point2D,Enemy> {
+	function createRandomEnemies(map as Map, left as Number, right as Number, top as Number, bottom as Number) as Dictionary<Point2D,Enemy> {
 		var enemies = {};
 		var diff = 1;
 		if (MathUtil.random(0, 100) < 10) {
@@ -303,7 +266,7 @@ module Main {
 			var enemy = possible_enemies[i];
 			var enemy_pos = MapUtil.getRandomPos(map, left, right, top, bottom);
 			enemy.setPos(enemy_pos);
-			map[enemy_pos[0]][enemy_pos[1]].content = enemy;
+			map.setContent(enemy_pos, enemy);
 			enemies.put(enemy_pos, enemy);
 		}
 		return enemies;

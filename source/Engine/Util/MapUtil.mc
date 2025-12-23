@@ -3,18 +3,18 @@ import Toybox.Math;
 
 module MapUtil {
 
-	function isPosPlayer(map as Array<Array<Tile>>, new_pos as Point2D) as Boolean {
-		if (map[new_pos[0]][new_pos[1]].player) {
+	function isPosPlayer(map as Map, new_pos as Point2D) as Boolean {
+		if (map.getPlayer(new_pos)) {
 			return true;
 		}
 		return false;
 	}
 
-	function canMoveToPoint(map as Array<Array<Tile>>, point as Point2D) as Boolean {
-		if (point[0] < 0 || point[0] >= map.size() || point[1] < 0 || point[1] >= map[0].size()) {
+	function canMoveToPoint(map as Map, point as Point2D) as Boolean {
+		if (!map.isInBound(point)) {
 			return false;
 		}
-		var tile = map[point[0]][point[1]];
+		var tile = map.getTileFromPos(point);
 		if (tile.type != PASSABLE || tile.content != null || tile.player) {
 			return false;
 		}
@@ -31,7 +31,7 @@ module MapUtil {
 		return array;
 	}
 
-	function findRandomEmptyTileAround(map as Array<Array<Tile>>, pos as Point2D) as Point2D? {
+	function findRandomEmptyTileAround(map as Map, pos as Point2D) as Point2D? {
 		var directions = [
 			[0, -1],
 			[0, 1],
@@ -48,20 +48,20 @@ module MapUtil {
 		return null;
 	}
 
-	function canMoveToPlayer(map as Array<Array<Tile>>, point as Point2D) as Boolean {
-		if (point[0] < 0 || point[0] >= map.size() || point[1] < 0 || point[1] >= map[0].size()) {
+	function canMoveToPlayer(map as Map, point as Point2D) as Boolean {
+		if (!map.isInBound(point)) {
 			return false;
 		}
-		var tile = map[point[0]][point[1]];
+		var tile = map.getTileFromPos(point);
 		if (tile.content == null || !tile.player) {
 			return false;
 		}
 		return true;
 	}
 
-	function checkEnemy(map as Array<Array<Tile>>, x as Number, y as Number) {
-        if (x >= 0 && x < map.size() && y >= 0 && y < map[0].size()) {
-            var enemy = map[x][y].content as Enemy?;
+	function checkEnemy(map as Map, x as Number, y as Number) {
+        if (map.isInBound([x, y])) {
+            var enemy = map.getContent([x, y]) as Enemy?;
             if (enemy != null && enemy instanceof Enemy) {
                 return enemy;
             }
@@ -69,7 +69,7 @@ module MapUtil {
         return null;
     }
 
-	function getEnemyInRangeLinear(map as Array<Array<Tile>>, pos as Point2D, range as Number, direction as WalkDirection) as Enemy? {
+	function getEnemyInRangeLinear(map as Map, pos as Point2D, range as Number, direction as WalkDirection) as Enemy? {
 		var x = pos[0];
 		var y = pos[1];
 		var dx = 0, dy = 0;
@@ -96,7 +96,7 @@ module MapUtil {
 		return null;
 	}
 
-	function getEnemyInRangeDirectional(map as Array<Array<Tile>>, pos as Point2D, range as Number, direction as WalkDirection) as Enemy? {
+	function getEnemyInRangeDirectional(map as Map, pos as Point2D, range as Number, direction as WalkDirection) as Enemy? {
 		var range_int = Math.floor(range).toNumber() as Number;
 		var range_float = range - range_int;
 		var x = pos[0];
@@ -156,7 +156,7 @@ module MapUtil {
 		return null;
 	}
 
-	function getEnemyInRangeSurrounding(map as Array<Array<Tile>>, pos as Point2D, range as Number) as Array<Enemy?> {
+	function getEnemyInRangeSurrounding(map as Map, pos as Point2D, range as Number) as Array<Enemy?> {
 		var x = pos[0];
 		var y = pos[1];
 		// Check every field around the position for enemies and add them to the list
@@ -175,7 +175,7 @@ module MapUtil {
 		return enemies;
 	}
 	
-    function getEnemyInRange(map as Array<Array<Tile>>, pos as Point2D, range as Number, range_type as RangeType, direction as WalkDirection) as Array<Enemy?> {
+    function getEnemyInRange(map as Map, pos as Point2D, range as Number, range_type as RangeType, direction as WalkDirection) as Array<Enemy?> {
 		/*
 		Range 1, direction left:
 		[ ][ ][ ][ ][ ]
@@ -226,15 +226,15 @@ module MapUtil {
 		
 	}
 
-	function checkPlayer(map as Array<Array<Tile>>, x as Number, y as Number) as Boolean {
-        if (x >= 0 && x < map.size() && y >= 0 && y < map[0].size()) {
-            return map[x][y].player;
+	function checkPlayer(map as Map, x as Number, y as Number) as Boolean {
+        if (map.isInBound([x, y])) {
+            return map.getPlayer([x, y]);
             
         }
         return false;
     }
 
-    function getPlayerInRangeLinear(map as Array<Array<Tile>>, pos as Point2D, range as Number) as Boolean {
+    function getPlayerInRangeLinear(map as Map, pos as Point2D, range as Number) as Boolean {
 		var x = pos[0];
 		var y = pos[1];
 		var directions = [
@@ -257,7 +257,7 @@ module MapUtil {
 		return false;
 	}
 
-	function getRangeCoords(map as Array<Array<Tile>>, pos as Point2D, range as Number, range_type as RangeType, direction as WalkDirection) as Array<Point2D> {
+	function getRangeCoords(map as Map, pos as Point2D, range as Number, range_type as RangeType, direction as WalkDirection) as Array<Point2D> {
 		var range_int = Math.floor(range).toNumber() as Number;
 		var range_float = range - range_int;
 		var x = pos[0];
@@ -309,13 +309,13 @@ module MapUtil {
 		return [screen_size_x, screen_size_y];
 	}
 
-	function getRandomPos(map as Array<Array<Tile>>, left as Number, right as Number, top as Number, bottom as Number) as Point2D {
+	function getRandomPos(map as Map, left as Number, right as Number, top as Number, bottom as Number) as Point2D {
 		var x = 0;
 		var y = 0;
 		do {
 			x = MathUtil.random(left + 1, right - 1);
 			y = MathUtil.random(top + 1, bottom - 1);
-		} while (x == 11 || y == 11 || map[x][y].content != null);
+		} while (x == 11 || y == 11 || map.getContent([x,y]) != null);
 		return [x, y];
 	}
 

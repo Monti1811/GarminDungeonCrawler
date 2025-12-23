@@ -35,15 +35,15 @@ class Turn {
         System.println("Moving " + direction);
         var new_pos = calculateNewPos(_player_pos, direction);
 
-        var map = _map_data[:map] as Array<Array<Tile>>;
+        var map = _map_data[:map] as Map;
         if (checkIfNextRoom(new_pos, direction, map)) {
             return;
         }
 
-        if (new_pos[0] >= map.size() || new_pos[1] >= map[0].size()) {
+        if (!map.isInBound(new_pos)) {
             return;
         }
-        var tile = map[new_pos[0]][new_pos[1]];
+        var tile = map.getTileFromPos(new_pos);
         var map_element = tile.content as Object?;
         if (tile.type == STAIRS) {
             goToNextDungeon();
@@ -80,8 +80,8 @@ class Turn {
 		WatchUi.requestUpdate();
 	}
 
-    function movePlayer(map as Array<Array<Tile>>, new_pos as Point2D) as Void {
-        var new_tile = map[new_pos[0]][new_pos[1]];
+    function movePlayer(map as Map, new_pos as Point2D) as Void {
+        var new_tile = map.getTileFromPos(new_pos);
         if (new_tile.content != null && !(new_tile.content instanceof Item)) {
             return;
         }
@@ -156,11 +156,8 @@ class Turn {
         return new_pos;
     }
 
-    function checkIfNextRoom(new_pos as Point2D, direction as WalkDirection, map as Array<Array<Tile>>) as Boolean {
-        if (new_pos[0] < 0 || 
-                new_pos[0] >= map.size() || 
-                new_pos[1] < 0 || 
-                new_pos[1] >= map[0].size()) {
+    function checkIfNextRoom(new_pos as Point2D, direction as WalkDirection, map as Map) as Boolean {
+        if (!map.isInBound(new_pos)) {
             var dungeon = getApp().getCurrentDungeon();
             var next_room_name = dungeon.getRoomInDirection(direction);
             if (next_room_name != null) {
@@ -197,7 +194,7 @@ class Turn {
         freeMemory();
     }
 
-    function resolvePlayerActions(map as Array<Array<Tile>>, new_pos as Point2D, direction as WalkDirection, map_element as Object?) as Void {
+    function resolvePlayerActions(map as Map, new_pos as Point2D, direction as WalkDirection, map_element as Object?) as Void {
 
         if (_player.getEnergy() < MIN_ENERGY) {
             return;
@@ -230,7 +227,7 @@ class Turn {
 
     }
 
-    function pickUpItem(map as Array<Array<Tile>>, new_pos as Point2D, map_element as Object?) as Void {
+    function pickUpItem(map as Map, new_pos as Point2D, map_element as Object?) as Void {
         if (map_element != null && map_element instanceof Item) {
             var item = map_element as Item;
             if (item instanceof Gold) {

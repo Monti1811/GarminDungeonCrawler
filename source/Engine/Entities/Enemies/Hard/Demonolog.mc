@@ -23,7 +23,7 @@ class Demonolog extends Enemy {
 		return $.Rez.Drawables.monster_demonolog;
 	}
 
-	function findNextMove(map as Array<Array<Tile>>) as Point2D {
+	function findNextMove(map as Map) as Point2D {
         var player_pos = $.getApp().getPlayer().getPos();
         var dist = $.MathUtil.abs(player_pos[0] - pos[0]) + $.MathUtil.abs(player_pos[1] - pos[1]);
         if (dist <= 3) {
@@ -32,7 +32,7 @@ class Demonolog extends Enemy {
         return Enemy.followPlayerSimple(map);
     }
 
-    function doAction(map as Array<Array<Tile>>) as Boolean {
+    function doAction(map as Map) as Boolean {
         if (summon_cooldown > 0) {
             return false;
         }

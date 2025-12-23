@@ -25,7 +25,7 @@ class Player extends Entity {
 	};
 	var attribute_points as Number = 5;
 	var inventory as Inventory = new Inventory(30);
-	var equipped as Dictionary<ItemSlot, Item> = {
+	var equipped as Dictionary<ItemSlot, Item> = {}; /*= {
 		HEAD => null,
 		CHEST => null,
 		BACK => null,
@@ -35,7 +35,7 @@ class Player extends Entity {
 		RIGHT_HAND => null,
 		ACCESSORY => null,
 		AMMUNITION => null,
-	};
+	};*/
 	var gold as Number = 0;
 	var sprite as ResourceId = $.Rez.Drawables.Player;
 	var pos as Point2D = [0, 0];
@@ -152,7 +152,7 @@ class Player extends Entity {
 		dropped_item.onDropItem(me);
 		var room = getApp().getCurrentDungeon().getCurrentRoom();
 		var player_pos = room.getPlayerPos();
-		var new_item_pos = room.getNearbyFreePos(player_pos) as Point2D?;
+		var new_item_pos = room.getMap().getNearbyFreePos(player_pos) as Point2D?;
 		if (new_item_pos != null) {
 			dropped_item.setPos(new_item_pos);
 			room.addItem(dropped_item);

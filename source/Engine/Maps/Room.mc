@@ -23,8 +23,7 @@ class Room {
     private var _tile_width as Number;
     private var _tile_height as Number;
 
-    private var _map as Array<Array<Tile>>;
-    private var _map_string as Array<String>;
+    private var _map as Map?;
     private var _stairs as Point2D?;
 
     private var _start_pos as Point2D?;
@@ -43,9 +42,8 @@ class Room {
         _start_pos = options[:start_pos] as Point2D;
         _player_pos = _start_pos;
         _map = options[:map];
-        _map_string = mapToString();
 
-        System.println("Map size: " + _map.size() + " " + _map[0].size());
+        System.println("Map size: " + _map.getXSize() + " " + _map.getYSize());
         System.println("Room size: " + _size_x + " " + _size_y);
        
         _items = options[:items];
@@ -61,14 +59,14 @@ class Room {
         var item_keys = _items.keys() as Array<Point2D>;
         for (var i = 0; i < item_keys.size(); i++) {
             var item = _items[item_keys[i]];
-            _map[item_keys[i][0]][item_keys[i][1]].content = item;
+            _map.setContent(item_keys[i], item);
         }
 
         // Add enemies to map
         var enemy_keys = _enemies.keys() as Array<Point2D>;
         for (var i = 0; i < _enemies.size(); i++) {
             var enemy = _enemies[enemy_keys[i]];
-            _map[enemy_keys[i][0]][enemy_keys[i][1]].content = enemy;
+            _map.setContent(enemy_keys[i], enemy);
         }
     }
 
@@ -85,19 +83,8 @@ class Room {
         }
     }
 
-    function mapToString() as Array<String> {
-        var map_string = [] as Array<String>;
-        for (var i = 0; i < _map.size(); i++) {
-            var row = "";
-            for (var j = 0; j < _map[i].size(); j++) {
-                row += getMapChar(_map[j][i]).toChar();
-            }
-            map_string.add(row);
-        }
-        return map_string; 
-    }
 
-    function getMap() as Array<Array<Tile>> {
+    function getMap() as Map {
         return _map;
     }
 
@@ -110,7 +97,7 @@ class Room {
             :start_pos => _start_pos,
             :player_pos => _player_pos,
             :map => _map,
-            :map_string => _map_string,
+            :map_string => _map.getMapString()
         };
     }
 
@@ -120,7 +107,7 @@ class Room {
 
     function removeItem(item as Item) as Void {
         var item_pos = item.getPos();
-        _map[item_pos[0]][item_pos[1]].content = null;
+        _map.setContent(item_pos, null);
         _items.remove(item_pos);
     }
 
@@ -136,7 +123,7 @@ class Room {
 
     function removeEnemy(enemy as Enemy) as Void {
         var enemy_pos = enemy.getPos();
-        _map[enemy_pos[0]][enemy_pos[1]].content = null;
+        _map.setContent(enemy_pos, null);
         _enemies.remove(enemy_pos);
     }
 
@@ -156,8 +143,8 @@ class Room {
         var enemy_pos = enemy.getPos();
         var enemy_next_pos = enemy.getNextPos();
         if (enemy_pos != enemy_next_pos) {
-            _map[enemy_pos[0]][enemy_pos[1]].content = null;
-            _map[enemy_next_pos[0]][enemy_next_pos[1]].content = enemy;
+            _map.setContent(enemy_pos, null);
+            _map.setContent(enemy_next_pos, enemy);
             _enemies.remove(enemy_pos);
             _enemies.put(enemy_next_pos, enemy);
             enemy.setPos(enemy_next_pos);
@@ -213,8 +200,8 @@ class Room {
     }
 
     function updatePlayerPos(new_pos as Point2D) as Void {
-        _map[_player_pos[0]][_player_pos[1]].player = false;
-        _map[new_pos[0]][new_pos[1]].player = true;
+        _map.setPlayer(_player_pos, false);
+        _map.setPlayer(new_pos, true);
         _player_pos = new_pos;
     }
 
@@ -222,42 +209,22 @@ class Room {
         return _player_pos;
     }
 
-    function getNearbyFreePos(pos as Point2D) as Point2D? {
-        var new_pos = [pos[0], pos[1] - 1];
-        if (new_pos[1] >= 0 && _map[new_pos[0]][new_pos[1]].type == PASSABLE && _map[new_pos[0]][new_pos[1]].content == null) {
-            return new_pos;
-        }
-        new_pos = [pos[0], pos[1] + 1];
-        if (new_pos[1] < _size_y && _map[new_pos[0]][new_pos[1]].type == PASSABLE && _map[new_pos[0]][new_pos[1]].content == null) {
-            return new_pos;
-        }
-        new_pos = [pos[0] - 1, pos[1]];
-        if (new_pos[0] >= 0 && _map[new_pos[0]][new_pos[1]].type == PASSABLE && _map[new_pos[0]][new_pos[1]].content == null) {
-            return new_pos;
-        }
-        new_pos = [pos[0] + 1, pos[1]];
-        if (new_pos[0] < _size_x && _map[new_pos[0]][new_pos[1]].type == PASSABLE && _map[new_pos[0]][new_pos[1]].content == null) {
-            return new_pos;
-        }
-        return null;
-    }
-
     function addItem(item as Item) as Void {
         var item_pos = item.getPos();
         _items.put(item_pos, item);
-        _map[item_pos[0]][item_pos[1]].content = item;
+        _map.setContent(item_pos, item);
     }
 
     function addEnemy(enemy as Enemy) as Void {
         var enemy_pos = enemy.getPos();
         _enemies.put(enemy_pos, enemy);
-        _map[enemy_pos[0]][enemy_pos[1]].content = enemy;
+        _map.setContent(enemy_pos, enemy);
     }
 
     function addNPC(npc as NPC) as Void {
         var npc_pos = npc.getPos();
         _npcs.put(npc_pos, npc);
-        _map[npc_pos[0]][npc_pos[1]].content = npc;
+        _map.setContent(npc_pos, npc);
     }
 
     function addConnection(direction as WalkDirection) as Void {
@@ -296,7 +263,7 @@ class Room {
             dx = -1;
         }
         while (x >= 0 && x < screen_size_x && y >= 0 && y < screen_size_y) {
-            if (_map[x][y].type == WALL) {
+            if (_map.getType([x, y]) == WALL) {
                 return [x, y];
             }
             x += dx;
@@ -336,24 +303,24 @@ class Room {
     }
 
     function addTunnelTile(x as Number, y as Number, left_right as Boolean, screen_size_x as Number, screen_size_y as Number) as Void {
-        if (_map[x][y].type != PASSABLE) {
-            _map[x][y].type = PASSABLE;
+        if (_map.getType([x, y]) != PASSABLE) {
+            _map.setType([x, y], PASSABLE);
         }
         
 
         if (left_right) {
             if (x > 0) { 
-                _map[x - 1][y].type = WALL;
+                _map.setType([x - 1, y], WALL);
             }
             if (x < screen_size_x - 1) {
-                _map[x + 1][y].type = WALL;
+                _map.setType([x + 1, y], WALL);
             }
         } else {
             if (y > 0) {
-                _map[x][y - 1].type = WALL;
+                _map.setType([x, y - 1], WALL);
             }
             if (y < screen_size_y - 1) {
-                _map[x][y + 1].type = WALL; 
+                _map.setType([x, y + 1], WALL);
             }
         }
     }
@@ -368,10 +335,10 @@ class Room {
             pos = MapUtil.getRandomPosFromRoom(self);
         }
         System.println("Stairs pos: " + pos);
-        _map[pos[0]][pos[1]].type = STAIRS;
+        _map.setType(pos, STAIRS);
         _stairs = pos;
         if (reload) {
-            _map_string = mapToString();
+            _map.mapToString();
         }
     }
 
@@ -383,7 +350,7 @@ class Room {
         var merchant = new Merchant();
         merchant.setPos(pos);
         $.Game.setRoomWithFlag(room_pos, 1, pos);
-        _map[pos[0]][pos[1]].content = merchant;
+        _map.setContent(pos, merchant);
         addNPC(merchant);
     }
 
@@ -391,7 +358,7 @@ class Room {
         _items = {};
         _enemies = {};
         _npcs = {};
-        _map = [];
+        _map = null;
     }
     
     function saveEntityDict(dict) as Array<Dictionary> {
@@ -413,15 +380,6 @@ class Room {
         var enemies = saveEntityDict(_enemies);
         var npcs = saveEntityDict(_npcs);
 
-        var screensize = MapUtil.getNumTilesForScreensize();
-        var map = [];
-        for (var i = 0; i < screensize[0]; i++) {
-            var row = [];
-            for (var j = 0; j < screensize[1]; j++) {
-                row.add(_map[i][j].type as Number);
-            }
-            map.add(row);
-        }
         // TODO: player pos is not correctly saved and loaded
         System.println("Save player pos: " + _player_pos);
         return {
@@ -432,34 +390,11 @@ class Room {
             "start_pos" => _start_pos,
             "player_pos" => _player_pos,
             "stairs" => _stairs,
-            "map" => map,
-            "map_string" => _map_string,
+            "map" => _map.save(),
             "items" => items,
             "enemies" => enemies,
             "npcs" => npcs
         };
-    }
-
-    static var num_to_enum as Array<TileType> = [
-        EMPTY,
-        WALL,
-        PASSABLE,
-        STAIRS
-    ];
-
-    static function loadMap(map_data as Array<Array<Number>>) as Array<Array<Tile>> {
-
-        var map = [];
-        for (var i = 0; i < map_data.size(); i++) {
-            var row = [];
-            for (var j = 0; j < map_data[i].size(); j++) {
-                var tile = new Tile(i, j);
-                tile.type = num_to_enum[map_data[i][j]];
-                row.add(tile);
-            }
-            map.add(row);
-        }
-        return map;
     }
 
     static function load(data as Dictionary) as Room {
@@ -469,8 +404,7 @@ class Room {
             :tile_width => data["tile_width"],
             :tile_height => data["tile_height"],
             :start_pos => data["start_pos"],
-            :map => Room.loadMap(data["map"]),
-            :map_string => data["map_string"],
+            :map => Map.load(data["map"]),
             :items => {},
             :enemies => {}
         });

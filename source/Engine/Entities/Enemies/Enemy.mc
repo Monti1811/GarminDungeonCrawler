@@ -105,12 +105,12 @@ class Enemy extends Entity {
 		return null;
 	}
 
-	function findNextMove(map as Array<Array<Tile>>) as Point2D {
+	function findNextMove(map as Map) as Point2D {
 		self.next_pos = pos;
 		return pos;
 	}
 
-	function followPlayerSimple(map as Array<Array<Tile>>) as Point2D {
+	function followPlayerSimple(map as Map) as Point2D {
 		var next_pos = Pathfinder.findSimplePathToPos(map, pos, $.getApp().getPlayer().getPos());
 		if (next_pos != null) {
 			Toybox.System.println(name + " moving to " + next_pos);
@@ -121,7 +121,7 @@ class Enemy extends Entity {
 		return self.next_pos;
 	}
 
-	function randomMovement(map as Array<Array<Tile>>) as Point2D {
+	function randomMovement(map as Map) as Point2D {
 		var next_pos = Pathfinder.randomMovement(map, pos);
 		if (next_pos != null) {
 			self.next_pos = next_pos;
@@ -131,7 +131,7 @@ class Enemy extends Entity {
 		return self.next_pos;
 	}
 
-	function randomTeleport(map as Array<Array<Tile>>) as Point2D {
+	function randomTeleport(map as Map) as Point2D {
 		var next_pos = Pathfinder.randomTeleport(map, pos);
 		if (next_pos != null) {
 			self.next_pos = next_pos;
@@ -141,7 +141,7 @@ class Enemy extends Entity {
 		return self.next_pos;
 	}
 
-	function toPlayerTeleport(map as Array<Array<Tile>>) as Point2D {
+	function toPlayerTeleport(map as Map) as Point2D {
 		var next_pos = Pathfinder.teleportToPlayer(map, pos);
 		if (next_pos != null) {
 			self.next_pos = next_pos;
@@ -151,7 +151,7 @@ class Enemy extends Entity {
 		return self.next_pos;
 	}
 
-	function walkAwayFromPlayer(map as Array<Array<Tile>>) as Point2D {
+	function walkAwayFromPlayer(map as Map) as Point2D {
 		var next_pos = Pathfinder.walkAwayFromPlayer(map, pos);
 		if (next_pos != null) {
 			self.next_pos = next_pos;
@@ -161,7 +161,7 @@ class Enemy extends Entity {
 		return self.next_pos;
 	}
 
-	function doAction(map as Array<Array<Tile>>) as Boolean {
+	function doAction(map as Map) as Boolean {
 		return false;
 	}
 
@@ -173,7 +173,7 @@ class Enemy extends Entity {
 		}
 	}
 
-	function canAttackPlayer(map as Array<Array<Tile>>, player_pos as Point2D) as Boolean {
+	function canAttackPlayer(map as Map, player_pos as Point2D) as Boolean {
 		if (curr_attack_cooldown > 0) {
 			return false;
 		}
@@ -183,12 +183,12 @@ class Enemy extends Entity {
 		return true;
 	}
 
-	function attackNearbyPlayer(map as Array<Array<Tile>>, player_pos as Point2D) as Boolean {
+	function attackNearbyPlayer(map as Map, player_pos as Point2D) as Boolean {
 		if (!canAttackPlayer(map, player_pos)) {
 			return false;
 		}
 		var player = null as Player?;
-		if (map[player_pos[0]][player_pos[1]].player) {
+		if (map.getPlayer(player_pos)) {
 			player = getApp().getPlayer();
 		}
 		if (player != null) {

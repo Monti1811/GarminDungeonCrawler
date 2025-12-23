@@ -20,7 +20,7 @@ class Frog extends Enemy {
 		return $.Rez.Drawables.Frog;
 	}
 
-	function findNextMove(map as Array<Array<Tile>>) as Point2D {
+	function findNextMove(map as Map) as Point2D {
 		var direction = move_up ? -1 : 1;
 		var new_pos = [pos[0], pos[1] + direction];
 		

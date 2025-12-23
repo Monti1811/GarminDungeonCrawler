@@ -23,7 +23,7 @@ class Necromancer extends Enemy {
 		return $.Rez.Drawables.monster_necromancer;
 	}
 
-	function findNextMove(map as Array<Array<Tile>>) as Point2D {
+	function findNextMove(map as Map) as Point2D {
         var player_pos = $.getApp().getPlayer().getPos();
         var dist = $.MathUtil.abs(player_pos[0] - pos[0]) + $.MathUtil.abs(player_pos[1] - pos[1]);
         if (dist <= 3) {
@@ -32,7 +32,7 @@ class Necromancer extends Enemy {
         return Enemy.followPlayerSimple(map);
     }
 
-    function doAction(map as Array<Array<Tile>>) as Boolean {
+    function doAction(map as Map) as Boolean {
         if (summon_cooldown > 0) {
             return false;
         }
@@ -41,15 +41,9 @@ class Necromancer extends Enemy {
             6 => 5,
             7 => 1,
         };
-        var chosen_summon = $.MathUtil.weighted_random(summons);
-        var summon_pos = $.MapUtil.findRandomEmptyTileAround(map, pos);
-        if (summon_pos != null) {
-            var summon = $.Enemies.createEnemyFromId(chosen_summon);
-            summon.setPos(summon_pos);
-            summon.register();
+        var summon = EnemyUtil.summonEnemy(summons, map, pos);
+        if (summon != null) {
             children.add(summon.guid);
-            var room = $.getApp().getCurrentDungeon().getCurrentRoom();
-            room.addEnemy(summon);
             summon_cooldown = summon_cooldown_max;
             return true;
         }
