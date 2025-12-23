@@ -52,7 +52,7 @@ module Constants {
 		"Luck" => :luck
 	};
 
-	public const EQUIPSLOT_TO_STR as Dictionary<ItemSlot, String> = {
+	public const EQUIPSLOT_TO_STR = {
 		HEAD => "Head",
 		CHEST => "Chest",
 		BACK => "Back",
@@ -63,7 +63,7 @@ module Constants {
 		ACCESSORY => "Accessory",
 		AMMUNITION => "Ammunition",
 		NONE => "None"
-	};
+	} as Dictionary<ItemSlot, String>;
 
 	public const STR_TO_EQUIPSLOT as Dictionary<String, ItemSlot> = {
 		"Head" => HEAD,
@@ -78,7 +78,7 @@ module Constants {
 		"None" => NONE
 	};
 
-	public const ATTRIBUTE_WEIGHTS as Dictionary<AttackType | DefenseType, Dictionary> = {
+	public const ATTRIBUTE_WEIGHTS = {
 		STRENGTH => {
 			:strength => 1.0,
 			:constitution => 0.5,
@@ -133,5 +133,5 @@ module Constants {
 			:charisma => 0.5,
 			:luck => 0.25
 		},
-	};
+	} as Dictionary<AttackType | DefenseType, Dictionary>;
 }

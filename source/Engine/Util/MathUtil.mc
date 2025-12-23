@@ -108,7 +108,7 @@ module MathUtil {
 		return value;
 	}
 
-	function area(x1 as Numeric, y1 as Numeric, x2 as Numeric, y2 as Numeric, x3 as Numeric, y3 as Numeric) {
+	function areaTriangle(x1 as Numeric, y1 as Numeric, x2 as Numeric, y2 as Numeric, x3 as Numeric, y3 as Numeric) {
 		return abs((x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2)) / 2.0);
 	}
  
@@ -121,16 +121,16 @@ module MathUtil {
 		return s > 0 && t > 0 && (s + t) < 2 * A * sign;*/
 
 		// Calculate area of triangle ABC
-		var A = area (x1, y1, x2, y2, x3, y3);
+		var A = areaTriangle(x1, y1, x2, y2, x3, y3);
 	
 		// Calculate area of triangle PBC 
-		var A1 = area (x, y, x2, y2, x3, y3);
+		var A1 = areaTriangle(x, y, x2, y2, x3, y3);
 		
 		// Calculate area of triangle PAC 
-		var A2 = area (x1, y1, x, y, x3, y3);
+		var A2 = areaTriangle(x1, y1, x, y, x3, y3);
 		
 		// Calculate area of triangle PAB 
-		var A3 = area (x1, y1, x2, y2, x, y);
+		var A3 = areaTriangle(x1, y1, x2, y2, x, y);
 		
 		// Check if sum of A1, A2 and A3 
 		// is same as A

@@ -142,7 +142,7 @@ class Inventory {
 	}
 
 	static function load(save_data as Dictionary) as Inventory {
-		var base_max_weight = save_data["base_max_weight"] as Numeric;
+		var base_max_weight = save_data["base_max_weight"] as Numeric?;
 		if (base_max_weight == null) {
 			base_max_weight = 30;
 		}

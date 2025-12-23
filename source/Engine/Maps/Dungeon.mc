@@ -93,6 +93,7 @@ class Dungeon {
 			var current_room_pos = $.SimUtil.getPosFromRoomName(current_room) as Point2D;
 			var possible_directions = getPossibleDirections(current_room_pos[0], current_room_pos[1]);
 			if (current_room == null) {
+				Toybox.System.println("Error: current_room is null in connectRoomsRandomly");
 				break;
 			}
 			var direction = $.SimUtil.getRandomFromArray(possible_directions);

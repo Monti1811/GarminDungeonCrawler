@@ -11,13 +11,13 @@ class DCItemInfoValuesView extends WatchUi.View {
 
 	private var small_font as FontResource;
 
-	private const item_fn as Dictionary<ItemType, Symbol> = {
-		WEAPON=> :showWeaponStats,
-		ARMOR=> :showArmorStats,
-		CONSUMABLE=> :showConsumableStats,
-		KEY=> :showKeyStats,
-		CUSTOM=> :showCustomStats,
-	};
+	private const item_fn = {
+		WEAPON => :showWeaponStats,
+		ARMOR => :showArmorStats,
+		CONSUMABLE => :showConsumableStats,
+		KEY => :showKeyStats,
+		CUSTOM => :showCustomStats,
+	} as Dictionary<ItemType, Symbol>;
 	private var fn as Method;
 
     function initialize(item as Item) {

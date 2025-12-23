@@ -57,7 +57,8 @@ module Enemies {
         dungeon_enemies = values[0];
         total_weight = 0;
         for (var i = 0; i < dungeon_enemies.size(); i++) {
-            total_weight += dungeon_enemies[i][:weight];
+            var enemy = dungeon_enemies[i] as Dictionary<Symbol, Numeric>;
+            total_weight += enemy[:weight];
         }
     }
 

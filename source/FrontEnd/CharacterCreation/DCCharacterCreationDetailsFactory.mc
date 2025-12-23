@@ -12,7 +12,7 @@ class DCCharacterCreationDetailsFactory extends WatchUi.ViewLoopFactory {
     }
 
     //! Retrieve a view/delegate pair for the page at the given index
-    function getView(page as Number) as [View] or [View, BehaviorDelegate] {
+    function getView(page as Number) as [ViewLoopFactory.Views ] or [ ViewLoopFactory.Views, ViewLoopFactory.Delegates] {
         switch (page) {
             case 0:
                 return [new $.DCPlayerDetailsOverviewView(_player, true), new DCCharacterCreationDetailsLoopDelegate(_player)];
