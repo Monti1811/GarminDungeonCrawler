@@ -9,54 +9,13 @@ class EnemySpecificValues {
 	}
 
 	function getDungeonEnemyWeights() as [Array, Array] {
-		switch (_player_id) {
-			case 0:
-				return getDungeonEnemyWeightsWarrior();
-			case 1:
-				return getDungeonEnemyWeightsMage();
-			case 2:
-				return getDungeonEnemyWeightsArcher();
-			case 3:
-				return getDungeonEnemyWeightsNameless();
-			case 999:
-				return getDungeonEnemyWeightsGod();
-			default:
-				return [[], []];
-		}
+		var depth = $.Game.depth;
+		var enemy_weights = getEnemyWeightsForDepthAndClass(depth, _player_id);
+		return [enemy_weights, enemy_weights];
 	}
 
 	private function isBetweenDepth(depth as Number, min as Number, max as Number) as Boolean {
 		return depth >= min && depth <= max;
-	}
-
-	function getDungeonEnemyWeightsWarrior() as [Array, Array] {
-		var depth = $.Game.depth;
-		var enemy_weights = getEnemyWeightsForDepthAndClass(depth, 0);
-		return [enemy_weights, enemy_weights];
-	}
-
-	function getDungeonEnemyWeightsGod() as [Array, Array] {
-		var depth = $.Game.depth;
-		var enemy_weights = getEnemyWeightsForDepthAndClass(depth, 999);
-		return [enemy_weights, enemy_weights];
-	}
-
-	function getDungeonEnemyWeightsMage() as [Array, Array] {
-		var depth = $.Game.depth;
-		var enemy_weights = getEnemyWeightsForDepthAndClass(depth, 1);
-		return [enemy_weights, enemy_weights];
-	}
-
-	function getDungeonEnemyWeightsArcher() as [Array, Array] {
-		var depth = $.Game.depth;
-		var enemy_weights = getEnemyWeightsForDepthAndClass(depth, 2);
-		return [enemy_weights, enemy_weights];
-	}
-
-	function getDungeonEnemyWeightsNameless() as [Array, Array] {
-		var depth = $.Game.depth;
-		var enemy_weights = getEnemyWeightsForDepthAndClass(depth, 3);
-		return [enemy_weights, enemy_weights];
 	}
 
 	private function getEnemyWeightsForDepthAndClass(depth as Number, class_id as Number) as Array {

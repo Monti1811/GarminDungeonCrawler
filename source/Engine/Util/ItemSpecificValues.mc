@@ -22,7 +22,22 @@ class ItemSpecificValues {
     }
 
     private function getBaseItemWeights(depth as Number) as Array<Dictionary<Number, Numeric>> {
-        // Weapon tiers
+        var weapon_weights = buildWeaponWeights(depth);
+        var armor_weights = buildArmorWeights(depth);
+        var consumable_weights = buildConsumableWeights(depth);
+        var high_quality_weights = buildHighQualityWeights(depth, consumable_weights);
+        var merchant_weights = buildMerchantWeights(depth);
+
+        var itemWeights = new Array<Dictionary<Number, Numeric>>[5];
+        itemWeights[0] = weapon_weights;
+        itemWeights[1] = armor_weights;
+        itemWeights[2] = consumable_weights;
+        itemWeights[3] = high_quality_weights;
+        itemWeights[4] = merchant_weights;
+        return itemWeights;
+    }
+
+    private function buildWeaponWeights(depth as Number) as Dictionary<Number, Numeric> {
         var steel_weight = tieredWeight(depth, [ { :max => 6, :weight => 12 }, { :max => 12, :weight => 9 }, { :max => 18, :weight => 5 }, { :max => 999, :weight => 2 } ]);
         var bronze_weight = tieredWeight(depth, [ { :max => 4, :weight => 6 }, { :max => 10, :weight => 10 }, { :max => 18, :weight => 7 }, { :max => 999, :weight => 3 } ]);
         var fire_weight = tieredWeight(depth, [ { :max => 8, :weight => 0 }, { :max => 14, :weight => 7 }, { :max => 22, :weight => 8 }, { :max => 999, :weight => 6 } ]);
@@ -42,7 +57,7 @@ class ItemSpecificValues {
         var oak_crossbow_weight = tieredWeight(depth, [ { :max => 8, :weight => 0 }, { :max => 16, :weight => 6 }, { :max => 24, :weight => 7 }, { :max => 999, :weight => 6 } ]);
         var hell_crossbow_weight = tieredWeight(depth, [ { :max => 14, :weight => 0 }, { :max => 22, :weight => 5 }, { :max => 999, :weight => 7 } ]);
 
-        var weapon_weights = {
+        return {
             // Steel Weapons
             0 => steel_weight,
             1 => steel_weight,
@@ -146,10 +161,11 @@ class ItemSpecificValues {
             // Crossbows
             300 => crossbow_weight,
             301 => oak_crossbow_weight,
-            302 => hell_crossbow_weight,
+            302 => hell_crossbow_weight
         } as Dictionary<Number, Numeric>;
+    }
 
-        // Armor tiers
+    private function buildArmorWeights(depth as Number) as Dictionary<Number, Numeric> {
         var steel_armor = tieredWeight(depth, [ { :max => 6, :weight => 10 }, { :max => 12, :weight => 8 }, { :max => 18, :weight => 5 }, { :max => 999, :weight => 3 } ]);
         var steel_ring = tieredWeight(depth, [ { :max => 6, :weight => 8 }, { :max => 12, :weight => 7 }, { :max => 18, :weight => 6 }, { :max => 999, :weight => 4 } ]);
         var bronze_armor = tieredWeight(depth, [ { :max => 4, :weight => 6 }, { :max => 10, :weight => 9 }, { :max => 18, :weight => 7 }, { :max => 999, :weight => 3 } ]);
@@ -240,20 +256,35 @@ class ItemSpecificValues {
             1300 => tieredWeight(depth, [ { :max => 8, :weight => 0 }, { :max => 16, :weight => 4 }, { :max => 999, :weight => 6 } ]),
             1301 => tieredWeight(depth, [ { :max => 8, :weight => 0 }, { :max => 16, :weight => 6 }, { :max => 999, :weight => 7 } ])
         };
+        return armor_weights;
+    }
 
-        // Consumables
-        var consumable_weights = {
-            2000 => tieredWeight(depth, [ { :max => 8, :weight => 8 }, { :max => 18, :weight => 6 }, { :max => 30, :weight => 4 }, { :max => 999, :weight => 3 } ]), // Health Potion
-            2001 => tieredWeight(depth, [ { :max => 8, :weight => 5 }, { :max => 18, :weight => 7 }, { :max => 30, :weight => 6 }, { :max => 999, :weight => 5 } ]), // Mana Potion
-            2002 => tieredWeight(depth, [ { :max => 9, :weight => 0 }, { :max => 18, :weight => 6 }, { :max => 30, :weight => 7 }, { :max => 999, :weight => 6 } ]), // Greater Health Potion
-            2003 => tieredWeight(depth, [ { :max => 9, :weight => 0 }, { :max => 18, :weight => 5 }, { :max => 30, :weight => 6 }, { :max => 999, :weight => 6 } ]), // Greater Mana Potion
-            2004 => tieredWeight(depth, [ { :max => 39, :weight => 0 }, { :max => 60, :weight => 5 }, { :max => 999, :weight => 6 } ]), // Max Health Potion
-            2005 => tieredWeight(depth, [ { :max => 39, :weight => 0 }, { :max => 60, :weight => 5 }, { :max => 999, :weight => 6 } ]), // Max Mana Potion
-            5000 => 8 + Math.log(depth + 1, 2) // Gold
-        };
+    private function buildConsumableWeights(depth as Number) as Dictionary<Number, Numeric> {
+        return {
+            2000 => tieredWeight(depth, [ { :max => 8, :weight => 8 }, { :max => 18, :weight => 6 }, { :max => 30, :weight => 4 }, { :max => 999, :weight => 3 } ]),
+            2001 => tieredWeight(depth, [ { :max => 8, :weight => 5 }, { :max => 18, :weight => 7 }, { :max => 30, :weight => 6 }, { :max => 999, :weight => 5 } ]),
+            2002 => tieredWeight(depth, [ { :max => 9, :weight => 0 }, { :max => 18, :weight => 6 }, { :max => 30, :weight => 7 }, { :max => 999, :weight => 6 } ]),
+            2003 => tieredWeight(depth, [ { :max => 9, :weight => 0 }, { :max => 18, :weight => 5 }, { :max => 30, :weight => 6 }, { :max => 999, :weight => 6 } ]),
+            2004 => tieredWeight(depth, [ { :max => 39, :weight => 0 }, { :max => 60, :weight => 5 }, { :max => 999, :weight => 6 } ]),
+            2005 => tieredWeight(depth, [ { :max => 39, :weight => 0 }, { :max => 60, :weight => 5 }, { :max => 999, :weight => 6 } ]),
+            5000 => 8 + Math.log(depth + 1, 2)
+        } as Dictionary<Number, Numeric>;
+    }
 
-        // High-quality drops favor mid/high tier gear
-        var high_quality_weights = {
+    private function buildHighQualityWeights(depth as Number, consumable_weights as Dictionary<Number, Numeric>) as Dictionary<Number, Numeric> {
+        var fire_weight = tieredWeight(depth, [ { :max => 8, :weight => 0 }, { :max => 14, :weight => 7 }, { :max => 22, :weight => 8 }, { :max => 999, :weight => 6 } ]);
+        var ice_weight = fire_weight;
+        var gold_weight = tieredWeight(depth, [ { :max => 12, :weight => 0 }, { :max => 18, :weight => 4 }, { :max => 26, :weight => 7 }, { :max => 999, :weight => 6 } ]);
+        var demon_weight = tieredWeight(depth, [ { :max => 16, :weight => 0 }, { :max => 22, :weight => 4 }, { :max => 999, :weight => 7 } ]);
+        var blood_weight = tieredWeight(depth, [ { :max => 18, :weight => 0 }, { :max => 24, :weight => 4 }, { :max => 999, :weight => 7 } ]);
+
+        var steel_ring = tieredWeight(depth, [ { :max => 6, :weight => 8 }, { :max => 12, :weight => 7 }, { :max => 18, :weight => 6 }, { :max => 999, :weight => 4 } ]);
+        var elemental_ring = tieredWeight(depth, [ { :max => 8, :weight => 0 }, { :max => 14, :weight => 5 }, { :max => 22, :weight => 7 }, { :max => 999, :weight => 6 } ]);
+        var gold_ring = tieredWeight(depth, [ { :max => 12, :weight => 0 }, { :max => 18, :weight => 4 }, { :max => 26, :weight => 7 }, { :max => 999, :weight => 7 } ]);
+        var demon_ring = tieredWeight(depth, [ { :max => 16, :weight => 0 }, { :max => 22, :weight => 4 }, { :max => 999, :weight => 7 } ]);
+        var blood_ring = tieredWeight(depth, [ { :max => 18, :weight => 0 }, { :max => 24, :weight => 4 }, { :max => 999, :weight => 7 } ]);
+
+        return {
             23 => fire_weight / 2,
             25 => fire_weight / 2,
             28 => fire_weight / 2,
@@ -286,10 +317,43 @@ class ItemSpecificValues {
             2003 => consumable_weights[2003] / 2,
             2004 => consumable_weights[2004] / 2,
             2005 => consumable_weights[2005] / 2
-        };
+        } as Dictionary<Number, Numeric>;
+    }
 
-        // Merchant stock (broad but weighted toward progression)
-        var merchant_weights = {
+    private function buildMerchantWeights(depth as Number) as Dictionary<Number, Numeric> {
+        var steel_weight = tieredWeight(depth, [ { :max => 6, :weight => 12 }, { :max => 12, :weight => 9 }, { :max => 18, :weight => 5 }, { :max => 999, :weight => 2 } ]);
+        var bronze_weight = tieredWeight(depth, [ { :max => 4, :weight => 6 }, { :max => 10, :weight => 10 }, { :max => 18, :weight => 7 }, { :max => 999, :weight => 3 } ]);
+        var fire_weight = tieredWeight(depth, [ { :max => 8, :weight => 0 }, { :max => 14, :weight => 7 }, { :max => 22, :weight => 8 }, { :max => 999, :weight => 6 } ]);
+        var ice_weight = fire_weight;
+        var grass_weight = tieredWeight(depth, [ { :max => 8, :weight => 0 }, { :max => 14, :weight => 6 }, { :max => 22, :weight => 7 }, { :max => 999, :weight => 5 } ]);
+        var water_weight = grass_weight;
+        var gold_weight = tieredWeight(depth, [ { :max => 12, :weight => 0 }, { :max => 18, :weight => 4 }, { :max => 26, :weight => 7 }, { :max => 999, :weight => 6 } ]);
+        var demon_weight = tieredWeight(depth, [ { :max => 16, :weight => 0 }, { :max => 22, :weight => 4 }, { :max => 999, :weight => 7 } ]);
+        var blood_weight = tieredWeight(depth, [ { :max => 18, :weight => 0 }, { :max => 24, :weight => 4 }, { :max => 999, :weight => 7 } ]);
+
+        var arrow_weight = tieredWeight(depth, [ { :max => 5, :weight => 8 }, { :max => 12, :weight => 10 }, { :max => 999, :weight => 12 } ]);
+        var elemental_arrow_weight = tieredWeight(depth, [ { :max => 7, :weight => 0 }, { :max => 14, :weight => 6 }, { :max => 22, :weight => 8 }, { :max => 999, :weight => 8 } ]);
+        var bolt_weight = arrow_weight;
+        var elemental_bolt_weight = elemental_arrow_weight;
+
+        var crossbow_weight = tieredWeight(depth, [ { :max => 6, :weight => 0 }, { :max => 12, :weight => 6 }, { :max => 20, :weight => 7 }, { :max => 999, :weight => 6 } ]);
+        var oak_crossbow_weight = tieredWeight(depth, [ { :max => 8, :weight => 0 }, { :max => 16, :weight => 6 }, { :max => 24, :weight => 7 }, { :max => 999, :weight => 6 } ]);
+        var hell_crossbow_weight = tieredWeight(depth, [ { :max => 14, :weight => 0 }, { :max => 22, :weight => 5 }, { :max => 999, :weight => 7 } ]);
+
+        var steel_armor = tieredWeight(depth, [ { :max => 6, :weight => 10 }, { :max => 12, :weight => 8 }, { :max => 18, :weight => 5 }, { :max => 999, :weight => 3 } ]);
+        var steel_ring = tieredWeight(depth, [ { :max => 6, :weight => 8 }, { :max => 12, :weight => 7 }, { :max => 18, :weight => 6 }, { :max => 999, :weight => 4 } ]);
+        var bronze_armor = tieredWeight(depth, [ { :max => 4, :weight => 6 }, { :max => 10, :weight => 9 }, { :max => 18, :weight => 7 }, { :max => 999, :weight => 3 } ]);
+        var bronze_ring = tieredWeight(depth, [ { :max => 4, :weight => 6 }, { :max => 10, :weight => 7 }, { :max => 18, :weight => 6 }, { :max => 999, :weight => 3 } ]);
+        var elemental_armor = tieredWeight(depth, [ { :max => 8, :weight => 0 }, { :max => 14, :weight => 6 }, { :max => 22, :weight => 8 }, { :max => 999, :weight => 6 } ]);
+        var elemental_ring = tieredWeight(depth, [ { :max => 8, :weight => 0 }, { :max => 14, :weight => 5 }, { :max => 22, :weight => 7 }, { :max => 999, :weight => 6 } ]);
+        var gold_armor = tieredWeight(depth, [ { :max => 12, :weight => 0 }, { :max => 18, :weight => 5 }, { :max => 26, :weight => 8 }, { :max => 999, :weight => 7 } ]);
+        var gold_ring = tieredWeight(depth, [ { :max => 12, :weight => 0 }, { :max => 18, :weight => 4 }, { :max => 26, :weight => 7 }, { :max => 999, :weight => 7 } ]);
+        //var demon_armor = tieredWeight(depth, [ { :max => 16, :weight => 0 }, { :max => 22, :weight => 5 }, { :max => 999, :weight => 8 } ]);
+        //var demon_ring = tieredWeight(depth, [ { :max => 16, :weight => 0 }, { :max => 22, :weight => 4 }, { :max => 999, :weight => 7 } ]);
+        //var blood_armor = tieredWeight(depth, [ { :max => 18, :weight => 0 }, { :max => 24, :weight => 5 }, { :max => 999, :weight => 8 } ]);
+        //var blood_ring = tieredWeight(depth, [ { :max => 18, :weight => 0 }, { :max => 24, :weight => 4 }, { :max => 999, :weight => 7 } ]);
+
+        return {
             0 => steel_weight,
             3 => steel_weight,
             8 => steel_weight,
@@ -379,16 +443,7 @@ class ItemSpecificValues {
             2004 => tieredWeight(depth, [ { :max => 39, :weight => 0 }, { :max => 60, :weight => 4 }, { :max => 999, :weight => 4 } ]),
             2005 => tieredWeight(depth, [ { :max => 39, :weight => 0 }, { :max => 60, :weight => 4 }, { :max => 999, :weight => 4 } ]),
             5000 => 4 + Math.log(depth + 1, 2)
-        };
-
-        var itemWeights = new Array<Dictionary<Number, Numeric>>[5];
-        //var itemWeights = [weapon_weights];
-        itemWeights[0] = weapon_weights;
-        itemWeights[1] = armor_weights;
-        itemWeights[2] = consumable_weights;
-        itemWeights[3] = high_quality_weights;
-        itemWeights[4] = merchant_weights;
-        return itemWeights;
+        } as Dictionary<Number, Numeric>;
     }
 
     private function getClassItemMultipliers(class_id as Number) as Dictionary<Number, Numeric> {
@@ -443,31 +498,21 @@ class ItemSpecificValues {
 
     private function applyItemMultipliers(base_weights as Array<Dictionary<Number, Numeric>>, multipliers as Dictionary<Number, Numeric>) as Array<Dictionary<Number, Numeric>> {
         var adjusted = [] as Array<Dictionary<Number, Numeric>>;
-        Toybox.System.println("base_weights:" + base_weights);
         for (var i = 0; i < base_weights.size(); i++) {
             var src = base_weights[i] as Dictionary<Number, Numeric>;
-            Toybox.System.println("src:" + src);
             var keys = src.keys();
             var dst = {} as Dictionary<Number, Numeric>;
-            Toybox.System.println("src:" + src);
             for (var k = 0; k < keys.size(); k++) {
                 var id = keys[k];
                 var factor = multipliers.hasKey(id) ? multipliers[id] : 1;
-                
-                Toybox.System.println("src[id]:" + src[id]);
-                Toybox.System.println("factor:" + factor);
-
                 dst[id] = src[id] * factor;
-                Toybox.System.println("dst[id]:" + dst[id]);
             }
-            Toybox.System.println("adjusted:" + adjusted);
-            Toybox.System.println("dst:" + dst);
             adjusted.add(dst);
         }
         return adjusted;
     }
 
-    private function computeTotals(weights as Array) as Array<Numeric> {
+    private function computeTotals(weights as Array<Dictionary<Number, Numeric>>) as Array<Numeric> {
         var totals = [] as Array<Numeric>;
         for (var i = 0; i < weights.size(); i++) {
             var sum = 0;
