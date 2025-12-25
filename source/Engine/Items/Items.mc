@@ -212,6 +212,9 @@ module Items {
 
             // Gold
             5000 => :createGold,
+
+            // Containers
+            6000 => :createTreasureChest,
         };
 
     var weights as Array<Dictionary<Number, Numeric>>?;
@@ -868,6 +871,16 @@ module Items {
         return new Gold();
     }
 
+    function createTreasureChest() as Item {
+        return new TreasureChest();
+    }
+
+    function createTreasureChestWithLoot(loot as Item?) as TreasureChest {
+        var chest = new TreasureChest();
+        chest.setContents(loot);
+        return chest;
+    }
+
     function createItemFromId(id as Number) as Item? {
         var symbol = items[id] as Symbol;
         var method = new Lang.Method(self, symbol);
@@ -876,8 +889,9 @@ module Items {
 
     function createRandomItem() as Item {
         var item_keys = items.keys();
-        // Remove gold from random items
+        // Remove gold/treasurechests from random items
         item_keys.remove(5000);
+        item_keys.remove(6000);
         var rand = MathUtil.random(0, item_keys.size() - 1);
         var method = new Lang.Method(self, items[item_keys[rand]]);
         return method.invoke() as Item;

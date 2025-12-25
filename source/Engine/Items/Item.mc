@@ -30,6 +30,14 @@ class Item {
 	function onSellItem(player as Player) as Void;
 	function onBuyItem(player as Player) as Void;
 
+	function onInteract(player as Player, room as Room) as Boolean {
+		var success = player.pickupItem(self);
+		if (success) {
+			room.removeItem(self);
+		}
+		return success;
+	}
+
 	function hashCode() {
 		return id;
 	}

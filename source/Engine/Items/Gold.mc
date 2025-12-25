@@ -15,6 +15,12 @@ class Gold extends Item {
 	function getSprite() as ResourceId {
 		return $.Rez.Drawables.gold;
 	}
+
+	function onInteract(player as Player, room as Room) as Boolean {
+		player.doGoldDelta(self.amount);
+		room.removeItem(self);
+		return true;
+	}
 	
 
 	function deepcopy() as Item {

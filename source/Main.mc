@@ -5,47 +5,65 @@ import Toybox.Graphics;
 
 module Main {
 
-	function prepareDungeon(dungeon as Dungeon) {
-		dungeon.addStairs();
-		dungeon.addMerchant();
-		var app = getApp();
-		app.setCurrentDungeon(dungeon);
-		var start_room = MathUtil.random(0, dungeon.getSize()[0] * dungeon.getSize()[1] - 1);
-		var pos = MathUtil.IndexToPos2D(start_room, dungeon.getSize()[0]);
-		dungeon.setCurrentRoomFromIndex(pos);
-		$.Game.setRoomAsVisited(pos);
+	
+	function prepareDungeon(dungeon as Dungeon, state as Number) {
+		switch(state) {
+			case 1:
+				dungeon.addStairs();
+				break;
+			case 2:
+				dungeon.addMerchant();
+				var app = getApp();
+				app.setCurrentDungeon(dungeon);
+				var start_room = MathUtil.random(0, dungeon.getSize()[0] * dungeon.getSize()[1] - 1);
+				var pos = MathUtil.IndexToPos2D(start_room, dungeon.getSize()[0]);
+				dungeon.setCurrentRoomFromIndex(pos);
+				$.Game.setRoomAsVisited(pos);
+				break;
+		}	
 	}
 
-	function createNewGame1(player as Player, progress_bar as WatchUi.ProgressBar) as Void {
-		$.Game.init(player.getId());
-		var app = getApp();
-		app.setPlayer(player);
-		progress_bar.setProgress(10.0);
-		progress_bar.setDisplayString("Creating dungeon");
-		$.SaveData.current_save_num = SaveData.current_save_num + 1;
-        $.SaveData.chosen_save = SaveData.current_save_num.toString();
-		
+	function createNewGame(player as Player, progress_bar as WatchUi.ProgressBar, dungeon as Dungeon?, state as Number) as Void {
+		switch(state) {
+			case 1:
+				$.Game.init(player.getId());
+				var app = getApp();
+				app.setPlayer(player);
+				progress_bar.setProgress(10.0);
+				progress_bar.setDisplayString("Creating dungeon");
+				$.SaveData.current_save_num = SaveData.current_save_num + 1;
+				$.SaveData.chosen_save = SaveData.current_save_num.toString();
+				break;
+			case 2:
+				prepareDungeon(dungeon, 1);
+				prepareDungeon(dungeon, 2);
+				var view = new DCIntroView();
+				WatchUi.switchToView(view, new DCIntroDelegate(view, null, Graphics.FONT_TINY), WatchUi.SLIDE_IMMEDIATE);
+				break;
+		}
 	}
 
-	function createNewGame2(player as Player, progress_bar as WatchUi.ProgressBar, dungeon as Dungeon) as Void {
-		prepareDungeon(dungeon);
-		var view = new DCIntroView();
-		WatchUi.switchToView(view, new DCIntroDelegate(view, null, Graphics.FONT_TINY), WatchUi.SLIDE_IMMEDIATE);
-	}
-
-	function createNextDungeon1(progress_bar as WatchUi.ProgressBar) as Void {
-		var player_id = $.getApp().getPlayer().id;
-		$.Game.initModules(player_id);
-		progress_bar.setProgress(10.0);
-		progress_bar.setDisplayString("Creating dungeon");
-		
-	}
-
-	function createNextDungeon2(progress_bar as WatchUi.ProgressBar, dungeon as Dungeon) as Void {
-		prepareDungeon(dungeon);
-		getApp().getPlayer().onNextDungeon();
-		var view_delegate = getApp().showRoom() as [Views, InputDelegates];
-		WatchUi.switchToView(view_delegate[0], view_delegate[1], WatchUi.SLIDE_IMMEDIATE);
+	function createNextDungeon(progress_bar as WatchUi.ProgressBar, dungeon as Dungeon?, state as Number) as Void {
+		switch (state) {
+			case 1:
+				var player_id = $.getApp().getPlayer().id;
+				$.Game.initModules(player_id);
+				progress_bar.setProgress(10.0);
+				progress_bar.setDisplayString("Creating dungeon");
+				break;
+			case 2:
+				prepareDungeon(dungeon, 1);
+				break;
+			case 3:
+				prepareDungeon(dungeon, 2);
+				getApp().getPlayer().onNextDungeon();
+				break;
+			case 4:
+				var app = getApp();
+				var view_delegate = app.showRoom() as [Views, InputDelegates];
+				WatchUi.switchToView(view_delegate[0], view_delegate[1], WatchUi.SLIDE_IMMEDIATE);
+				break;
+		}
 	}
 
 	function startGame() as Void {
@@ -198,16 +216,28 @@ module Main {
 		var items = {};
 		var room_size = (right - left - 1) * (bottom - top - 1);
 		var num_items = getItemsNumForRoom(amount_enemies, room_size);
+		var chest_chance = 25; // Percentage chance to wrap loot in a chest
 		for (var i = 0; i < num_items; i++) {
 			var type = getItemType();
 			var item = createRandomItem(type);
 			if (item == null) {
 				continue;
 			}
-			var item_pos = MapUtil.getRandomPos(map, left, right, top, bottom);
-			item.setPos(item_pos);
-			map.setContent(item_pos, item);
-			items.put(item_pos, item);
+
+			// For High Quality items, increase chance to spawn as chest
+			var spawn_as_chest = type == 3 ? MathUtil.random(0, 100) < chest_chance * 2 : MathUtil.random(0, 100) < chest_chance;
+			if (spawn_as_chest) {
+				var chest = Items.createTreasureChestWithLoot(item);
+				var chest_pos = MapUtil.getRandomPosAvoidingTunnels(map, left, right, top, bottom);
+				chest.setPos(chest_pos);
+				map.setContent(chest_pos, chest);
+				items.put(chest_pos, chest);
+			} else {
+				var item_pos = MapUtil.getRandomPos(map, left, right, top, bottom);
+				item.setPos(item_pos);
+				map.setContent(item_pos, item);
+				items.put(item_pos, item);
+			}
 		}
 		return items;
 	}

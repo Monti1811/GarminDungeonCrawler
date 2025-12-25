@@ -80,11 +80,13 @@ class Turn {
 		WatchUi.requestUpdate();
 	}
 
-    function movePlayer(map as Map, new_pos as Point2D) as Void {
-        var new_tile = map.getTileFromPos(new_pos);
-        if (new_tile.content != null && !(new_tile.content instanceof Item)) {
-            return;
+    // Move the player if nothing is in the waym except for items (which can be interacted with)
+    function movePlayer(map as Map, new_pos as Point2D, itemInteraction as Boolean) as Void {
+        var content = map.getTileFromPos(new_pos).content;
+        if (content != null && !(content instanceof Item && itemInteraction)) {
+            return; // Cannot move if there's content that's not an interactable item
         }
+        
         _room.updatePlayerPos(new_pos);
         _player_pos = new_pos;
         _player.setPos(new_pos);
@@ -221,25 +223,22 @@ class Turn {
         }
         // If the player did not attack, try to move
         if (!player_attacked) {
-            pickUpItem(map, new_pos, map_element);
-            movePlayer(map, new_pos);
+            var success = interactWithItem(map, new_pos, map_element);
+            movePlayer(map, new_pos, success);        
         }
-
     }
 
-    function pickUpItem(map as Map, new_pos as Point2D, map_element as Object?) as Void {
+    function interactWithItem(map as Map, new_pos as Point2D, map_element as Object?) as Boolean {
         if (map_element != null && map_element instanceof Item) {
             var item = map_element as Item;
-            if (item instanceof Gold) {
-                _player.doGoldDelta(item.amount);
-                _room.removeItem(item);
-                return;
-            }
-            var success = _player.pickupItem(item);
-            if (success) {
-                _room.removeItem(item);
-            }
+            var success = item.canBePickedUp(_player);
+            var interaction = item.onInteract(_player, _room);
+            // If the player successfully interacted with the item and the item can be picked up, move player to position of item
+            if (success && interaction) {
+                return true;
+            }   
         }
+        return false;
     }
 
     function checkForNPC(map_element as Object?) as Boolean {

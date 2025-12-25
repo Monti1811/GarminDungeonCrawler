@@ -319,6 +319,45 @@ module MapUtil {
 		return [x, y];
 	}
 
+	function isNarrowPassage(map as Map, pos as Point2D) as Boolean {
+		if (!map.isInBound(pos) || map.getType(pos) != PASSABLE) {
+			return false;
+		}
+		var dirs = [[0,1],[0,-1],[1,0],[-1,0]] as Array<Point2D>;
+		var passable_neighbors = 0;
+		for (var i = 0; i < dirs.size(); i++) {
+			var check = [pos[0] + dirs[i][0], pos[1] + dirs[i][1]];
+			if (map.isInBound(check) && map.getType(check) == PASSABLE) {
+				passable_neighbors += 1;
+			}
+		}
+		// Tunnels and chokepoints tend to have few passable neighbors.
+		return passable_neighbors <= 2;
+	}
+
+	function isNearTunnel(map as Map, pos as Point2D) as Boolean {
+		var checks = getAllDirectionPoints(pos);
+		checks.add(pos);
+		for (var i = 0; i < checks.size(); i++) {
+			if (isNarrowPassage(map, checks[i])) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	function getRandomPosAvoidingTunnels(map as Map, left as Number, right as Number, top as Number, bottom as Number) as Point2D {
+		var tries = 0;
+		while (tries < 50) {
+			var candidate = getRandomPos(map, left, right, top, bottom);
+			if (!isNearTunnel(map, candidate)) {
+				return candidate;
+			}
+			tries += 1;
+		}
+		return getRandomPos(map, left, right, top, bottom);
+	}
+
 	function getRandomPosFromRoom(room as Room) as Point2D {
 		var map_data = room.getMapData();
 		var coords = getCoordOfRoom(map_data[:size_x], map_data[:size_y]);
