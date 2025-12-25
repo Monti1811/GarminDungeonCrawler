@@ -26,6 +26,10 @@ class EquippableItem extends Item {
 		}
 	}
 
+	function onPickupItem(player as Player) as Void {
+		Item.onPickupItem(player);
+	}
+
 	function getAttributeBonus(slot as Symbol) as Number {
 		var res = attribute_bonus[slot];
 		if (res == null) {

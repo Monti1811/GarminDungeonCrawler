@@ -14,6 +14,10 @@ class ConsumableItem extends Item {
 		player.removeInventoryItem(self);
 	}
 
+	function onPickupItem(player as Player) as Void {
+		Item.onPickupItem(player);
+	}
+
 	function getEffectDescription() as String {
 		return self.effect_description;
 	}
