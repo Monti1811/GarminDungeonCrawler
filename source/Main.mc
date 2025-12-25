@@ -216,7 +216,7 @@ module Main {
 		var items = {};
 		var room_size = (right - left - 1) * (bottom - top - 1);
 		var num_items = getItemsNumForRoom(amount_enemies, room_size);
-		var chest_chance = 25; // Percentage chance to wrap loot in a chest
+		var chest_chance = 10; // Percentage chance to wrap loot in a chest
 		for (var i = 0; i < num_items; i++) {
 			var type = getItemType();
 			var item = createRandomItem(type);
@@ -225,7 +225,7 @@ module Main {
 			}
 
 			// For High Quality items, increase chance to spawn as chest
-			var spawn_as_chest = type == 3 ? MathUtil.random(0, 100) < chest_chance * 2 : MathUtil.random(0, 100) < chest_chance;
+			var spawn_as_chest = type == 3 ? MathUtil.random(0, 100) < chest_chance * 4 : MathUtil.random(0, 100) < chest_chance;
 			if (spawn_as_chest) {
 				var chest = Items.createTreasureChestWithLoot(item);
 				var chest_pos = MapUtil.getRandomPosAvoidingTunnels(map, left, right, top, bottom);

@@ -1,6 +1,9 @@
 import Toybox.Lang;
+import Toybox.WatchUi;
 
 class TreasureChest extends Item {
+    const KEY_ITEM_ID = 3000;
+
     var id as Number = 6000;
     var name as String = "Treasure Chest";
     var description as String = "A sturdy chest. It might hold something valuable.";
@@ -30,10 +33,16 @@ class TreasureChest extends Item {
 
     function onInteract(player as Player, room as Room) as Boolean {
         if (!_opened) {
+            var inventory = player.getInventory();
+            var key = inventory.find(KEY_ITEM_ID) as KeyItem?;
+            if (key == null || inventory.remove(key) == null) {
+                WatchUi.showToast("You need a key to open this chest.", {:icon=>$.Rez.Drawables.key});
+                return false;
+            }
             _opened = true;
         }
 
-        if (_contents != null) {
+        if (_contents != null && !_item_taken) {
             var success = player.pickupItem(_contents);
             if (success) {
                 _item_taken = true;

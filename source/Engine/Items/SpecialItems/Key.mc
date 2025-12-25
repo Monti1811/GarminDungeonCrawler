@@ -1,6 +1,6 @@
 import Toybox.Lang;
 
-class KeyItem extends Item {
+class Key extends KeyItem {
 	var id as Number = 3000;
 	var name as String = "Key";
 	var description as String = "Opens treasure chests.";
@@ -10,7 +10,7 @@ class KeyItem extends Item {
 	var weight as Number = 0;
 
 	function initialize() {
-		Item.initialize();
+		KeyItem.initialize();
 	}
 
 	function canBeUsed(player as Player) as Boolean {
@@ -25,7 +25,7 @@ class KeyItem extends Item {
 	}
 
 	function deepcopy() as Item {
-		var key = new KeyItem();
+		var key = new Key();
 		key.amount = amount;
 		key.pos = pos;
 		key.in_inventory = in_inventory;

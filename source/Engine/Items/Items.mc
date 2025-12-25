@@ -210,6 +210,9 @@ module Items {
             2004 => :createMaxHealthPotion,
             2005 => :createMaxManaPotion,
 
+            // Key items
+            3000 => :createKey,
+
             // Gold
             5000 => :createGold,
 
@@ -865,6 +868,10 @@ module Items {
 
     function createMaxManaPotion() as Item {
         return new MaxManaPotion();
+    }
+
+    function createKey() as Item {
+        return new KeyItem();
     }
 
     function createGold() as Item {

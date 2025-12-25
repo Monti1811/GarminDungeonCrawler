@@ -124,6 +124,10 @@ class Inventory {
 		}
 	}
 
+	function find(item_id as Number) as Item? {
+		return items[item_id];
+	}
+
 	function save() as Dictionary {
 		var save_data = {};
 		save_data["permanent_increased_weight"] = permanent_increased_weight;
