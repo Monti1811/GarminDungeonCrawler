@@ -26,7 +26,7 @@ class DCCreateGameProgressDelegate extends WatchUi.BehaviorDelegate {
     function onTimer() as Void {
         switch (_progress) {
             case 0:
-                Main.createNewGame1(_player, _progress_bar);
+                Main.createNewGame(_player, _progress_bar, null, 1);
                 _time_inbetween = 100;
                 _progress = 1;
                 break;
@@ -47,7 +47,7 @@ class DCCreateGameProgressDelegate extends WatchUi.BehaviorDelegate {
                 }
                 break;
             case 3:
-                Main.createNewGame2(_player, _progress_bar, _dungeon);
+                Main.createNewGame(_player, _progress_bar, _dungeon, 2);
                 _progress = 4;
                 return;
         }

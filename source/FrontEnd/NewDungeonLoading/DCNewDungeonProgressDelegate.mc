@@ -24,7 +24,7 @@ class DCNewDungeonProgressDelegate extends WatchUi.BehaviorDelegate {
     function onTimer() as Void {
         switch (_progress) {
             case 0:
-                Main.createNextDungeon1(_progress_bar);
+                Main.createNextDungeon(_progress_bar, null, 1);
                 _time_inbetween = 100;
                 _progress = 1;
                 break;
@@ -45,9 +45,23 @@ class DCNewDungeonProgressDelegate extends WatchUi.BehaviorDelegate {
                 }
                 break;
             case 3:
-                Main.createNextDungeon2(_progress_bar, _dungeon);
+                Main.createNextDungeon(_progress_bar, _dungeon, 2);
+                _time_inbetween = 10;
                 _progress = 4;
+                WatchUi.requestUpdate();
+                break;
+            case 4:
+                Main.createNextDungeon(_progress_bar, _dungeon, 3);
+                _time_inbetween = 10;
+                _progress = 5;    
+                WatchUi.requestUpdate();
+                break;
+            case 5:
+                Main.createNextDungeon(_progress_bar, _dungeon, 4);
+                _progress = 6;
+                WatchUi.requestUpdate();
                 return;
+
         }
         
         _timer.start(method(:onTimer), _time_inbetween, false);  
