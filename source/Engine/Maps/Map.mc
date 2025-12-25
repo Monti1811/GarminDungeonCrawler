@@ -125,6 +125,7 @@ class Map {
         return null;
     }
 
+	// The tiles are created from a font, so we need to map the tile types to characters
 	function getMapChar(tile as Tile?) as Number {
         switch (tile.type) {
             case WALL:
