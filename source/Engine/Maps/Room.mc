@@ -327,7 +327,7 @@ class Room {
 
     function createStairs(room_pos as Point2D) as Void {
         addStairs(null, true);
-        $.Game.setRoomWithFlag(room_pos, 0, _stairs);
+        $.Game.setRoomWithFlag(room_pos, HAS_STAIRS, _stairs);
     }
 
     function addStairs(pos as Point2D?, reload as Boolean?) as Void {
@@ -349,7 +349,7 @@ class Room {
         }
         var merchant = new Merchant();
         merchant.setPos(pos);
-        $.Game.setRoomWithFlag(room_pos, 1, pos);
+        $.Game.setRoomWithFlag(room_pos, HAS_MERCHANT, pos);
         _map.setContent(pos, merchant);
         addNPC(merchant);
     }

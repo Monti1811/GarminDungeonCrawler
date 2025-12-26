@@ -13,6 +13,12 @@ enum GameMode {
 	HARDMODE,
 }
 
+enum GameFlag {
+	HAS_STAIRS,
+	HAS_MERCHANT,
+	HAS_BOSS,
+}
+
 module Game {
 	var difficulty as Difficulty = MEDIUM;
 	var game_mode as GameMode = NORMAL;
@@ -91,7 +97,7 @@ module Game {
 		map[pos[0]][pos[1]][3] = true;
 	}
 
-	function setRoomWithFlag(pos as Point2D, flag as Number, pos_flag as Point2D) as Void {
+	function setRoomWithFlag(pos as Point2D, flag as GameFlag, pos_flag as Point2D) as Void {
 		map[pos[0]][pos[1]][4][flag] = pos_flag;
 	}
 
