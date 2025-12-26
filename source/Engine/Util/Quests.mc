@@ -446,6 +446,7 @@ module Quests {
             var quest = active_quests[i];
             if (quest.completed) {
                 claimed += 1;
+				
                 total_gold += quest.reward_gold;
                 total_exp += quest.reward_exp;
             } else {
@@ -453,8 +454,8 @@ module Quests {
             }
         }
         if (claimed > 0) {
-            player.doGoldDelta(total_gold);
-            player.onGainExperience(total_exp);
+            player.doGoldDelta(total_gold.toNumber());
+            player.onGainExperience(total_exp.toNumber());
         }
         active_quests = remaining;
         return {

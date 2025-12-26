@@ -46,28 +46,22 @@ class DCPlayerDetailsOverviewView extends WatchUi.View {
 		var right_text_x = x_axis + 60; // Adjust this value as needed for spacing
 
 
-		var text_pairs = [
-			{ :label => "LVL", :value => _player.getLevel().toString() },
-			{ :label => "EXP", :value => _player.getExperience() + "/" + _player.getNextLevelExperience() },
-			{ :label => "HP", :value => _player.getHealth() + "/" + _player.getMaxHealth() },
-			{ :label => "ATK", :value => _player.getAttack(null).toString() },
-			{ :label => "DEF", :value => _player.getDefense(null).toString() },
-			{ :label => "GOLD", :value => _player.getGold().toString() }
-		];
-
+		var size = _player.second_bar == :mana ? 7 : 6;
+		var text_pairs = new Array<Dictionary<Symbol, String | Number>>[size]; /* as Array<Dictionary<Symbol, String or Number>> */ 
+		text_pairs[0] = { :label => "LVL", :value => _player.getLevel().toString() };
+		text_pairs[1] = { :label => "EXP", :value => _player.getExperience().format("%.0f") + "/" + _player.getNextLevelExperience() };
+		text_pairs[2] =	{ :label => "HP", :value => _player.getHealth() + "/" + _player.getMaxHealth() };
+		
+		var index = 2;
 		if (_player.second_bar == :mana) {
-			text_pairs = [
-				{ :label => "LVL", :value => _player.getLevel().toString() },
-				{ :label => "EXP", :value => _player.getExperience() + "/" + _player.getNextLevelExperience() },
-				{ :label => "HP", :value => _player.getHealth() + "/" + _player.getMaxHealth() },
-				{ :label => "MP", :value => _player.getCurrentMana() + "/" + _player.getMaxMana() },
-				{ :label => "ATK", :value => _player.getAttack(null).toString() },
-				{ :label => "DEF", :value => _player.getDefense(null).toString() },
-				{ :label => "GOLD", :value => _player.getGold().toString() }
-			];
+			index += 1;
+			text_pairs[index] = { :label => "MP", :value => _player.getCurrentMana() + "/" + _player.getMaxMana() };
 		}
+		text_pairs[index + 1] = { :label => "ATK", :value => _player.getAttack(null).toString() };
+		text_pairs[index + 2] = { :label => "DEF", :value => _player.getDefense(null).toString() };
+		text_pairs[index + 3] = { :label => "GOLD", :value => _player.getGold().format("%.0f") };
 
-		for (var i = 0; i < text_pairs.size(); i++) {
+		for (var i = 0; i < size; i++) {
 			drawTextPair(dc, left_text_x, right_text_x, y_axis + 60 + i * space_between, text_pairs[i][:label], text_pairs[i][:value]);
 		}
 	}
