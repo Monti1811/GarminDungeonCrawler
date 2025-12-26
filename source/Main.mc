@@ -13,6 +13,7 @@ module Main {
 				break;
 			case 2:
 				dungeon.addMerchant();
+				dungeon.addQuestGiver();
 				var app = getApp();
 				app.setCurrentDungeon(dungeon);
 				var start_room = MathUtil.random(0, dungeon.getSize()[0] * dungeon.getSize()[1] - 1);

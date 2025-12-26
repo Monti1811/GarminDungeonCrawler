@@ -354,6 +354,15 @@ class Room {
         addNPC(merchant);
     }
 
+    function addQuestGiver(room_pos as Point2D) as Void {
+        var pos = MapUtil.getRandomPosFromRoom(self);
+        var npc = new QuestGiver();
+        npc.setPos(pos);
+        $.Game.setRoomWithFlag(room_pos, HAS_QUEST_GIVER, pos);
+        _map.setContent(pos, npc);
+        addNPC(npc);
+    }
+
     function freeMemory() as Void {
         _items = {};
         _enemies = {};

@@ -68,6 +68,10 @@ class DCMapDrawable extends WatchUi.Drawable {
 		if (merchant_pos != null) {
 			drawFlag(dc, [merchant_pos[0] * size_tile + entire_room_x, merchant_pos[1] * size_tile + entire_room_y], $.Rez.Drawables.Merchant);
 		}
+		var quest_pos = flags[3];
+		if (quest_pos != null) {
+			drawFlag(dc, [quest_pos[0] * size_tile + entire_room_x, quest_pos[1] * size_tile + entire_room_y], $.Rez.Drawables.Sage);
+		}
 
 	}
 

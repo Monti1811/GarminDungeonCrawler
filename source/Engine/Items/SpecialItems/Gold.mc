@@ -19,6 +19,7 @@ class Gold extends Item {
 	function onInteract(player as Player, room as Room) as Boolean {
 		player.doGoldDelta(self.amount);
 		room.removeItem(self);
+		$.Log.log("Picked up " + self.amount + " gold.");
 		return true;
 	}
 	

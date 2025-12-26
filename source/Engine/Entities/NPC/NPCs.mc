@@ -3,16 +3,22 @@ import Toybox.Lang;
 module NPCs {
 	
 	var npcs as Dictionary<Number, Symbol> = {
-		0 => :createMerchant, 
+		0 => :createMerchant,
+		1 => :createQuestGiver,
 	};
 
 	var weights as Dictionary<Number, Number> = {
 		0 => 5,
+		1 => 2,
 	};
-	var total_weight = 5;
+	var total_weight = 7;
 
 	function createMerchant() as NPC {
 		return new Merchant();
+	}
+
+	function createQuestGiver() as NPC {
+		return new QuestGiver();
 	}
 
 

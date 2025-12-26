@@ -17,9 +17,11 @@ enum GameFlag {
 	HAS_STAIRS,
 	HAS_MERCHANT,
 	HAS_BOSS,
+	HAS_QUEST_GIVER,
 }
 
 module Game {
+	const FLAG_SLOTS as Number = 4;
 	var difficulty as Difficulty = MEDIUM;
 	var game_mode as GameMode = NORMAL;
 	var player as Player?;
@@ -37,11 +39,13 @@ module Game {
 		// [0] = Has stairs
 		// [1] = Has merchant
 		// [2] = Has boss
+		// [3] = Has quest giver
 
 	function init(player_id as Number) as Void {
 		// Set the seed for random number generation
 		Math.srand(Time.now().value());
 		self.initModules(player_id);
+		Quests.init();
 		time_played = 0;
 		depth = 0;
 		difficulty = MEDIUM;
@@ -86,11 +90,12 @@ module Game {
 		}
 		if (data["map"] != null) {
 			map = data["map"];
+			normalizeFlags();
 		}
 	}
 
 	function addRoomToMap(pos as Point2D, room_name as String, connections as Dictionary<WalkDirection, Boolean>, size as Point2D) as Void {
-		map[pos[0]][pos[1]] = [room_name, connections, size, false, [null, null, null]];
+		map[pos[0]][pos[1]] = [room_name, connections, size, false, createEmptyFlags()];
 	}
 
 	function setRoomAsVisited(pos as Point2D) as Void {
@@ -98,7 +103,12 @@ module Game {
 	}
 
 	function setRoomWithFlag(pos as Point2D, flag as GameFlag, pos_flag as Point2D) as Void {
-		map[pos[0]][pos[1]][4][flag] = pos_flag;
+		var flags = map[pos[0]][pos[1]][4] as Array<Point2D?>;
+		while (flags.size() < FLAG_SLOTS) {
+			flags.add(null);
+		}
+		flags[flag] = pos_flag;
+		map[pos[0]][pos[1]][4] = flags;
 	}
 
 	function addToDepth(amount as Number) as Void {
@@ -127,6 +137,31 @@ module Game {
 		var diff = time.subtract(time_started);
 		time_played += diff.value();
 		time_started = time;
+	}
+
+	function createEmptyFlags() as Array<Point2D?> {
+		var flags = [] as Array<Point2D?>;
+		for (var i = 0; i < FLAG_SLOTS; i++) {
+			flags.add(null);
+		}
+		return flags;
+	}
+
+	function normalizeFlags() as Void {
+		for (var i = 0; i < map.size(); i++) {
+			for (var j = 0; j < map[i].size(); j++) {
+				var room = map[i][j];
+				var flags = room[4] as Array<Point2D?>?;
+				if (flags == null) {
+					flags = createEmptyFlags();
+				} else {
+					while (flags.size() < FLAG_SLOTS) {
+						flags.add(null);
+					}
+				}
+				room[4] = flags;
+			}
+		}
 	}
 
 }

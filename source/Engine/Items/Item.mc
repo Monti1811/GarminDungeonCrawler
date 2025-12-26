@@ -26,8 +26,9 @@ class Item {
 	}
 	function onUseItem(player as Player) as Void;
 	function onPickupItem(player as Player) as Void {
-		var toast = "Picked up" + (amount > 1 ? " x" + amount : "") + " " + name + ".";
-		WatchUi.showToast(toast, {:icon=>self.getSprite()});
+		var text = "Picked up" + (amount > 1 ? " x" + amount : "") + " " + name + ".";
+		WatchUi.showToast(text, {:icon=>self.getSprite()});
+		$.Log.log(text);
 	}
 	function onDropItem(player as Player) as Void;
 	function onSellItem(player as Player) as Void;

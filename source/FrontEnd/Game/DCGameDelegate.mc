@@ -78,6 +78,7 @@ class DCGameDelegate extends WatchUi.BehaviorDelegate {
         var actionMenu = new WatchUi.Menu2({:title=>"Game Menu"});
         actionMenu.addItem(new WatchUi.MenuItem(getApp().getPlayer().getName(), "Show details", :player, null));
         actionMenu.addItem(new WatchUi.MenuItem("Inventory", "Show inventory", :inventory, null));
+        actionMenu.addItem(new WatchUi.MenuItem("Quests", "Show active quests", :quests, null));
         actionMenu.addItem(new WatchUi.MenuItem("Map", "Show map", :map, null));
         actionMenu.addItem(new WatchUi.MenuItem("Save", "Save the game", :save, null));
         actionMenu.addItem(new WatchUi.MenuItem("Log", "Show last actions", :log, null));

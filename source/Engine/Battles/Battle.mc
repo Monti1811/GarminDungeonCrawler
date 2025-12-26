@@ -10,8 +10,10 @@ module Battle {
 		Log.log(attacker.getName() + " attacks " + defender.getName() + " for " + damage + " damage");
 		var death = defender.takeDamage(damage, attacker);
 		attacker.onDamageDone(damage, defender);
+		$.Quests.trackDamageDealt(damage);
 		if (death) {
 			attacker.onGainExperience(defender.getKillExperience());
+			$.Quests.trackKill(defender);
 		}
 		return death;
 	}
@@ -20,6 +22,7 @@ module Battle {
 		var damage = MathUtil.ceil(attacker.getAttack(defender) - defender.getDefense(attacker), 1);
 		Log.log(attacker.getName() + " attacks " + defender.getName() + " for " + damage + " damage");
 		var death = defender.takeDamage(damage, attacker);
+		$.Quests.trackDamageTaken(damage);
 		return death;
 	}
 

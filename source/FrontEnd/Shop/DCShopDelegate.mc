@@ -117,6 +117,7 @@ class DCShopBuyOptionsDelegate extends WatchUi.Menu2InputDelegate {
             } else {
                 buyMenu.updateItem(new WatchUi.IconMenuItem(item.getName() + " x" + item.getAmount(), "Cost: " + item.getValue() + " gold", item, new DCItemIcon(item), null), index);
             }
+            $.Log.log("Bought " + amount + " x " + item.getName() + " for " + cost + " gold.");
         } else {
             WatchUi.showToast("Not enough gold", {:icon=>Rez.Drawables.cancelToastIcon});
         }
