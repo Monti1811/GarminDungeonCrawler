@@ -506,7 +506,6 @@ class Player extends Entity {
 				save_data["equipped"][slot] = item.save();
 			}
 		}
-		Toybox.System.println("Equipped: " + save_data["equipped"]);
 		return save_data;
 	}
 

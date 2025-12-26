@@ -37,7 +37,7 @@ class Turn {
             return;
         }
 
-        System.println("Moving " + direction);
+        //System.println("Moving " + direction);
         var new_pos = calculateNewPos(_player_pos, direction);
 
         var map = _map_data[:map] as Map;
@@ -63,8 +63,8 @@ class Turn {
 
         
 
-		System.println("Old pos: " + _player_pos);
-        System.println("New pos: " + new_pos);
+		//System.println("Old pos: " + _player_pos);
+        //System.println("New pos: " + new_pos);
         // Resolve player actions
         if (direction != SKIPPING) {
             resolvePlayerActions(map, new_pos, direction, map_element);
