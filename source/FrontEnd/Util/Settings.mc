@@ -9,7 +9,8 @@ module Settings {
         "min_room_size"=> 5,
         "max_room_size"=> 15,
         "save_on_exit"=> false,
-        "autosave"=> -1
+        "autosave"=> -1,
+        "steps_per_turn"=> 0
     };
 
     function initSetting(key as String, default_value as PropertyValueType) as Void {
@@ -42,5 +43,12 @@ module Settings {
             default:
                 return "Every " + val + " minutes";
         }
+    }
+
+    function getStepsPerTurnString(val as Number) as String {
+        if (val <= 0) {
+            return "Off";
+        }
+        return val + " steps/turn";
     }
 }

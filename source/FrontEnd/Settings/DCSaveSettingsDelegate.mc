@@ -55,6 +55,7 @@ class DCConfirmResetData extends WatchUi.ConfirmationDelegate {
             $.SaveData.clearValues();
             // Reset default settings
             $.Settings.init();
+            $.StepGate.init();
             WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
             WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
             WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);

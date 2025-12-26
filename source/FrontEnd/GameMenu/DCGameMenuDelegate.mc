@@ -113,9 +113,11 @@ class DCGameMenuDelegate extends WatchUi.Menu2InputDelegate {
 
     function openSettings() as Void {
         var settingsMenu = new WatchUi.Menu2({:title=>"Settings"});
-        settingsMenu.addItem(new WatchUi.MenuItem("Sound", "Change sound settings", null, null));
-        settingsMenu.addItem(new WatchUi.MenuItem("Graphics", "Change graphics settings", null, null));
-        WatchUi.pushView(settingsMenu, new WatchUi.Menu2InputDelegate(), WatchUi.SLIDE_UP);
+        settingsMenu.addItem(new WatchUi.MenuItem("Room settings", null, :rooms, null));
+        settingsMenu.addItem(new WatchUi.MenuItem("Save settings", null, :save, null));
+        settingsMenu.addItem(new WatchUi.MenuItem("Movement", $.Settings.getStepsPerTurnString($.Settings.settings["steps_per_turn"] as Number), :movement, null));
+
+        WatchUi.pushView(settingsMenu, new DCSettingsMenuDelegate(settingsMenu), WatchUi.SLIDE_UP);
     }
 
     function saveGame() as Void {

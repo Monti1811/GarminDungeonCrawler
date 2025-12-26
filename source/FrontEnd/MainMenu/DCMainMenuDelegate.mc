@@ -25,8 +25,9 @@ class DCMainMenuDelegate extends WatchUi.BehaviorDelegate {
         var settingsMenu = new WatchUi.Menu2({:title=>"Settings"});
         settingsMenu.addItem(new WatchUi.MenuItem("Room settings", null, :rooms, null));
         settingsMenu.addItem(new WatchUi.MenuItem("Save settings", null, :save, null));
+        settingsMenu.addItem(new WatchUi.MenuItem("Movement", $.Settings.getStepsPerTurnString($.Settings.settings["steps_per_turn"] as Number), :movement, null));
 
-        WatchUi.pushView(settingsMenu, new DCSettingsMenuDelegate(), SLIDE_UP);
+        WatchUi.pushView(settingsMenu, new DCSettingsMenuDelegate(settingsMenu), SLIDE_UP);
         return true;
     }
 

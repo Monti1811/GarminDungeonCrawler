@@ -14,6 +14,7 @@ class DungeonCrawlerApp extends Application.AppBase {
         AppBase.initialize();
         SaveData.init();
         Settings.init();
+        StepGate.init();
     }
 
     // onStart() is called on application start up

@@ -29,6 +29,7 @@ class DCGameView extends WatchUi.View {
         _tile_width = map_data[:tile_width] as Number;
         _tile_height = map_data[:tile_height] as Number;
         _turns = new Turn(self, player, _room, map_data);
+        $.StepGate.resetForSession();
         $.Game.turns = _turns;
         var player_pos = map_data[:player_pos] as Point2D;
 

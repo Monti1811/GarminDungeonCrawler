@@ -1,4 +1,5 @@
 import Toybox.Lang;
+import Toybox.WatchUi;
 
 class Turn {
 
@@ -31,6 +32,10 @@ class Turn {
     function doTurn(direction as WalkDirection) as Void {
         // Remove existing damage texts
         _view.removeDamageTexts();
+
+        if (!$.StepGate.consumeTurn()) {
+            return;
+        }
 
         System.println("Moving " + direction);
         var new_pos = calculateNewPos(_player_pos, direction);

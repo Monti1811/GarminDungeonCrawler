@@ -4,8 +4,11 @@ import Toybox.Application.Storage;
 
 class DCSettingsMenuDelegate extends WatchUi.Menu2InputDelegate {
 
-    function initialize() {
+    private var _settingsMenu as Menu2;
+
+    function initialize(settingsMenu as Menu2) {
         Menu2InputDelegate.initialize();
+        _settingsMenu = settingsMenu;
     }
 
     function onSelect(item as MenuItem) as Void {
@@ -16,6 +19,9 @@ class DCSettingsMenuDelegate extends WatchUi.Menu2InputDelegate {
                 break;
             case :save:
                 showSaveSettings();
+                break;
+            case :movement:
+                showMovementSettings();
                 break;
 
         }
@@ -43,7 +49,42 @@ class DCSettingsMenuDelegate extends WatchUi.Menu2InputDelegate {
 
         WatchUi.pushView(saveSettings, new DCSaveSettingsDelegate(saveSettings), WatchUi.SLIDE_UP);
     }
+
+    function showMovementSettings() as Void {
+
+        var movementSettings = new WatchUi.Menu2({:title=>"Movement settings"});
+        movementSettings.addItem(new WatchUi.MenuItem("Off", "No step requirement", 0, null));
+        movementSettings.addItem(new WatchUi.MenuItem("5 steps per turn", null, 5, null));
+        movementSettings.addItem(new WatchUi.MenuItem("10 steps per turn", null, 10, null));
+        movementSettings.addItem(new WatchUi.MenuItem("20 steps per turn", null, 20, null));
+        movementSettings.addItem(new WatchUi.MenuItem("50 steps per turn", null, 50, null));
+
+        WatchUi.pushView(movementSettings, new DCMovementSettingsDelegate(_settingsMenu), WatchUi.SLIDE_UP);
+    }
     
+}
+
+class DCMovementSettingsDelegate extends WatchUi.Menu2InputDelegate {
+
+    private const MOVEMENT_ITEM_INDEX = 2;
+    private var _parent as Menu2;
+
+    function initialize(parent as Menu2) {
+        Menu2InputDelegate.initialize();
+        _parent = parent;
+    }
+
+    function onSelect(item as MenuItem) as Void {
+        var steps = item.getId() as Number;
+        $.Settings.setValue("steps_per_turn", steps);
+        $.StepGate.updateFromSetting(steps);
+        _parent.updateItem(new WatchUi.MenuItem("Movement", $.Settings.getStepsPerTurnString(steps), :movement, null), MOVEMENT_ITEM_INDEX);
+        WatchUi.popView(WatchUi.SLIDE_DOWN);
+    }
+
+    function onBack() as Void {
+        WatchUi.popView(WatchUi.SLIDE_DOWN);
+    }
 }
 
 
