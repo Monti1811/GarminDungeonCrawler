@@ -68,6 +68,7 @@ class DCQuestDelegate extends WatchUi.Menu2InputDelegate {
     }
 
     function showProgress() as Void {
+        $.Quests.updateFitnessProgress();
         var quests = $.Quests.getActiveQuests();
         if (quests.size() == 0) {
             WatchUi.showToast("No active quests", {});

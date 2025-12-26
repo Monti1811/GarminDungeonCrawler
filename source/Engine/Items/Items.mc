@@ -905,7 +905,7 @@ module Items {
     }
 
     function createRandomWeightedItem(type as Number) as Item? {
-        Toybox.System.println("createRandomWeightedItem: " + type);
+        //Toybox.System.println("createRandomWeightedItem: " + type);
         var rand = MathUtil.random(0, total_weight[type] - 1);
         var current_weight = 0;
         var weight_keys = weights[type].keys();
@@ -914,7 +914,7 @@ module Items {
             var symbol = items[weight_keys[i]];
             if (rand < current_weight && symbol != null && self has symbol) {
                 var method = new Lang.Method(self, items[weight_keys[i]]);
-                Toybox.System.println("Item: " + items[weight_keys[i]] + " Rand: " + rand + " Current Weight: " + current_weight + " Total Weight: " + total_weight[type]);
+                //Toybox.System.println("Item: " + items[weight_keys[i]] + " Rand: " + rand + " Current Weight: " + current_weight + " Total Weight: " + total_weight[type]);
                 return method.invoke() as Item;
             }
         }

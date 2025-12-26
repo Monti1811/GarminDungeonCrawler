@@ -21,10 +21,10 @@ module MathUtil {
 	}
 
 	function random(min as Numeric, max as Numeric) as Number {
-		Toybox.System.println("Initial Random between " + min + " and " + max);
+		//Toybox.System.println("Initial Random between " + min + " and " + max);
 		min = min.toNumber();
 		max = self.ceil(max.toNumber(), 0);
-		Toybox.System.println("Random between " + min + " and " + max);
+		//Toybox.System.println("Random between " + min + " and " + max);
 		return min + (Math.rand() % (max - min + 1));
 	}
 

@@ -1,6 +1,10 @@
 import Toybox.Lang;
 import Toybox.Math;
 import Toybox.System;
+import Toybox.ActivityMonitor;
+import Toybox.UserProfile;
+import Toybox.Activity;
+import Toybox.Time;
 
 // Tracks dungeon quests that measure player actions.
 enum QuestType {
@@ -45,6 +49,7 @@ class Quest {
         if (progress >= target) {
             progress = target;
             completed = true;
+			WatchUi.showToast("Quest Completed: " + getTitle(), {:icon=>$.Rez.Drawables.Sage});
         }
     }
 
@@ -126,10 +131,15 @@ module Quests {
 
     var active_quests as Array<Quest> = new Array<Quest>[MAX_ACTIVE];
     var next_id as Number = 1;
+    var last_fitness_check as Number = 0; // epoch seconds of last fitness sync
+    var last_steps as Number = 0;
+    var last_floors as Number = 0;
 
     function init() as Void {
         active_quests = [];
         next_id = 1;
+        last_fitness_check = 0;
+        refreshFitnessBaselines();
     }
 
     function save() as Dictionary {
@@ -139,7 +149,10 @@ module Quests {
         }
         return {
             "active" => serialized,
-            "next_id" => next_id
+            "next_id" => next_id,
+            "last_fitness_check" => last_fitness_check,
+            "last_steps" => last_steps,
+            "last_floors" => last_floors
         };
     }
 
@@ -158,6 +171,88 @@ module Quests {
             next_id = data["next_id"] as Number;
         } else {
             next_id = active_quests.size() + 1;
+        }
+        if (data["last_fitness_check"] != null) {
+            last_fitness_check = data["last_fitness_check"] as Number;
+        }
+        if (data["last_steps"] != null) {
+            last_steps = data["last_steps"] as Number;
+        }
+        if (data["last_floors"] != null) {
+            last_floors = data["last_floors"] as Number;
+        }
+        if (last_steps == 0 || last_floors == 0) {
+            refreshFitnessBaselines();
+        }
+    }
+
+    function refreshFitnessBaselines() as Void {
+        var info = ActivityMonitor.getInfo();
+		if (info.steps != null) {
+			last_steps = info.steps;
+		}
+		if (info.floorsClimbed != null) {
+			last_floors = info.floorsClimbed;
+        }
+    }
+
+    function updateFitnessProgress() as Void {
+        updateFromDailyCounters();
+        updateFromActivities();
+        last_fitness_check = Time.now().value();
+    }
+
+    function updateFromDailyCounters() as Void {
+        var info = ActivityMonitor.getInfo();
+        if (info.steps != null) {
+            var delta_steps = info.steps - last_steps;
+            if (delta_steps < 0) {
+                delta_steps = info.steps; // counter reset (new day)
+            }
+            if (delta_steps > 0) {
+                trackWalkSteps(delta_steps);
+            }
+            last_steps = info.steps;
+        }
+        if (info.floorsClimbed != null) {
+            var delta_floors = info.floorsClimbed - last_floors;
+            if (delta_floors < 0) {
+                delta_floors = info.floorsClimbed; // counter reset (new day)
+            }
+            if (delta_floors > 0) {
+                trackWalkStairs(delta_floors);
+            }
+            last_floors = info.floorsClimbed;
+        }
+    }
+
+    function updateFromActivities() as Void {
+        var iterator = UserProfile.getUserActivityHistory();
+        var now_val = Time.now().value();
+        var seven_days_ago = now_val - 7 * 24 * 60 * 60;
+        var entry = iterator.next() as UserProfile.UserActivity?;
+        while (entry != null) {
+            var start = entry.startTime as Time.Moment?;
+            var start_val = start != null ? start.value() : null;
+            if (start_val != null) {
+                var is_new = (last_fitness_check == 0) || (start_val > last_fitness_check);
+                var within_window = start_val >= seven_days_ago;
+                if (is_new && within_window) {
+                    var sport = entry.type;
+                    var duration = entry.duration; // seconds
+                    var distance = entry.distance; // meters
+                    if (sport == Activity.SPORT_RUNNING) {
+                        if (duration != null) {
+                            trackRunMinutes(duration.value() / 60.0);
+                        }
+                    } else if (sport == Activity.SPORT_CYCLING) {
+                        if (distance != null) {
+                            trackBikeDistance(distance / 1000.0);
+                        }
+                    }
+                }
+            }
+            entry = iterator.next();
         }
     }
 
@@ -305,7 +400,7 @@ module Quests {
         addProgress(TAKE_DAMAGE, amount);
     }
 
-    function trackRunMinutes(minutes as Number) as Void {
+    function trackRunMinutes(minutes as Numeric) as Void {
         if (minutes <= 0) {
             return;
         }
@@ -319,7 +414,7 @@ module Quests {
         addProgress(WALK_STAIRS, stairs);
     }
 
-    function trackBikeDistance(distance_km as Number) as Void {
+    function trackBikeDistance(distance_km as Numeric) as Void {
         if (distance_km <= 0) {
             return;
         }
