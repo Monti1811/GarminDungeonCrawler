@@ -9,19 +9,22 @@ class Map {
 
 	private var _width as Number;
 	private var _height as Number;
-	private var _tiles as Array<Array<Tile>>;
+	private var _tiles as Array<Array<Tile?>>;
 	private var _map_string as Array<String>;
+	// Sentinel tile used when a requested tile does not exist (treated as wall/non-passable)
+	private var _null_tile as Tile;
 
 
 	function initialize(width as Number, height as Number, with_tiles as Boolean) {
 		_width = width;
 		_height = height;
-		_tiles = new Array<Array<Tile>>[width];
+		_tiles = new Array<Array<Tile?>>[width];
+		_null_tile = new Tile(-1, -1);
 		for (var i = 0; i < width; i++) {
-			_tiles[i] = new Array<Tile>[height];
+			_tiles[i] = new Array<Tile?>[height];
 			if (with_tiles) {
 				for (var j = 0; j < height; j++) {
-					_tiles[i][j] = new Tile(i, j); // Initialize all tiles to 0
+					_tiles[i][j] = null; // Unused tiles remain null
 				}
 			}
 		}
@@ -35,7 +38,11 @@ class Map {
 	}
 
 	function getTile(x as Number, y as Number) as Tile {
-		return _tiles[x][y];
+		var tile = _tiles[x][y];
+		if (tile == null) {
+			return _null_tile;
+		}
+		return tile;
 	}
 
 	function getTileFromPos(pos as Point2D) as Tile {
@@ -54,7 +61,7 @@ class Map {
 		return _height;
 	}
 
-	function getTiles() as Array<Array<Tile>> {
+	function getTiles() as Array<Array<Tile?>> {
 		return _tiles;
 	}
 
@@ -62,22 +69,36 @@ class Map {
 		var new_map = new Map(_width, _height, false);
 		for (var i = 0; i < _width; i++) {
 			for (var j = 0; j < _height; j++) {
-				new_map.setTile(i, j, _tiles[i][j]);
+				var tile = _tiles[i][j];
+				if (tile != null) {
+					new_map.setTile(i, j, tile);
+				}
 			}
 		}
 		return new_map;
 	}
 
 	function setContent(pos as Point2D, Object as Object?) as Void {
-		self.getTileFromPos(pos).content = Object;
+		var tile = self.getTileFromPos(pos);
+		if (tile == _null_tile) {
+			return;
+		}
+		tile.content = Object;
 	}
 
 	function getContent(pos as Point2D) as Object? {
-		return self.getTileFromPos(pos).content;
+		var tile = self.getTileFromPos(pos);
+		if (tile == _null_tile) {
+			return null;
+		}
+		return tile.content;
 	}
 
 	function isPosFree(pos as Point2D) as Boolean {
 		var tile = self.getTileFromPos(pos);
+		if (tile == _null_tile) {
+			return false;
+		}
 		if (tile.type == PASSABLE && tile.content == null) {
 			return true;
 		}
@@ -85,7 +106,17 @@ class Map {
 	}
 
 	function setType(pos as Point2D, type as TileType) as Void {
-		self.getTileFromPos(pos).type = type;
+		var tile = _tiles[pos[0]][pos[1]];
+		if (type != EMPTY) {
+			if (tile == null) {
+				tile = new Tile(pos[0], pos[1]);
+				_tiles[pos[0]][pos[1]] = tile;
+			}
+			tile.type = type;
+			return;
+		}
+		// For WALL or EMPTY we drop the tile reference to keep storage sparse
+		_tiles[pos[0]][pos[1]] = null;
 	}
 
 	function getType(pos as Point2D) as TileType {
@@ -97,11 +128,16 @@ class Map {
 	}
 
 	function setPlayer(pos as Point2D, player as Boolean) as Void {
-		self.getTileFromPos(pos).player = player;
+		var tile = self.getTileFromPos(pos);
+		if (tile == _null_tile) {
+			return;
+		}
+		tile.player = player;
 	}
 
 	function getPlayer(pos as Point2D) as Boolean {
-		return self.getTileFromPos(pos).player;
+		var tile = self.getTileFromPos(pos);
+		return (tile != _null_tile) && tile.player;
 	}
 
 
@@ -127,6 +163,9 @@ class Map {
 
 	// The tiles are created from a font, so we need to map the tile types to characters
 	function getMapChar(tile as Tile?) as Number {
+		if (tile == null) {
+			return 36;
+		}
         switch (tile.type) {
             case WALL:
                 return 33;
@@ -140,14 +179,14 @@ class Map {
     }
 
 	function mapToString() as Array<String> {
-        var map_string = [] as Array<String>;
-        for (var j = 0; j < self._height; j++) {
-            var row = "";
-            for (var i = 0; i < self._width; i++) {
-                row += getMapChar(self.getTile(i, j)).toChar();
-            }
-            map_string.add(row);
-        }
+		var map_string = [] as Array<String>;
+		for (var j = 0; j < self._height; j++) {
+			var row = "";
+			for (var i = 0; i < self._width; i++) {
+				row += getMapChar(_tiles[i][j]).toChar();
+			}
+			map_string.add(row);
+		}
 		self._map_string = map_string;
         return map_string; 
     }
@@ -170,10 +209,15 @@ class Map {
 		var save_data = {} as Dictionary;
 		save_data["width"] = _width;
 		save_data["height"] = _height;
-		var tiles_data = [] as Array<Dictionary>;
+		var tiles_data = [] as Array<Dictionary?>;
 		for (var i = 0; i < _width; i++) {
 			for (var j = 0; j < _height; j++) {
-				tiles_data.add(_tiles[i][j].save());
+				var tile = _tiles[i][j];
+				if (tile == null) {
+					tiles_data.add(null);
+				} else {
+					tiles_data.add(tile.save());
+				}
 			}
 		}
 		save_data["tiles"] = tiles_data;
@@ -193,13 +237,20 @@ class Map {
 	function onLoad(save_data as Dictionary) as Void {
 		_width = save_data["width"] as Number;
 		_height = save_data["height"] as Number;
-		var tiles_data = save_data["tiles"] as Array<Dictionary>;
+		_tiles = new Array<Array<Tile?>>[_width];
+		for (var i = 0; i < _width; i++) {
+			_tiles[i] = new Array<Tile?>[_height];
+		}
+		var tiles_data = save_data["tiles"] as Array<Dictionary?>;
 		var index = 0;
 		for (var i = 0; i < _width; i++) {
 			for (var j = 0; j < _height; j++) {
 				var tile_data = tiles_data[index];
-				var tile = Tile.load(tile_data);
-				_tiles[i][j] = tile;
+				if (tile_data == null) {
+					_tiles[i][j] = null;
+				} else {
+					_tiles[i][j] = Tile.load(tile_data as Dictionary);
+				}
 				index += 1;
 			}
 		}
@@ -233,6 +284,12 @@ class Map {
 			}
 		}
 
+		/*var map_string = map.mapToString();
+		for (var i = 0; i < map_string.size(); i++) {
+			Toybox.System.println(map_string[i]);
+		}*/
+
 		return map;
 	}
+
 }
