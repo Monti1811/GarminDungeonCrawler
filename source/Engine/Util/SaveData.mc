@@ -72,8 +72,7 @@ module SaveData {
 	}
 
 	public function saveGame() as Void {
-		var app = getApp();
-		var player = app.getPlayer();
+		var player = $.Game.getPlayer();
 		if (Storage.getValue(chosen_save) == null) {
 			Storage.setValue("save_num", current_save_num);
 		}
@@ -81,7 +80,7 @@ module SaveData {
 		var data = {
 			"player" => player.save(),
 			"level" => player.getLevel(),
-			"dungeon" => app.getCurrentDungeon().save(),
+			"dungeon" => $.Game.getDungeon().save(),
 			"game" => $.Game.save(),
 			"entitymanager" => $.EntityManager.save(),
 			"quests" => $.Quests.save(),
@@ -104,14 +103,13 @@ module SaveData {
 	public function loadGame(save as String) as Void {
 		chosen_save = save;
 		loadFromMemory();
-		var app = getApp();
 		var data = getSaveData();
 		var player_data = data["player"] as Dictionary;
 		var player_id = player_data["id"] as Number;
 		$.Game.init(player_id);
 		var player = Player.load(player_data);
-		app.setPlayer(player);
-		app.setCurrentDungeon(Dungeon.load(data["dungeon"] as Dictionary));
+		$.Game.setPlayer(player);
+		$.Game.setDungeon(Dungeon.load(data["dungeon"] as Dictionary));
 		$.Game.load(data["game"] as Dictionary);
 		$.Quests.load(data["quests"] as Dictionary?);
 		$.EntityManager.load(data["entitymanager"] as Dictionary);
@@ -146,7 +144,7 @@ module SaveData {
 	}
 
 	public function deleteDungeonSave() as Void {
-		var dungeon = getApp().getCurrentDungeon();
+		var dungeon = $.Game.getDungeon();
 		var dungeon_save_keys = dungeon.getRooms() as Array<Array<String?>>;
 		for (var i = 0; i < dungeon_save_keys.size(); i++) {
 			for (var j = 0; j < dungeon_save_keys[i].size(); j++) {

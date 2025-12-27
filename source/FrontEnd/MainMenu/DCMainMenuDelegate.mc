@@ -198,10 +198,9 @@ class DCConfirmLoadGame extends WatchUi.ConfirmationDelegate {
             SaveData.loadGame(_savegame);
             WatchUi.popView(WatchUi.SLIDE_DOWN);
             WatchUi.popView(WatchUi.SLIDE_DOWN);
-            var app = getApp();
-            var player = app.getPlayer();
+            var player = $.Game.getPlayer();
             $.Game.setTimeStarted(Toybox.Time.now());
-            var roomView = new DCGameView(player, app.getCurrentDungeon().getCurrentRoom(), null);
+            var roomView = new DCGameView(player, $.Game.getCurrentRoom(), null);
             var roomDelegate = new DCGameDelegate(roomView);
             WatchUi.switchToView(roomView, roomDelegate, WatchUi.SLIDE_UP);
             WatchUi.pushView(new EmptyView(), new EmptyDelegate(), WatchUi.SLIDE_UP);

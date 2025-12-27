@@ -10,18 +10,14 @@ class Turn {
 
     private var _autosave as Boolean = false;
 
-    private var _room as Room?;
-    private var _map_data as Dictionary?;
-
     private var MIN_ENERGY = 100;
 
 
     function initialize(view as DCGameView, player as Player, room as Room, map_data as Dictionary) {
         _view = view;
         _player = player;
-        _room = room;
-        _map_data = map_data;
-        _player_pos = _map_data[:player_pos] as Point2D;
+        // Use provided map data once during construction; afterward, we always fetch via Game.
+        _player_pos = map_data[:player_pos] as Point2D;
         _player.setPos(_player_pos);
     }
 
@@ -40,7 +36,8 @@ class Turn {
         //System.println("Moving " + direction);
         var new_pos = calculateNewPos(_player_pos, direction);
 
-        var map = _map_data[:map] as Map;
+        var room = $.Game.getCurrentRoom();
+        var map = room.getMap() as Map;
         if (checkIfNextRoom(new_pos, direction, map)) {
             return;
         }
@@ -69,14 +66,14 @@ class Turn {
         if (direction != SKIPPING) {
             resolvePlayerActions(map, new_pos, direction, map_element);
         }
-        // Resolve enemy actions
-        resolveEnemyActions(_room.getEnemies().values(), _player_pos);
+        // Resolve enemy action
+        resolveEnemyActions(room.getEnemies().values(), _player_pos);
 
         _view.getTimer().start(new Lang.Method(_view, (:removeDamageTexts)), 1000, false);
 
         // Do stuff after the turn is over
         _player.onTurnDone();
-        _room.onTurnDone();
+        room.onTurnDone();
 
         if (_autosave) {
             $.SaveData.saveGame();
@@ -91,25 +88,24 @@ class Turn {
         if (content != null && !(content instanceof Item && itemInteraction)) {
             return; // Cannot move if there's content that's not an interactable item
         }
-        
-        _room.updatePlayerPos(new_pos);
+
+        $.Game.getCurrentRoom().updatePlayerPos(new_pos);
         _player_pos = new_pos;
         _player.setPos(new_pos);
     }
 
     function loadRoom(room as Room) as Void {
-        _room = room;
         _view.setRoom(room);
-        _map_data = room.getMapData();
-        _view.setMapData(_map_data);
+        var map_data = room.getMapData();
+        _view.setMapData(map_data);
         _view.getRoomDrawable().updateToNewRoom({
-            :map_string => _map_data[:map_string]
+            :map_string => map_data[:map_string]
         });
-        _player_pos = _map_data[:start_pos];
+        _player_pos = map_data[:start_pos];
         _player.setPos(_player_pos);
         room.updatePlayerPos(_player_pos);
         _view.setPlayerSpritePos(_player_pos);
-        var room_pos = getApp().getCurrentDungeon().getCurrentRoomPosition();
+        var room_pos = $.Game.getCurrentRoomPosition();
         $.Game.setRoomAsVisited(room_pos);
     }
 
@@ -165,11 +161,11 @@ class Turn {
 
     function checkIfNextRoom(new_pos as Point2D, direction as WalkDirection, map as Map) as Boolean {
         if (!map.isInBound(new_pos)) {
-            var dungeon = getApp().getCurrentDungeon();
+            var dungeon = $.Game.getDungeon();
             var next_room_name = dungeon.getRoomInDirection(direction);
             if (next_room_name != null) {
-                dungeon.setCurrentRoom(next_room_name);
-                var next_room = dungeon.getCurrentRoom();
+                $.Game.setCurrentRoom(next_room_name);
+                var next_room = $.Game.getCurrentRoom();
                 // Set the player position to the new room
                 new_pos = getNewPlayerPosInNextRoom(new_pos, direction);
                 next_room.setStartPos(new_pos);
@@ -182,16 +178,12 @@ class Turn {
     }
 
     function freeMemory() as Void {
-        _room.freeMemory();
-        _room = null;
-        _map_data = null;
         _view.freeMemory();
         _view = null;
     }
 
     function goToNextDungeon() as Void {
-        var app = getApp();
-        app.setCurrentDungeon(null);
+        $.Game.setDungeon(null);
         $.Game.addToDepth(1);
         var progressBar = new WatchUi.ProgressBar(
             "Creating next dungeon...",
@@ -221,8 +213,9 @@ class Turn {
             }
             var death = Battle.attackEnemy(_player, attackable_enemy);
             if (death) {
-                _room.removeEnemy(attackable_enemy);
-                _room.dropLoot(attackable_enemy);
+                var room = $.Game.getCurrentRoom();
+                room.removeEnemy(attackable_enemy);
+                room.dropLoot(attackable_enemy);
             }
             player_attacked = true;
         }
@@ -237,7 +230,7 @@ class Turn {
         if (map_element != null && map_element instanceof Item) {
             var item = map_element as Item;
             var success = item.canBePickedUp(_player);
-            var interaction = item.onInteract(_player, _room);
+            var interaction = item.onInteract(_player, $.Game.getCurrentRoom());
             // If the player successfully interacted with the item and the item can be picked up, move player to position of item
             if (success && interaction) {
                 return true;
@@ -266,6 +259,9 @@ class Turn {
         // Sort enemies by distance to player
         var comparator = new MapUtil.EnemyDistanceCompare(_player_pos);
         enemies.sort(comparator);
+
+        var room = $.Game.getCurrentRoom();
+        var map = room.getMap();
         
         var maxIterations = 10; 
         var iterations = 0;
@@ -273,24 +269,24 @@ class Turn {
             for (var i = 0; i < enemies.size(); i++) {
                 var enemy = enemies[i];
                 var curr_pos = enemy.getPos();
-                if (enemy.doAction(_map_data[:map]) || 
-                        enemy.attackNearbyPlayer(_map_data[:map], target_pos)) {
+                if (enemy.doAction(map) || 
+                        enemy.attackNearbyPlayer(map, target_pos)) {
                     enemy.doTurnEnergyDelta(-MIN_ENERGY, 0, 2 * MIN_ENERGY);
                     if (enemy.energy <= 0) {
                         enemies.remove(enemy);
                     }
                     continue;
-                }   
-                var next_pos = enemy.findNextMove(_map_data[:map]);
+                }	
+                var next_pos = enemy.findNextMove(map);
                 if (next_pos != curr_pos) {
-                    if (MapUtil.isPosPlayer(_map_data[:map], next_pos)) {
+                    if (MapUtil.isPosPlayer(map, next_pos)) {
                         Battle.attackPlayer(enemy, _player);
                         enemy.doTurnEnergyDelta(-MIN_ENERGY, 0, 2 * MIN_ENERGY);
                         if (enemy.energy <= 0) {
                             enemies.remove(enemy);
                         }
                     } else {
-                        _room.moveEnemy(enemy);
+                        room.moveEnemy(enemy);
                         enemy.doTurnEnergyDelta(-MIN_ENERGY, 0, 2 * MIN_ENERGY);
                         if (enemy.energy <= 0) {
                             enemies.remove(enemy);

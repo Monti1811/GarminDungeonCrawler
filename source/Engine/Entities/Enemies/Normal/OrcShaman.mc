@@ -51,7 +51,7 @@ class OrcShaman extends Enemy {
             }
         }
         //Check if another enemy is in range of heal and if it is not at full health
-        var enemies = $.getApp().getCurrentDungeon().getCurrentRoom().getEnemies() as Dictionary<Point2D, Enemy>;
+        var enemies = $.Game.getCurrentRoom().getEnemies() as Dictionary<Point2D, Enemy>;
         enemies = enemies.values() as Array<Enemy>;
         for (var i = 0; i < enemies.size(); i++) {
             var enemy = enemies[i];

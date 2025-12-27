@@ -7,9 +7,6 @@ class DungeonCrawlerApp extends Application.AppBase {
     public var tile_width as Number = 16;
     public var tile_height as Number = 16;
 
-    public var _player as Player?;
-    public var _curr_dungeon as Dungeon?;
-
     function initialize() {
         AppBase.initialize();
         SaveData.init();
@@ -41,7 +38,7 @@ class DungeonCrawlerApp extends Application.AppBase {
     }
 
     function showPlayerDetails() as [Views] or [Views, InputDelegates] {
-        var factory = new DCPlayerDetailsFactory(_player);
+        var factory = new DCPlayerDetailsFactory($.Game.getPlayer());
         var viewLoop = new WatchUi.ViewLoop(factory, {:wrap => true});
         return [viewLoop, new DCPlayerDetailsDelegate(viewLoop)];
     }
@@ -52,7 +49,7 @@ class DungeonCrawlerApp extends Application.AppBase {
     }
 
     function showRoom() as [Views] or [Views, InputDelegates] {
-        var roomView = new DCGameView(_player, _curr_dungeon.getCurrentRoom(), null);
+        var roomView = new DCGameView($.Game.getPlayer(), $.Game.getCurrentRoom(), null);
         var roomDelegate = new DCGameDelegate(roomView);
         return [ roomView, roomDelegate ];
     }
@@ -68,23 +65,23 @@ class DungeonCrawlerApp extends Application.AppBase {
             "Creating new game...",
             0.0
         );
-        return [progressBar, new DCCreateGameProgressDelegate(_player, progressBar)];
+        return [progressBar, new DCCreateGameProgressDelegate($.Game.getPlayer(), progressBar)];
     }
 
     function getPlayer() as Player? {
-        return _player;
+        return $.Game.getPlayer();
     }
 
     function setPlayer(player as Player?) as Void {
-        _player = player;
+        $.Game.setPlayer(player);
     }
 
     function getCurrentDungeon() as Dungeon? {
-        return _curr_dungeon;
+        return $.Game.getDungeon();
     }
 
     function setCurrentDungeon(dungeon as Dungeon?) as Void {
-        _curr_dungeon = dungeon;
+        $.Game.setDungeon(dungeon);
     }
 
 }

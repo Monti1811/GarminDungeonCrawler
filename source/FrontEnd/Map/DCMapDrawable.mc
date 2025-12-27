@@ -17,7 +17,7 @@ class DCMapDrawable extends WatchUi.Drawable {
 		var dungeon_map = $.Game.map;
 		var dungeon_size = [dungeon_map.size(), dungeon_map[0].size()];
 		size = [dungeon_size[0] * size_room, dungeon_size[1] * size_room];
-		var current_room_pos = getApp().getCurrentDungeon().getCurrentRoomPosition();
+		var current_room_pos = $.Game.getCurrentRoomPosition();
 		initial_pos = [
 			180 - (current_room_pos[0] * size_room + middle_of_room), 
 			180 - (current_room_pos[1] * size_room + middle_of_room)
@@ -93,7 +93,7 @@ class DCMapDrawable extends WatchUi.Drawable {
 
 	// Draw the player
 	function drawPlayer(dc as Dc) {
-		var current_room_pos = getApp().getCurrentDungeon().getCurrentRoomPosition();
+		var current_room_pos = $.Game.getCurrentRoomPosition();
 		var player = getApp().getPlayer();
 		var player_pos = player.getPos();
 		var entire_room_x = locX + current_room_pos[0] * size_room;

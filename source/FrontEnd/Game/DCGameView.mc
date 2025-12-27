@@ -7,7 +7,6 @@ class DCGameView extends WatchUi.View {
 
     private var _tile_width as Number;
     private var _tile_height as Number;
-    private var _room as Room?;
     private var _room_drawable as RoomDrawable?;
 
 	private var _player_sprite as Bitmap?;
@@ -16,7 +15,6 @@ class DCGameView extends WatchUi.View {
 	private var _timer as Timer.Timer?;
     private var _autosave_timer as Timer.Timer?;
 
-	private var _turns as Turn?;
 
     private var rightLowHint as Bitmap?;
 
@@ -24,13 +22,12 @@ class DCGameView extends WatchUi.View {
 
     function initialize(player as Player, room as Room, options as Dictionary?) {
         View.initialize();
-		_room = room;
-		var map_data = room.getMapData();
+        var map_data = room.getMapData();
         _tile_width = map_data[:tile_width] as Number;
         _tile_height = map_data[:tile_height] as Number;
-        _turns = new Turn(self, player, _room, map_data);
+        var turns = new Turn(self, player, room, map_data);
         $.StepGate.resetForSession();
-        $.Game.turns = _turns;
+        $.Game.setTurns(turns);
         var player_pos = map_data[:player_pos] as Point2D;
 
         _room_drawable = new RoomDrawable({
@@ -44,7 +41,7 @@ class DCGameView extends WatchUi.View {
         var autosave = $.Settings.settings["autosave"] as Number;
         if (autosave != -1) {
             if (autosave == 0) {
-                _turns.setAutoSave(true);
+				turns.setAutoSave(true);
             } else {
                 _autosave_timer = new Timer.Timer();
                 _autosave_timer.start(method(:autoSave), autosave * 60 * 1000, false);
@@ -70,8 +67,7 @@ class DCGameView extends WatchUi.View {
     }
 
     function autoSave() as Void {
-        var app = $.getApp();
-        if (app.getPlayer != null && app.getCurrentDungeon() != null) {
+        if ($.Game.getPlayer() != null && $.Game.getDungeon() != null) {
             $.SaveData.saveGame();
             var autosave = $.Settings.settings["autosave"] as Number;
             _autosave_timer.start(method(:autoSave), autosave * 60 * 1000, false);
@@ -83,7 +79,7 @@ class DCGameView extends WatchUi.View {
     }
 
     function getTurns() as Turn {
-        return _turns;
+        return $.Game.getTurns();
     }
 
     function getTimer() as Timer.Timer {
@@ -91,7 +87,7 @@ class DCGameView extends WatchUi.View {
     }
 
     function setRoom(room as Room) as Void {
-        _room = room;
+        // Game module owns the active room; no local storage needed.
     }
 
     function setMapData(map_data as Dictionary) as Void {
@@ -119,7 +115,7 @@ class DCGameView extends WatchUi.View {
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_BLACK);
         dc.clear();
 
-        _room_drawable.drawAll(dc, _room);
+        _room_drawable.drawAll(dc, $.Game.getCurrentRoom());
 		rightLowHint.draw(dc);
 
 		drawPlayer(dc);
@@ -233,7 +229,7 @@ class DCGameView extends WatchUi.View {
         _player_sprite = null;
         _room_drawable.freeMemory();
         _room_drawable = null;
-        _turns = null;
+        $.Game.setTurns(null);
         _timer = null;
         _autosave_timer = null;
         rightLowHint = null;

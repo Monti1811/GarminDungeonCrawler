@@ -25,6 +25,7 @@ module Game {
 	var difficulty as Difficulty = MEDIUM;
 	var game_mode as GameMode = NORMAL;
 	var player as Player?;
+	var dungeon as Dungeon?;
 	var depth as Number = 0;
 	var time_played as Number = 0;
 	var time_started as Time.Moment?;
@@ -46,6 +47,9 @@ module Game {
 		Math.srand(Time.now().value());
 		self.initModules(player_id);
 		Quests.init();
+		player = null;
+		dungeon = null;
+		turns = null;
 		time_played = 0;
 		depth = 0;
 		difficulty = MEDIUM;
@@ -162,6 +166,66 @@ module Game {
 				room[4] = flags;
 			}
 		}
+	}
+
+	// Centralized accessors for dungeon/room state
+	function getCurrentRoom() as Room {
+		if (dungeon == null) {
+			throw new Lang.Exception();
+		}
+		return dungeon.getCurrentRoom();
+	}
+
+	function getCurrentRoomPosition() as Point2D {
+		if (dungeon == null) {
+			throw new Lang.Exception();
+		}
+		return dungeon.getCurrentRoomPosition();
+	}
+
+	function setCurrentRoom(room_name as String?) as Void {
+		if (dungeon == null) {
+			return;
+		}
+		dungeon.setCurrentRoom(room_name);
+	}
+
+	function setCurrentRoomFromIndex(index as Point2D) as Void {
+		if (dungeon == null) {
+			return;
+		}
+		dungeon.setCurrentRoomFromIndex(index);
+	}
+
+	// Centralized ownership helpers to avoid circular references across modules.
+	function setPlayer(p as Player?) as Void {
+		player = p;
+	}
+
+	function getPlayer() as Player? {
+		return player;
+	}
+
+	function setDungeon(d as Dungeon?) as Void {
+		dungeon = d;
+	}
+
+	function getDungeon() as Dungeon? {
+		return dungeon;
+	}
+
+	function setTurns(t as Turn?) as Void {
+		turns = t;
+	}
+
+	function getTurns() as Turn? {
+		return turns;
+	}
+
+	function clearSession() as Void {
+		player = null;
+		dungeon = null;
+		turns = null;
 	}
 
 }
