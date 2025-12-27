@@ -2,8 +2,8 @@ import Toybox.Lang;
 
 class Nameless extends Player {
 
-	var current_mana as Number = 50;
-	var maxMana as Number = 50;
+	var current_mana as Number = 15;
+	var maxMana as Number = 15;
 
 	function initialize(name as String) {
 		Player.initialize();

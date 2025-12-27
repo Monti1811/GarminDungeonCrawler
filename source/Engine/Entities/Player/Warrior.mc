@@ -10,8 +10,8 @@ class Warrior extends Player {
 		self.description = "A warrior character";
 
 		// Set health
-		self.current_health = 150;
-		self.maxHealth = 150;
+		self.current_health = 45;
+		self.maxHealth = 45;
 
 		// Give starting items
 		self.equipItem(new SteelAxe(), RIGHT_HAND, null);

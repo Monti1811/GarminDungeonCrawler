@@ -2,8 +2,8 @@ import Toybox.Lang;
 
 class Mage extends Player {
 
-	var current_mana as Number = 100;
-	var maxMana as Number = 100;
+	var current_mana as Number = 30;
+	var maxMana as Number = 30;
 
 	function initialize(name as String) {
 		Player.initialize();
