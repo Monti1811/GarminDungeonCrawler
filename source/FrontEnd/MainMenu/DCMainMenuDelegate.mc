@@ -40,7 +40,8 @@ class DCMainMenuDelegate extends WatchUi.BehaviorDelegate {
             return true;
         } else {
             if (MathUtil.isInAreaArray(tap_coordinates, new_game_coordinates, Constants.TAP_TOLERANCE)) {
-                showConfirmation("Do you want to start a new game?");
+                newGame();
+                //showConfirmation("Do you want to start a new game?");
                 return true;
             }
         }
@@ -63,13 +64,15 @@ class DCMainMenuDelegate extends WatchUi.BehaviorDelegate {
 
     }
 
-    function showConfirmation(message as String) {
-        var dialog = new WatchUi.Confirmation(message);
-        WatchUi.pushView(
-            dialog,
-            new RPGConfirmateNewGame(),
-            WatchUi.SLIDE_IMMEDIATE
-        );
+    function newGame() as Void {
+        var characterMenu = new WatchUi.Menu2({:title=>"Characters"});
+        var characters = $.SimUtil.createAllPossibleCharacters();
+        for (var i = 0; i < characters.size(); i++) {
+            var character = characters[i] as Player;
+            var character_item = new WatchUi.MenuItem(character.getName(), character.getDescription(), character, null);
+            characterMenu.addItem(character_item);
+        }
+        WatchUi.pushView(characterMenu, new DCCharacterCreationDelegate(), WatchUi.SLIDE_UP);
     }
 
 }
@@ -203,38 +206,6 @@ class DCConfirmLoadGame extends WatchUi.ConfirmationDelegate {
             var roomView = new DCGameView(player, $.Game.getCurrentRoom(), null);
             var roomDelegate = new DCGameDelegate(roomView);
             WatchUi.switchToView(roomView, roomDelegate, WatchUi.SLIDE_UP);
-            WatchUi.pushView(new EmptyView(), new EmptyDelegate(), WatchUi.SLIDE_UP);
-        }
-        return true;
-    }
-
-}
-
-//! Input handler for the confirmation dialog
-class RPGConfirmateNewGame extends WatchUi.ConfirmationDelegate {
-
-
-    //! Constructor
-    //! @param view The app view
-    public function initialize() {
-        ConfirmationDelegate.initialize();
-    }
-
-    //! Handle a confirmation selection
-    //! @param value The confirmation value
-    //! @return true if handled, false otherwise
-    public function onResponse(value as Confirm) as Boolean {
-        if (value == WatchUi.CONFIRM_YES) {
-            // Create new character, then save it to SaveData
-            var characterMenu = new WatchUi.Menu2({:title=>"Characters"});
-            var characters = SimUtil.createAllPossibleCharacters();
-            for (var i = 0; i < characters.size(); i++) {
-                var character = characters[i] as Player;
-                var character_item = new WatchUi.MenuItem(character.getName(), character.getDescription(), character, null);
-                characterMenu.addItem(character_item);
-            }
-            WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
-            WatchUi.pushView(characterMenu, new DCCharacterCreationDelegate(), WatchUi.SLIDE_UP);
             WatchUi.pushView(new EmptyView(), new EmptyDelegate(), WatchUi.SLIDE_UP);
         }
         return true;
