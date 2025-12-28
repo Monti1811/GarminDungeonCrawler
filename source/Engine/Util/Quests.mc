@@ -358,11 +358,11 @@ module Quests {
         var depth_factor = MathUtil.clamp(Math.floor(Math.sqrt(MathUtil.max(1, depth + 1))), 1, 12);
         switch (type) {
             case KILL_ENEMIES:
-                return MathUtil.clamp(3 + depth_factor + MathUtil.random(0, 3), 3, 20);
+                return MathUtil.clamp(3 + depth_factor + MathUtil.random(0, 3), 3, 100);
             case DEAL_DAMAGE:
-                return MathUtil.clamp(20 + depth_factor * 10 + MathUtil.random(0, 25), 25, 200);
+                return MathUtil.clamp(200 + depth_factor * 50 + MathUtil.random(0, 25), 25, 5000);
             case TAKE_DAMAGE:
-                return MathUtil.clamp(10 + depth_factor * 8 + MathUtil.random(0, 20), 15, 160);
+                return MathUtil.clamp(20 + depth_factor * 12 + MathUtil.random(0, 20), 15, 1000);
             case RUN_MINUTES:
                 return MathUtil.clamp(5 + depth_factor + MathUtil.random(0, 10), 5, 90);
             case WALK_STAIRS:
