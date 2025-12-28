@@ -16,6 +16,7 @@ class WeaponItem extends EquippableItem {
 	var cooldown as Number = 0;
 	var current_cooldown as Number = 0;
 	var attack_type as AttackType = STRENGTH;
+	const ATTACK_SCALE as Float = 0.7;
 
 	function initialize() {
 		EquippableItem.initialize();
@@ -73,13 +74,13 @@ class WeaponItem extends EquippableItem {
 	}
 
 	function getBaseAttack() as Number {
-		return attack;
+		return (self.attack * ATTACK_SCALE).toNumber();
 	}
 
 	function getAttack(enemy as Enemy?, weapons_size as Number) as Number {
 		var player = $.getApp().getPlayer();
 		var attribute_modifiers = $.Constants.ATTRIBUTE_WEIGHTS[attack_type] as Dictionary<Symbol, Float>;
-		var attack = self.attack;
+		var attack = self.getBaseAttack();
 		if (attack == 0) {
 			return 0;
 		}
