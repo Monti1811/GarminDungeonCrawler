@@ -14,8 +14,8 @@ class Mage extends Player {
 		self.second_bar = :mana;
 
 		// Set health
-		self.current_health = 80;
-		self.maxHealth = 80;
+		self.current_health = 25;
+		self.maxHealth = 25;
 
 		// Give starting items
 		self.equipItem(new SteelStaff(), RIGHT_HAND, null);

@@ -439,8 +439,9 @@ class Player extends Entity {
 		}
 	}
 
+	// Restore health up to a quarter of the max health when going to the next dungeon
 	function onNextDungeon() as Void {
-		self.current_health = MathUtil.ceil(maxHealth / 2, current_health);
+		self.current_health = MathUtil.ceil(maxHealth / 8, current_health);
 	}
 
 	function getId() as Number {
