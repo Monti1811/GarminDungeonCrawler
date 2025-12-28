@@ -4,7 +4,7 @@ import Toybox.Lang;
 
 class DCCreateGameProgressDelegate extends WatchUi.BehaviorDelegate {
 
-    private var _timer as Timer.Timer;
+    private var _timer as Timer.Timer?;
     private var _time_inbetween as Number = 1000;
     private var _player as Player;
     private var _progress_bar as WatchUi.ProgressBar;
@@ -49,6 +49,7 @@ class DCCreateGameProgressDelegate extends WatchUi.BehaviorDelegate {
             case 3:
                 Main.createNewGame(_player, _progress_bar, _dungeon, 2);
                 _progress = 4;
+                _timer = null;
                 return;
         }
         

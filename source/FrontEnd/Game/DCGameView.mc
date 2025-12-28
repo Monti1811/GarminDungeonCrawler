@@ -230,8 +230,12 @@ class DCGameView extends WatchUi.View {
         _room_drawable.freeMemory();
         _room_drawable = null;
         $.Game.setTurns(null);
+        _timer.stop();
         _timer = null;
-        _autosave_timer = null;
+        if (_autosave_timer != null) {
+            _autosave_timer.stop();
+            _autosave_timer = null;
+        }
         rightLowHint = null;
         damage_texts = [];
     }
