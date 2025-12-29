@@ -135,6 +135,25 @@ class EnemySpecificValues {
 				};
 			case 3: // Nameless: balanced
 				return {};
+			case 4: // Paladin: more armored/brute threats, fewer fliers/casters
+				return {
+					1 => 0.9,  // Bat
+					4 => 0.9,  // Imp
+					12 => 0.9, // ElementalAirSmall
+					14 => 0.9, // ElementalFireSmall
+					18 => 0.9, // ElementalAir
+					20 => 0.9, // ElementalFire
+					3 => 1.05, // Orc
+					5 => 1.1,  // Skeleton
+					9 => 1.05, // Wogol
+					10 => 1.15, // Ogre
+					11 => 1.15, // DarkKnight
+					31 => 1.1, // OrcArmored
+					34 => 1.15, // OrcVeteran
+					29 => 1.1, // Bies
+					2 => 1.05, // Demon
+					27 => 1.05  // Demonolog
+				};
 			case 999: // God: slightly more high-tier threats
 				return {
 					2 => 1.1, // Demon
