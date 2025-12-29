@@ -8,6 +8,7 @@ class IceArrow extends Ammunition {
 		name = "ice Arrow";
 		description = "An ice arrow";
 		type = ARROW;
+		element_override = ELEMENT_ICE;
 		attack = 2;
 	}
 

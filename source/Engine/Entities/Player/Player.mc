@@ -339,7 +339,7 @@ class Player extends Entity {
 		return base_attack;
 	}
 
-	function getArmorItem(slot as ItemSlot) as WeaponItem? {
+	function getArmorItem(slot as ItemSlot) as ArmorItem? {
 		var armor = null;
 		var item = equipped[slot];
 		if (item != null && item.type == ARMOR) {
@@ -370,6 +370,27 @@ class Player extends Entity {
 		}
 
 		return base_defense;
+	}
+
+	function getElementalResistance(element as ElementType) as Float {
+		var resistance = 0.0;
+		var slots = [
+			HEAD,
+			CHEST,
+			BACK,
+			LEGS,
+			FEET,
+			ACCESSORY,
+			LEFT_HAND,
+			RIGHT_HAND
+		];
+		for (var i = 0; i < slots.size(); i++) {
+			var armor = getArmorItem(slots[i]);
+			if (armor != null) {
+				resistance += armor.getElementalResistance(element);
+			}
+		}
+		return MathUtil.clamp(resistance, 0.0, 0.9);
 	}
 
 	function takeDamage(damage as Number, enemy as Enemy?) as Boolean {

@@ -15,6 +15,7 @@ class FireBreastPlate extends ArmorItem {
 			:constitution => 4,
 			:strength => 4,
 		};
+		element = ELEMENT_FIRE;
 	}
 
 	function onEquipItem(player as Player) as Void {

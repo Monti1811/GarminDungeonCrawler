@@ -5,6 +5,7 @@ class ArmorItem extends EquippableItem {
 
 	var defense as Number = 5;
 	var defense_type as DefenseType = CONSTITUTION;
+	var element as ElementType = ELEMENT_NONE;
 	const DEFENSE_SCALE as Float = 0.5;
 
 	function initialize() {
@@ -69,6 +70,18 @@ class ArmorItem extends EquippableItem {
 			defense *= 1.25;
 		}
 		return defense.toNumber();
+	}
+
+	function getElement() as ElementType {
+		if (element == ELEMENT_NONE && id != null) {
+			// Fallback only once if the concrete armor did not assign an element
+			element = $.ElementUtil.getArmorElement(id);
+		}
+		return element;
+	}
+
+	function getElementalResistance(element as ElementType) as Float {
+		return getElement() == element ? $.ElementUtil.getArmorResistance(id, element) : 0.0;
 	}
 
 }

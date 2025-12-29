@@ -21,6 +21,7 @@ class FireLance extends WeaponItem {
         range = 2;
         range_type = LINEAR;
         attack_type = DEXTERITY;
+        element = ELEMENT_FIRE;
     }
 
     function onEquipItem(player as Player) as Void {

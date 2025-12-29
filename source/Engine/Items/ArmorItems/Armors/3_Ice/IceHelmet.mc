@@ -16,6 +16,7 @@ class IceHelmet extends ArmorItem {
 			:wisdom => 3,
 			:luck => 1
 		};
+		element = ELEMENT_ICE;
 	}
 
 	function onEquipItem(player as Player) as Void {

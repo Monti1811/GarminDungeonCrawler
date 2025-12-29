@@ -20,6 +20,7 @@ class FireBow extends Bow {
         range = 3;
         range_type = LINEAR;
         attack_type = DEXTERITY;
+        element = ELEMENT_FIRE;
     }
 
     function onEquipItem(player as Player) as Void {

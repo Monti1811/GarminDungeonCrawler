@@ -20,6 +20,7 @@ class IceLance extends WeaponItem {
         range = 2;
         range_type = LINEAR;
         attack_type = DEXTERITY;
+        element = ELEMENT_ICE;
     }
 
     function onEquipItem(player as Player) as Void {

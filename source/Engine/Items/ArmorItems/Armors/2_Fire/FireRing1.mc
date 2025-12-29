@@ -16,6 +16,7 @@ class FireRing1 extends ArmorItem {
 			:wisdom => 1,
 			:strength => 4
 		};
+		element = ELEMENT_FIRE;
 		defense_type = WISDOM;
 	}
 

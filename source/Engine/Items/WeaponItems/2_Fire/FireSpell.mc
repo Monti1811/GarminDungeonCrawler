@@ -20,6 +20,7 @@ class FireSpell extends Spell {
         range = 3;
         cooldown = 1;
         attack_type = INTELLIGENCE;
+        element = ELEMENT_FIRE;
 
         mana_loss = 34;
     }

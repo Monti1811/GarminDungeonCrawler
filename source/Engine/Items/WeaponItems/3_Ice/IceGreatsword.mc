@@ -19,6 +19,7 @@ class IceGreatsword extends WeaponItem {
         attack = 18;
         range = 2;
         weapon_type = TWOHAND;
+        element = ELEMENT_ICE;
         cooldown = 1;
     }
 

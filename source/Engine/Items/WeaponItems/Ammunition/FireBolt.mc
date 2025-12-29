@@ -8,6 +8,7 @@ class FireBolt extends Ammunition {
 		name = "Fire Bolt";
 		description = "A fire bolt";
 		type = BOLT;
+		element_override = ELEMENT_FIRE;
 		attack = 2;
 	}
 

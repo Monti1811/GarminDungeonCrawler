@@ -18,6 +18,7 @@ class IceSword extends WeaponItem {
 
         attack = 14;
         range = 1;
+        element = ELEMENT_ICE;
     }
 
     function onEquipItem(player as Player) as Void {

@@ -61,12 +61,16 @@ class Bow extends WeaponItem {
 	function onDamageDone(damage as Number, enemy as Enemy?) as Void {
 		var player = getApp().getPlayer();
 		var ammunition = player.getEquip(AMMUNITION) as Ammunition?;
+		var element = getElement();
 		if (ammunition != null) {
 			ammunition.amount -= 1;
 			if (ammunition.amount <= 0) {
 				player.equipped.remove(AMMUNITION);
 			}
+			element = ammunition.getElement();
 		}
+		current_cooldown = cooldown;
+		applyElementalImpact(enemy, damage, element);
 	}
 
 	function deepcopy() as Item {

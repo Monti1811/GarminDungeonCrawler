@@ -64,10 +64,18 @@ class RoomDrawable extends WatchUi.Drawable {
         var enemy_pos = enemy.getPos();
         var enemy_sprite_ref = enemy.getSpriteRef();
         var enemy_sprite_offset = enemy.getSpriteOffset();
-        dc.drawBitmap(
+        var elemental_fire = enemy.getElementalEffect(ELEMENT_FIRE);
+        var elemental_ice = enemy.getElementalEffect(ELEMENT_ICE);
+        var tint = (elemental_fire != null && elemental_ice != null) ? Graphics.COLOR_PURPLE :
+                   elemental_fire != null ? Graphics.COLOR_RED : 
+                   elemental_ice != null ? Graphics.COLOR_BLUE : null;
+        dc.drawBitmap2(
                 enemy_pos[0] * _tile_width - enemy_sprite_offset[0], 
                 enemy_pos[1] * _tile_height - enemy_sprite_offset[1], 
-                enemy_sprite_ref
+                enemy_sprite_ref,
+                {
+                    :tintColor=>tint
+                }
         );
         drawEnemyHealth(dc, enemy);
     }

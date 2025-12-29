@@ -18,6 +18,7 @@ class IceDagger extends WeaponItem {
 
         attack = 10;
         attack_type = DEXTERITY;
+        element = ELEMENT_ICE;
     }
 
     function onEquipItem(player as Player) as Void {

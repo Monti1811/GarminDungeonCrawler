@@ -16,6 +16,7 @@ class WeaponItem extends EquippableItem {
 	var cooldown as Number = 0;
 	var current_cooldown as Number = 0;
 	var attack_type as AttackType = STRENGTH;
+	var element as ElementType = ELEMENT_NONE;
 	const ATTACK_SCALE as Float = 0.7;
 
 	function initialize() {
@@ -107,6 +108,7 @@ class WeaponItem extends EquippableItem {
 
 	function onDamageDone(damage as Number, enemy as Enemy?) as Void {
 		current_cooldown = cooldown;
+		applyElementalImpact(enemy, damage, getElement());
 	}
 
 	function getRange() as Number {
@@ -116,12 +118,38 @@ class WeaponItem extends EquippableItem {
 	function getRangeType() as RangeType {
 		return range_type;
 	}
+
+	function getElement() as ElementType {
+		if (element == ELEMENT_NONE && id != null) {
+			// Fallback only once if a legacy item forgot to set its element explicitly
+			element = $.ElementUtil.getWeaponElement(id);
+		}
+		return element;
+	}
+
+	function applyElementalImpact(enemy as Enemy?, damage as Number, element_override as ElementType?) as Void {
+		if (enemy == null) {
+			return;
+		}
+		var chosen_element = element_override;
+		if (chosen_element == null || chosen_element == ELEMENT_NONE) {
+			chosen_element = getElement();
+		}
+		if (chosen_element == ELEMENT_NONE) {
+			return;
+		}
+		var effect = $.ElementUtil.buildElementalEffect(chosen_element, damage);
+		if (effect.size() > 0 && MathUtil.random(0, 100) < 25) {
+			enemy.applyElementalEffect(chosen_element, effect[:power], effect[:turns]);
+		}
+	}
 	
 	function save() as Dictionary {
 		var data = EquippableItem.save();
 		data["attack"] = attack;
 		data["range"] = range;
 		data["range_type"] = range_type;
+		data["element"] = getElement();
 		return data;
 	}
 

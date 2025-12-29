@@ -19,6 +19,7 @@ class FireDagger extends WeaponItem {
 
         attack = 10;
         attack_type = DEXTERITY;
+        element = ELEMENT_FIRE;
     }
 
     function onEquipItem(player as Player) as Void {

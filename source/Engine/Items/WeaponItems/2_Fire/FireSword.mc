@@ -17,6 +17,7 @@ class FireSword extends WeaponItem {
 
         attack = 14;
         range = 1;
+        element = ELEMENT_FIRE;
     }
 
     function onEquipItem(player as Player) as Void {

@@ -15,6 +15,7 @@ class FireShoes extends ArmorItem {
 			:dexterity => 3,
 			:strength => 3
 		};
+		element = ELEMENT_FIRE;
 		defense_type = CHARISMA;
 	}
 
