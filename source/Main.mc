@@ -18,7 +18,7 @@ module Main {
 				app.setCurrentDungeon(dungeon);
 				var start_room = MathUtil.random(0, dungeon.getSize()[0] * dungeon.getSize()[1] - 1);
 				var pos = MathUtil.IndexToPos2D(start_room, dungeon.getSize()[0]);
-				dungeon.setCurrentRoomFromIndex(pos);
+				$.Game.setCurrentRoomFromIndex(pos);
 				$.Game.setRoomAsVisited(pos);
 				break;
 		}	

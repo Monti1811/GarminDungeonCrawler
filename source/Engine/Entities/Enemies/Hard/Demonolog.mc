@@ -48,7 +48,7 @@ class Demonolog extends Enemy {
             summon.register();
             summon.setPos(summon_pos);
             children.add(summon.guid);
-            var room = $.getApp().getCurrentDungeon().getCurrentRoom();
+            var room = $.Game.getCurrentRoom();
             room.addEnemy(summon);
             summon_cooldown = summon_cooldown_max;
             return true;

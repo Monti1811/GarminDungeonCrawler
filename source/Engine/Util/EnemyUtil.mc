@@ -10,7 +10,7 @@ module EnemyUtil {
             var summon = $.Enemies.createEnemyFromId(chosen_summon);
             summon.setPos(summon_pos);
             summon.register();
-            var room = $.getApp().getCurrentDungeon().getCurrentRoom();
+            var room = $.Game.getCurrentRoom();
             room.addEnemy(summon);
             return summon;
         }

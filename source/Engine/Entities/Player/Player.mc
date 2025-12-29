@@ -150,7 +150,7 @@ class Player extends Entity {
 			dropped_item = item;
 		}
 		dropped_item.onDropItem(me);
-		var room = getApp().getCurrentDungeon().getCurrentRoom();
+		var room = $.Game.getCurrentRoom();
 		var player_pos = room.getPlayerPos();
 		var new_item_pos = room.getMap().getNearbyFreePos(player_pos) as Point2D?;
 		if (new_item_pos != null) {

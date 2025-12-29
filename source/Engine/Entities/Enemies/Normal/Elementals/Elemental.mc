@@ -22,7 +22,7 @@ class Elemental extends Enemy {
 	function onDeath() as Void {
 		Enemy.onDeath();
 		// Spawn two small elementals
-		var room = $.getApp().getCurrentDungeon().getCurrentRoom();
+		var room = $.Game.getCurrentRoom();
 		var map = room.getMap();
 		for (var i = 0; i < children_on_death; i++) {
 			var summon_pos = $.MapUtil.findRandomEmptyTileAround(map, pos);

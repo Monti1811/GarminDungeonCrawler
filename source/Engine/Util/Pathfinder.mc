@@ -142,7 +142,7 @@ module Pathfinder {
         var new_pos = null as Point2D?;
         var max_iterations = 10;
         var iteration = 0;
-        var room = $.getApp().getCurrentDungeon().getCurrentRoom();
+        var room = $.Game.getCurrentRoom();
         var room_size = room.getSize();
         var coords_room = MapUtil.getCoordOfRoom(room_size[0], room_size[1]);
         while (iteration < max_iterations && new_pos == null) {
