@@ -66,7 +66,7 @@ class DCMainMenuDelegate extends WatchUi.BehaviorDelegate {
 
     function newGame() as Void {
         var characterMenu = new WatchUi.Menu2({:title=>"Characters"});
-        var characters = $.SimUtil.createAllPossibleCharacters();
+        var characters = $.Players.createAllPossibleCharacters();
         for (var i = 0; i < characters.size(); i++) {
             var character = characters[i] as Player;
             var character_item = new WatchUi.MenuItem(character.getName(), character.getDescription(), character, null);

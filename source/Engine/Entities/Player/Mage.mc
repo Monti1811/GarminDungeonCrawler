@@ -62,8 +62,8 @@ class Mage extends Player {
 	function onLevelUp() as Void {
 		Player.onLevelUp();
 		// Increase max health and mana
-		maxHealth += 5;
-		maxMana += 5;
+		maxHealth += 3;
+		maxMana += 3;
 	}
 
 	function onNextDungeon() as Void {

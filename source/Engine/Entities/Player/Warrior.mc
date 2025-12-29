@@ -35,7 +35,7 @@ class Warrior extends Player {
 	function onLevelUp() as Void {
 		// Increase max health
 		Player.onLevelUp();
-		maxHealth += 10;
+		maxHealth += 5;
 	}
 
 

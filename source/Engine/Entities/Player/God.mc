@@ -63,8 +63,8 @@ class God extends Player {
 	function onLevelUp() as Void {
 		// Increase max health
 		Player.onLevelUp();
-		current_health += 100;
-		maxHealth += 100;
+		current_health += 50;
+		maxHealth += 50;
 		WatchUi.showToast(self.name + " leveled up!", {:icon=>Rez.Drawables.aboutToastIcon});
 	}
 

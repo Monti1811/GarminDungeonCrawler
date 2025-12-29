@@ -10,16 +10,6 @@ module SimUtil {
         }
     }
 
-    function createAllPossibleCharacters() as Array<Player> {
-        return [
-            new Warrior("Warrior"),
-            new Mage("Mage"),
-            new Archer("Archer"),
-            new Nameless("Nameless"),
-            new God("God"),
-        ];
-    }
-
     function getRoomName(x as Number, y as Number) as String {
         return $.SaveData.chosen_save + "_dungeon_" + x + "_" + y;
     }

@@ -62,8 +62,8 @@ class Nameless extends Player {
 	function onLevelUp() as Void {
 		Player.onLevelUp();
 		// Increase max health and mana
-		maxHealth += 7;
-		maxMana += 3;
+		maxHealth += 4;
+		maxMana += 2;
 	}
 
 	function onNextDungeon() as Void {
