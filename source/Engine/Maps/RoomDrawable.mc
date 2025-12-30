@@ -69,13 +69,12 @@ class RoomDrawable extends WatchUi.Drawable {
         var tint = (elemental_fire != null && elemental_ice != null) ? Graphics.COLOR_PURPLE :
                    elemental_fire != null ? Graphics.COLOR_RED : 
                    elemental_ice != null ? Graphics.COLOR_BLUE : null;
+        var options = tint != null ? {:tintColor=>tint} : {};
         dc.drawBitmap2(
                 enemy_pos[0] * _tile_width - enemy_sprite_offset[0], 
                 enemy_pos[1] * _tile_height - enemy_sprite_offset[1], 
                 enemy_sprite_ref,
-                {
-                    :tintColor=>tint
-                }
+                options
         );
         drawEnemyHealth(dc, enemy);
     }
