@@ -315,7 +315,7 @@ module MapUtil {
 		do {
 			x = MathUtil.random(left + 1, right - 1);
 			y = MathUtil.random(top + 1, bottom - 1);
-		} while (x == 11 || y == 11 || map.getContent([x,y]) != null);
+		} while (x == Constants.ROOM_CENTER_INDEX || y == Constants.ROOM_CENTER_INDEX || map.getContent([x,y]) != null);
 		return [x, y];
 	}
 

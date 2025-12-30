@@ -1,4 +1,5 @@
 import Toybox.Lang;
+import Toybox.Math;
 
 module Constants {
 
@@ -9,7 +10,8 @@ module Constants {
 
 	public const SCREEN_WIDTH = Toybox.System.getDeviceSettings().screenWidth;
 	public const SCREEN_HEIGHT = Toybox.System.getDeviceSettings().screenHeight;
-
+	public const TILE_SIZE = 16;
+	public const ROOM_CENTER_INDEX = Math.floor((SCREEN_WIDTH / 2) / TILE_SIZE).toNumber();
 	public const COORDINATES_NEWGAME = [
 		(SCREEN_WIDTH/2).toNumber(), 
 		(SCREEN_HEIGHT * 75/360).toNumber(), 
@@ -28,8 +30,6 @@ module Constants {
 	] as Array<Number>;
 
 	public const TAP_TOLERANCE = 0.10;
-
-	public const TILE_SIZE = 16;
 
 	public const ITEMTYPE_TO_STR = {
 		WEAPON => "Weapon",
