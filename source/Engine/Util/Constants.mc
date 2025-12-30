@@ -7,11 +7,27 @@ module Constants {
 	public const MAX_ATTRIBUTE_POINTS = 500;
 	public const MIN_ATTRIBUTE_POINTS = 0;
 
-	public const COORDINATES_NEWGAME = [180, 75, 150, 50] as Array<Number>;
-	public const COORDINATES_LOADGAME = [180, 290, 150, 50] as Array<Number>;
-	public const TAP_TOLERANCE = 0.10;
+	public const SCREEN_WIDTH = Toybox.System.getDeviceSettings().screenWidth;
+	public const SCREEN_HEIGHT = Toybox.System.getDeviceSettings().screenHeight;
 
-	public const COORDINATES_KNIGHT = [220, 120] as Array<Number>;
+	public const COORDINATES_NEWGAME = [
+		(SCREEN_WIDTH/2).toNumber(), 
+		(SCREEN_HEIGHT * 75/360).toNumber(), 
+		(SCREEN_WIDTH * 150/360).toNumber(), 
+		(SCREEN_HEIGHT * 50/360).toNumber()
+	] as Array<Number>;
+	public const COORDINATES_LOADGAME = [
+		(SCREEN_WIDTH/2).toNumber(), 
+		(SCREEN_HEIGHT * 29/36).toNumber(), 
+		150, 
+		50
+	] as Array<Number>;
+	public const COORDINATES_KNIGHT = [
+		(SCREEN_WIDTH * 22/36).toNumber(), 
+		(SCREEN_HEIGHT * 1/3).toNumber()
+	] as Array<Number>;
+
+	public const TAP_TOLERANCE = 0.10;
 
 	public const TILE_SIZE = 16;
 

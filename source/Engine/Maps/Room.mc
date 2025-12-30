@@ -232,8 +232,8 @@ class Room {
         var tile_width = getApp().tile_width;
 		var tile_height = getApp().tile_height;
         var index = 11; // Middle of the room, as 180/16 = 11.25
-        var screen_size_x = Math.ceil(360.0/tile_width).toNumber();
-		var screen_size_y = Math.ceil(360.0/tile_height).toNumber();
+        var screen_size_x = Math.ceil(Constants.SCREEN_WIDTH/tile_width).toNumber();
+		var screen_size_y = Math.ceil(Constants.SCREEN_HEIGHT/tile_height).toNumber();
         var index_edge = [0, 0];
         if (direction == UP) {
             index_edge = [index, 0];

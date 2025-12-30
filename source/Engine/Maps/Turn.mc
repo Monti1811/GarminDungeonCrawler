@@ -113,8 +113,8 @@ class Turn {
         var new_pos = next_pos;
         var tile_width = getApp().tile_width;
 		var tile_height = getApp().tile_height;
-        var screen_size_x = Math.ceil(360.0/tile_width).toNumber();
-		var screen_size_y = Math.ceil(360.0/tile_height).toNumber();
+        var screen_size_x = Math.ceil(Constants.SCREEN_WIDTH/tile_width).toNumber();
+		var screen_size_y = Math.ceil(Constants.SCREEN_HEIGHT/tile_height).toNumber();
         switch (direction) {
             case UP:
                 new_pos = [next_pos[0], screen_size_y - 1] as Point2D;

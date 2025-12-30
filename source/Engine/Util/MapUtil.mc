@@ -304,8 +304,8 @@ module MapUtil {
 	function getNumTilesForScreensize() as Point2D {
 		var tile_width = getApp().tile_width;
 		var tile_height = getApp().tile_height;
-		var screen_size_x = Math.ceil(360.0/tile_width).toNumber();
-		var screen_size_y = Math.ceil(360.0/tile_height).toNumber();
+		var screen_size_x = Math.ceil(Constants.SCREEN_WIDTH/tile_width).toNumber();
+		var screen_size_y = Math.ceil(Constants.SCREEN_HEIGHT/tile_height).toNumber();
 		return [screen_size_x, screen_size_y];
 	}
 
@@ -367,8 +367,8 @@ module MapUtil {
 	function getCoordOfRoom(room_size_x as Number, room_size_y as Number) as Array<Number> {
 		var tile_width = getApp().tile_width;
 		var tile_height = getApp().tile_height;
-		var screen_size_x = Math.ceil(360.0/tile_width).toNumber();
-		var screen_size_y = Math.ceil(360.0/tile_height).toNumber();
+		var screen_size_x = Math.ceil(Constants.SCREEN_WIDTH/tile_width).toNumber();
+		var screen_size_y = Math.ceil(Constants.SCREEN_HEIGHT/tile_height).toNumber();
 
 		var middle_of_screen = [Math.floor(screen_size_x/2), Math.floor(screen_size_y/2)];
 		var left = middle_of_screen[0] - Math.floor(room_size_x/2);

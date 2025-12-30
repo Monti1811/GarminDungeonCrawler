@@ -14,10 +14,10 @@ class DCGameDelegate extends WatchUi.BehaviorDelegate {
 
     private var _view as DCGameView;
 
-    private var _up_array = [0, 0, 360, 0, 180, 180];
-    private var _down_array = [0, 360, 360, 360, 180, 180];
-    private var _left_array = [0, 0, 0, 360, 180, 180];
-    private var _right_array = [360, 0, 360, 360, 180, 180];
+    private var _up_array = [0, 0, Constants.SCREEN_WIDTH, 0, Constants.SCREEN_WIDTH/2, Constants.SCREEN_HEIGHT/2];
+    private var _down_array = [0, Constants.SCREEN_HEIGHT, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, Constants.SCREEN_WIDTH/2, Constants.SCREEN_HEIGHT/2];
+    private var _left_array = [0, 0, 0, Constants.SCREEN_HEIGHT, Constants.SCREEN_WIDTH/2, Constants.SCREEN_HEIGHT/2];
+    private var _right_array = [Constants.SCREEN_WIDTH, 0, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, Constants.SCREEN_WIDTH/2, Constants.SCREEN_HEIGHT/2];
 
     function initialize(view as DCGameView) {
         BehaviorDelegate.initialize();
