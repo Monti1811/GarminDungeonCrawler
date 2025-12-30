@@ -301,7 +301,7 @@ module Quests {
     function createRandomQuest(depth as Number) as Quest? {
         var quest_type = getRandomType();
         var quest_target = buildTargetForType(quest_type, depth);
-        var rewards = buildRewards(quest_target, depth);
+        var rewards = buildRewards(quest_target, depth, quest_type);
         return createQuestInstance(quest_type, quest_target, rewards);
     }
 
@@ -375,10 +375,43 @@ module Quests {
         return 10;
     }
 
-    function buildRewards(target as Number, depth as Number) as [Number, Number] {
+    function getTypeRewardModifier(quest_type as QuestType) as Numeric {
+        // Normalize rewards to KILL_ENEMIES scale so all quests pay similar gold.
+        var KILL_ENEMIES_MIDPOINT = (3.0 + 100.0) / 2.0; // 51.5
+
+        var midpoint = 1.0; // fallback avoids divide-by-zero
+        switch (quest_type) {
+            case KILL_ENEMIES:
+                midpoint = (3.0 + 100.0) / 2.0;
+                break;
+            case DEAL_DAMAGE:
+                midpoint = (25.0 + 5000.0) / 2.0;
+                break;
+            case TAKE_DAMAGE:
+                midpoint = (15.0 + 1000.0) / 2.0;
+                break;
+            case RUN_MINUTES:
+                midpoint = (5.0 + 90.0) / 2.0;
+                break;
+            case WALK_STAIRS:
+                midpoint = (20.0 + 250.0) / 2.0;
+                break;
+            case BIKE_DISTANCE:
+                midpoint = (1.0 + 30.0) / 2.0;
+                break;
+            case WALK_STEPS:
+                midpoint = (500.0 + 10000.0) / 2.0;
+                break;
+        }
+
+        return KILL_ENEMIES_MIDPOINT / midpoint;
+    }
+
+    function buildRewards(target as Number, depth as Number, quest_type as QuestType) as [Number, Number] {
+        var amount = target * getTypeRewardModifier(quest_type);
         var depth_bonus = MathUtil.max(1, depth + 1);
-        var gold = Math.floor(MathUtil.max(5, target * 2 / 3 + depth_bonus * 2));
-        var exp = Math.floor(MathUtil.max(5, target + depth_bonus * 3));
+        var gold = Math.floor(MathUtil.max(5, amount * 2 / 3 + depth_bonus * 2));
+        var exp = Math.floor(MathUtil.max(5, amount + depth_bonus * 3));
         return [gold, exp];
     }
 
