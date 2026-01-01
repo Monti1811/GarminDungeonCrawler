@@ -52,6 +52,9 @@ module Constants {
 		"Luck" => :luck
 	};
 
+	// Global knob for scaling mana requirements on staffs and spells
+	public const MANA_LOSS_MULTIPLIER = 0.5;
+
 	public const EQUIPSLOT_TO_STR = {
 		HEAD => "Head",
 		CHEST => "Chest",
