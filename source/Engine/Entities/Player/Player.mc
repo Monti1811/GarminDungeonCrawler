@@ -197,6 +197,8 @@ class Player extends Entity {
 		while (experience >= next_level_experience) {
 			onLevelUp();
 		}
+		// Show toast of new level
+		WatchUi.showToast("Leveled up to Level " + level + "!", {:icon=>Rez.Drawables.aboutToastIcon});
 	}
 
 	function onLoseExperience(amount as Number) as Void {
