@@ -3,22 +3,11 @@ import Toybox.WatchUi;
 
 class DCMainMenuDelegate extends WatchUi.BehaviorDelegate {
 
-    private var continue_coordinates = [
-        Constants.COORDINATES_LOADGAME[0] - Constants.COORDINATES_LOADGAME[2]/2,
-        Constants.COORDINATES_LOADGAME[0] + Constants.COORDINATES_LOADGAME[2]/2,
-        Constants.COORDINATES_LOADGAME[1] - Constants.COORDINATES_LOADGAME[3]/2,
-        Constants.COORDINATES_LOADGAME[1] + Constants.COORDINATES_LOADGAME[3]/2
-    ] as Array<Numeric>;
+    private var _view as DCMainMenuView;
 
-    private var new_game_coordinates = [
-        Constants.COORDINATES_NEWGAME[0] - Constants.COORDINATES_NEWGAME[2]/2,
-        Constants.COORDINATES_NEWGAME[0] + Constants.COORDINATES_NEWGAME[2]/2,
-        Constants.COORDINATES_NEWGAME[1] - Constants.COORDINATES_NEWGAME[3]/2,
-        Constants.COORDINATES_NEWGAME[1] + Constants.COORDINATES_NEWGAME[3]/2
-    ] as Array<Numeric>;
-
-    function initialize() {
+    function initialize(view as DCMainMenuView) {
         BehaviorDelegate.initialize();
+        _view = view;
     }
 
     function onMenu() as Boolean {
@@ -35,11 +24,11 @@ class DCMainMenuDelegate extends WatchUi.BehaviorDelegate {
         var tap_coordinates = evt.getCoordinates() as Array<Numeric>;
         
         
-        if (MathUtil.isInAreaArray(tap_coordinates, continue_coordinates, Constants.TAP_TOLERANCE)) {
+        if (MathUtil.isInAreaArray(tap_coordinates, _view.loadGamePos, Constants.TAP_TOLERANCE)) {
             loadGame();
             return true;
         } else {
-            if (MathUtil.isInAreaArray(tap_coordinates, new_game_coordinates, Constants.TAP_TOLERANCE)) {
+            if (MathUtil.isInAreaArray(tap_coordinates, _view.newGamePos, Constants.TAP_TOLERANCE)) {
                 newGame();
                 //showConfirmation("Do you want to start a new game?");
                 return true;

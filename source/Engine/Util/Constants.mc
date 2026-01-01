@@ -14,19 +14,12 @@ module Constants {
 	public const ROOM_CENTER_INDEX = Math.floor((SCREEN_WIDTH / 2) / TILE_SIZE).toNumber();
 	public const COORDINATES_NEWGAME = [
 		(SCREEN_WIDTH/2).toNumber(), 
-		(SCREEN_HEIGHT * 75/360).toNumber(), 
-		(SCREEN_WIDTH * 150/360).toNumber(), 
-		(SCREEN_HEIGHT * 50/360).toNumber()
+		(SCREEN_HEIGHT * 75/360).toNumber()
 	] as Array<Number>;
+
 	public const COORDINATES_LOADGAME = [
 		(SCREEN_WIDTH/2).toNumber(), 
-		(SCREEN_HEIGHT * 29/36).toNumber(), 
-		150, 
-		50
-	] as Array<Number>;
-	public const COORDINATES_KNIGHT = [
-		(SCREEN_WIDTH * 22/36).toNumber(), 
-		(SCREEN_HEIGHT * 1/3).toNumber()
+		(SCREEN_HEIGHT * 29/36).toNumber()
 	] as Array<Number>;
 
 	public const TAP_TOLERANCE = 0.10;
