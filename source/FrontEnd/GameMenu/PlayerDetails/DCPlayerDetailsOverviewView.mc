@@ -13,8 +13,7 @@ class DCPlayerDetailsOverviewView extends WatchUi.View {
 
 	private var _font as FontReference | FontDefinition;
 
-	private var accept as Bitmap?;
-	private var cancel as Bitmap?;
+	private var layout_type as Number = 0;
 	
 	function initialize(player as Player, creation as Boolean) {
 		View.initialize();
@@ -22,10 +21,16 @@ class DCPlayerDetailsOverviewView extends WatchUi.View {
 		_playerIcon = WatchUi.loadResource(_player.getSprite());
 		_font = Graphics.FONT_XTINY; //WatchUi.loadResource($.Rez.Fonts.small);
 		if (creation) {
-			accept = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTopAccept, :locX=>300, :locY=>60});
-			cancel = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightBottomCancel, :locX=>290, :locY=>220});
+			layout_type = 1;
 		}
 	}
+
+	function onLayout(dc) {
+		if (self.layout_type == 1) {
+			setLayout(Rez.Layouts.DCPlayerDetailsEquipmentsViewHint(dc));
+		}
+	}
+
 	
 	
 	function drawTextPair(dc, left_text_x, right_text_x, y, label, value) {
@@ -36,10 +41,9 @@ class DCPlayerDetailsOverviewView extends WatchUi.View {
 	function onUpdate(dc) {
 		dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_BLACK);
 		dc.clear();
-		if (accept != null) {
-			accept.draw(dc);
-			cancel.draw(dc);
-		}
+		// Update layout
+		View.onUpdate(dc);
+
 		dc.drawScaledBitmap(50, 150, 60, 60, _playerIcon);
 		dc.drawText(180, y_axis, Graphics.FONT_MEDIUM, _player.getName(), Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
 		var left_text_x = x_axis;

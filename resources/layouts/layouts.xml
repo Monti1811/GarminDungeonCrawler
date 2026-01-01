@@ -1,0 +1,21 @@
+<layouts>
+    
+    <layout id="DCPlayerDetailsEquipmentsViewHint" >
+
+		<bitmap id="rightLow" personality="
+            system_icon_light__hint_button_right_bottom
+            system_loc__hint_button_right_bottom" />
+    </layout>
+
+	<layout id="DCPlayerDetailsEquipmentsViewCreation" >
+        <bitmap id="rightTopAccept" personality="
+             system_icon_positive__hint_button_right_top
+            system_loc__hint_button_right_top" />
+		<!-- Right top cancel :locX => 290, :locY => 220 --> 
+		<bitmap id="rightBottomCancel" personality="
+				system_icon_destructive__hint_button_right_bottom
+				system_loc__hint_button_right_bottom" />
+    </layout>
+
+
+</layouts>

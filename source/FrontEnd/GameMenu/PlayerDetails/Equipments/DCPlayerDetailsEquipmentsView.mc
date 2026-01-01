@@ -1,29 +1,35 @@
 import Toybox.Lang;
 import Toybox.WatchUi;
 import Toybox.Graphics;
+import Rez.Styles;
 
 class DCPlayerDetailsEquipmentsView extends WatchUi.View {
 	
 	private var _player as Player;
 	private const size_rectangles as Number = 74;
 	private var small_font as FontResource;
-	private var _hint as Bitmap?;
 	private var equipped_res as Dictionary<ItemSlot, BitmapReference?> = {};
 	private const num_to_equipslot as Array<ItemSlot> = [HEAD, CHEST, BACK, LEGS, FEET, LEFT_HAND, RIGHT_HAND, ACCESSORY, AMMUNITION];
 
-	private var accept as Bitmap?;
-	private var cancel as Bitmap?;
+	private var layout_type as Number = 0;
 	
 	function initialize(player as Player, withHint as Boolean, creation as Boolean) {
 		View.initialize();
 		_player = player;
 		small_font = WatchUi.loadResource($.Rez.Fonts.small);
 		if (withHint) {
-			_hint = new WatchUi.Bitmap({:rezId => $.Rez.Drawables.rightTop, :locX => 300, :locY => 60});
+			layout_type = 1;
 		}
 		if (creation) {
-			accept = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTopAccept, :locX=>300, :locY=>60});
-			cancel = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightBottomCancel, :locX=>290, :locY=>220});
+			layout_type = 2;
+		}
+	}
+
+	function onLayout(dc) {
+		if (self.layout_type == 1) {
+			setLayout(Rez.Layouts.DCPlayerDetailsEquipmentsViewHint(dc));
+		} else if (self.layout_type == 2) {
+			setLayout(Rez.Layouts.DCPlayerDetailsEquipmentsViewCreation(dc));
 		}
 	}
 
@@ -52,10 +58,6 @@ class DCPlayerDetailsEquipmentsView extends WatchUi.View {
 		}
 	}
 
-	function onLayout(dc) {
-		
-	}
-
 	function updateEquipped() {
 		equipped_res = {};
 		for (var i = 0; i < 9; i++) {
@@ -68,19 +70,16 @@ class DCPlayerDetailsEquipmentsView extends WatchUi.View {
 	}
 	
 	
-	function onUpdate(dc) {
+	function onUpdate(dc as Dc) as Void {
 		updateEquipped();
 		dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_BLACK);
         dc.clear();
+
+		// Update layout
+		View.onUpdate(dc);
+
 		dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-		
-		if (_hint != null) {
-			_hint.draw(dc);
-		}
-		if (accept != null) {
-			accept.draw(dc);
-			cancel.draw(dc);
-		}
+
 		// Head
 		drawRectangle(dc, 180, 80, "Head", HEAD);
 		// Chest
