@@ -24,6 +24,15 @@ class Player extends Entity {
 		:charisma=> 0,
 		:luck=> 0
 	};
+	var added_attributes as Dictionary<Symbol, Number> = {
+		:strength=> 0,
+		:constitution=> 0,
+		:dexterity=> 0,
+		:intelligence=> 0,
+		:wisdom=> 0,
+		:charisma=> 0,
+		:luck=> 0
+	};
 	var attribute_points as Number = 5;
 	var inventory as Inventory = new Inventory(30);
 	var equipped as Dictionary<ItemSlot, Item> = {}; /*= {
@@ -260,12 +269,12 @@ class Player extends Entity {
 	}
 
 	function addToAttribute(attribute as Symbol, amount as Number) as Void {
-		attributes[attribute] = MathUtil.floor(attributes[attribute] + amount, Constants.MAX_ATTRIBUTE_POINTS);
+		added_attributes[attribute] += amount;
 		onGainAttribute(attribute, amount);
 	}
 
 	function removeFromAttribute(attribute as Symbol, amount as Number) as Void {
-		attributes[attribute] = MathUtil.ceil(attributes[attribute] - amount, Constants.MIN_ATTRIBUTE_POINTS);
+		added_attributes[attribute] -= amount;
 		onLoseAttribute(attribute, amount);
 	}
 
@@ -282,7 +291,8 @@ class Player extends Entity {
 	}
 
 	function getAttribute(attribute as Symbol) as Number {
-		return attributes[attribute];
+		var att_level = attributes[attribute] + added_attributes[attribute];
+		return MathUtil.clamp(att_level, Constants.MIN_ATTRIBUTE_POINTS, Constants.MAX_ATTRIBUTE_POINTS);
 	}
 
 	function getAttributePoints() as Number {
@@ -584,9 +594,8 @@ class Player extends Entity {
 				var slot = equipped_save_keys[i] as ItemSlot;
 				var item_data = equipped_save[slot] as Dictionary?;
 				if (item_data != null && item_data["id"] != null) {
-					var item = Items.createItemFromId(item_data["id"]);
+					var item = Item.load(item_data);
 					if (item != null) {
-						item.onLoad(item_data);
 						self.equipItem(item, slot, null);
 					}
 				}
