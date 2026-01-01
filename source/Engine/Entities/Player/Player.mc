@@ -1,4 +1,5 @@
 import Toybox.Lang;
+import Toybox.Math;
 import Toybox.Time;
 import Toybox.WatchUi;
 
@@ -169,7 +170,7 @@ class Player extends Entity {
 		level++;
 		experience -= next_level_experience;
 		next_level_experience = level * 100;
-		attribute_points += 5;
+		attribute_points += 3;
 	}
 
 	function getLevel() as Number {
@@ -288,6 +289,12 @@ class Player extends Entity {
 
 	function setAttributePoints(points as Number) as Void {
 		attribute_points = points;
+	}
+
+	function getAttributePointCostForLevel(level as Number) as Number {
+		var normalized_level = MathUtil.ceil(level, 0);
+		var scaled_cost = 1 + Math.floor(normalized_level / 10);
+		return MathUtil.clamp(scaled_cost, 1, 10);
 	}
 
 

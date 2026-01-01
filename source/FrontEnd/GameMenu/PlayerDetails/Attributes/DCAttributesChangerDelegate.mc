@@ -18,10 +18,12 @@ class DCPlayerDetailsAttributesChangerDelegate extends WatchUi.Menu2InputDelegat
         var changed_attributes = _delegate.changed_attributes;
         var attribute_type = item.getId() as Symbol;
         var att_string = Constants.ATT_SYMBOL_TO_STR[attribute_type];
-        var changeMenu = new WatchUi.Menu2({:title=>"Change " + att_string + " (" + changed_attributes[:available] + " points)"});
+        var points_available = changed_attributes[:available] - changed_attributes[:total_used];
+        var increase_cost = player.getAttributePointCostForLevel(changed_attributes[attribute_type]);
+        var changeMenu = new WatchUi.Menu2({:title=>"Change " + att_string + " (" + points_available + " points)"});
         changeMenu.addItem(new WatchUi.MenuItem(att_string + ": " + changed_attributes[attribute_type], null, :none, null));
-        if (changed_attributes[:available] > 0 && changed_attributes[:total_used] < changed_attributes[:available]) {
-            changeMenu.addItem(new WatchUi.MenuItem("Increase", "Increase " + att_string, attribute_type, null));
+        if (points_available >= increase_cost) {
+            changeMenu.addItem(new WatchUi.MenuItem("Increase", "Cost " + increase_cost + " points", attribute_type, null));
         }
         if (player.getAttribute(attribute_type) < changed_attributes[attribute_type]) {
             changeMenu.addItem(new WatchUi.MenuItem("Decrease", "Decrease " + att_string, attribute_type, null));
@@ -86,33 +88,34 @@ class DCPlayerDetailsAttributesChanger2Delegate extends WatchUi.Menu2InputDelega
         if (attribute_type == :none) {
             return;
         }
-        if (changed_attributes[:available] <= 0) {
-            return;
-        }
+        var player = getApp().getPlayer();
+        var points_available = changed_attributes[:available] - changed_attributes[:total_used];
+        var increase_cost = player.getAttributePointCostForLevel(changed_attributes[attribute_type]);
+        var att_string = Constants.ATT_SYMBOL_TO_STR[attribute_type];
         if (item.getLabel().equals("Increase")) {
-            changed_attributes[:total_used] += 1;
+            if (points_available < increase_cost) {
+                return;
+            }
+            changed_attributes[:total_used] += increase_cost;
             changed_attributes[attribute_type] += 1;
         } else if (item.getLabel().equals("Decrease")) {
-            changed_attributes[:total_used] -= 1;
+            var refund = player.getAttributePointCostForLevel(changed_attributes[attribute_type] - 1);
+            changed_attributes[:total_used] = MathUtil.ceil(changed_attributes[:total_used] - refund, 0);
             changed_attributes[attribute_type] -= 1;
         }
-        var points_available = changed_attributes[:available] - changed_attributes[:total_used];
-        var att_string = Constants.ATT_SYMBOL_TO_STR[attribute_type];
+        points_available = changed_attributes[:available] - changed_attributes[:total_used];
+        var next_cost = player.getAttributePointCostForLevel(changed_attributes[attribute_type]);
         _view.setTitle("Change " + att_string + " (" + points_available + " points)");
         var updated_item = new WatchUi.MenuItem(att_string + ": " + changed_attributes[attribute_type], null, attribute_type, null);
         _view.updateItem(updated_item, 0);
-        if (changed_attributes[attribute_type] == getApp().getPlayer().getAttribute(attribute_type)) {
-            _view.deleteItem(2);
-        } else if (_view.getItem(2) == null && _view.getItem(1).getLabel().equals("Increase")) {
-            _view.addItem(new WatchUi.MenuItem("Decrease", "Decrease " + att_string, attribute_type, null));
+        while (_view.getItem(1) != null) {
+            _view.deleteItem(1);
         }
-        if (changed_attributes[:total_used] == changed_attributes[:available]) {
-            _view.deleteItem(1);
-        } else if (_view.getItem(2) == null && _view.getItem(1).getLabel().equals("Decrease")) {
-            _view.addItem(new WatchUi.MenuItem("Increase", "Increase " + att_string, attribute_type, null));
-            var decrease = _view.getItem(1);
-            _view.deleteItem(1);
-            _view.addItem(decrease);
+        if (points_available >= next_cost) {
+            _view.addItem(new WatchUi.MenuItem("Increase", "Cost " + next_cost + " points", attribute_type, null));
+        }
+        if (changed_attributes[attribute_type] > player.getAttribute(attribute_type)) {
+            _view.addItem(new WatchUi.MenuItem("Decrease", "Decrease " + att_string, attribute_type, null));
         }
         WatchUi.requestUpdate();
     }
