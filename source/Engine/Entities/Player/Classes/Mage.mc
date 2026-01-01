@@ -68,7 +68,7 @@ class Mage extends Player {
 
 	function onNextDungeon() as Void {
 		Player.onNextDungeon();
-		current_mana = MathUtil.ceil(maxMana / 2, current_mana);
+		current_mana = MathUtil.ceil(3 * maxMana / 4, current_mana);
 	}
 
 	function save() as Dictionary {

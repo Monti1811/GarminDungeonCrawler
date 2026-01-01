@@ -3,8 +3,12 @@ import Toybox.Lang;
 
 class Staff extends WeaponItem {
 
-    var active as Boolean = false;
-    var mana_loss as Number = 10;
+	var active as Boolean = false;
+	var mana_loss as Number = 10;
+
+	function getManaLoss() as Number {
+		return (mana_loss * $.Constants.MANA_LOSS_MULTIPLIER).toNumber();
+	}
 	
 	function initialize() {
 		WeaponItem.initialize();
@@ -20,7 +24,7 @@ class Staff extends WeaponItem {
 
 	function onEquipItem(player as Player) as Void {
 		WeaponItem.onEquipItem(player);
-        if (!active && player.getCurrentMana() >= mana_loss) {
+        if (!active && player.getCurrentMana() >= getManaLoss()) {
             activateStaff();
         }
 	}
@@ -34,7 +38,7 @@ class Staff extends WeaponItem {
 	function onDamageDone(damage as Number, enemy as Enemy?) {
 		WeaponItem.onDamageDone(damage, enemy);
 		var player = $.getApp().getPlayer();
-		player.doManaDelta(-mana_loss);
+		player.doManaDelta(-getManaLoss());
 	}
 	
 	function getSprite() as ResourceId {
@@ -44,9 +48,9 @@ class Staff extends WeaponItem {
     function onTurnDone() as Void {
 		WeaponItem.onTurnDone();
         var player = $.getApp().getPlayer();
-        if (active && player.getCurrentMana() < mana_loss) {
-            deactivateStaff();
-        } else if (!active && player.getCurrentMana() >= mana_loss) {
+		if (active && player.getCurrentMana() < getManaLoss()) {
+			deactivateStaff();
+		} else if (!active && player.getCurrentMana() >= getManaLoss()) {
 			activateStaff();
 		}
     }

@@ -68,7 +68,6 @@ class God extends Player {
 		Player.onLevelUp();
 		current_health += 50;
 		maxHealth += 50;
-		WatchUi.showToast(self.name + " leveled up!", {:icon=>Rez.Drawables.aboutToastIcon});
 	}
 
 	function getCurrentMana() as Number {
