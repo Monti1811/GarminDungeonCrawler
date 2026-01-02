@@ -203,11 +203,15 @@ class Player extends Entity {
 
 	function onGainExperience(amount as Number) as Void {
 		experience += amount;
+		var has_leveled_up = false;
 		while (experience >= next_level_experience) {
 			onLevelUp();
+			has_leveled_up = true;
 		}
-		// Show toast of new level
-		WatchUi.showToast("Leveled up to Level " + level + "!", {:icon=>Rez.Drawables.aboutToastIcon});
+		if (has_leveled_up) {
+			// Show toast of new level
+			WatchUi.showToast("Leveled up to Level " + level + "!", {:icon=>Rez.Drawables.aboutToastIcon});
+		}
 	}
 
 	function onLoseExperience(amount as Number) as Void {
