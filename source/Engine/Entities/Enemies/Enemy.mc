@@ -97,6 +97,20 @@ class Enemy extends Entity {
 	}
 
 	function getLoot() as Item? {
+		var player = $.Game.getPlayer();
+		if (player.id == 2/*ARCHER*/ && MathUtil.random(0, 100) < 25) {
+			var right_hand_equip = player.getEquip(RIGHT_HAND);
+			if (right_hand_equip instanceof Bow) {
+				var arrows = new Arrow();
+				arrows.amount = MathUtil.random(1, 3);
+				return arrows;
+			}
+			if (right_hand_equip instanceof CrossBow) {
+				var bolts = new Bolt();
+				bolts.amount = MathUtil.random(1, 3);
+				return bolts;
+			}
+		}
 		if (MathUtil.random(0, 100) < 50) {
 			var gold = new Gold();
 			gold.amount = MathUtil.random(1, 10);
