@@ -223,9 +223,18 @@ module Game {
 	}
 
 	function clearSession() as Void {
-		player = null;
-		dungeon = null;
-		turns = null;
+		if (player != null) {
+			player.freeMemory();
+			player = null;
+		}
+		if (dungeon != null) {
+			dungeon.freeMemory();
+			dungeon = null;
+		}
+		if (turns != null) {
+			turns.freeMemory();
+			turns = null;
+		}
 	}
 
 }

@@ -611,4 +611,8 @@ class Player extends Entity {
 
 	}
 
+	function freeMemory() as Void {
+		
+	}
+
 }

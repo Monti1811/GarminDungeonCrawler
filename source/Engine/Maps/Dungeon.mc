@@ -306,4 +306,11 @@ class Dungeon {
 		dungeon.onLoad(data);
 		return dungeon;
 	}
+
+	function freeMemory() as Void {
+		if (_current_room != null) {
+			_current_room.freeMemory();
+			_current_room = null;
+		}
+	}
 }

@@ -102,9 +102,7 @@ class DCGameExitConfirmDelegate extends WatchUi.ConfirmationDelegate {
                 saveGame();
             }
             WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
-            var app = getApp();
-            app.setPlayer(null);
-            app.setCurrentDungeon(null);
+            $.Game.clearSession();
         }
         return true;
     }
