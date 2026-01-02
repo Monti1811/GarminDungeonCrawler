@@ -1,5 +1,6 @@
 import Toybox.Lang;
 import Toybox.WatchUi;
+import Toybox.Graphics;
 
 class DCMainMenuDelegate extends WatchUi.BehaviorDelegate {
 
@@ -57,11 +58,17 @@ class DCMainMenuDelegate extends WatchUi.BehaviorDelegate {
         for (var i = 0; i < save_keys.size(); i++) {
             var save_key = save_keys[i] as String;
             var save = SaveData.getSaveInfo(save_key);
-            var save_item = new WatchUi.MenuItem(save[0], save[1], save_key, null);
+            var player = (save[2] != null) ? $.Players.createPlayerFromId(save[2].toNumber(), "") : null as Player?;
+            var icon = new DCPlayerIcon(player);
+            var save_item = new WatchUi.IconMenuItem(save[0], save[1], save_key, icon, null);
             loadMenu.addItem(save_item);
         }
-        WatchUi.pushView(loadMenu, new RPGLoadGameDelegate(loadMenu), WatchUi.SLIDE_UP);
+        WatchUi.pushView(loadMenu, new DCLoadGameDelegate(loadMenu), WatchUi.SLIDE_UP);
 
+        // use DCItemIcon for the icon
+        // var icon = new DCItemIcon(item);
+        // return new WatchUi.IconMenuItem(item.getName() + " x" + amount, item.getDescription(), item, icon, null);
+        
     }
 
     function newGame() as Void {
@@ -78,7 +85,7 @@ class DCMainMenuDelegate extends WatchUi.BehaviorDelegate {
 }
 
 
-class RPGLoadGameDelegate extends WatchUi.Menu2InputDelegate {
+class DCLoadGameDelegate extends WatchUi.Menu2InputDelegate {
 
     private var _view as WatchUi.Menu2;
 
@@ -91,9 +98,10 @@ class RPGLoadGameDelegate extends WatchUi.Menu2InputDelegate {
 
         var savegame = item.getId() as String;
         var optionsMenu = new WatchUi.Menu2({:title=>"Options"});
+        optionsMenu.addItem(item); // Add the clicked item as the first entry
         optionsMenu.addItem(new WatchUi.MenuItem("Load", null, savegame, null));
         optionsMenu.addItem(new WatchUi.MenuItem("Delete", null, savegame, null));
-        WatchUi.pushView(optionsMenu, new RPGLoadGameOptionsDelegate(_view, item.getId() as Number), WatchUi.SLIDE_UP);
+        WatchUi.pushView(optionsMenu, new DCLoadGameOptionsDelegate(_view, item.getId() as Number), WatchUi.SLIDE_UP);
     }
 
     //! Handle the back key being pressed
@@ -102,7 +110,7 @@ class RPGLoadGameDelegate extends WatchUi.Menu2InputDelegate {
     }
 }
 
-class RPGLoadGameOptionsDelegate extends WatchUi.Menu2InputDelegate {
+class DCLoadGameOptionsDelegate extends WatchUi.Menu2InputDelegate {
 
     private var _parent as WatchUi.Menu2;
     private var _id as Number;
@@ -211,4 +219,23 @@ class DCConfirmLoadGame extends WatchUi.ConfirmationDelegate {
         return true;
     }
 
+}
+
+class DCPlayerIcon extends WatchUi.Drawable {
+    
+    private var _icon as BitmapReference;
+
+    function initialize(player as Player?) {
+        Drawable.initialize({});
+        // TODO: remove this edge case after some time
+        if (player == null) {
+            _icon = loadResource($.Rez.Drawables.Basic) as BitmapReference;
+        } else {
+            _icon = player.getSpriteRef() as BitmapReference;
+        }
+    }
+
+    function draw(dc as Dc) as Void {
+        dc.drawScaledBitmap(15, 25, 32, 32, _icon);
+    }
 }

@@ -94,7 +94,8 @@ module SaveData {
 			playerData["name"] as PropertyValueType, 
 			data["level"] as PropertyValueType, 
 			gameData["depth"] as PropertyValueType, 
-			gameData["time_played"] as PropertyValueType
+			gameData["time_played"] as PropertyValueType,
+			playerData["id"] as PropertyValueType
 		] as Array<PropertyValueType>;
 		saveToMemory(data_to_show);
 		_save_data = {};
@@ -130,16 +131,18 @@ module SaveData {
 		Storage.setValue(STORAGE_STRING, saves);
 	}
 
-	public function getSaveInfo(save as String) as Array<String> {
+	public function getSaveInfo(save as String) as Array<String?> {
 		var info = saves[save] as Array;
 		var hours = info[3].toNumber() / 3600;
 		var minutes = (info[3].toNumber() % 3600) / 60;
+		var id = info.size() > 4 ? info[4] : null;
 		if (minutes < 10) {
 			minutes = "0" + minutes;
 		}
 		return [
-			info[0], 
-			"Level " + info[1] + " Depth: " + info[2] + " Time: " + hours + ":" + minutes
+			info[0], // Player Name
+			"Level " + info[1] + " Depth: " + info[2] + " Time: " + hours + ":" + minutes,
+			id // Player ID
 		];
 	}
 
