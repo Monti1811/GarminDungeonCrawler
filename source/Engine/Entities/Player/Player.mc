@@ -5,7 +5,6 @@ import Toybox.WatchUi;
 
 class Player extends Entity {
 
-	var id = 0;
 	var current_health as Number = 30;
 	var maxHealth as Number = 30;
 	var second_bar as Symbol?;

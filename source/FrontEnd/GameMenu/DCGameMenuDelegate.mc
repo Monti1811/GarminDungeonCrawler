@@ -1,6 +1,7 @@
 import Toybox.Lang;
 import Toybox.WatchUi;
 import Toybox.Graphics;
+import Toybox.Math;
 
 typedef ItemComparator as NameCompare | WeightCompare | ValueCompare;
 
@@ -36,6 +37,8 @@ class DCGameMenuDelegate extends WatchUi.Menu2InputDelegate {
             openLog();
         } else if (label == :settings) {
             openSettings();
+        } else if (label == :debug) {
+            openDebug();
         }
     }
 
@@ -138,6 +141,15 @@ class DCGameMenuDelegate extends WatchUi.Menu2InputDelegate {
         settingsMenu.addItem(new WatchUi.MenuItem("Movement", $.Settings.getStepsPerTurnString($.Settings.settings["steps_per_turn"] as Number), :movement, null));
 
         WatchUi.pushView(settingsMenu, new DCSettingsMenuDelegate(settingsMenu), WatchUi.SLIDE_UP);
+    }
+
+    (:debug)
+    function openDebug() as Void {
+        var debugMenu = new WatchUi.Menu2({:title=>"Debug"});
+        debugMenu.addItem(new WatchUi.MenuItem("Enemies", "Spawn enemies", :debug_enemies, null));
+        debugMenu.addItem(new WatchUi.MenuItem("Items", "Spawn items", :debug_items, null));
+        debugMenu.addItem(new WatchUi.MenuItem("Player Stats", "Modify player state", :debug_player, null));
+        WatchUi.pushView(debugMenu, new DCDebugMenuDelegate(), WatchUi.SLIDE_UP);
     }
 
     function saveGame() as Void {

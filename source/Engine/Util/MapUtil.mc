@@ -48,6 +48,46 @@ module MapUtil {
 		return null;
 	}
 
+	function findNearestEmptyTileAround(map as Map, pos as Point2D) as Point2D? {
+		var queue = [] as Array<Point2D>;
+		var visited = {};
+		queue.add(pos);
+		visited[pos[0] + "," + pos[1]] = true;
+		var directions = [
+			[0, -1],
+			[0, 1],
+			[-1, 0],
+			[1, 0]
+		] as Array<Point2D>;
+		while (queue.size() > 0) {
+			var current = queue[0];
+			queue.remove(current);
+			for (var i = 0; i < directions.size(); i++) {
+				var candidate = [current[0] + directions[i][0], current[1] + directions[i][1]];
+				var key = candidate[0] + "," + candidate[1];
+				if (visited[key]) {
+					continue;
+				}
+				visited[key] = true;
+				if (!map.isInBound(candidate)) {
+					continue;
+				}
+				if (canMoveToPoint(map, candidate)) {
+					return candidate;
+				}
+				queue.add(candidate);
+			}
+		}
+		return null;
+	}
+
+	function getDebugSpawnPos() as Point2D? {
+        var room = $.Game.getCurrentRoom();
+        var map = room.getMap();
+        var player_pos = room.getPlayerPos();
+        return findNearestEmptyTileAround(map, player_pos);
+    }
+
 	function canMoveToPlayer(map as Map, point as Point2D) as Boolean {
 		if (!map.isInBound(point)) {
 			return false;

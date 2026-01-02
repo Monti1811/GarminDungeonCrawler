@@ -83,9 +83,19 @@ class DCGameDelegate extends WatchUi.BehaviorDelegate {
         actionMenu.addItem(new WatchUi.MenuItem("Save", "Save the game", :save, null));
         actionMenu.addItem(new WatchUi.MenuItem("Log", "Show last actions", :log, null));
         actionMenu.addItem(new WatchUi.MenuItem("Settings", "Change settings", :settings, null));
+        self.addDebugMenu(actionMenu);
 
         WatchUi.pushView(actionMenu, new DCGameMenuDelegate(), SLIDE_UP);
         return true;
+    }
+
+    (:debug) 
+    function addDebugMenu(actionMenu as Menu2) {
+        actionMenu.addItem(new WatchUi.MenuItem("Debug", "Debug tools", :debug, null));
+    }
+
+    (:release) 
+    function addDebugMenu(actionMenu as Menu2) {
     }
 
 }

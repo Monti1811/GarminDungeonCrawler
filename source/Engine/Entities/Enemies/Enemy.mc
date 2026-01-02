@@ -2,8 +2,6 @@ import Toybox.Lang;
 
 class Enemy extends Entity {
 
-	var id as Number = 0;
-
 	var pos as Point2D = [0, 0];
 	var next_pos as Point2D = [0, 0];
 	var has_moved as Boolean = false;
