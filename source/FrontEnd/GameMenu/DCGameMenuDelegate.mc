@@ -29,6 +29,8 @@ class DCGameMenuDelegate extends WatchUi.Menu2InputDelegate {
             openInventory();
         } else if (label == :quests) {
             openQuests();
+        } else if (label == :compendium) {
+            openCompendium();
         } else if (label == :map ) {
             openMap();
         } else if (label == :save) {
@@ -58,6 +60,31 @@ class DCGameMenuDelegate extends WatchUi.Menu2InputDelegate {
         WatchUi.pushView(viewLoop, new DCPlayerDetailsDelegate(viewLoop), WatchUi.SLIDE_UP);
     }
 
+    function openCompendium() as Void {
+        var compendiumMenu = new WatchUi.Menu2({:title=>"Compendium"});
+        compendiumMenu.addItem(new WatchUi.MenuItem("Enemies", "View discovered enemies", :compendium_enemies, null));
+        compendiumMenu.addItem(new WatchUi.MenuItem("Items", "View discovered items", :compendium_items, null));
+        WatchUi.pushView(compendiumMenu, new DCCompendiumDelegate(), WatchUi.SLIDE_UP);
+    }
+
+    function openQuests() as Void {
+        var quests = $.Quests.getActiveQuests();
+        if (quests.size() == 0) {
+            WatchUi.showToast("No active quests", {});
+            return;
+        }
+        var menu = new WatchUi.Menu2({:title=>"Quests"});
+        for (var i = 0; i < quests.size(); i++) {
+            var quest = quests[i];
+            var subtitle = quest.getProgressLabel() + " | Reward " + quest.getRewardLabel();
+            if (quest.completed) {
+                subtitle = "Ready to claim" + " | Reward " + quest.getRewardLabel();
+            }
+            menu.addItem(new WatchUi.MenuItem(quest.getTitle(), subtitle, quest, null));
+        }
+        WatchUi.pushView(menu, new DCQuestListDelegate(), WatchUi.SLIDE_UP);
+    }
+
     function createInventoryMenuItem(item as Item) as MenuItem {
         var amount = item.getAmount();
         var icon = new DCItemIcon(item);
@@ -84,24 +111,6 @@ class DCGameMenuDelegate extends WatchUi.Menu2InputDelegate {
             inventoryMenu.addItem(createInventoryMenuItem(item));
         }
         WatchUi.pushView(inventoryMenu, new DCInventoryDelegate(self), WatchUi.SLIDE_UP);
-    }
-
-    function openQuests() as Void {
-        var quests = $.Quests.getActiveQuests();
-        if (quests.size() == 0) {
-            WatchUi.showToast("No active quests", {});
-            return;
-        }
-        var menu = new WatchUi.Menu2({:title=>"Quests"});
-        for (var i = 0; i < quests.size(); i++) {
-            var quest = quests[i];
-            var subtitle = quest.getProgressLabel() + " | Reward " + quest.getRewardLabel();
-            if (quest.completed) {
-                subtitle = "Ready to claim" + " | Reward " + quest.getRewardLabel();
-            }
-            menu.addItem(new WatchUi.MenuItem(quest.getTitle(), subtitle, quest, null));
-        }
-        WatchUi.pushView(menu, new DCQuestListDelegate(), WatchUi.SLIDE_UP);
     }
 
     function updateItemList() as Void {

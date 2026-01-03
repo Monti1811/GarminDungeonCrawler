@@ -73,6 +73,8 @@ class Enemy extends Entity {
 		if (current_health <= 0) {
 			current_health = 0;
 			self.onDeath();
+			// Track enemy as discovered in compendium
+			$.SaveData.discovered_enemies[id] = true;
 			return true;
 		}
 		return false;
