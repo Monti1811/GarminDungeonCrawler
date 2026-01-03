@@ -41,15 +41,9 @@ class Demonolog extends Enemy {
             7 => 5,     // Zombie
             28 => 5,    // Chort
         };
-        var chosen_summon = $.MathUtil.weighted_random(summons);
-        var summon_pos = $.MapUtil.findRandomEmptyTileAround(map, pos);
-        if (summon_pos != null) {
-            var summon = $.Enemies.createEnemyFromId(chosen_summon);
-            summon.register();
-            summon.setPos(summon_pos);
+        var summon = EnemyUtil.summonEnemy(summons, map, pos);
+        if (summon != null) {
             children.add(summon.guid);
-            var room = $.Game.getCurrentRoom();
-            room.addEnemy(summon);
             summon_cooldown = summon_cooldown_max;
             return true;
         }
