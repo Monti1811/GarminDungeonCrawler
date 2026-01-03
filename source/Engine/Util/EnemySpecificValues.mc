@@ -35,7 +35,7 @@ class EnemySpecificValues {
 			{:id => 3, :cost => 5, :weight => tieredWeight(depth, [ {:max => 4, :weight => 0}, {:max => 10, :weight => 10}, {:max => 18, :weight => 8}, {:max => 999, :weight => 5} ])}, // Orc
 			{:id => 5, :cost => 10, :weight => tieredWeight(depth, [ {:max => 5, :weight => 0}, {:max => 10, :weight => 6}, {:max => 18, :weight => 8}, {:max => 999, :weight => 6} ])}, // Skeleton
 			{:id => 25, :cost => 10, :weight => tieredWeight(depth, [ {:max => 3, :weight => 0}, {:max => 9, :weight => 8}, {:max => 16, :weight => 10}, {:max => 999, :weight => 6} ])}, // Goblin
-			{:id => 9, :cost => 15, :weight => tieredWeight(depth, [ {:max => 5, :weight => 0}, {:max => 10, :weight => 6}, {:max => 16, :weight => 8}, {:max => 999, :weight => 6} ])}, // Wogol
+			{:id => 9, :cost => 20, :weight => tieredWeight(depth, [ {:max => 5, :weight => 0}, {:max => 10, :weight => 6}, {:max => 16, :weight => 8}, {:max => 999, :weight => 6} ])}, // Wogol
 			{:id => 10, :cost => 50, :weight => tieredWeight(depth, [ {:max => 7, :weight => 0}, {:max => 12, :weight => 4}, {:max => 18, :weight => 7}, {:max => 999, :weight => 7} ])}, // Ogre
 			{:id => 6, :cost => 20, :weight => tieredWeight(depth, [ {:max => 7, :weight => 0}, {:max => 12, :weight => 3}, {:max => 18, :weight => 6}, {:max => 999, :weight => 6} ])}, // Necromancer
 			{:id => 11, :cost => 25, :weight => tieredWeight(depth, [ {:max => 11, :weight => 0}, {:max => 16, :weight => 3}, {:max => 22, :weight => 6}, {:max => 999, :weight => 5} ])}, // DarkKnight

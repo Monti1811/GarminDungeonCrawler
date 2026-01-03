@@ -5,7 +5,7 @@ class IceArrow extends Ammunition {
 	function initialize() {
 		Ammunition.initialize();
 		id = 202;
-		name = "ice Arrow";
+		name = "Ice Arrow";
 		description = "An ice arrow";
 		type = ARROW;
 		element_override = ELEMENT_ICE;

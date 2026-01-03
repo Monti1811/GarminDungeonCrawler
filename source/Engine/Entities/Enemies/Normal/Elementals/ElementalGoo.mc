@@ -6,6 +6,7 @@ class ElementalGoo extends Elemental {
 		Elemental.initialize();
 		id = 22;
 		name = "Goo Elemental";
+		children_id = 16;
 	}
 
 	function getSprite() as ResourceId {

@@ -34,15 +34,17 @@ module MathUtil {
 
 	function weighted_random(weights as Dictionary) {
 		var total = 0;
-		for (var i = 0; i < weights.size(); i++) {
-			total += weights[i] as Numeric;
+		var values = weights.values();
+		for (var i = 0; i < values.size(); i++) {
+			total += values[i] as Numeric;
 		}
 
 		var random = MathUtil.random(0, total - 1);
-		for (var i = 0; i < weights.size(); i++) {
-			random -= weights[i] as Numeric;
+		var keys = weights.keys();
+		for (var i = 0; i < values.size(); i++) {
+			random -= values[i] as Numeric;
 			if (random < 0) {
-				return i;
+				return keys[i];
 			}
 		}
 		return 0;

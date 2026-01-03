@@ -37,9 +37,9 @@ class Necromancer extends Enemy {
             return false;
         }
         var summons = {
-            5 => 5,
-            6 => 5,
-            7 => 1,
+            4 => 5, // Imp
+            5 => 5, // Skeleton
+            7 => 5, // Small Zombie
         };
         var summon = EnemyUtil.summonEnemy(summons, map, pos);
         if (summon != null) {

@@ -1,6 +1,7 @@
 import Toybox.Lang;
 import Toybox.WatchUi;
 import Toybox.Graphics;
+import Toybox.Math;
 
 typedef ItemComparator as NameCompare | WeightCompare | ValueCompare;
 
@@ -28,6 +29,8 @@ class DCGameMenuDelegate extends WatchUi.Menu2InputDelegate {
             openInventory();
         } else if (label == :quests) {
             openQuests();
+        } else if (label == :compendium) {
+            openCompendium();
         } else if (label == :map ) {
             openMap();
         } else if (label == :save) {
@@ -36,6 +39,8 @@ class DCGameMenuDelegate extends WatchUi.Menu2InputDelegate {
             openLog();
         } else if (label == :settings) {
             openSettings();
+        } else if (label == :debug) {
+            openDebug();
         }
     }
 
@@ -53,6 +58,31 @@ class DCGameMenuDelegate extends WatchUi.Menu2InputDelegate {
         var factory = new DCPlayerDetailsFactory(player);
         var viewLoop = new WatchUi.ViewLoop(factory, {:wrap => true});
         WatchUi.pushView(viewLoop, new DCPlayerDetailsDelegate(viewLoop), WatchUi.SLIDE_UP);
+    }
+
+    function openCompendium() as Void {
+        var compendiumMenu = new WatchUi.Menu2({:title=>"Compendium"});
+        compendiumMenu.addItem(new WatchUi.MenuItem("Enemies", "View discovered enemies", :compendium_enemies, null));
+        compendiumMenu.addItem(new WatchUi.MenuItem("Items", "View discovered items", :compendium_items, null));
+        WatchUi.pushView(compendiumMenu, new DCCompendiumDelegate(), WatchUi.SLIDE_UP);
+    }
+
+    function openQuests() as Void {
+        var quests = $.Quests.getActiveQuests();
+        if (quests.size() == 0) {
+            WatchUi.showToast("No active quests", {});
+            return;
+        }
+        var menu = new WatchUi.Menu2({:title=>"Quests"});
+        for (var i = 0; i < quests.size(); i++) {
+            var quest = quests[i];
+            var subtitle = quest.getProgressLabel() + " | Reward " + quest.getRewardLabel();
+            if (quest.completed) {
+                subtitle = "Ready to claim" + " | Reward " + quest.getRewardLabel();
+            }
+            menu.addItem(new WatchUi.MenuItem(quest.getTitle(), subtitle, quest, null));
+        }
+        WatchUi.pushView(menu, new DCQuestListDelegate(), WatchUi.SLIDE_UP);
     }
 
     function createInventoryMenuItem(item as Item) as MenuItem {
@@ -81,24 +111,6 @@ class DCGameMenuDelegate extends WatchUi.Menu2InputDelegate {
             inventoryMenu.addItem(createInventoryMenuItem(item));
         }
         WatchUi.pushView(inventoryMenu, new DCInventoryDelegate(self), WatchUi.SLIDE_UP);
-    }
-
-    function openQuests() as Void {
-        var quests = $.Quests.getActiveQuests();
-        if (quests.size() == 0) {
-            WatchUi.showToast("No active quests", {});
-            return;
-        }
-        var menu = new WatchUi.Menu2({:title=>"Quests"});
-        for (var i = 0; i < quests.size(); i++) {
-            var quest = quests[i];
-            var subtitle = quest.getProgressLabel() + " | Reward " + quest.getRewardLabel();
-            if (quest.completed) {
-                subtitle = "Ready to claim" + " | Reward " + quest.getRewardLabel();
-            }
-            menu.addItem(new WatchUi.MenuItem(quest.getTitle(), subtitle, quest, null));
-        }
-        WatchUi.pushView(menu, new DCQuestListDelegate(), WatchUi.SLIDE_UP);
     }
 
     function updateItemList() as Void {
@@ -138,6 +150,20 @@ class DCGameMenuDelegate extends WatchUi.Menu2InputDelegate {
         settingsMenu.addItem(new WatchUi.MenuItem("Movement", $.Settings.getStepsPerTurnString($.Settings.settings["steps_per_turn"] as Number), :movement, null));
 
         WatchUi.pushView(settingsMenu, new DCSettingsMenuDelegate(settingsMenu), WatchUi.SLIDE_UP);
+    }
+
+    (:debug)
+    function openDebug() as Void {
+        var debugMenu = new WatchUi.Menu2({:title=>"Debug"});
+        debugMenu.addItem(new WatchUi.MenuItem("Enemies", "Spawn enemies", :debug_enemies, null));
+        debugMenu.addItem(new WatchUi.MenuItem("Items", "Spawn items", :debug_items, null));
+        debugMenu.addItem(new WatchUi.MenuItem("Player Stats", "Modify player state", :debug_player, null));
+        WatchUi.pushView(debugMenu, new DCDebugMenuDelegate(), WatchUi.SLIDE_UP);
+    }
+
+    (:release)
+    function openDebug() as Void {
+        // No debug menu in release builds
     }
 
     function saveGame() as Void {

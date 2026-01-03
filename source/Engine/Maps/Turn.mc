@@ -10,7 +10,7 @@ class Turn {
 
     private var _autosave as Boolean = false;
 
-    private var MIN_ENERGY = 100;
+    private var MIN_ENERGY = $.Constants.MIN_ENERGY_PER_TURN;
 
 
     function initialize(view as DCGameView, player as Player, room as Room, map_data as Dictionary) {

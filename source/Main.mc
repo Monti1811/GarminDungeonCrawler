@@ -272,8 +272,8 @@ module Main {
 			];
 		}
 
-		// Ensure a minimum of 1 enemy in the room
-		num_enemies = MathUtil.max(1, Math.floor(num_enemies));
+		// Ensure a minimum of 1, maximum of 15 enemies in the room
+		num_enemies = MathUtil.clamp(Math.floor(num_enemies), 1, $.Constants.MAX_ENEMIES_PER_ROOM);
 
 		// Determine enemy difficulty points
 		var enemy_points = base_enemy_points + Math.floor(depth * difficulty_factor + depth_sqrt * room_size_scaling);
