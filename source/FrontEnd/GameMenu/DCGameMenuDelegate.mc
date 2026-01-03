@@ -152,6 +152,11 @@ class DCGameMenuDelegate extends WatchUi.Menu2InputDelegate {
         WatchUi.pushView(debugMenu, new DCDebugMenuDelegate(), WatchUi.SLIDE_UP);
     }
 
+    (:release)
+    function openDebug() as Void {
+        // No debug menu in release builds
+    }
+
     function saveGame() as Void {
         $.SaveData.saveGame();
         WatchUi.popView(WatchUi.SLIDE_DOWN);
