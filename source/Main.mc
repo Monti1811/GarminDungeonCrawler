@@ -79,7 +79,7 @@ module Main {
 		var size_x = MathUtil.random(2, max_rooms);
 		var size_y = MathUtil.random(2, max_rooms);
 		var dungeon = new Dungeon(size_x, size_y);
-		if (($.Game.depth % 25 == 0) && ($.MathUtil.random(0, 100) < 50)) {
+		if (($.Game.depth > 0) && ($.Game.depth % 25 == 0) && ($.MathUtil.random(0, 100) < 50)) {
 			dungeon.setStyle(DUNGEONSTYLE_BOSS);
 		}
 		dungeon.connectRoomsRandomly();
