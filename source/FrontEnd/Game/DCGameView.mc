@@ -23,6 +23,7 @@ class DCGameView extends WatchUi.View {
     function initialize(player as Player, room as Room, options as Dictionary?) {
         View.initialize();
         var map_data = room.getMapData();
+        var map_string = room.getMap().getMapString();
         _tile_width = map_data[:tile_width] as Number;
         _tile_height = map_data[:tile_height] as Number;
         var turns = new Turn(self, player, room, map_data);
@@ -34,7 +35,7 @@ class DCGameView extends WatchUi.View {
             :tile_width=>_tile_width, 
             :tile_height=>_tile_height, 
             :map=>map_data[:map],
-            :map_string=>map_data[:map_string]
+            :map_string=>map_string
         });
 
 		_timer = new Timer.Timer();

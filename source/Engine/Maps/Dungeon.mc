@@ -5,6 +5,13 @@ import Toybox.System;
 import Toybox.Application;
 import Toybox.Application.Storage;
 
+enum DungeonStyle {
+    DUNGEONSTYLE_NORMAL,
+    DUNGEONSTYLE_FIRE,
+    DUNGEONSTYLE_ICE,
+    DUNGEONSTYLE_BOSS
+}
+
 class Dungeon {
 
 	private var _rooms as Array<Array<String?>>;
@@ -13,6 +20,8 @@ class Dungeon {
 	private var _current_room_position as Point2D?;
 	private var _size as Point2D;
 	private var _connections as Dictionary<String, Dictionary<WalkDirection, Boolean>> = {};
+	private var _style as DungeonStyle = DUNGEONSTYLE_NORMAL;
+
 
 	function initialize(size_x as Number, size_y as Number) {
 		_size = [size_x, size_y];
@@ -20,8 +29,24 @@ class Dungeon {
 		for (var i = 0; i < size_x; i++) {
 			_rooms[i] = new Array<String?>[size_y];
 		}
-
+		var style_chances = {
+			DUNGEONSTYLE_NORMAL => 50,
+			DUNGEONSTYLE_FIRE => 25,
+			DUNGEONSTYLE_ICE => 25
+		} as Dictionary;
+		_style = $.MathUtil.weighted_random(style_chances);
+		Toybox.System.println("Dungeon style set to " + _style);
 	}
+
+	function setStyle(style as DungeonStyle) {
+		_style = style;
+	}
+
+	function getStyle() as DungeonStyle {
+		return _style;
+	}
+
+	
 
 	function addRoom(room as Room, pos as Point2D) {
 		// Save the room and save the save string of the room in the dungeon
@@ -277,7 +302,8 @@ class Dungeon {
 		var data = {
 			"size" => _size,
 			"current_room_position" => _current_room_position,
-			"rooms" => new Array<String?>[_size[0] * _size[1]]
+			"rooms" => new Array<String?>[_size[0] * _size[1]],
+			"style" => _style
 		};
 		saveCurrentRoom();
 		for (var i = 0; i < _size[0]; i++) {
@@ -291,6 +317,10 @@ class Dungeon {
 	}
 
 	function onLoad(data as Dictionary) as Void {
+		self._style = data["style"] as DungeonStyle?;
+		if (self._style == null) {
+			self._style = DUNGEONSTYLE_NORMAL;
+		}
 		var rooms = data["rooms"] as Array<String?>;
 		for (var i = 0; i < _size[0]; i++) {
 			for (var j = 0; j < _size[1]; j++) {

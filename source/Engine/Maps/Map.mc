@@ -161,29 +161,62 @@ class Map {
         return null;
     }
 
-	// The tiles are created from a font, so we need to map the tile types to characters
-	function getMapChar(tile as Tile?) as Number {
-		if (tile == null) {
-			return 36;
+	function getDungeonStyleTranslation() as Dictionary<TileType, Number> {
+		var dungeonStyle = $.Game.getDungeon().getStyle();
+		switch (dungeonStyle) {
+			case DUNGEONSTYLE_NORMAL:
+				return {
+					WALL => 33,
+					PASSABLE => 32,
+					STAIRS => 34,
+					EMPTY => 36
+				} as Dictionary<TileType, Number>;
+			case DUNGEONSTYLE_FIRE:
+				return {
+					WALL => 33,
+					PASSABLE => 40,
+					STAIRS => 34,
+					EMPTY => 36
+				} as Dictionary<TileType, Number>;
+			case DUNGEONSTYLE_BOSS:
+				return {
+					WALL => 41,
+					PASSABLE => 37,
+					STAIRS => 34,
+					EMPTY => 36
+				} as Dictionary<TileType, Number>;
+			case DUNGEONSTYLE_ICE:
+				return {
+					WALL => 33,
+					PASSABLE => 38,
+					STAIRS => 34,
+					EMPTY => 35
+				} as Dictionary<TileType, Number>;
+			default:
+				return {
+					WALL => 33,
+					PASSABLE => 32,
+					STAIRS => 34,
+					EMPTY => 36
+				} as Dictionary<TileType, Number>;
 		}
-        switch (tile.type) {
-            case WALL:
-                return 33;
-            case PASSABLE:
-                return 32;
-            case STAIRS:
-                return 34;
-            default:
-                return 36;
-        }
+	}
+
+	// The tiles are created from a font, so we need to map the tile types to characters
+	function getMapChar(tile as Tile?, translation as Dictionary<TileType, Number>) as Number {
+		if (tile == null) {
+			return translation[EMPTY];
+		}
+		return translation[tile.type];
     }
 
 	function mapToString() as Array<String> {
+		var translation = self.getDungeonStyleTranslation();
 		var map_string = [] as Array<String>;
 		for (var j = 0; j < self._height; j++) {
 			var row = "";
 			for (var i = 0; i < self._width; i++) {
-				row += getMapChar(_tiles[i][j]).toChar();
+				row += getMapChar(_tiles[i][j], translation).toChar();
 			}
 			map_string.add(row);
 		}

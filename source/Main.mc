@@ -10,9 +10,9 @@ module Main {
 		switch(state) {
 			case 1:
 				dungeon.addStairs();
+				dungeon.addMerchant();
 				break;
 			case 2:
-				dungeon.addMerchant();
 				dungeon.addQuestGiver();
 				var app = getApp();
 				app.setCurrentDungeon(dungeon);
@@ -79,6 +79,9 @@ module Main {
 		var size_x = MathUtil.random(2, max_rooms);
 		var size_y = MathUtil.random(2, max_rooms);
 		var dungeon = new Dungeon(size_x, size_y);
+		if (($.Game.depth % 25 == 0) && ($.MathUtil.random(0, 100) < 50)) {
+			dungeon.setStyle(DUNGEONSTYLE_BOSS);
+		}
 		dungeon.connectRoomsRandomly();
 		$.Game.initMap(size_x, size_y);
 		return dungeon;

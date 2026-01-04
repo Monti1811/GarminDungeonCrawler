@@ -96,8 +96,7 @@ class Room {
             :tile_height => _tile_height,
             :start_pos => _start_pos,
             :player_pos => _player_pos,
-            :map => _map,
-            :map_string => _map.getMapString()
+            :map => _map
         };
     }
 
@@ -324,7 +323,7 @@ class Room {
     }
 
     function createStairs(room_pos as Point2D) as Void {
-        addStairs(null, true);
+        addStairs(null, false);
         $.Game.setRoomWithFlag(room_pos, HAS_STAIRS, _stairs);
     }
 
