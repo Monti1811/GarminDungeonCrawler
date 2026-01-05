@@ -98,7 +98,7 @@ class Enemy extends Entity {
 
 	function getLoot() as Item? {
 		var player = $.Game.getPlayer();
-		if (player.id == 2/*ARCHER*/ && MathUtil.random(0, 100) < 25) {
+		if (player.id == 2/*ARCHER*/ && MathUtil.isRandomPercent(25)) {
 			var right_hand_equip = player.getEquip(RIGHT_HAND);
 			if (right_hand_equip instanceof Bow) {
 				var arrows = new Arrow();
@@ -114,7 +114,7 @@ class Enemy extends Entity {
 			arrows.amount = MathUtil.random(1, 3);
 			return arrows;
 		}
-		if (MathUtil.random(0, 100) < 50) {
+		if (MathUtil.isRandomPercent(50)) {
 			var gold = new Gold();
 			gold.amount = MathUtil.random(1, 10);
 			return gold;

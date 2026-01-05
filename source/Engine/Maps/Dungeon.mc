@@ -141,7 +141,7 @@ class Dungeon {
 	}
 
 	function addMerchant() as Void {
-		if (MathUtil.random(0, 100) < 50) {
+		if (MathUtil.isRandomPercent(50)) {
 			return;
 		}
 		var max_tries = 100;
@@ -160,7 +160,7 @@ class Dungeon {
 	}
 
 	function addQuestGiver() as Void {
-		if (MathUtil.random(0, 100) < 75) {
+		if (MathUtil.isRandomPercent(75)) {
 			return;
 		}
 		var max_tries = 100;
