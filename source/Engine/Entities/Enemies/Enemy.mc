@@ -102,14 +102,17 @@ class Enemy extends Entity {
 			var right_hand_equip = player.getEquip(RIGHT_HAND);
 			if (right_hand_equip instanceof Bow) {
 				var arrows = new Arrow();
-				arrows.amount = MathUtil.random(1, 3);
+				arrows.amount = MathUtil.random(2, 5);
 				return arrows;
 			}
 			if (right_hand_equip instanceof CrossBow) {
 				var bolts = new Bolt();
-				bolts.amount = MathUtil.random(1, 3);
+				bolts.amount = MathUtil.random(2, 5);
 				return bolts;
 			}
+			var arrows = new Arrow();
+			arrows.amount = MathUtil.random(1, 3);
+			return arrows;
 		}
 		if (MathUtil.random(0, 100) < 50) {
 			var gold = new Gold();
