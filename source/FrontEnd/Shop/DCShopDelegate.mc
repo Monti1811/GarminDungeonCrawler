@@ -102,27 +102,33 @@ class DCShopBuyOptionsDelegate extends WatchUi.Menu2InputDelegate {
         if (amount <= 0) {
             return;
         }
+        // Check if the player can buy the amount
         var player = getApp().getPlayer();
         var cost = item.getValue() * amount;
         var can_buy = player.doGoldDelta(-cost);
-        if (can_buy) {
-            var purchased_item = item.deepcopy();
-            purchased_item.setAmount(amount);
-            player.addInventoryItem(purchased_item);
-            purchased_item.onBuyItem(player);
-            item.setAmount(item.getAmount() - amount);
-            $.SaveData.discovered_items[item.id] = true;
-            var index = buyMenu.findItemById(item);
-            if (item.getAmount() == 0) {
-                buyMenu.deleteItem(index);
-                merchant.removeSellableItem(item);
-            } else {
-                buyMenu.updateItem(new WatchUi.IconMenuItem(item.getName() + " x" + item.getAmount(), "Cost: " + item.getValue() + " gold", item, new DCItemIcon(item), null), index);
-            }
-            $.Log.log("Bought " + amount + " x " + item.getName() + " for " + cost + " gold.");
-        } else {
+        if (!can_buy) {
             WatchUi.showToast("Not enough gold", {:icon=>Rez.Drawables.cancelToastIcon});
+            return;
         }
+        if (player.getInventory().wouldBeFull(self.item)) {
+            WatchUi.showToast("Not enough inventory space", {:icon=>Rez.Drawables.cancelToastIcon});
+            return;
+        }
+        
+        var purchased_item = item.deepcopy();
+        purchased_item.setAmount(amount);
+        player.addInventoryItem(purchased_item);
+        purchased_item.onBuyItem(player);
+        item.setAmount(item.getAmount() - amount);
+        $.SaveData.discovered_items[item.id] = true;
+        var index = buyMenu.findItemById(item);
+        if (item.getAmount() == 0) {
+            buyMenu.deleteItem(index);
+            merchant.removeSellableItem(item);
+        } else {
+            buyMenu.updateItem(new WatchUi.IconMenuItem(item.getName() + " x" + item.getAmount(), "Cost: " + item.getValue() + " gold", item, new DCItemIcon(item), null), index);
+        }
+        $.Log.log("Bought " + amount + " x " + item.getName() + " for " + cost + " gold.");
     }
 
     function showInfo(item as Item) {
