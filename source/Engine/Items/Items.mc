@@ -936,7 +936,7 @@ module Items {
     }
 
     function createKey() as Item {
-        return new KeyItem();
+        return new Key();
     }
 
     function createGold() as Item {

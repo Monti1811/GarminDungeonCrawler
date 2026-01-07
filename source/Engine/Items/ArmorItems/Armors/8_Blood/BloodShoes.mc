@@ -5,8 +5,8 @@ class BloodShoes extends ArmorItem {
 	function initialize() {
 		ArmorItem.initialize();
 		id = 1083; // Updated ID
-		name = "Demon Shoes";
-		description = "Some demon shoes";
+		name = "Blood Shoes";
+		description = "Some blood shoes";
 		value = 1200;
 		weight = 3;
 		slot = FEET;
