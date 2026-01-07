@@ -14,7 +14,7 @@ class Demonolog extends Enemy {
 		damage = 20;
 		current_health = 200;
 		maxHealth = current_health;
-		energy_per_turn = 100; 
+		energy_per_turn = 67; 
         armor = 0;
         kill_experience = 300;
 	}

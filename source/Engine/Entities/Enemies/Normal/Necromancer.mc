@@ -14,7 +14,7 @@ class Necromancer extends Enemy {
 		damage = 20;
 		current_health = 50;
 		maxHealth = 50;
-		energy_per_turn = 100; 
+		energy_per_turn = 67; 
         armor = 0;
         kill_experience = 125;
 	}
