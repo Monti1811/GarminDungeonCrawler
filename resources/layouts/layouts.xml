@@ -2,9 +2,9 @@
     
     <layout id="DCPlayerDetailsEquipmentsViewHint" >
 
-		<bitmap id="rightLow" personality="
-            system_icon_light__hint_button_right_bottom
-            system_loc__hint_button_right_bottom" />
+		<bitmap id="rightTop" personality="
+            system_icon_light__hint_button_right_top
+            system_loc__hint_button_right_top" />
     </layout>
 
 	<layout id="DCPlayerDetailsEquipmentsViewCreation" >
@@ -32,9 +32,9 @@
     </layout>
 
     <layout id="DCAttributesViewHint" >
-        <bitmap id="actionMenu" personality="
-            system_icon_light__hint_button_action_menu
-            system_loc__hint_button_action_menu" />
+        <bitmap id="rightTop" personality="
+            system_icon_light__hint_button_right_top
+            system_loc__hint_button_right_top" />
     </layout>
 
 

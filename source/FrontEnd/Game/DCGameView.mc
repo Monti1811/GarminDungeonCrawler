@@ -95,10 +95,6 @@ class DCGameView extends WatchUi.View {
         _tile_height = map_data[:tile_height] as Number;
     }
 
-    // Load your resources here
-    function onLayout(dc as Dc) as Void {
-    }
-
     // Called when this View is brought to the foreground. Restore
     // the state of this View and prepare it to be shown. This includes
     // loading resources into memory.
@@ -115,9 +111,11 @@ class DCGameView extends WatchUi.View {
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_BLACK);
         dc.clear();
 
-        _room_drawable.drawAll(dc, $.Game.getCurrentRoom());
+        
 		// Draw layout hint
 		View.onUpdate(dc);
+
+        _room_drawable.drawAll(dc, $.Game.getCurrentRoom());
 
 		drawPlayer(dc);
         addPlayerDamage();
@@ -131,19 +129,34 @@ class DCGameView extends WatchUi.View {
     }
 
     function drawHealth(dc as Dc, player as Player) as Void {
+        var center_x = (Constants.SCREEN_WIDTH / 2).toNumber();
+        var center_y = (Constants.SCREEN_HEIGHT / 2).toNumber();
+        var min_size = $.MathUtil.min(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
+        var bar_radius = (min_size * 175 / 360).toNumber();
+        var outer_outline_radius = (min_size * 178 / 360).toNumber();
+        var inner_outline_radius = (min_size * 172 / 360).toNumber();
+        var line_x1 = (Constants.SCREEN_WIDTH * 5 / 360).toNumber();
+        var line_y1 = (Constants.SCREEN_HEIGHT * 149 / 360).toNumber();
+        var line_x2 = (Constants.SCREEN_WIDTH * 11 / 360).toNumber();
+        var line_y2 = (Constants.SCREEN_HEIGHT * 150 / 360).toNumber();
+        var line2_x1 = (Constants.SCREEN_WIDTH * 150 / 360).toNumber();
+        var line2_y1 = (Constants.SCREEN_HEIGHT * 11 / 360).toNumber();
+        var line2_x2 = (Constants.SCREEN_WIDTH * 149 / 360).toNumber();
+        var line2_y2 = (Constants.SCREEN_HEIGHT * 5 / 360).toNumber();
+
         // Draw health bar
         dc.setColor(Graphics.COLOR_DK_RED, Graphics.COLOR_BLACK);
         var health_percent = player.getHealthPercent();
         var bar_percent = (70 * health_percent).toNumber();
         dc.setPenWidth(5);
-        dc.drawArc(180, 180, 175, Graphics.ARC_CLOCKWISE, 170, $.MathUtil.min(170, 170 - bar_percent));
+        dc.drawArc(center_x, center_y, bar_radius, Graphics.ARC_CLOCKWISE, 170, $.MathUtil.min(170, 170 - bar_percent));
         // Draw health bar outline
         dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_BLACK);
         dc.setPenWidth(1);
-        dc.drawArc(180, 180, 178, Graphics.ARC_CLOCKWISE, 170, 100);
-        dc.drawArc(180, 180, 172, Graphics.ARC_CLOCKWISE, 170, 100);
-        dc.drawLine(5, 149, 11, 150);
-        dc.drawLine(150, 11, 149, 5);
+        dc.drawArc(center_x, center_y, outer_outline_radius, Graphics.ARC_CLOCKWISE, 170, 100);
+        dc.drawArc(center_x, center_y, inner_outline_radius, Graphics.ARC_CLOCKWISE, 170, 100);
+        dc.drawLine(line_x1, line_y1, line_x2, line_y2);
+        dc.drawLine(line2_x1, line2_y1, line2_x2, line2_y2);
     }
 
     private const bar_to_fn as Dictionary<Symbol, Symbol> = {
@@ -154,20 +167,35 @@ class DCGameView extends WatchUi.View {
         if (player.second_bar == null) {
             return;
         }
+        var center_x = (Constants.SCREEN_WIDTH / 2).toNumber();
+        var center_y = (Constants.SCREEN_HEIGHT / 2).toNumber();
+        var min_size = $.MathUtil.min(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
+        var bar_radius = (min_size * 175 / 360).toNumber();
+        var outer_outline_radius = (min_size * 178 / 360).toNumber();
+        var inner_outline_radius = (min_size * 172 / 360).toNumber();
+        var line_x1 = (Constants.SCREEN_WIDTH * 355 / 360).toNumber();
+        var line_y1 = (Constants.SCREEN_HEIGHT * 149 / 360).toNumber();
+        var line_x2 = (Constants.SCREEN_WIDTH * 349 / 360).toNumber();
+        var line_y2 = (Constants.SCREEN_HEIGHT * 150 / 360).toNumber();
+        var line2_x1 = (Constants.SCREEN_WIDTH * 210 / 360).toNumber();
+        var line2_y1 = (Constants.SCREEN_HEIGHT * 11 / 360).toNumber();
+        var line2_x2 = (Constants.SCREEN_WIDTH * 211 / 360).toNumber();
+        var line2_y2 = (Constants.SCREEN_HEIGHT * 5 / 360).toNumber();
+
         var method = new Lang.Method(self, bar_to_fn[player.second_bar]);
         var bar_values = method.invoke(player) as [Numeric, Numeric];
         // Draw second bar
         dc.setColor(bar_values[0], Graphics.COLOR_BLACK);
         dc.setPenWidth(5);
         var val = MathUtil.clamp(10 + bar_values[1], 11, 80);
-        dc.drawArc(180, 180, 175, Graphics.ARC_CLOCKWISE, val, 10);
+        dc.drawArc(center_x, center_y, bar_radius, Graphics.ARC_CLOCKWISE, val, 10);
         // Draw health bar outline
         dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_BLACK);
         dc.setPenWidth(1);
-        dc.drawArc(180, 180, 178, Graphics.ARC_CLOCKWISE, 80, 10);
-        dc.drawArc(180, 180, 172, Graphics.ARC_CLOCKWISE, 80, 10);
-        dc.drawLine(355, 149, 349, 150);
-        dc.drawLine(210, 11, 211, 5);
+        dc.drawArc(center_x, center_y, outer_outline_radius, Graphics.ARC_CLOCKWISE, 80, 10);
+        dc.drawArc(center_x, center_y, inner_outline_radius, Graphics.ARC_CLOCKWISE, 80, 10);
+        dc.drawLine(line_x1, line_y1, line_x2, line_y2);
+        dc.drawLine(line2_x1, line2_y1, line2_x2, line2_y2);
     }
 
     function drawManaBar(player as Player) as [Numeric, Numeric] {
@@ -237,7 +265,6 @@ class DCGameView extends WatchUi.View {
             _autosave_timer.stop();
             _autosave_timer = null;
         }
-        rightLowHint = null;
         damage_texts = [];
     }
 

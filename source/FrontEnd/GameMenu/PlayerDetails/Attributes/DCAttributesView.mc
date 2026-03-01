@@ -17,8 +17,6 @@ class DCPlayerDetailsAttributesView extends WatchUi.View {
 	private var rectangle_width as Number;
 	private var tableentry_size as Number;
 
-	private var accept as Bitmap?;
-	private var cancel as Bitmap?;
 	private var layout_type as Number = 0;
 	
 	function initialize(player as Player, withHint as Boolean, creation as Boolean) {
@@ -40,12 +38,6 @@ class DCPlayerDetailsAttributesView extends WatchUi.View {
 		}
 		if (creation) {
 			layout_type = 2;
-			var accept_x = (Constants.SCREEN_WIDTH * 300 / 360).toNumber();
-			var accept_y = (Constants.SCREEN_HEIGHT * 60 / 360).toNumber();
-			var cancel_x = (Constants.SCREEN_WIDTH * 290 / 360).toNumber();
-			var cancel_y = (Constants.SCREEN_HEIGHT * 220 / 360).toNumber();
-			accept = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTopAccept, :locX=>accept_x, :locY=>accept_y});
-			cancel = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightBottomCancel, :locX=>cancel_x, :locY=>cancel_y});
 		}
 	}
 
@@ -69,10 +61,6 @@ class DCPlayerDetailsAttributesView extends WatchUi.View {
 		drawTable(dc);
 		drawEntries(dc);
 		//drawPlusMinus(dc);
-		if (accept != null) {
-			accept.draw(dc);
-			cancel.draw(dc);
-		}
 	}
 
 	function drawTable(dc as Dc) as Void {
@@ -80,8 +68,9 @@ class DCPlayerDetailsAttributesView extends WatchUi.View {
 		var title_y = (Constants.SCREEN_HEIGHT * 50 / 360).toNumber();
 		dc.drawText(title_x, title_y, Graphics.FONT_TINY, "Attributes (" + _player.getAttributePoints() + ")", Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
 		dc.drawRectangle(rectangle_x, rectangle_y, rectangle_width, rectangle_width);
-		for (var i = rectangle_x + tableentry_size; i < rectangle_x + rectangle_width; i += tableentry_size) {
-			dc.drawLine(rectangle_x, i, rectangle_x + rectangle_width, i);
+		for (var i = 1; i < 7; i += 1) {
+			var y = rectangle_x + i * tableentry_size;
+			dc.drawLine(rectangle_x, y, rectangle_x + rectangle_width, y);
 		}
 	}
 

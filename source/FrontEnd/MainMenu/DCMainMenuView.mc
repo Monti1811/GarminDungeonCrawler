@@ -36,7 +36,7 @@ class DCMainMenuView extends WatchUi.View {
         var x2 = x + text_dimensions[0]/2 + padding;
         var y1 = y - text_dimensions[1]/2 - padding;
         var y2 = y + text_dimensions[1]/2 + padding;
-        Toybox.System.println("Button " + text + " pos: " + x1 + "," + y1 + " to " + x2 + "," + y2);
+        //Toybox.System.println("Button " + text + " pos: " + x1 + "," + y1 + " to " + x2 + "," + y2);
         return [x1, x2, y1, y2];
     }
 

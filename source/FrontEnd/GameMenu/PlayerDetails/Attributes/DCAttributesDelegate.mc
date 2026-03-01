@@ -4,11 +4,11 @@ import Toybox.WatchUi;
 
 class DCPlayerDetailsAttributesDelegate extends WatchUi.BehaviorDelegate {
 
-    private const action_menu_area = [
+    /*private const action_menu_area = [
         Constants.SCREEN_WIDTH/2 - 80/360 * Constants.SCREEN_WIDTH, 
         Constants.SCREEN_WIDTH/2 + 80/360 * Constants.SCREEN_WIDTH, 
         Constants.SCREEN_HEIGHT - 70/360 * Constants.SCREEN_HEIGHT, 
-        Constants.SCREEN_HEIGHT] as Array<Numeric>;
+        Constants.SCREEN_HEIGHT] as Array<Numeric>;*/
 
     public var changed_attributes as Dictionary<Symbol, Number>;
 
@@ -35,6 +35,15 @@ class DCPlayerDetailsAttributesDelegate extends WatchUi.BehaviorDelegate {
         return true;
     }
 
+    // Detect Menu button input
+    function onKey(keyEvent as KeyEvent) as Boolean {
+        if (keyEvent.getKey() == KEY_ENTER) {
+            showActionMenu();
+        }
+        return true;
+    }
+
+    /*
     function onTap(clickEvent as ClickEvent) as Boolean {
         if (clickEvent.getType() == CLICK_TYPE_TAP) {
             var coord = clickEvent.getCoordinates();
@@ -45,6 +54,7 @@ class DCPlayerDetailsAttributesDelegate extends WatchUi.BehaviorDelegate {
         }
         return false;
     }
+    */
 
     function showActionMenu() as Void{
         var points_available = changed_attributes[:available] - changed_attributes[:total_used];

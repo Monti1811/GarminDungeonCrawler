@@ -188,8 +188,8 @@ Common types: `Point2D`, `ResourceId` (for Rez assets), `PropertyKeyType`/`Prope
 **Critical**: Use dynamic screen sizing for device compatibility:
 
 1. **Screen dimensions** (`Engine/Util/Constants.mc`):
-   - `Constants.SCREEN_WIDTH` = `System.getDeviceSettings().screenWidth`
-   - `Constants.SCREEN_HEIGHT` = `System.getDeviceSettings().screenHeight`
+   - `$.Constants.SCREEN_WIDTH` = `System.getDeviceSettings().screenWidth`
+   - `$.Constants.SCREEN_HEIGHT` = `System.getDeviceSettings().screenHeight`
    - Never hardcode pixel values - calculate relative to screen size
 
 2. **Positioning patterns**:

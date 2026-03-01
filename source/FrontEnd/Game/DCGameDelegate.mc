@@ -37,7 +37,9 @@ class DCGameDelegate extends WatchUi.BehaviorDelegate {
 
     function onTap(clickEvent as ClickEvent) as Boolean {
         var coord = clickEvent.getCoordinates() as Array<Number>;
-        if (coord[0] > 180 && coord[1] > 180) {
+        var center_x = Constants.SCREEN_WIDTH / 2;
+        var center_y = Constants.SCREEN_HEIGHT / 2;
+        if (coord[0] > center_x && coord[1] > center_y) {
             if (MathUtil.isInTriangleArray(coord, _down_array)) {
                 _view.getTurns().doTurn(DOWN);
                 return true;
@@ -45,7 +47,7 @@ class DCGameDelegate extends WatchUi.BehaviorDelegate {
                 _view.getTurns().doTurn(RIGHT);
                 return true;
             }
-        } else if (coord[0] < 180 && coord[1] > 180) {
+        } else if (coord[0] < center_x && coord[1] > center_y) {
             if (MathUtil.isInTriangleArray(coord, _down_array)) {
                 _view.getTurns().doTurn(DOWN);
                 return true;
@@ -53,7 +55,7 @@ class DCGameDelegate extends WatchUi.BehaviorDelegate {
                 _view.getTurns().doTurn(LEFT);
                 return true;
             }
-        } else if (coord[0] > 180 && coord[1] < 180) {
+        } else if (coord[0] > center_x && coord[1] < center_y) {
             if (MathUtil.isInTriangleArray(coord, _up_array)) {
                 _view.getTurns().doTurn(UP);
                 return true;
@@ -61,7 +63,7 @@ class DCGameDelegate extends WatchUi.BehaviorDelegate {
                 _view.getTurns().doTurn(RIGHT);
                 return true;
             }
-        } else if (coord[0] < 180 && coord[1] < 180) {
+        } else if (coord[0] < center_x && coord[1] < center_y) {
             if (MathUtil.isInTriangleArray(coord, _up_array)) {
                 _view.getTurns().doTurn(UP);
                 return true;
