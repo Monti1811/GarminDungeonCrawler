@@ -7,6 +7,8 @@ module Constants {
 
 	public const MAX_ATTRIBUTE_POINTS = 500;
 	public const MIN_ATTRIBUTE_POINTS = 0;
+	public const MIN_ENERGY_PER_TURN = 100;
+	public const MAX_ENEMIES_PER_ROOM = 15;
 
 	public const SCREEN_WIDTH = Toybox.System.getDeviceSettings().screenWidth;
 	public const SCREEN_HEIGHT = Toybox.System.getDeviceSettings().screenHeight;

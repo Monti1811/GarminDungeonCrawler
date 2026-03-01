@@ -5,7 +5,6 @@ import Toybox.WatchUi;
 
 class Player extends Entity {
 
-	var id = 0;
 	var current_health as Number = 30;
 	var maxHealth as Number = 30;
 	var second_bar as Symbol?;
@@ -16,6 +15,15 @@ class Player extends Entity {
 	var experience as Number = 0;
 	var next_level_experience as Number = 100;
 	var attributes as Dictionary<Symbol, Number> = {
+		:strength=> 0,
+		:constitution=> 0,
+		:dexterity=> 0,
+		:intelligence=> 0,
+		:wisdom=> 0,
+		:charisma=> 0,
+		:luck=> 0
+	};
+	var added_attributes as Dictionary<Symbol, Number> = {
 		:strength=> 0,
 		:constitution=> 0,
 		:dexterity=> 0,
@@ -111,8 +119,7 @@ class Player extends Entity {
 					equipItem(item, item.slot, false)) {
 				item.onPickupItem(me);
 				return true;
-			} else if (!inventory.wouldBeFull(item)) {
-				inventory.add(item);
+			} else if (addInventoryItem(item)) {
 				item.onPickupItem(me);
 				return true;
 			}
@@ -121,7 +128,14 @@ class Player extends Entity {
 	}
 
 	function addInventoryItem(item as Item) as Boolean {
-		if (!inventory.isFull()) {
+		if (!inventory.wouldBeFull(item)) {
+			if (item.type == WEAPON && item instanceof Ammunition) {
+				// If the ammunition is the same as the currently equipped, add to that stack
+				if (isSameAmmunition(item)) {
+					equipped[AMMUNITION].amount += item.amount;
+					return true;
+				}
+			}
 			inventory.add(item);
 			return true;
 		}
@@ -194,11 +208,15 @@ class Player extends Entity {
 
 	function onGainExperience(amount as Number) as Void {
 		experience += amount;
+		var has_leveled_up = false;
 		while (experience >= next_level_experience) {
 			onLevelUp();
+			has_leveled_up = true;
 		}
-		// Show toast of new level
-		WatchUi.showToast("Leveled up to Level " + level + "!", {:icon=>Rez.Drawables.aboutToastIcon});
+		if (has_leveled_up) {
+			// Show toast of new level
+			WatchUi.showToast("Leveled up to Level " + level + "!", {:icon=>Rez.Drawables.aboutToastIcon});
+		}
 	}
 
 	function onLoseExperience(amount as Number) as Void {
@@ -260,12 +278,12 @@ class Player extends Entity {
 	}
 
 	function addToAttribute(attribute as Symbol, amount as Number) as Void {
-		attributes[attribute] = MathUtil.floor(attributes[attribute] + amount, Constants.MAX_ATTRIBUTE_POINTS);
+		added_attributes[attribute] += amount;
 		onGainAttribute(attribute, amount);
 	}
 
 	function removeFromAttribute(attribute as Symbol, amount as Number) as Void {
-		attributes[attribute] = MathUtil.ceil(attributes[attribute] - amount, Constants.MIN_ATTRIBUTE_POINTS);
+		added_attributes[attribute] -= amount;
 		onLoseAttribute(attribute, amount);
 	}
 
@@ -282,7 +300,8 @@ class Player extends Entity {
 	}
 
 	function getAttribute(attribute as Symbol) as Number {
-		return attributes[attribute];
+		var att_level = attributes[attribute] + added_attributes[attribute];
+		return MathUtil.clamp(att_level, Constants.MIN_ATTRIBUTE_POINTS, Constants.MAX_ATTRIBUTE_POINTS);
 	}
 
 	function getAttributePoints() as Number {
@@ -584,9 +603,8 @@ class Player extends Entity {
 				var slot = equipped_save_keys[i] as ItemSlot;
 				var item_data = equipped_save[slot] as Dictionary?;
 				if (item_data != null && item_data["id"] != null) {
-					var item = Items.createItemFromId(item_data["id"]);
+					var item = Item.load(item_data);
 					if (item != null) {
-						item.onLoad(item_data);
 						self.equipItem(item, slot, null);
 					}
 				}
@@ -596,6 +614,10 @@ class Player extends Entity {
 			gold = save_data["gold"] as Number;
 		}
 
+	}
+
+	function freeMemory() as Void {
+		
 	}
 
 }

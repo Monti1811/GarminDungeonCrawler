@@ -633,6 +633,14 @@ module Items {
         return new CrossBow();
     }
 
+    function createOakCrossBow() as Item {
+        return new OakCrossBow();
+    }
+
+    function createHellCrossBow() as Item {
+        return new HellCrossBow();
+    }
+
    
 
 // Armors
@@ -928,7 +936,7 @@ module Items {
     }
 
     function createKey() as Item {
-        return new KeyItem();
+        return new Key();
     }
 
     function createGold() as Item {

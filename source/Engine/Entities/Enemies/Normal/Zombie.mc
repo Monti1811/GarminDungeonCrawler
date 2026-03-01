@@ -5,7 +5,7 @@ class Zombie extends Enemy {
 	function initialize() {
 		Enemy.initialize();
 		id = 8;
-		name = "Small Zombie";
+		name = "Zombie";
 		damage = 15;
 		current_health = 125;
 		maxHealth = 125;

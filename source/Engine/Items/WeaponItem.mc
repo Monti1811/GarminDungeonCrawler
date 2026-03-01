@@ -100,7 +100,7 @@ class WeaponItem extends EquippableItem {
 		}
 
 		var luck = player.getAttribute(:luck) * attribute_modifiers[:luck];
-		if (enemy != null && MathUtil.random(0, 100) < luck) {
+		if (enemy != null && MathUtil.isRandomPercent(luck)) {
 			attack *= 1.25;
 		}
 		return attack.toNumber();
@@ -139,7 +139,7 @@ class WeaponItem extends EquippableItem {
 			return;
 		}
 		var effect = $.ElementUtil.buildElementalEffect(chosen_element, damage);
-		if (effect.size() > 0 && MathUtil.random(0, 100) < 25) {
+		if (effect.size() > 0 && MathUtil.isRandomPercent(25)) {
 			enemy.applyElementalEffect(chosen_element, effect[:power], effect[:turns]);
 		}
 	}

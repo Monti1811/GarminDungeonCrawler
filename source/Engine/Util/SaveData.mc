@@ -12,6 +12,10 @@ module SaveData {
 
 	var _save_data as Dictionary<PropertyKeyType, PropertyValueType> = {};
 
+	// Compendium tracking
+	var discovered_enemies as Dictionary<Number, Boolean> = {};
+	var discovered_items as Dictionary<Number, Boolean> = {};
+
 
 	public function init() as Void {
 		loadSaves();
@@ -56,6 +60,8 @@ module SaveData {
 		clear();
 		saves = {};
 		current_save_num = 0;
+		discovered_enemies = {};
+		discovered_items = {};
 	}
 
 	public function loadFromMemory() {
@@ -84,6 +90,8 @@ module SaveData {
 			"game" => $.Game.save(),
 			"entitymanager" => $.EntityManager.save(),
 			"quests" => $.Quests.save(),
+			"discovered_enemies" => discovered_enemies.keys(),
+			"discovered_items" => discovered_items.keys(),
 		} as Dictionary<PropertyKeyType, PropertyValueType>;
 		Toybox.System.println("Saving game to " + chosen_save);
 		Toybox.System.println("Data: " + data);
@@ -94,7 +102,8 @@ module SaveData {
 			playerData["name"] as PropertyValueType, 
 			data["level"] as PropertyValueType, 
 			gameData["depth"] as PropertyValueType, 
-			gameData["time_played"] as PropertyValueType
+			gameData["time_played"] as PropertyValueType,
+			playerData["id"] as PropertyValueType
 		] as Array<PropertyValueType>;
 		saveToMemory(data_to_show);
 		_save_data = {};
@@ -113,6 +122,22 @@ module SaveData {
 		$.Game.load(data["game"] as Dictionary);
 		$.Quests.load(data["quests"] as Dictionary?);
 		$.EntityManager.load(data["entitymanager"] as Dictionary);
+		
+		// Load compendium data
+		discovered_enemies = {};
+		discovered_items = {};
+		var enemy_ids = data["discovered_enemies"] as Array?;
+		if (enemy_ids != null) {
+			for (var i = 0; i < enemy_ids.size(); i++) {
+				discovered_enemies[enemy_ids[i]] = true;
+			}
+		}
+		var item_ids = data["discovered_items"] as Array?;
+		if (item_ids != null) {
+			for (var i = 0; i < item_ids.size(); i++) {
+				discovered_items[item_ids[i]] = true;
+			}
+		}
 	}
 
 	public function isEmpty() as Boolean {
@@ -130,16 +155,18 @@ module SaveData {
 		Storage.setValue(STORAGE_STRING, saves);
 	}
 
-	public function getSaveInfo(save as String) as Array<String> {
+	public function getSaveInfo(save as String) as Array<String?> {
 		var info = saves[save] as Array;
 		var hours = info[3].toNumber() / 3600;
 		var minutes = (info[3].toNumber() % 3600) / 60;
+		var id = info.size() > 4 ? info[4] : null;
 		if (minutes < 10) {
 			minutes = "0" + minutes;
 		}
 		return [
-			info[0], 
-			"Level " + info[1] + " Depth: " + info[2] + " Time: " + hours + ":" + minutes
+			info[0], // Player Name
+			"Level " + info[1] + " Depth: " + info[2] + " Time: " + hours + ":" + minutes,
+			id // Player ID
 		];
 	}
 

@@ -109,7 +109,9 @@ class DCShopBuyOptionsDelegate extends WatchUi.Menu2InputDelegate {
             var purchased_item = item.deepcopy();
             purchased_item.setAmount(amount);
             player.addInventoryItem(purchased_item);
+            purchased_item.onBuyItem(player);
             item.setAmount(item.getAmount() - amount);
+            $.SaveData.discovered_items[item.id] = true;
             var index = buyMenu.findItemById(item);
             if (item.getAmount() == 0) {
                 buyMenu.deleteItem(index);
@@ -189,6 +191,7 @@ class DCShopSellOptionsDelegate extends WatchUi.Menu2InputDelegate {
         player.doGoldDelta(value);
         var sold_items = player.getInventory().removeMultiple(item, amount) as Item;
         merchant.addSellableItem(sold_items);
+        sold_items.onSellItem(player);
         var index = sellMenu.findItemById(item);
         if (item.getAmount() == 0) {
             sellMenu.deleteItem(index);

@@ -14,7 +14,7 @@ class Necromancer extends Enemy {
 		damage = 20;
 		current_health = 50;
 		maxHealth = 50;
-		energy_per_turn = 100; 
+		energy_per_turn = 67; 
         armor = 0;
         kill_experience = 125;
 	}
@@ -37,9 +37,9 @@ class Necromancer extends Enemy {
             return false;
         }
         var summons = {
-            5 => 5,
-            6 => 5,
-            7 => 1,
+            4 => 5, // Imp
+            5 => 5, // Skeleton
+            7 => 5, // Small Zombie
         };
         var summon = EnemyUtil.summonEnemy(summons, map, pos);
         if (summon != null) {

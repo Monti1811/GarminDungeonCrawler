@@ -1,7 +1,6 @@
 import Toybox.Lang;
 
 class NPC extends Entity {
-	var id as Number = 0;
 	var name as String = "NPC";
 	var description as String = "A simple NPC";
 	var pos as Point2D = [0, 0];

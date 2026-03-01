@@ -6,6 +6,7 @@ class ElementalEarth extends Elemental {
 		Elemental.initialize();
 		id = 19;
 		name = "Earth Elemental";
+		children_id = 13;
 	}
 
 	function getSprite() as ResourceId {

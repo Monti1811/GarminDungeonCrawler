@@ -2,6 +2,7 @@ import Toybox.Lang;
 import Toybox.Application;
 
 class Entity {
+	var id as Number = 0;
 	var name as String = "Entity";
 	var damage_received as Number = 0;
 	var energy as Number = 100;
