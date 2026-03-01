@@ -28,6 +28,14 @@ module MathUtil {
 		return min + (Math.rand() % (max - min + 1));
 	}
 
+	function isRandomPercent(chance as Numeric) as Boolean {
+		var roll = MathUtil.random(1, 100);
+		if (roll <= chance) {
+			return true;
+		}
+		return false;
+	}
+
 	function rand() as Numeric {
 		return (Math.rand() % 100).toFloat() / 100.0;
 	}

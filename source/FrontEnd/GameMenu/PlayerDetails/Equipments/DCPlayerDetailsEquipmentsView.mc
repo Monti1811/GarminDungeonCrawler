@@ -6,7 +6,7 @@ import Rez.Styles;
 class DCPlayerDetailsEquipmentsView extends WatchUi.View {
 	
 	private var _player as Player;
-	private const size_rectangles as Number = 74;
+	private var size_rectangles as Number;
 	private var small_font as FontResource;
 	private var equipped_res as Dictionary<ItemSlot, BitmapReference?> = {};
 	private const num_to_equipslot as Array<ItemSlot> = [HEAD, CHEST, BACK, LEGS, FEET, LEFT_HAND, RIGHT_HAND, ACCESSORY, AMMUNITION];
@@ -17,6 +17,7 @@ class DCPlayerDetailsEquipmentsView extends WatchUi.View {
 		View.initialize();
 		_player = player;
 		small_font = WatchUi.loadResource($.Rez.Fonts.small);
+		size_rectangles = (Constants.SCREEN_WIDTH * 74 / 360).toNumber();
 		if (withHint) {
 			layout_type = 1;
 		}
@@ -80,23 +81,32 @@ class DCPlayerDetailsEquipmentsView extends WatchUi.View {
 
 		dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
 
+		// Calculate dynamic positions for equipment slots
+		var center_x = (Constants.SCREEN_WIDTH / 2).toNumber();
+		var left_x = (Constants.SCREEN_WIDTH * 100 / 360).toNumber();
+		var right_x = (Constants.SCREEN_WIDTH * 260 / 360).toNumber();
+		var y1 = (Constants.SCREEN_HEIGHT * 80 / 360).toNumber();
+		var y2 = (Constants.SCREEN_HEIGHT * 160 / 360).toNumber();
+		var y3 = (Constants.SCREEN_HEIGHT * 240 / 360).toNumber();
+		var y4 = (Constants.SCREEN_HEIGHT * 320 / 360).toNumber();
+
 		// Head
-		drawRectangle(dc, 180, 80, "Head", HEAD);
+		drawRectangle(dc, center_x, y1, "Head", HEAD);
 		// Chest
-		drawRectangle(dc, 180, 160, "Chest", CHEST);
+		drawRectangle(dc, center_x, y2, "Chest", CHEST);
 		// Back
-		drawRectangle(dc, 100, 160, "Back", BACK);
+		drawRectangle(dc, left_x, y2, "Back", BACK);
 		// Legs
-		drawRectangle(dc, 180, 240, "Legs", LEGS);
+		drawRectangle(dc, center_x, y3, "Legs", LEGS);
 		// Feet
-		drawRectangle(dc, 180, 320, "Feet", FEET);
+		drawRectangle(dc, center_x, y4, "Feet", FEET);
 		// Hands
-		drawRectangle(dc, 100, 240, "L. Hand", LEFT_HAND);
-		drawRectangle(dc, 260, 240, "R. Hand", RIGHT_HAND);
+		drawRectangle(dc, left_x, y3, "L. Hand", LEFT_HAND);
+		drawRectangle(dc, right_x, y3, "R. Hand", RIGHT_HAND);
 		// Accessory
-		drawRectangle(dc, 100, 80, "Accessory", ACCESSORY);
+		drawRectangle(dc, left_x, y1, "Accessory", ACCESSORY);
 		// Ammunition
-		drawAmmo(dc, 260, 160, "Ammo", AMMUNITION);
+		drawAmmo(dc, right_x, y2, "Ammo", AMMUNITION);
 
 	}
 

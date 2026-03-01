@@ -119,8 +119,7 @@ class Player extends Entity {
 					equipItem(item, item.slot, false)) {
 				item.onPickupItem(me);
 				return true;
-			} else if (!inventory.wouldBeFull(item)) {
-				inventory.add(item);
+			} else if (addInventoryItem(item)) {
 				item.onPickupItem(me);
 				return true;
 			}
@@ -129,7 +128,14 @@ class Player extends Entity {
 	}
 
 	function addInventoryItem(item as Item) as Boolean {
-		if (!inventory.isFull()) {
+		if (!inventory.wouldBeFull(item)) {
+			if (item.type == WEAPON && item instanceof Ammunition) {
+				// If the ammunition is the same as the currently equipped, add to that stack
+				if (isSameAmmunition(item)) {
+					equipped[AMMUNITION].amount += item.amount;
+					return true;
+				}
+			}
 			inventory.add(item);
 			return true;
 		}

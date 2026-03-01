@@ -190,7 +190,7 @@ module Main {
 					+ room_size_factor;           // Larger rooms yield slightly more items
 
 		// Randomization
-		if (MathUtil.random(0, 100) < 30) {
+		if (MathUtil.isRandomPercent(30)) {
 			// 30% chance of no items in the room
 			return 0;
 		}
@@ -226,7 +226,7 @@ module Main {
 			}
 
 			// For High Quality items, increase chance to spawn as chest
-			var spawn_as_chest = type == 3 ? MathUtil.random(0, 100) < chest_chance * 4 : MathUtil.random(0, 100) < chest_chance;
+			var spawn_as_chest = type == 3 ? MathUtil.isRandomPercent(chest_chance * 4) : MathUtil.isRandomPercent(chest_chance);
 			if (spawn_as_chest) {
 				var chest = Items.createTreasureChestWithLoot(item);
 				var chest_pos = MapUtil.getRandomPosAvoidingTunnels(map, left, right, top, bottom);
@@ -264,7 +264,7 @@ module Main {
 		// Calculate number of enemies
 		var num_enemies = base_enemies + room_size_scaling + depth_scaling * difficulty_scaling;
 
-		if (MathUtil.random(0, 100) < 10) {
+		if (MathUtil.isRandomPercent(10)) {
 			// 10% chance of no enemies in the room
 			return [
 				0,
@@ -288,7 +288,7 @@ module Main {
 	function createRandomEnemies(map as Map, left as Number, right as Number, top as Number, bottom as Number) as Dictionary<Point2D,Enemy> {
 		var enemies = {};
 		var diff = 1;
-		if (MathUtil.random(0, 100) < 10) {
+		if (MathUtil.isRandomPercent(10)) {
 			diff = 2;
 		}
 		var values = calculateEnemiesForRoom((right - left - 1) * (bottom - top - 1), diff);
