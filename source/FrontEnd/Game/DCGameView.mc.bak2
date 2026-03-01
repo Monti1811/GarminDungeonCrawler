@@ -116,8 +116,7 @@ class DCGameView extends WatchUi.View {
         dc.clear();
 
         _room_drawable.drawAll(dc, $.Game.getCurrentRoom());
-		// Draw layout hint
-		View.onUpdate(dc);
+		rightLowHint.draw(dc);
 
 		drawPlayer(dc);
         addPlayerDamage();

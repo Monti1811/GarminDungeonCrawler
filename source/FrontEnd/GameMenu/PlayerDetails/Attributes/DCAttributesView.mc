@@ -6,30 +6,54 @@ class DCPlayerDetailsAttributesView extends WatchUi.View {
 	
 	private var _player as Player;
 
-	private const x_axis as Number = 85;
-	private const value_x_axis as Number = 240;
+	private var x_axis as Number;
+	private var value_x_axis as Number;
 
-	private const minus_x_axis as Number = 205;
-	private const plus_x_axis as Number = 275;
+	private var minus_x_axis as Number;
+	private var plus_x_axis as Number;
 
-	private const rectangle_x as Number = 75;
-	private const rectangle_y as Number = 75;
-	private const rectangle_width as Number = 210;
-	private const tableentry_size as Number = 30;
+	private var rectangle_x as Number;
+	private var rectangle_y as Number;
+	private var rectangle_width as Number;
+	private var tableentry_size as Number;
 
-	private var actionMenuHint as Bitmap?;
 	private var accept as Bitmap?;
 	private var cancel as Bitmap?;
+	private var layout_type as Number = 0;
 	
 	function initialize(player as Player, withHint as Boolean, creation as Boolean) {
 		View.initialize();
 		_player = player;
+		
+		// Calculate dynamic positions based on screen size
+		x_axis = (Constants.SCREEN_WIDTH * 85 / 360).toNumber();
+		value_x_axis = (Constants.SCREEN_WIDTH * 240 / 360).toNumber();
+		minus_x_axis = (Constants.SCREEN_WIDTH * 205 / 360).toNumber();
+		plus_x_axis = (Constants.SCREEN_WIDTH * 275 / 360).toNumber();
+		rectangle_x = (Constants.SCREEN_WIDTH * 75 / 360).toNumber();
+		rectangle_y = (Constants.SCREEN_HEIGHT * 75 / 360).toNumber();
+		rectangle_width = (Constants.SCREEN_WIDTH * 210 / 360).toNumber();
+		tableentry_size = (Constants.SCREEN_HEIGHT * 30 / 360).toNumber();
+		
 		if (withHint) {
-			actionMenuHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.actionMenu, :locX=>-30, :locY=>290});
+			layout_type = 1;
 		}
 		if (creation) {
-			accept = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTopAccept, :locX=>300, :locY=>60});
-			cancel = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightBottomCancel, :locX=>290, :locY=>220});
+			layout_type = 2;
+			var accept_x = (Constants.SCREEN_WIDTH * 300 / 360).toNumber();
+			var accept_y = (Constants.SCREEN_HEIGHT * 60 / 360).toNumber();
+			var cancel_x = (Constants.SCREEN_WIDTH * 290 / 360).toNumber();
+			var cancel_y = (Constants.SCREEN_HEIGHT * 220 / 360).toNumber();
+			accept = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTopAccept, :locX=>accept_x, :locY=>accept_y});
+			cancel = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightBottomCancel, :locX=>cancel_x, :locY=>cancel_y});
+		}
+	}
+
+	function onLayout(dc as Dc) as Void {
+		if (layout_type == 1) {
+			setLayout($.Rez.Layouts.DCAttributesViewHint(dc));
+		} else if (layout_type == 2) {
+			setLayout($.Rez.Layouts.DCPlayerDetailsEquipmentsViewCreation(dc));
 		}
 	}
 	
@@ -37,13 +61,14 @@ class DCPlayerDetailsAttributesView extends WatchUi.View {
 	function onUpdate(dc) {
 		dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_BLACK);
         dc.clear();
-		drawTable(dc);
+
+		// Draw layout (includes hints)
+		View.onUpdate(dc);
+
 		dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+		drawTable(dc);
 		drawEntries(dc);
 		//drawPlusMinus(dc);
-		if (actionMenuHint != null) {
-			actionMenuHint.draw(dc);
-		}	
 		if (accept != null) {
 			accept.draw(dc);
 			cancel.draw(dc);
@@ -51,7 +76,9 @@ class DCPlayerDetailsAttributesView extends WatchUi.View {
 	}
 
 	function drawTable(dc as Dc) as Void {
-		dc.drawText(180, 50, Graphics.FONT_TINY, "Attributes (" + _player.getAttributePoints() + ")", Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
+		var title_x = (Constants.SCREEN_WIDTH / 2).toNumber();
+		var title_y = (Constants.SCREEN_HEIGHT * 50 / 360).toNumber();
+		dc.drawText(title_x, title_y, Graphics.FONT_TINY, "Attributes (" + _player.getAttributePoints() + ")", Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
 		dc.drawRectangle(rectangle_x, rectangle_y, rectangle_width, rectangle_width);
 		for (var i = rectangle_x + tableentry_size; i < rectangle_x + rectangle_width; i += tableentry_size) {
 			dc.drawLine(rectangle_x, i, rectangle_x + rectangle_width, i);

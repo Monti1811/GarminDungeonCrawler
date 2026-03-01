@@ -15,7 +15,9 @@ class DCGameOverView extends WatchUi.View {
     function initialize() {
         View.initialize();
         //_font = WatchUi.loadResource($.Rez.Fonts.small);
-        _icon = new WatchUi.Bitmap({:rezId => $.Rez.Drawables.LauncherIcon, :locX => 150, :locY => 150});
+        var icon_x = (Constants.SCREEN_WIDTH * 150 / 360).toNumber();
+        var icon_y = (Constants.SCREEN_HEIGHT * 150 / 360).toNumber();
+        _icon = new WatchUi.Bitmap({:rezId => $.Rez.Drawables.LauncherIcon, :locX => icon_x, :locY => icon_y});
     }
 
     // Load your resources here
@@ -39,8 +41,11 @@ class DCGameOverView extends WatchUi.View {
         _icon.draw(dc);
 
         dc.setColor(Graphics.COLOR_DK_RED, Graphics.COLOR_BLACK);
-        dc.drawText(180, 75, Graphics.FONT_MEDIUM, "You", Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
-        dc.drawText(180, 290, Graphics.FONT_MEDIUM, "Died!", Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
+        var text_x = (Constants.SCREEN_WIDTH / 2).toNumber();
+        var text_top = (Constants.SCREEN_HEIGHT * 75 / 360).toNumber();
+        var text_bottom = (Constants.SCREEN_HEIGHT * 290 / 360).toNumber();
+        dc.drawText(text_x, text_top, Graphics.FONT_MEDIUM, "You", Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
+        dc.drawText(text_x, text_bottom, Graphics.FONT_MEDIUM, "Died!", Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
 
 
     }

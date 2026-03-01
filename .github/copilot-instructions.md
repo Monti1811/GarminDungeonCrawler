@@ -163,7 +163,8 @@ Common types: `Point2D`, `ResourceId` (for Rez assets), `PropertyKeyType`/`Prope
   - "Monkey C: Set Products by Product Category" - Add target devices
   - "Monkey C: Build for Device" - Compile
 - **Manifest**: `manifest.xml` defines app metadata, `monkey.jungle` references it
-- **Target device**: Currently `venu2s`, add more via product categories
+- **Target devices**: Currently supports venu2, venu2s, venu2plus, venu3, venu3s, venu441mm, venu445mm
+- Add more devices via product categories in manifest
 
 ### Code Conventions
 - **Naming**: Classes = `PascalCase`, functions = `camelCase`, private vars = `_snake_case`
@@ -183,6 +184,58 @@ Common types: `Point2D`, `ResourceId` (for Rez assets), `PropertyKeyType`/`Prope
 5. **Progress bars**: Use `WatchUi.ProgressBar` with delegate callbacks for async dungeon generation
 6. **ViewLoop**: For swipeable multi-page views (e.g., player details), use `WatchUi.ViewLoop` + factory
 
+### Multi-Device UI Patterns
+**Critical**: Use dynamic screen sizing for device compatibility:
+
+1. **Screen dimensions** (`Engine/Util/Constants.mc`):
+   - `Constants.SCREEN_WIDTH` = `System.getDeviceSettings().screenWidth`
+   - `Constants.SCREEN_HEIGHT` = `System.getDeviceSettings().screenHeight`
+   - Never hardcode pixel values - calculate relative to screen size
+
+2. **Positioning patterns**:
+   ```monkey-c
+   // Relative positioning (preferred)
+## Debugging Gotchas
+- **GUID collisions**: Entities not registered? Check `register()` called in constructor
+- **Room not saving**: Verify `Storage.setValue(room_name, room.save())` called after modifications
+- **View not updating**: Call `WatchUi.requestUpdate()` after state changes
+- **Module state lost**: Modules persist across views - explicitly `init()` when needed
+- **Steps not working**: Check `StepGate.init()` called, Settings loaded, ActivityMonitor permission in manifest
+- **UI elements misaligned**: Hardcoded coordinates break on different devices - use `Constants.SCREEN_WIDTH/HEIGHT`
+- **Tile rendering issues**: Room generation assumes 16x16 tiles, calculate screen tiles via `MapUtil.getNumTilesForScreensize()`
+   ```
+
+3. **Tile-based rendering**:
+   - `tile_width` and `tile_height` stored in `DungeonCrawlerApp` (default 16x16)
+   - Screen tiles: `Math.ceil(SCREEN_WIDTH/tile_width).toNumber()`
+   - Room generation centers content: `middle_of_screen = [floor(screen_size_x/2), floor(screen_size_y/2)]`
+
+4. **System icons/hints** (automatically position per device):
+   ```xml
+   <!-- In drawables.xml -->
+   <bitmap id="rightTop" personality="
+       system_icon_light__hint_button_right_top
+       system_loc__hint_button_right_top" />
+   ```
+   - Use `personality` attribute for device-specific icons
+   - System hints auto-position: `rightTop`, `rightLow`, `actionMenu`
+
+5. **Dynamic text sizing**:
+   ```monkey-c
+   var text_dimensions = dc.getTextDimensions(text, font);
+   var box_width = text_dimensions[0] + padding * 2;
+   ```
+   - Always measure text before drawing boxes
+   - Use `dc.getWidth()` / `dc.getHeight()` for drawable context size
+
+6. **Tap zones** (calculate from button positions):
+   ```monkey-c
+   var button_pos = [(SCREEN_WIDTH/2), (SCREEN_HEIGHT * 75/360)];
+   var text_dims = dc.getTextDimensions("New Game", font);
+   var x1 = x - text_dims[0]/2 - padding;
+   var x2 = x + text_dims[0]/2 + padding;
+   ```
+
 ### Testing Considerations
 - Test on actual device or Garmin simulator (Monkey C is not standard embedded C)
 - Memory limits are strict (watch hardware), avoid large allocations
@@ -199,8 +252,6 @@ Common types: `Point2D`, `ResourceId` (for Rez assets), `PropertyKeyType`/`Prope
 - **Room not saving**: Verify `Storage.setValue(room_name, room.save())` called after modifications
 - **View not updating**: Call `WatchUi.requestUpdate()` after state changes
 - **Module state lost**: Modules persist across views - explicitly `init()` when needed
-- **Steps not working**: Check `StepGate.init()` called, Settings loaded, ActivityMonitor permission in manifest
-
 ## When Adding Features
 1. **New entity type**: Extend `Entity`, implement `save()`/`load()`, call `register()`, add to factory
 2. **New screen**: Create View/Delegate pair, add entry point in `DungeonCrawlerApp.mc`
@@ -208,6 +259,10 @@ Common types: `Point2D`, `ResourceId` (for Rez assets), `PropertyKeyType`/`Prope
 4. **New resource**: Add to XML in `resources/`, reference via `$.Rez.*`
 5. **New setting**: Add to `Settings` module, create UI in `source/FrontEnd/Settings/`
 6. **New player class**: Extend `Player` in `Classes/`, set id, stats, starting equipment, add to `Players.mc` factory
+7. **New enemy type**: Track in Compendium by adding `$.SaveData.discovered_enemies[id] = true` on death
+8. **Elemental weapons**: Add element type in constructor, implement in `ElementUtil.getWeaponElement()`
+9. **New UI element**: Use `Constants.SCREEN_WIDTH/HEIGHT` for positioning, never hardcode coordinates
+10. **System icons**: Define with `personality` attribute in `drawables.xml` for device-specific auto-positioningrs.mc` factory
 7. **New enemy type**: Track in Compendium by adding `$.SaveData.discovered_enemies[id] = true` on death
 8. **Elemental weapons**: Add element type in constructor, implement in `ElementUtil.getWeaponElement()`
 

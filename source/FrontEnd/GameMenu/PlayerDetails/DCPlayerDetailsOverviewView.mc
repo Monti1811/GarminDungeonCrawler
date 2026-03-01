@@ -7,9 +7,9 @@ class DCPlayerDetailsOverviewView extends WatchUi.View {
 	private var _player as Player;
 	private var _playerIcon as BitmapReference;
 
-	private const x_axis as Number = 160;
-	private const y_axis as Number = 90;
-	private const space_between as Number = 25;
+	private var x_axis as Number;
+	private var y_axis as Number;
+	private var space_between as Number;
 
 	private var _font as FontReference | FontDefinition;
 
@@ -20,6 +20,9 @@ class DCPlayerDetailsOverviewView extends WatchUi.View {
 		_player = player;
 		_playerIcon = WatchUi.loadResource(_player.getSprite());
 		_font = Graphics.FONT_XTINY; //WatchUi.loadResource($.Rez.Fonts.small);
+		x_axis = (Constants.SCREEN_WIDTH * 160 / 360).toNumber();
+		y_axis = (Constants.SCREEN_HEIGHT * 90 / 360).toNumber();
+		space_between = (Constants.SCREEN_HEIGHT * 25 / 360).toNumber();
 		if (creation) {
 			layout_type = 1;
 		}
@@ -44,10 +47,14 @@ class DCPlayerDetailsOverviewView extends WatchUi.View {
 		// Update layout
 		View.onUpdate(dc);
 
-		dc.drawScaledBitmap(50, 150, 60, 60, _playerIcon);
-		dc.drawText(180, y_axis, Graphics.FONT_MEDIUM, _player.getName(), Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
+		var icon_x = (Constants.SCREEN_WIDTH * 50 / 360).toNumber();
+		var icon_y = (Constants.SCREEN_HEIGHT * 150 / 360).toNumber();
+		var icon_size = (Constants.SCREEN_WIDTH * 60 / 360).toNumber();
+		var name_x = (Constants.SCREEN_WIDTH / 2).toNumber();
+		dc.drawScaledBitmap(icon_x, icon_y, icon_size, icon_size, _playerIcon);
+		dc.drawText(name_x, y_axis, Graphics.FONT_MEDIUM, _player.getName(), Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);R);
 		var left_text_x = x_axis;
-		var right_text_x = x_axis + 60; // Adjust this value as needed for spacing
+		var right_text_x = x_axis + (Constants.SCREEN_WIDTH * 60 / 360).toNumber(); // Adjust this value as needed for spacing
 
 
 		var size = _player.second_bar == :mana ? 7 : 6;

@@ -25,6 +25,17 @@
             system_loc__hint_button_right_bottom" />
     </layout>
 
+    <layout id="DCGameView" >
+        <bitmap id="rightLow" personality="
+            system_icon_light__hint_button_right_bottom
+            system_loc__hint_button_right_bottom" />
+    </layout>
+
+    <layout id="DCAttributesViewHint" >
+        <bitmap id="actionMenu" personality="
+            system_icon_light__hint_button_action_menu
+            system_loc__hint_button_action_menu" />
+    </layout>
 
 
 </layouts>
