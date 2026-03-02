@@ -1,4 +1,5 @@
 import Toybox.Lang;
+import Toybox.Math;
 
 module Constants {
 
@@ -9,13 +10,21 @@ module Constants {
 	public const MIN_ENERGY_PER_TURN = 100;
 	public const MAX_ENEMIES_PER_ROOM = 15;
 
-	public const COORDINATES_NEWGAME = [180, 75, 150, 50] as Array<Number>;
-	public const COORDINATES_LOADGAME = [180, 290, 150, 50] as Array<Number>;
-	public const TAP_TOLERANCE = 0.10;
-
-	public const COORDINATES_KNIGHT = [220, 120] as Array<Number>;
-
+	public const SCREEN_WIDTH = Toybox.System.getDeviceSettings().screenWidth;
+	public const SCREEN_HEIGHT = Toybox.System.getDeviceSettings().screenHeight;
 	public const TILE_SIZE = 16;
+	public const ROOM_CENTER_INDEX = Math.floor((SCREEN_WIDTH / 2) / TILE_SIZE).toNumber();
+	public const COORDINATES_NEWGAME = [
+		(SCREEN_WIDTH/2).toNumber(), 
+		(SCREEN_HEIGHT * 75/360).toNumber()
+	] as Array<Number>;
+
+	public const COORDINATES_LOADGAME = [
+		(SCREEN_WIDTH/2).toNumber(), 
+		(SCREEN_HEIGHT * 29/36).toNumber()
+	] as Array<Number>;
+
+	public const TAP_TOLERANCE = 0.10;
 
 	public const ITEMTYPE_TO_STR = {
 		WEAPON => "Weapon",

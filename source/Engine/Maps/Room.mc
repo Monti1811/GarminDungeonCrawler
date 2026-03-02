@@ -229,9 +229,9 @@ class Room {
         // TODO: check if size_y is correct for up/down or not because of the way the map is drawn
         var tile_width = getApp().tile_width;
 		var tile_height = getApp().tile_height;
-        var index = 11; // Middle of the room, as 180/16 = 11.25
-        var screen_size_x = Math.ceil(360.0/tile_width).toNumber();
-		var screen_size_y = Math.ceil(360.0/tile_height).toNumber();
+        var index = Constants.ROOM_CENTER_INDEX;
+        var screen_size_x = Math.ceil(Constants.SCREEN_WIDTH/tile_width).toNumber();
+		var screen_size_y = Math.ceil(Constants.SCREEN_HEIGHT/tile_height).toNumber();
         var index_edge = [0, 0];
         if (direction == UP) {
             index_edge = [index, 0];
@@ -342,7 +342,7 @@ class Room {
 
     function addMerchant(room_pos as Point2D) as Void {
         var pos = MapUtil.getRandomPosFromRoom(self);
-        if (pos[0] == 11 || pos[1] == 11) {
+        if (pos[0] == Constants.ROOM_CENTER_INDEX || pos[1] == Constants.ROOM_CENTER_INDEX) {
             System.println("WTF????");
         }
         var merchant = new Merchant();

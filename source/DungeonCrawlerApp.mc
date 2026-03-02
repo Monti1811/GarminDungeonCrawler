@@ -56,7 +56,7 @@ class DungeonCrawlerApp extends Application.AppBase {
 
     function showMainMenu() as [Views] or [Views, InputDelegates] {
         var mainMenu = new DCMainMenuView();
-        var mainMenuDelegate = new DCMainMenuDelegate();
+        var mainMenuDelegate = new DCMainMenuDelegate(mainMenu);
         return [mainMenu, mainMenuDelegate];
     }
 

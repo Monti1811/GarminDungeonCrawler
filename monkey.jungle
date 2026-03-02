@@ -1,1 +1,11 @@
+# By default, exclude the new, experimental logic
+
 project.manifest = manifest.xml
+
+venu2.excludeAnnotations = venu2s;venu2plus;venu3;venu3s;venu441mm;venu445mm
+venu2s.excludeAnnotations = venu2;venu2plus;venu3;venu3s;venu441mm;venu445mm
+venu2plus.excludeAnnotations = venu2;venu2s;venu3;venu3s;venu441mm;venu445mm
+venu3.excludeAnnotations = venu2;venu2s;venu2plus;venu3s;venu441mm;venu445mm
+venu3s.excludeAnnotations = venu2;venu2s;venu2plus;venu3;venu441mm;venu445mm
+venu441mm.excludeAnnotations = venu2;venu2s;venu2plus;venu3;venu3s;venu445mm
+venu445mm.excludeAnnotations = venu2;venu2s;venu2plus;venu3;venu3s;venu441mm

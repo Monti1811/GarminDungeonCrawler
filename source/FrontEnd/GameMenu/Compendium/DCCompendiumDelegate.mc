@@ -71,7 +71,10 @@ class DCCompendiumEnemyIcon extends WatchUi.Drawable {
     }
 
     function draw(dc as Toybox.Graphics.Dc) as Void {
-        dc.drawScaledBitmap(15, 25, 32, 32, _icon);
+        var icon_x = (Constants.SCREEN_WIDTH * 15 / 360).toNumber();
+        var icon_y = (Constants.SCREEN_HEIGHT * 25 / 360).toNumber();
+        var icon_size = (Constants.SCREEN_WIDTH * 32 / 360).toNumber();
+        dc.drawScaledBitmap(icon_x, icon_y, icon_size, icon_size, _icon);
     }
 }
 
@@ -85,7 +88,10 @@ class DCCompendiumItemIcon extends WatchUi.Drawable {
     }
 
     function draw(dc as Toybox.Graphics.Dc) as Void {
-        dc.drawScaledBitmap(15, 25, 32, 32, _icon);
+        var icon_x = (Constants.SCREEN_WIDTH * 15 / 360).toNumber();
+        var icon_y = (Constants.SCREEN_HEIGHT * 25 / 360).toNumber();
+        var icon_size = (Constants.SCREEN_WIDTH * 32 / 360).toNumber();
+        dc.drawScaledBitmap(icon_x, icon_y, icon_size, icon_size, _icon);
     }
 }
 

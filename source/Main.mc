@@ -103,8 +103,8 @@ module Main {
 	function createRandomRoom() as Room {
 		var tile_width = getApp().tile_width;
 		var tile_height = getApp().tile_height;
-		var screen_size_x = Math.ceil(360.0/tile_width).toNumber();
-		var screen_size_y = Math.ceil(360.0/tile_height).toNumber();
+		var screen_size_x = Math.ceil(Constants.SCREEN_WIDTH/tile_width).toNumber();
+		var screen_size_y = Math.ceil(Constants.SCREEN_HEIGHT/tile_height).toNumber();
 		var min_room_size = Settings.settings["min_room_size"] as Number;
 		var max_room_size = Settings.settings["max_room_size"] as Number;
 		var room_size_x = MathUtil.random(min_room_size, max_room_size);

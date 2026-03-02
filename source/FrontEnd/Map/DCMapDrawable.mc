@@ -18,9 +18,11 @@ class DCMapDrawable extends WatchUi.Drawable {
 		var dungeon_size = [dungeon_map.size(), dungeon_map[0].size()];
 		size = [dungeon_size[0] * size_room, dungeon_size[1] * size_room];
 		var current_room_pos = $.Game.getCurrentRoomPosition();
+		var center_x = (Constants.SCREEN_WIDTH / 2).toNumber();
+		var center_y = (Constants.SCREEN_HEIGHT / 2).toNumber();
 		initial_pos = [
-			180 - (current_room_pos[0] * size_room + middle_of_room), 
-			180 - (current_room_pos[1] * size_room + middle_of_room)
+			center_x - (current_room_pos[0] * size_room + middle_of_room), 
+			center_y - (current_room_pos[1] * size_room + middle_of_room)
 		];
 	}
 

@@ -1,29 +1,36 @@
 import Toybox.Lang;
 import Toybox.WatchUi;
 import Toybox.Graphics;
+import Rez.Styles;
 
 class DCPlayerDetailsEquipmentsView extends WatchUi.View {
 	
 	private var _player as Player;
-	private const size_rectangles as Number = 74;
+	private var size_rectangles as Number;
 	private var small_font as FontResource;
-	private var _hint as Bitmap?;
 	private var equipped_res as Dictionary<ItemSlot, BitmapReference?> = {};
 	private const num_to_equipslot as Array<ItemSlot> = [HEAD, CHEST, BACK, LEGS, FEET, LEFT_HAND, RIGHT_HAND, ACCESSORY, AMMUNITION];
 
-	private var accept as Bitmap?;
-	private var cancel as Bitmap?;
+	private var layout_type as Number = 0;
 	
 	function initialize(player as Player, withHint as Boolean, creation as Boolean) {
 		View.initialize();
 		_player = player;
 		small_font = WatchUi.loadResource($.Rez.Fonts.small);
+		size_rectangles = (Constants.SCREEN_WIDTH * 74 / 360).toNumber();
 		if (withHint) {
-			_hint = new WatchUi.Bitmap({:rezId => $.Rez.Drawables.rightTop, :locX => 300, :locY => 60});
+			layout_type = 1;
 		}
 		if (creation) {
-			accept = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTopAccept, :locX=>300, :locY=>60});
-			cancel = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightBottomCancel, :locX=>290, :locY=>220});
+			layout_type = 2;
+		}
+	}
+
+	function onLayout(dc) {
+		if (self.layout_type == 1) {
+			setLayout(Rez.Layouts.DCPlayerDetailsEquipmentsViewHint(dc));
+		} else if (self.layout_type == 2) {
+			setLayout(Rez.Layouts.DCPlayerDetailsEquipmentsViewCreation(dc));
 		}
 	}
 
@@ -52,10 +59,6 @@ class DCPlayerDetailsEquipmentsView extends WatchUi.View {
 		}
 	}
 
-	function onLayout(dc) {
-		
-	}
-
 	function updateEquipped() {
 		equipped_res = {};
 		for (var i = 0; i < 9; i++) {
@@ -68,36 +71,42 @@ class DCPlayerDetailsEquipmentsView extends WatchUi.View {
 	}
 	
 	
-	function onUpdate(dc) {
+	function onUpdate(dc as Dc) as Void {
 		updateEquipped();
 		dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_BLACK);
         dc.clear();
+
+		// Update layout
+		View.onUpdate(dc);
+
 		dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-		
-		if (_hint != null) {
-			_hint.draw(dc);
-		}
-		if (accept != null) {
-			accept.draw(dc);
-			cancel.draw(dc);
-		}
+
+		// Calculate dynamic positions for equipment slots
+		var center_x = (Constants.SCREEN_WIDTH / 2).toNumber();
+		var left_x = (Constants.SCREEN_WIDTH * 100 / 360).toNumber();
+		var right_x = (Constants.SCREEN_WIDTH * 260 / 360).toNumber();
+		var y1 = (Constants.SCREEN_HEIGHT * 80 / 360).toNumber();
+		var y2 = (Constants.SCREEN_HEIGHT * 160 / 360).toNumber();
+		var y3 = (Constants.SCREEN_HEIGHT * 240 / 360).toNumber();
+		var y4 = (Constants.SCREEN_HEIGHT * 320 / 360).toNumber();
+
 		// Head
-		drawRectangle(dc, 180, 80, "Head", HEAD);
+		drawRectangle(dc, center_x, y1, "Head", HEAD);
 		// Chest
-		drawRectangle(dc, 180, 160, "Chest", CHEST);
+		drawRectangle(dc, center_x, y2, "Chest", CHEST);
 		// Back
-		drawRectangle(dc, 100, 160, "Back", BACK);
+		drawRectangle(dc, left_x, y2, "Back", BACK);
 		// Legs
-		drawRectangle(dc, 180, 240, "Legs", LEGS);
+		drawRectangle(dc, center_x, y3, "Legs", LEGS);
 		// Feet
-		drawRectangle(dc, 180, 320, "Feet", FEET);
+		drawRectangle(dc, center_x, y4, "Feet", FEET);
 		// Hands
-		drawRectangle(dc, 100, 240, "L. Hand", LEFT_HAND);
-		drawRectangle(dc, 260, 240, "R. Hand", RIGHT_HAND);
+		drawRectangle(dc, left_x, y3, "L. Hand", LEFT_HAND);
+		drawRectangle(dc, right_x, y3, "R. Hand", RIGHT_HAND);
 		// Accessory
-		drawRectangle(dc, 100, 80, "Accessory", ACCESSORY);
+		drawRectangle(dc, left_x, y1, "Accessory", ACCESSORY);
 		// Ammunition
-		drawAmmo(dc, 260, 160, "Ammo", AMMUNITION);
+		drawAmmo(dc, right_x, y2, "Ammo", AMMUNITION);
 
 	}
 

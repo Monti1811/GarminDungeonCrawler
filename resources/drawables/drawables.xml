@@ -1,5 +1,6 @@
 <drawables>
     <bitmap id="LauncherIcon" filename="launcher_icon.png" packingFormat="png" />
+    <bitmap id="LauncherIconMainScreen" filename="launcher_icon_mainscreen.png" packingFormat="png" />
     <bitmap id="Player" filename="player.png" packingFormat="png" />
     <bitmap id="Frog" filename="monsters/frog.png" packingFormat="png" />
     <bitmap id="Stairs" filename="stairs.png" packingFormat="png" />

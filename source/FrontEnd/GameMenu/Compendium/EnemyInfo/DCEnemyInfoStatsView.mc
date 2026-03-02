@@ -26,7 +26,11 @@ class DCEnemyInfoStatsView extends WatchUi.View {
 	}
 
 	function drawStat(dc, label, value, counter) as Void {
-		dc.drawText(80, 70 + distance_lines * counter, Graphics.FONT_XTINY, label, Graphics.TEXT_JUSTIFY_LEFT);
-		dc.drawText(190, 70 + distance_lines * counter, Graphics.FONT_XTINY, value, Graphics.TEXT_JUSTIFY_LEFT);
+		var label_x = (Constants.SCREEN_WIDTH * 80 / 360).toNumber();
+		var value_x = (Constants.SCREEN_WIDTH * 190 / 360).toNumber();
+		var base_y = (Constants.SCREEN_HEIGHT * 70 / 360).toNumber();
+		var line_distance = (Constants.SCREEN_HEIGHT * distance_lines / 360).toNumber();
+		dc.drawText(label_x, base_y + line_distance * counter, Graphics.FONT_XTINY, label, Graphics.TEXT_JUSTIFY_LEFT);
+		dc.drawText(value_x, base_y + line_distance * counter, Graphics.FONT_XTINY, value, Graphics.TEXT_JUSTIFY_LEFT);
 	}
 }

@@ -14,10 +14,10 @@ class DCGameDelegate extends WatchUi.BehaviorDelegate {
 
     private var _view as DCGameView;
 
-    private var _up_array = [0, 0, 360, 0, 180, 180];
-    private var _down_array = [0, 360, 360, 360, 180, 180];
-    private var _left_array = [0, 0, 0, 360, 180, 180];
-    private var _right_array = [360, 0, 360, 360, 180, 180];
+    private var _up_array = [0, 0, Constants.SCREEN_WIDTH, 0, Constants.SCREEN_WIDTH/2, Constants.SCREEN_HEIGHT/2];
+    private var _down_array = [0, Constants.SCREEN_HEIGHT, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, Constants.SCREEN_WIDTH/2, Constants.SCREEN_HEIGHT/2];
+    private var _left_array = [0, 0, 0, Constants.SCREEN_HEIGHT, Constants.SCREEN_WIDTH/2, Constants.SCREEN_HEIGHT/2];
+    private var _right_array = [Constants.SCREEN_WIDTH, 0, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, Constants.SCREEN_WIDTH/2, Constants.SCREEN_HEIGHT/2];
 
     function initialize(view as DCGameView) {
         BehaviorDelegate.initialize();
@@ -34,10 +34,19 @@ class DCGameDelegate extends WatchUi.BehaviorDelegate {
         WatchUi.pushView(dialog, new DCGameExitConfirmDelegate(), WatchUi.SLIDE_UP);
     }
 
+    function onKey(keyEvent as KeyEvent) as Boolean {
+        if (keyEvent.getKey() == KEY_ENTER) {
+            showMenu();
+        }
+        return true;
+    }
+
 
     function onTap(clickEvent as ClickEvent) as Boolean {
         var coord = clickEvent.getCoordinates() as Array<Number>;
-        if (coord[0] > 180 && coord[1] > 180) {
+        var center_x = Constants.SCREEN_WIDTH / 2;
+        var center_y = Constants.SCREEN_HEIGHT / 2;
+        if (coord[0] > center_x && coord[1] > center_y) {
             if (MathUtil.isInTriangleArray(coord, _down_array)) {
                 _view.getTurns().doTurn(DOWN);
                 return true;
@@ -45,7 +54,7 @@ class DCGameDelegate extends WatchUi.BehaviorDelegate {
                 _view.getTurns().doTurn(RIGHT);
                 return true;
             }
-        } else if (coord[0] < 180 && coord[1] > 180) {
+        } else if (coord[0] < center_x && coord[1] > center_y) {
             if (MathUtil.isInTriangleArray(coord, _down_array)) {
                 _view.getTurns().doTurn(DOWN);
                 return true;
@@ -53,7 +62,7 @@ class DCGameDelegate extends WatchUi.BehaviorDelegate {
                 _view.getTurns().doTurn(LEFT);
                 return true;
             }
-        } else if (coord[0] > 180 && coord[1] < 180) {
+        } else if (coord[0] > center_x && coord[1] < center_y) {
             if (MathUtil.isInTriangleArray(coord, _up_array)) {
                 _view.getTurns().doTurn(UP);
                 return true;
@@ -61,7 +70,7 @@ class DCGameDelegate extends WatchUi.BehaviorDelegate {
                 _view.getTurns().doTurn(RIGHT);
                 return true;
             }
-        } else if (coord[0] < 180 && coord[1] < 180) {
+        } else if (coord[0] < center_x && coord[1] < center_y) {
             if (MathUtil.isInTriangleArray(coord, _up_array)) {
                 _view.getTurns().doTurn(UP);
                 return true;
@@ -74,7 +83,7 @@ class DCGameDelegate extends WatchUi.BehaviorDelegate {
     }
 
 
-    function onMenu() as Boolean {
+    function showMenu() as Void {
         var actionMenu = new WatchUi.Menu2({:title=>"Game Menu"});
         actionMenu.addItem(new WatchUi.MenuItem(getApp().getPlayer().getName(), "Show details", :player, null));
         actionMenu.addItem(new WatchUi.MenuItem("Inventory", "Show inventory", :inventory, null));
@@ -87,7 +96,6 @@ class DCGameDelegate extends WatchUi.BehaviorDelegate {
         self.addDebugMenu(actionMenu);
 
         WatchUi.pushView(actionMenu, new DCGameMenuDelegate(), SLIDE_UP);
-        return true;
     }
 
     (:debug) 

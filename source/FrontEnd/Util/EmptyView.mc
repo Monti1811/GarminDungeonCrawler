@@ -4,22 +4,17 @@ import Toybox.Graphics;
 class EmptyView extends WatchUi.View {
 
     function initialize() {
-
     }
 
-    function onLayout(dc as Dc) {
-
+    function onLayout(dc as Dc) as Void {
     }
 
-    function onShow() {
-
+    function onShow() as Void {
     }
 
-    function onHide() {
-
+    function onHide() as Void {
     }
 
-    function onUpdate(dc as Dc) {
-
+    function onUpdate(dc as Dc) as Void {
     }
 }

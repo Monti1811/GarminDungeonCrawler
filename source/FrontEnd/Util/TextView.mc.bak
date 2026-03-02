@@ -25,8 +25,8 @@ class TextView extends WatchUi.View {
             :font=>[Graphics.FONT_TINY, Graphics.FONT_XTINY],
             :locX =>WatchUi.LAYOUT_HALIGN_CENTER,
             :locY=>WatchUi.LAYOUT_VALIGN_CENTER,
-            :width=>Constants.SCREEN_WIDTH - (Constants.SCREEN_WIDTH * 100 / 360).toNumber(),
-            :height=>Constants.SCREEN_HEIGHT - (Constants.SCREEN_HEIGHT * 100 / 360).toNumber(),
+            :width=>Constants.SCREEN_WIDTH - 100,
+            :height=>Constants.SCREEN_HEIGHT - 100,
         });
     }
 

@@ -36,8 +36,12 @@ class DCIntroView extends WatchUi.View {
         dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_BLACK);
         dc.clear();
 
-        var formatted_text = Graphics.fitTextToArea(_text, _font, 260, 260, false);
-        dc.drawText(180, 180, _font, formatted_text, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
+        var text_x = (Constants.SCREEN_WIDTH / 2).toNumber();
+        var text_y = (Constants.SCREEN_HEIGHT / 2).toNumber();
+        var area_width = (Constants.SCREEN_WIDTH * 260 / 360).toNumber();
+        var area_height = (Constants.SCREEN_HEIGHT * 260 / 360).toNumber();
+        var formatted_text = Graphics.fitTextToArea(_text, _font, area_width, area_height, false);
+        dc.drawText(text_x, text_y, _font, formatted_text, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
 
     }
 
