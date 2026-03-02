@@ -17,6 +17,7 @@ class FireKatana extends WeaponItem {
         };
 
         attack = 14;
+        element = ELEMENT_FIRE;
         range = 1;
     }
 

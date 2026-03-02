@@ -15,6 +15,7 @@ class FireHelmet extends ArmorItem {
 			:constitution => 3,
 			:strength => 3
 		};
+		element = ELEMENT_FIRE;
 	}
 
 	function getSprite() as ResourceId {

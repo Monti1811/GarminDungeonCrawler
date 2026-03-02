@@ -8,6 +8,7 @@ class IceBolt extends Ammunition {
 		name = "Ice Bolt";
 		description = "An ice bolt";
 		type = BOLT;
+		element_override = ELEMENT_ICE;
 		attack = 2;
 	}
 

@@ -451,42 +451,73 @@ class ItemSpecificValues {
         var m = {} as Dictionary<Number, Numeric>;
         switch (class_id) {
             case 0: // Warrior
+                // Heavily prioritize melee weapons and shields; de-emphasize bows/ammo and staves
                 addMultipliers(
-                    m, 
-                    [0,3,5,8,10,13,15,18,20,23,25,28,30,33,35,38,40,43,45,48,50,53,55,58,60,63,65,68,70,73,75,78,80,83,85,88], 
-                    1.1
+                    m,
+                    [0,2,3,4,5,8,10,12,13,14,15,18,20,22,23,24,25,28,30,32,33,34,35,38,40,42,43,44,45,48,50,52,53,54,55,58,60,62,63,64,65,68,70,72,73,74,75,78,80,82,83,84,85,88],
+                    1.8
                 );
+                addMultipliers(m, [6,7,16,17,26,27,36,37,46,47,56,57,66,67,76,77,86,87], 0.4); // Staves/spells toned down
+                addMultipliers(m, [1,11,21,31,41,51,61,71,81], 0.2); // Bows kept rare
+                addMultipliers(m, [200,201,202,203,250,251,252,253,300,301,302], 0.1); // Ammo/crossbows minimized
                 addMultipliers(
-                    m, 
-                    [1,2,4,6,7,11,12,14,16,17,21,22,24,26,27,31,32,34,36,37,41,42,44,46,47,51,52,54,56,57,61,62,64,66,67,71,72,74,76,77,81,82,84,86,87], 
-                    0.95
-                );
+                    m,
+                    [1200,1201,1202,1203],
+                    1.8
+                ); // Shields emphasized
                 addMultipliers(
-                    m, 
-                    [1200,1201,1202,1203,1000,1001,1002,1003,1010,1011,1012,1013,1020,1021,1022,1023,1030,1031,1032,1033,1040,1041,1042,1043,1050,1051,1052,1053,1060,1061,1062,1063,1070,1071,1072,1073,1080,1081,1082,1083], 
-                    1.15
-                );
-                addMultipliers(m, [1004,1005,1014,1015,1024,1025,1034,1035,1044,1045,1054,1055,1064,1065,1074,1075,1084,1085], 1.05);
-                addMultipliers(m, [2000,2002,2004], 1.1);
-                addMultipliers(m, [2001,2003,2005], 0.9);
+                    m,
+                    [1000,1001,1002,1003,1010,1011,1012,1013,1020,1021,1022,1023,1030,1031,1032,1033,1040,1041,1042,1043,1050,1051,1052,1053,1060,1061,1062,1063,1070,1071,1072,1073,1080,1081,1082,1083],
+                    0.9
+                ); // Armor slightly up
+                addMultipliers(m, [1004,1005,1014,1015,1024,1025,1034,1035,1044,1045,1054,1055,1064,1065,1074,1075,1084,1085], 1.1); // Rings modest boost
+                addMultipliers(m, [1250,1251,1252], 0.9);
+                addMultipliers(m, [2000,2002,2004], 1.05); // Core consumables slight up
+                addMultipliers(m, [2001,2003,2005], 0.95); // Secondary consumables slightly down
                 break;
             case 1: // Mage
-                addMultipliers(m, [6,7,16,17,26,27,36,37,46,47,56,57,66,67,76,77,86,87], 1.25); // Spells/Staffs
-                addMultipliers(m, [4,14,24,34,44,54,64,74,84], 1.1); // Katanas mid
-                addMultipliers(m, [0,3,5,8,10,13,15,18,20,23,25,28,30,33,35,38,40,43,45,48,50,53,55,58,60,63,65,68,70,73,75,78,80,83,85,88], 0.9);
-                addMultipliers(m, [1004,1005,1014,1015,1024,1025,1034,1035,1044,1045,1054,1055,1064,1065,1074,1075,1084,1085,1300,1301], 1.2);
-                addMultipliers(m, [2001,2003,2005], 1.25);
-                addMultipliers(m, [2000,2002,2004], 0.85);
+                // Lean heavily into staves/spells and support gear, avoid melee/ranged
+                addMultipliers(m, [6,7,16,17,26,27,36,37,46,47,56,57,66,67,76,77,86,87], 2.5); // Spells/Staffs
+                addMultipliers(m, [4,14,24,34,44,54,64,74,84], 0.3); // Katanas stay rare
+                addMultipliers(m, [200,201,202,203,250,251,252,253,300,301,302], 0.1); // Bows/crossbows/ammo nearly absent
+                addMultipliers(m, [0,1,2,3,5,8,10,11,12,13,15,18,20,21,22,23,25,28,30,31,32,33,35,38,40,41,42,43,45,48,50,51,52,53,55,58,60,61,62,63,65,68,70,71,72,73,75,78,80,81,82,83,85,88], 0.15); // Other melee options greatly reduced
+                addMultipliers(m, [1004,1005,1014,1015,1024,1025,1034,1035,1044,1045,1054,1055,1064,1065,1074,1075,1084,1085,1300,1301], 1.35); // Rings/charms
+                addMultipliers(m, [1200,1201,1202,1203], 0.6); // Shields less relevant
+                addMultipliers(m, [2001,2003,2005], 1.4); // Mana/utility consumables
+                addMultipliers(m, [2000,2002,2004], 0.75); // Basic consumables slightly down
                 break;
             case 2: // Archer
-                addMultipliers(m, [1,4,7,8,11,14,17,18,21,24,27,28,31,34,37,38,41,44,47,48,51,54,57,58,61,64,67,68,71,74,77,78,81,84,87,88], 1.25);
-                addMultipliers(m, [201,202,203,250,251,252,253,300,301,302], 1.3);
-                // Much more arrows/bolts
-                addMultipliers(m, [200,250], 3);
-                addMultipliers(m, [0,3,5,10,13,15,20,23,25,30,33,35,40,43,45,50,53,55,60,63,65,70,73,75,80,83,85], 0.9);
-                addMultipliers(m, [1200,1201,1202,1203], 0.9);
-                addMultipliers(m, [1250,1251,1252], 1.2);
-                addMultipliers(m, [2000,2002], 0.9);
+                // Prioritize arrows/bolts and crossbows; suppress melee and magic
+                addMultipliers(m, [200,250], 4); // Base arrows/bolts
+                addMultipliers(m, [201,202,203,251,252,253], 3); // Elemental ammo
+                addMultipliers(m, [300,301,302], 2.2); // Crossbows
+                addMultipliers(m, [1250,1251,1252,1300,1301], 1.2); // Carry capacity and trinkets
+                addMultipliers(m, [6,7,16,17,26,27,36,37,46,47,56,57,66,67,76,77,86,87], 0.1); // Spells/staves nearly absent
+                addMultipliers(m, [0,2,3,4,5,8,10,12,13,14,15,16,17,18,20,22,23,24,25,26,27,28,30,32,33,34,35,36,37,38,40,42,43,44,45,46,47,48,50,52,53,54,55,56,57,58,60,62,63,64,65,66,67,68,70,72,73,74,75,76,77,78,80,82,83,84,85,86,87,88], 0.15); // Melee options heavily reduced
+                addMultipliers(m, [1,11,21,31,41,51,61,71,81], 2.2); // Bows boosted
+                addMultipliers(m, [1200,1201,1202,1203], 0.7); // Shields less useful
+                addMultipliers(m, [2000,2002], 0.9); // Light touch on food/regen
+                break;
+            case 4: // Paladin
+                // Defensive focus: heavy on shields/armor/rings, light on weapons
+                addMultipliers(
+                    m,
+                    [1200,1201,1202,1203],
+                    2.2
+                ); // Shields strongly favored
+                addMultipliers(
+                    m,
+                    [1000,1001,1002,1003,1010,1011,1012,1013,1020,1021,1022,1023,1030,1031,1032,1033,1040,1041,1042,1043,1050,1051,1052,1053,1060,1061,1062,1063,1070,1071,1072,1073,1080,1081,1082,1083],
+                    1.25
+                ); // Armor boost
+                addMultipliers(m, [1004,1005,1014,1015,1024,1025,1034,1035,1044,1045,1054,1055,1064,1065,1074,1075,1084,1085], 1.4); // Rings/charms
+                addMultipliers(m, [1250,1251,1252,1300,1301], 1.15); // Carry and trinkets
+                addMultipliers(m, [2000,2002,2004], 1.15); // Core consumables (healing/defense)
+                addMultipliers(m, [2001,2003,2005], 1.05); // Utility consumables
+                addMultipliers(m, [200,201,202,203,250,251,252,253,300,301,302], 0.15); // Ammo/crossbows minimized
+                addMultipliers(m, [1,11,21,31,41,51,61,71,81], 0.6); // Bows rare
+                addMultipliers(m, [6,7,16,17,26,27,36,37,46,47,56,57,66,67,76,77,86,87], 0.15); // Staves/spells modest
+                addMultipliers(m, [0,2,3,4,5,8,10,12,13,14,15,18,20,22,23,24,25,28,30,32,33,34,35,38,40,42,43,44,45,48,50,52,53,54,55,58,60,62,63,64,65,68,70,72,73,74,75,78,80,82,83,84,85,88], 0.8); // Melee tempered but available
                 break;
             case 3: // Nameless balanced
                 break;

@@ -54,6 +54,9 @@ class God extends Player {
 		self.inventory.add(new GreaterManaPotion());
 		self.inventory.add(new MaxManaPotion());
 		self.inventory.add(new GreenBackpack());
+		self.inventory.add(new FireSword());
+		self.inventory.add(new IceSword());
+		self.inventory.add(new FireBreastPlate());
 		var arrows2 = new Arrow();
 		arrows2.amount = 15;
 		self.inventory.add(arrows2);
@@ -63,9 +66,8 @@ class God extends Player {
 	function onLevelUp() as Void {
 		// Increase max health
 		Player.onLevelUp();
-		current_health += 100;
-		maxHealth += 100;
-		WatchUi.showToast(self.name + " leveled up!", {:icon=>Rez.Drawables.aboutToastIcon});
+		current_health += 50;
+		maxHealth += 50;
 	}
 
 	function getCurrentMana() as Number {

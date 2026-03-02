@@ -16,6 +16,7 @@ class IceBreastPlate extends ArmorItem {
 			:wisdom => 4,
 			:charisma => 1
 		};
+		element = ELEMENT_ICE;
 	}
 
 	function onEquipItem(player as Player) as Void {

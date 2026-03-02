@@ -6,6 +6,7 @@ class ElementalGold extends Elemental {
 		Elemental.initialize();
 		id = 21;
 		name = "Gold Elemental";
+		children_id = 15;
 	}
 
 	function getSprite() as ResourceId {

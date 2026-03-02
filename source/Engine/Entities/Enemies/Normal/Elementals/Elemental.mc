@@ -3,6 +3,7 @@ import Toybox.Lang;
 class Elemental extends Enemy {
 
 	var children_on_death = 2;
+	var children_id = 12;
 
 	function initialize() {
 		Enemy.initialize();
@@ -27,7 +28,7 @@ class Elemental extends Enemy {
 		for (var i = 0; i < children_on_death; i++) {
 			var summon_pos = $.MapUtil.findRandomEmptyTileAround(map, pos);
 			if (summon_pos != null) {
-				var summon = new ElementalAirSmall();
+				var summon = Enemies.createEnemyFromId(self.children_id);
 				summon.setPos(summon_pos);
 				room.addEnemy(summon);
 			}

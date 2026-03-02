@@ -6,6 +6,7 @@ class ElementalFire extends Elemental {
 		Elemental.initialize();
 		id = 20;
 		name = "Fire Elemental";
+		children_id = 14;
 	}
 
 	function getSprite() as ResourceId {

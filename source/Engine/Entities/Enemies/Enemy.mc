@@ -2,8 +2,6 @@ import Toybox.Lang;
 
 class Enemy extends Entity {
 
-	var id as Number = 0;
-
 	var pos as Point2D = [0, 0];
 	var next_pos as Point2D = [0, 0];
 	var has_moved as Boolean = false;
@@ -75,6 +73,8 @@ class Enemy extends Entity {
 		if (current_health <= 0) {
 			current_health = 0;
 			self.onDeath();
+			// Track enemy as discovered in compendium
+			$.SaveData.discovered_enemies[id] = true;
 			return true;
 		}
 		return false;
@@ -97,7 +97,24 @@ class Enemy extends Entity {
 	}
 
 	function getLoot() as Item? {
-		if (MathUtil.random(0, 100) < 50) {
+		var player = $.Game.getPlayer();
+		if (player.id == 2/*ARCHER*/ && MathUtil.isRandomPercent(25)) {
+			var right_hand_equip = player.getEquip(RIGHT_HAND);
+			if (right_hand_equip instanceof Bow) {
+				var arrows = new Arrow();
+				arrows.amount = MathUtil.random(2, 5);
+				return arrows;
+			}
+			if (right_hand_equip instanceof CrossBow) {
+				var bolts = new Bolt();
+				bolts.amount = MathUtil.random(2, 5);
+				return bolts;
+			}
+			var arrows = new Arrow();
+			arrows.amount = MathUtil.random(1, 3);
+			return arrows;
+		}
+		if (MathUtil.isRandomPercent(50)) {
 			var gold = new Gold();
 			gold.amount = MathUtil.random(1, 10);
 			return gold;

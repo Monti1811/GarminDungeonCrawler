@@ -18,6 +18,7 @@ class IceAxe extends WeaponItem {
         };
 
         attack = 12;
+        element = ELEMENT_ICE;
     }
 
     function onEquipItem(player as Player) as Void {

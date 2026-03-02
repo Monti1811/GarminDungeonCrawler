@@ -16,6 +16,7 @@ class IceShoes extends ArmorItem {
 			:charisma => 3,
 			:luck => 1
 		};
+		element = ELEMENT_ICE;
 		defense_type = CHARISMA;
 	}
 

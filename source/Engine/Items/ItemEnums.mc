@@ -44,6 +44,12 @@ enum AttackType {
 	INTELLIGENCE,
 }
 
+enum ElementType {
+	ELEMENT_NONE,
+	ELEMENT_FIRE,
+	ELEMENT_ICE
+}
+
 enum DefenseType {
 	CONSTITUTION,
 	WISDOM,

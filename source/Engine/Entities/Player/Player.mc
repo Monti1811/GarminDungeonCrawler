@@ -1,12 +1,12 @@
 import Toybox.Lang;
+import Toybox.Math;
 import Toybox.Time;
 import Toybox.WatchUi;
 
 class Player extends Entity {
 
-	var id = 0;
-	var current_health as Number = 100;
-	var maxHealth as Number = 100;
+	var current_health as Number = 30;
+	var maxHealth as Number = 30;
 	var second_bar as Symbol?;
 	var name as String = "Player";
 	var description as String = "The player character";
@@ -15,6 +15,15 @@ class Player extends Entity {
 	var experience as Number = 0;
 	var next_level_experience as Number = 100;
 	var attributes as Dictionary<Symbol, Number> = {
+		:strength=> 0,
+		:constitution=> 0,
+		:dexterity=> 0,
+		:intelligence=> 0,
+		:wisdom=> 0,
+		:charisma=> 0,
+		:luck=> 0
+	};
+	var added_attributes as Dictionary<Symbol, Number> = {
 		:strength=> 0,
 		:constitution=> 0,
 		:dexterity=> 0,
@@ -110,8 +119,7 @@ class Player extends Entity {
 					equipItem(item, item.slot, false)) {
 				item.onPickupItem(me);
 				return true;
-			} else if (!inventory.wouldBeFull(item)) {
-				inventory.add(item);
+			} else if (addInventoryItem(item)) {
 				item.onPickupItem(me);
 				return true;
 			}
@@ -120,7 +128,14 @@ class Player extends Entity {
 	}
 
 	function addInventoryItem(item as Item) as Boolean {
-		if (!inventory.isFull()) {
+		if (!inventory.wouldBeFull(item)) {
+			if (item.type == WEAPON && item instanceof Ammunition) {
+				// If the ammunition is the same as the currently equipped, add to that stack
+				if (isSameAmmunition(item)) {
+					equipped[AMMUNITION].amount += item.amount;
+					return true;
+				}
+			}
 			inventory.add(item);
 			return true;
 		}
@@ -169,7 +184,7 @@ class Player extends Entity {
 		level++;
 		experience -= next_level_experience;
 		next_level_experience = level * 100;
-		attribute_points += 5;
+		attribute_points += 3;
 	}
 
 	function getLevel() as Number {
@@ -193,8 +208,14 @@ class Player extends Entity {
 
 	function onGainExperience(amount as Number) as Void {
 		experience += amount;
+		var has_leveled_up = false;
 		while (experience >= next_level_experience) {
 			onLevelUp();
+			has_leveled_up = true;
+		}
+		if (has_leveled_up) {
+			// Show toast of new level
+			WatchUi.showToast("Leveled up to Level " + level + "!", {:icon=>Rez.Drawables.aboutToastIcon});
 		}
 	}
 
@@ -257,12 +278,12 @@ class Player extends Entity {
 	}
 
 	function addToAttribute(attribute as Symbol, amount as Number) as Void {
-		attributes[attribute] = MathUtil.floor(attributes[attribute] + amount, Constants.MAX_ATTRIBUTE_POINTS);
+		added_attributes[attribute] += amount;
 		onGainAttribute(attribute, amount);
 	}
 
 	function removeFromAttribute(attribute as Symbol, amount as Number) as Void {
-		attributes[attribute] = MathUtil.ceil(attributes[attribute] - amount, Constants.MIN_ATTRIBUTE_POINTS);
+		added_attributes[attribute] -= amount;
 		onLoseAttribute(attribute, amount);
 	}
 
@@ -279,7 +300,8 @@ class Player extends Entity {
 	}
 
 	function getAttribute(attribute as Symbol) as Number {
-		return attributes[attribute];
+		var att_level = attributes[attribute] + added_attributes[attribute];
+		return MathUtil.clamp(att_level, Constants.MIN_ATTRIBUTE_POINTS, Constants.MAX_ATTRIBUTE_POINTS);
 	}
 
 	function getAttributePoints() as Number {
@@ -288,6 +310,12 @@ class Player extends Entity {
 
 	function setAttributePoints(points as Number) as Void {
 		attribute_points = points;
+	}
+
+	function getAttributePointCostForLevel(level as Number) as Number {
+		var normalized_level = MathUtil.ceil(level, 0);
+		var scaled_cost = 1 + Math.floor(normalized_level / 10);
+		return MathUtil.clamp(scaled_cost, 1, 10);
 	}
 
 
@@ -339,7 +367,7 @@ class Player extends Entity {
 		return base_attack;
 	}
 
-	function getArmorItem(slot as ItemSlot) as WeaponItem? {
+	function getArmorItem(slot as ItemSlot) as ArmorItem? {
 		var armor = null;
 		var item = equipped[slot];
 		if (item != null && item.type == ARMOR) {
@@ -370,6 +398,27 @@ class Player extends Entity {
 		}
 
 		return base_defense;
+	}
+
+	function getElementalResistance(element as ElementType) as Float {
+		var resistance = 0.0;
+		var slots = [
+			HEAD,
+			CHEST,
+			BACK,
+			LEGS,
+			FEET,
+			ACCESSORY,
+			LEFT_HAND,
+			RIGHT_HAND
+		];
+		for (var i = 0; i < slots.size(); i++) {
+			var armor = getArmorItem(slots[i]);
+			if (armor != null) {
+				resistance += armor.getElementalResistance(element);
+			}
+		}
+		return MathUtil.clamp(resistance, 0.0, 0.9);
 	}
 
 	function takeDamage(damage as Number, enemy as Enemy?) as Boolean {
@@ -439,8 +488,9 @@ class Player extends Entity {
 		}
 	}
 
+	// Restore health up to a quarter of the max health when going to the next dungeon
 	function onNextDungeon() as Void {
-		self.current_health = MathUtil.ceil(maxHealth / 2, current_health);
+		self.current_health = MathUtil.ceil(maxHealth / 8, current_health);
 	}
 
 	function getId() as Number {
@@ -553,9 +603,8 @@ class Player extends Entity {
 				var slot = equipped_save_keys[i] as ItemSlot;
 				var item_data = equipped_save[slot] as Dictionary?;
 				if (item_data != null && item_data["id"] != null) {
-					var item = Items.createItemFromId(item_data["id"]);
+					var item = Item.load(item_data);
 					if (item != null) {
-						item.onLoad(item_data);
 						self.equipItem(item, slot, null);
 					}
 				}
@@ -565,6 +614,10 @@ class Player extends Entity {
 			gold = save_data["gold"] as Number;
 		}
 
+	}
+
+	function freeMemory() as Void {
+		
 	}
 
 }

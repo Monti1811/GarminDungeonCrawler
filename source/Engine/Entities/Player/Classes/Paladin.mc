@@ -1,34 +1,35 @@
 import Toybox.Lang;
 
-class Warrior extends Player {
+class Paladin extends Player {
 
 	function initialize(name as String) {
 		Player.initialize();
-		self.id = 0;
+		self.id = 4;
 		// Set name
 		self.name = name;
-		self.description = "A warrior character";
+		self.description = "A paladin character";
 
 		// Set health
-		self.current_health = 150;
-		self.maxHealth = 150;
+		self.current_health = 60;
+		self.maxHealth = 60;
 
 		// Give starting items
-		self.equipItem(new SteelAxe(), RIGHT_HAND, null);
+		self.equipItem(new SteelDagger(), RIGHT_HAND, null);
+		self.equipItem(new SteelShield(), LEFT_HAND, null);
 		self.equipItem(new SteelBreastPlate(), CHEST, null);
 
 		// Set attributes
 		self.attributes = {
-			:strength => 8,
-			:constitution => 12,
+			:strength => 4,
+			:constitution => 8,
 			:intelligence => 1,
-			:wisdom => 2,
-			:dexterity => 1,
+			:wisdom => 6,
+			:dexterity => 6,
 			:charisma => 3,
 			:luck => 4
 		};
 
-		self.sprite = $.Rez.Drawables.KnightBlue;
+		self.sprite = $.Rez.Drawables.Paladin;
 
 	}
 

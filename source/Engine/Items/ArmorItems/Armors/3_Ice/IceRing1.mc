@@ -17,6 +17,7 @@ class IceRing1 extends ArmorItem {
 			:wisdom => 3,
 		};
 		defense_type = WISDOM;
+		element = ELEMENT_ICE;
 	}
 
 	function onEquipItem(player as Player) as Void {

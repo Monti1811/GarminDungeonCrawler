@@ -167,13 +167,11 @@ class Room {
 
 
     function moveEnemies(player_pos as Point2D) as Void {
-        for (var i = 0; i < _enemies.size(); i++) {
-            var enemy_pos = _enemies.keys()[i];
-            if (_enemies[enemy_pos] != null) {
-                var enemy = _enemies[enemy_pos];
-                enemy.findNextMove(_map);
-                moveEnemy(enemy);
-            }
+        var enemies_values = _enemies.values() as Array<Enemy>;
+        for (var i = 0; i < enemies_values.size(); i++) {
+            var enemy = enemies_values[i];
+            enemy.findNextMove(_map);
+            moveEnemy(enemy);
         }
     }
 

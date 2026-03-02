@@ -34,7 +34,7 @@ class TreasureChest extends Item {
     function onInteract(player as Player, room as Room) as Boolean {
         if (!_opened) {
             var inventory = player.getInventory();
-            var key = inventory.find(KEY_ITEM_ID) as KeyItem?;
+            var key = inventory.find(KEY_ITEM_ID) as Key?;
             if (key == null || inventory.remove(key) == null) {
                 WatchUi.showToast("You need a key to open this chest.", {:icon=>$.Rez.Drawables.key});
                 return false;

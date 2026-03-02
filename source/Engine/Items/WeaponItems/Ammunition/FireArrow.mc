@@ -8,6 +8,7 @@ class FireArrow extends Ammunition {
 		name = "Fire Arrow";
 		description = "A fire arrow";
 		type = ARROW;
+		element_override = ELEMENT_FIRE;
 		attack = 2;
 	}
 

@@ -20,6 +20,7 @@ class FireStaff extends Staff {
         range = 1;
         range_type = LINEAR;
         attack_type = INTELLIGENCE;
+        element = ELEMENT_FIRE;
 
         mana_loss = 20;
     }

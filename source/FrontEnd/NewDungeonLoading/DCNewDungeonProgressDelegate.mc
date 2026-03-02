@@ -4,7 +4,7 @@ import Toybox.Lang;
 
 class DCNewDungeonProgressDelegate extends WatchUi.BehaviorDelegate {
 
-    private var _timer as Timer.Timer;
+    private var _timer as Timer.Timer?;
     private var _time_inbetween as Number = 1000;
     private var _progress_bar as WatchUi.ProgressBar;
     private var _progress as Number = 0;
@@ -60,6 +60,7 @@ class DCNewDungeonProgressDelegate extends WatchUi.BehaviorDelegate {
                 Main.createNextDungeon(_progress_bar, _dungeon, 4);
                 _progress = 6;
                 WatchUi.requestUpdate();
+                _timer = null;
                 return;
 
         }

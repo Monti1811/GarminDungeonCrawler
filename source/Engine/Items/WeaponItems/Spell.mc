@@ -5,6 +5,10 @@ class Spell extends WeaponItem {
 
 	var active as Boolean = false;
     var mana_loss as Number = 5;
+
+    function getManaLoss() as Number {
+        return (mana_loss * $.Constants.MANA_LOSS_MULTIPLIER).toNumber();
+    }
 	
 	function initialize() {
 		WeaponItem.initialize();
@@ -20,7 +24,7 @@ class Spell extends WeaponItem {
 
 	function onEquipItem(player as Player) as Void {
 		WeaponItem.onEquipItem(player);
-        if (!active && player.getCurrentMana() >= mana_loss) {
+        if (!active && player.getCurrentMana() >= getManaLoss()) {
             activateSpell();
         }
 	}
@@ -34,18 +38,18 @@ class Spell extends WeaponItem {
 	function onTurnDone() as Void {
 		WeaponItem.onTurnDone();
         var player = $.getApp().getPlayer();
-        if (active && player.getCurrentMana() < mana_loss) {
+        if (active && player.getCurrentMana() < getManaLoss()) {
             deactivateSpell();
-        } else if (!active && player.getCurrentMana() >= mana_loss) {
+        } else if (!active && player.getCurrentMana() >= getManaLoss()) {
 			activateSpell();
 		}
     }
 
-	function onDamageDone(damage as Number, enemy as Enemy?) {
-		WeaponItem.onDamageDone(damage, enemy);
-		var player = $.getApp().getPlayer();
-		player.doManaDelta(-mana_loss);
-	}
+    function onDamageDone(damage as Number, enemy as Enemy?) {
+        WeaponItem.onDamageDone(damage, enemy);
+        var player = $.getApp().getPlayer();
+        player.doManaDelta(-getManaLoss());
+    }
 
 	function save() as Dictionary {
         var data = WeaponItem.save();

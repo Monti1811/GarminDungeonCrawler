@@ -19,6 +19,7 @@ class IceStaff extends Staff {
         range = 1;
         range_type = LINEAR;
         attack_type = INTELLIGENCE;
+        element = ELEMENT_ICE;
 
         mana_loss = 20;
     }

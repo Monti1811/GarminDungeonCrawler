@@ -19,6 +19,7 @@ class IceBow extends Bow {
         range = 3;
         range_type = LINEAR;
         attack_type = DEXTERITY;
+        element = ELEMENT_ICE;
     }
 
     function onEquipItem(player as Player) as Void {

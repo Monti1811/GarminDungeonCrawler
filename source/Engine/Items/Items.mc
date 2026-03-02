@@ -566,14 +566,79 @@ module Items {
         return new BloodSword();
     }
 
+    // Scale ammo stack sizes with dungeon depth so deeper floors drop more
+    function scaledAmmoAmount(baseMin as Number, baseMax as Number) as Number {
+        var depth = $.Game.depth;
+        var bonus = depth / 3;
+        var minAmount = baseMin + bonus;
+        var maxAmount = baseMax + bonus + 2;
+        if (maxAmount < minAmount) {
+            maxAmount = minAmount;
+        }
+        if (maxAmount > 30) {
+            maxAmount = 30;
+        }
+        return MathUtil.random(minAmount, maxAmount);
+    }
+
     function createArrow() as Item {
         var arrow = new Arrow();
-        arrow.setAmount(MathUtil.random(1, 10));
+        arrow.setAmount(scaledAmmoAmount(5, 13));
         return arrow;
+    }
+
+    function createFireArrow() as Item {
+        var arrow = new FireArrow();
+        arrow.setAmount(scaledAmmoAmount(2, 4));
+        return arrow;
+    }
+
+    function createIceArrow() as Item {
+        var arrow = new IceArrow();
+        arrow.setAmount(scaledAmmoAmount(2, 4));
+        return arrow;
+    }
+
+    function createGoldArrow() as Item {
+        var arrow = new GoldArrow();
+        arrow.setAmount(scaledAmmoAmount(1, 3));
+        return arrow;
+    }
+
+    function createBolt() as Item {
+        var bolt = new Bolt();
+        bolt.setAmount(scaledAmmoAmount(5, 13));
+        return bolt;
+    }
+
+    function createFireBolt() as Item {
+        var bolt = new FireBolt();
+        bolt.setAmount(scaledAmmoAmount(2, 4));
+        return bolt;
+    }
+
+    function createIceBolt() as Item {
+        var bolt = new IceBolt();
+        bolt.setAmount(scaledAmmoAmount(2, 4));
+        return bolt;
+    }
+
+    function createGoldBolt() as Item {
+        var bolt = new GoldBolt();
+        bolt.setAmount(scaledAmmoAmount(1, 3));
+        return bolt;
     }
 
     function createCrossBow() as Item {
         return new CrossBow();
+    }
+
+    function createOakCrossBow() as Item {
+        return new OakCrossBow();
+    }
+
+    function createHellCrossBow() as Item {
+        return new HellCrossBow();
     }
 
    
@@ -871,7 +936,7 @@ module Items {
     }
 
     function createKey() as Item {
-        return new KeyItem();
+        return new Key();
     }
 
     function createGold() as Item {

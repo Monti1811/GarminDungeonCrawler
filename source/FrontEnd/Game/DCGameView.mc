@@ -135,7 +135,7 @@ class DCGameView extends WatchUi.View {
         var health_percent = player.getHealthPercent();
         var bar_percent = (70 * health_percent).toNumber();
         dc.setPenWidth(5);
-        dc.drawArc(180, 180, 175, Graphics.ARC_CLOCKWISE, 170, 170 - bar_percent);
+        dc.drawArc(180, 180, 175, Graphics.ARC_CLOCKWISE, 170, $.MathUtil.min(170, 170 - bar_percent));
         // Draw health bar outline
         dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_BLACK);
         dc.setPenWidth(1);
@@ -230,8 +230,12 @@ class DCGameView extends WatchUi.View {
         _room_drawable.freeMemory();
         _room_drawable = null;
         $.Game.setTurns(null);
+        _timer.stop();
         _timer = null;
-        _autosave_timer = null;
+        if (_autosave_timer != null) {
+            _autosave_timer.stop();
+            _autosave_timer = null;
+        }
         rightLowHint = null;
         damage_texts = [];
     }

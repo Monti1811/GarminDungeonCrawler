@@ -17,6 +17,7 @@ class Item {
 	function initialize();
 	function onEquipItem(player as Player) as Void {
 		self.equipped = true;
+		$.SaveData.discovered_items[id] = true;
 	}
 	function onUnequipItem(player as Player) as Void {
 		self.equipped = false;
@@ -29,6 +30,8 @@ class Item {
 		var text = "Picked up" + (amount > 1 ? " x" + amount : "") + " " + name + ".";
 		WatchUi.showToast(text, {:icon=>self.getSprite()});
 		$.Log.log(text);
+		// Track item as discovered in compendium
+		$.SaveData.discovered_items[id] = true;
 	}
 	function onDropItem(player as Player) as Void;
 	function onSellItem(player as Player) as Void;

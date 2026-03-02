@@ -18,6 +18,7 @@ class IceSpell extends Spell {
         range = 3;
         cooldown = 1;
         attack_type = INTELLIGENCE;
+        element = ELEMENT_ICE;
 
         mana_loss = 34;
     }

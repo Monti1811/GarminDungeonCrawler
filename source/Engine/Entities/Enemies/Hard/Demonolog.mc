@@ -14,7 +14,7 @@ class Demonolog extends Enemy {
 		damage = 20;
 		current_health = 200;
 		maxHealth = current_health;
-		energy_per_turn = 100; 
+		energy_per_turn = 67; 
         armor = 0;
         kill_experience = 300;
 	}
@@ -41,15 +41,9 @@ class Demonolog extends Enemy {
             7 => 5,     // Zombie
             28 => 5,    // Chort
         };
-        var chosen_summon = $.MathUtil.weighted_random(summons);
-        var summon_pos = $.MapUtil.findRandomEmptyTileAround(map, pos);
-        if (summon_pos != null) {
-            var summon = $.Enemies.createEnemyFromId(chosen_summon);
-            summon.register();
-            summon.setPos(summon_pos);
+        var summon = EnemyUtil.summonEnemy(summons, map, pos);
+        if (summon != null) {
             children.add(summon.guid);
-            var room = $.Game.getCurrentRoom();
-            room.addEnemy(summon);
             summon_cooldown = summon_cooldown_max;
             return true;
         }

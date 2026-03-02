@@ -5,6 +5,8 @@ class ArmorItem extends EquippableItem {
 
 	var defense as Number = 5;
 	var defense_type as DefenseType = CONSTITUTION;
+	var element as ElementType = ELEMENT_NONE;
+	const DEFENSE_SCALE as Float = 0.5;
 
 	function initialize() {
 		EquippableItem.initialize();
@@ -39,13 +41,13 @@ class ArmorItem extends EquippableItem {
 	}
 
 	function getBaseDefense() as Number {
-		return defense;
+		return (defense * DEFENSE_SCALE).toNumber();
 	}
 
 	function getDefense(enemy as Enemy?, armors_size as Number) as Number {
 		var player = $.getApp().getPlayer();
 		var attribute_modifiers = $.Constants.ATTRIBUTE_WEIGHTS[defense_type] as Dictionary<Symbol, Float>;
-		var defense = self.defense;
+		var defense = self.getBaseDefense();
 		var attribute_keys = [
 			:strength,
 			:dexterity,
@@ -64,10 +66,22 @@ class ArmorItem extends EquippableItem {
 		}
 
 		var luck = player.getAttribute(:luck) * attribute_modifiers[:luck];
-		if (enemy != null && MathUtil.random(0, 100) < luck) {
+		if (enemy != null && MathUtil.isRandomPercent(luck)) {
 			defense *= 1.25;
 		}
 		return defense.toNumber();
+	}
+
+	function getElement() as ElementType {
+		if (element == ELEMENT_NONE && id != null) {
+			// Fallback only once if the concrete armor did not assign an element
+			element = $.ElementUtil.getArmorElement(id);
+		}
+		return element;
+	}
+
+	function getElementalResistance(element as ElementType) as Float {
+		return getElement() == element ? $.ElementUtil.getArmorResistance(id, element) : 0.0;
 	}
 
 }

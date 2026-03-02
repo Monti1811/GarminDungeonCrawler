@@ -16,6 +16,7 @@ class IceRing2 extends ArmorItem {
 			:charisma => 4,
 			:wisdom => 2
 		};
+		element = ELEMENT_ICE;
 		defense_type = WISDOM;
 	}
 

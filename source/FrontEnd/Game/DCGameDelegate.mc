@@ -79,13 +79,24 @@ class DCGameDelegate extends WatchUi.BehaviorDelegate {
         actionMenu.addItem(new WatchUi.MenuItem(getApp().getPlayer().getName(), "Show details", :player, null));
         actionMenu.addItem(new WatchUi.MenuItem("Inventory", "Show inventory", :inventory, null));
         actionMenu.addItem(new WatchUi.MenuItem("Quests", "Show active quests", :quests, null));
+        actionMenu.addItem(new WatchUi.MenuItem("Compendium", "Discovered enemies & items", :compendium, null));
         actionMenu.addItem(new WatchUi.MenuItem("Map", "Show map", :map, null));
         actionMenu.addItem(new WatchUi.MenuItem("Save", "Save the game", :save, null));
         actionMenu.addItem(new WatchUi.MenuItem("Log", "Show last actions", :log, null));
         actionMenu.addItem(new WatchUi.MenuItem("Settings", "Change settings", :settings, null));
+        self.addDebugMenu(actionMenu);
 
         WatchUi.pushView(actionMenu, new DCGameMenuDelegate(), SLIDE_UP);
         return true;
+    }
+
+    (:debug) 
+    function addDebugMenu(actionMenu as Menu2) {
+        actionMenu.addItem(new WatchUi.MenuItem("Debug", "Debug tools", :debug, null));
+    }
+
+    (:release) 
+    function addDebugMenu(actionMenu as Menu2) {
     }
 
 }
@@ -102,9 +113,7 @@ class DCGameExitConfirmDelegate extends WatchUi.ConfirmationDelegate {
                 saveGame();
             }
             WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
-            var app = getApp();
-            app.setPlayer(null);
-            app.setCurrentDungeon(null);
+            $.Game.clearSession();
         }
         return true;
     }

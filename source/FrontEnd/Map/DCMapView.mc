@@ -19,6 +19,26 @@ class DCMapView extends WatchUi.View {
 	function onUpdate(dc as Dc) {
 		_map.setLocation(_pos[0], _pos[1]);
 		_map.draw(dc);
+		drawDepth(dc);
+	}
+
+	function drawDepth(dc as Dc) {
+		var depth = $.Game.depth;
+		var font = Graphics.FONT_XTINY;
+		var label = "Depth " + depth;
+		var padding = 6;
+		var text_width = dc.getTextWidthInPixels(label, font);
+		var text_height = dc.getFontHeight(font);
+		var box_width = text_width + padding * 2;
+		var box_height = text_height + padding * 2;
+		var x = (dc.getWidth() - box_width) / 2;
+		var y = dc.getHeight() - box_height - 20;
+		dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_BLACK);
+		dc.fillRectangle(x, y, box_width, box_height);
+		dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+		dc.drawRectangle(x, y, box_width, box_height);
+		dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+		dc.drawText(x + padding, y + box_height / 2, font, label, Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER);
 	}
 
 	function updatePos(pos as Point2D) {

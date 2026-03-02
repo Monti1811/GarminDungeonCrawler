@@ -18,6 +18,7 @@ class FireAxe extends WeaponItem {
         };
 
         attack = 12;
+        element = ELEMENT_FIRE;
     }
 
     function onEquipItem(player as Player) as Void {

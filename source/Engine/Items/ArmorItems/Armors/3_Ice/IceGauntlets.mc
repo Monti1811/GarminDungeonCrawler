@@ -15,6 +15,7 @@ class IceGauntlets extends ArmorItem {
 			:charisma => 3,
 			:wisdom => 4,
 		};
+		element = ELEMENT_ICE;
 		defense_type = CHARISMA;
 	}
 
