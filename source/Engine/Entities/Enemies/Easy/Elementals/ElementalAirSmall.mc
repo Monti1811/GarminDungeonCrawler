@@ -19,7 +19,7 @@ class ElementalAirSmall extends Enemy {
 	}
 
 	function findNextMove(map) as Point2D {
-        return Enemy.followPlayerSimple(map);
+		return Enemy.followPlayerStrafe(map, true);
     }
 
 	function onLoad(save_data as Dictionary) as Void {

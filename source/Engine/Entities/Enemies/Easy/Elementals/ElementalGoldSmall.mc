@@ -19,7 +19,7 @@ class ElementalGoldSmall extends Enemy {
 	}
 
 	function findNextMove(map) as Point2D {
-        return Enemy.followPlayerSimple(map);
+		return Enemy.followPlayerStrafe(map, true);
     }
 
 	function getLoot() as Item? {

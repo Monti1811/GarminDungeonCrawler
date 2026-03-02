@@ -19,6 +19,6 @@ class Orc extends Enemy {
     }
 
     function findNextMove(map) as Point2D {
-        return Enemy.followPlayerSimple(map);
+        return Enemy.followPlayerDirect(map);
     }
 }

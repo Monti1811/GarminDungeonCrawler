@@ -1,9 +1,6 @@
 import Toybox.Lang;
 
 class Wogol extends Enemy {
-	
-	var teleport_cooldown = 0;
-	var teleport_cooldown_max = 3;
 
 	function initialize() {
 		Enemy.initialize();
@@ -22,17 +19,11 @@ class Wogol extends Enemy {
 	}
 
 	function findNextMove(map) as Point2D {
-        if (teleport_cooldown > 0) {
-			return Enemy.followPlayerSimple(map);
+		if (Enemy.canUseTeleportMove()) {
+			return Enemy.followPlayerTeleportBehind(map);
 		}
-		teleport_cooldown = teleport_cooldown_max;
-		return Enemy.toPlayerTeleport(map);
+		return Enemy.followPlayerFlankSafe(map);
     }
-
-	function onTurnDone() as Void {
-		teleport_cooldown -= 1;
-		Enemy.onTurnDone();
-	}
 
 	function onLoad(save_data as Dictionary) as Void {
 		Enemy.onLoad(save_data);

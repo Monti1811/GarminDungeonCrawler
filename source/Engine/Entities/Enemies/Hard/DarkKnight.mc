@@ -22,7 +22,7 @@ class DarkKnight extends Enemy {
 	}
 
 	function findNextMove(map) as Point2D {
-		return Enemy.followPlayerSimple(map);
+		return Enemy.followPlayerFlankSafe(map);
     }
 
 	function onLoad(save_data as Dictionary) as Void {
