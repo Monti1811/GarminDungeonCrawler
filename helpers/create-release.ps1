@@ -52,7 +52,7 @@ $scriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 $repoRoot = (Resolve-Path (Join-Path $scriptRoot "..")).Path
 
 if (-not $OutputDir) {
-    $OutputDir = Join-Path $repoRoot "dist\$Tag"
+    $OutputDir = Join-Path $repoRoot "release\$Tag"
 }
 
 $allowedDevices = @("venu2", "venu2plus", "venu2s", "venu3", "venu3s", "venu441mm", "venu445mm")
@@ -131,9 +131,14 @@ try {
     gh auth status | Out-Null
 
     $releaseExists = $false
-    gh release view $Tag *> $null
-    if ($LASTEXITCODE -eq 0) {
-        $releaseExists = $true
+    try {
+        & gh release view $Tag --json id *> $null
+        if ($LASTEXITCODE -eq 0) {
+            $releaseExists = $true
+        }
+    }
+    catch {
+        $releaseExists = $false
     }
 
     if ($releaseExists) {
