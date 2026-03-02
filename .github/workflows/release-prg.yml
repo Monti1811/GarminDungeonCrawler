@@ -86,7 +86,7 @@ jobs:
         run: |
           set -euo pipefail
 
-          MONKEYBRAINS_JAR="$GITHUB_WORKSPACE/resources/monkeybrains_8_4_1.jar"
+          MONKEYBRAINS_JAR="$GITHUB_WORKSPACE/resources/sdk_8_4_1/monkeybrains.jar"
           if [ ! -f "$MONKEYBRAINS_JAR" ]; then
             echo "Local monkeybrains.jar not found at $MONKEYBRAINS_JAR"
             exit 1

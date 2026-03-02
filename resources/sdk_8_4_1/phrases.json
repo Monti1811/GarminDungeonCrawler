@@ -1,0 +1,1216 @@
+{
+    "FITNESS/FITNESS_AVG_PACE": {
+        "text": "Average Pace {{time}}",
+        "slots": {
+            "time": "time_m_s"
+        }
+    },
+    "FITNESS/FITNESS_AVG_SPEED": {
+        "text": "Average Speed {{speed.value}}",
+        "slots": {
+            "speed": "speed_no_unit_tenth"
+        }
+    },
+    "FITNESS/FITNESS_CUR_PACE": {
+        "text": "Current Pace {{time}}",
+        "slots": {
+            "time": "time_m_s"
+        }
+    },
+    "FITNESS/FITNESS_CUR_SPEED": {
+        "text": "Current Speed {{speed.value}}",
+        "slots": {
+            "speed": "speed_no_unit_tenth"
+        }
+    },
+    "FITNESS/FITNESS_LAP_PACE": {
+        "text": "Lap Pace {{time}}",
+        "slots": {
+            "time": "time_m_s"
+        }
+    },
+    "FITNESS/FITNESS_LAP_SPEED": {
+        "text": "Lap Speed {{speed.value}}",
+        "slots": {
+            "speed": "speed_no_unit_tenth"
+        }
+    },
+    "FITNESS/FITNESS_HEART_RATE_BPM": {
+        "text": "Heart Rate {{bpm}}",
+        "slots": {
+            "bpm": "bpm"
+        }
+    },
+    "FITNESS/FITNESS_HEART_RATE_ZONE": {
+        "text": "Heart Rate Zone {{zone_value}}",
+        "slots": {
+            "zone_value": "hr_zone_value"
+        }
+    },
+    "FITNESS/FITNESS_HEART_RATE_PERCENT": {
+        "text": "Heart Rate {{percent}}%",
+        "slots": {
+            "percent": "hr_percent"
+        }
+    },
+    "FITNESS/FITNESS_LAP_TIME": {
+        "text": "Lap {{lap}}: {{time}}",
+        "slots": {
+            "lap": "lap",
+            "time": "time_m_s"
+        }
+    },
+    "FITNESS/FITNESS_TIMER_PAUSED": {
+        "text": "Timer Paused"
+    },
+    "FITNESS/FITNESS_TIMER_RESUMED": {
+        "text": "Timer Resumed"
+    },
+    "FITNESS/FITNESS_TIMER_STARTED": {
+        "text": "Timer Started"
+    },
+    "FITNESS/FITNESS_TIMER_STOPPED": {
+        "text": "Timer Stopped"
+    },
+    "FITNESS/FITNESS_EAT": {
+        "text": "Eat"
+    },
+    "FITNESS/FITNESS_DRINK": {
+        "text": "Drink"
+    },
+    "FITNESS/FITNESS_TURN_AROUND": {
+        "text": "Turn Around"
+    },
+    "FITNESS/FITNESS_GO_HOME": {
+        "text": "Go Home"
+    },
+    "FITNESS/FITNESS_CUSTOM_ALERT": {
+        "text": "Custom Alert"
+    },
+    "FITNESS/FITNESS_RUN_TIME": {
+        "text": "Run {{time}}",
+        "slots": {
+            "time": "time_m_s"
+        }
+    },
+    "FITNESS/FITNESS_RUN_DISTANCE": {
+        "text": "Run {{distance.value}}",
+        "slots": {
+            "distance": "distance_no_unit_tenth"
+        }
+    },
+    "FITNESS/FITNESS_WALK_TIME": {
+        "text": "Walk {{time}}",
+        "slots": {
+            "time": "time_m_s"
+        }
+    },
+    "FITNESS/FITNESS_WALK_DISTANCE": {
+        "text": "Walk {{distance.value}}",
+        "slots": {
+            "distance": "distance_no_unit_tenth"
+        }
+    },
+    "FITNESS/FITNESS_TIME": {
+        "text": "Time {{time}}",
+        "slots": {
+            "time": "time_m_s"
+        }
+    },
+    "FITNESS/FITNESS_DISTANCE": {
+        "text": "Distance {{distance.value}}",
+        "slots": {
+            "distance": "distance_no_unit_tenth"
+        }
+    },
+    "FITNESS/FITNESS_CALORIES": {
+        "text": "Calories {{calories}}",
+        "slots": {
+            "calories": "calories"
+        }
+    },
+    "FITNESS/FITNESS_CADENCE": {
+        "text": "Cadence {{cadence}}",
+        "slots": {
+            "cadence": "cadence"
+        }
+    },
+    "FITNESS/FITNESS_BIKE_CADENCE": {
+        "text": "[Bike] Cadence {{bike_cadence}}",
+        "slots": {
+            "bike_cadence": "bike_cadence"
+        }
+    },
+    "FITNESS/FITNESS_ELEVATION": {
+        "text": "Elevation {{elevation.value}}",
+        "slots": {
+            "elevation": "elevation_no_unit"
+        }
+    },
+    "FITNESS/FITNESS_LAP_POWER": {
+        "text": "Lap Power {{power}}",
+        "slots": {
+            "power": "power"
+        }
+    },
+    "FITNESS/FITNESS_AVG_POWER": {
+        "text": "Average Power {{power}}",
+        "slots": {
+            "power": "power"
+        }
+    },
+    "FITNESS/FITNESS_NORM_POWER": {
+        "text": "Normalized Power {{power}}",
+        "slots": {
+            "power": "power"
+        }
+    },
+    "FITNESS/FITNESS_LAP_T_W_H": {
+        "text": "Lap {{lap}}: {{time}}.{{hund}}",
+        "slots": {
+            "lap": "lap",
+            "time": "time_m_s",
+            "hund": "hund"
+        }
+    },
+    "FITNESS/FITNESS_POWER": {
+        "text": "Power {{power}}",
+        "slots": {
+            "power": "power"
+        }
+    },
+    "FITNESS/FITNESS_POWER_HIGH": {
+        "text": "Power High {{power}}",
+        "slots": {
+            "power": "power"
+        }
+    },
+    "FITNESS/FITNESS_POWER_LOW": {
+        "text": "Power Low {{power}}",
+        "slots": {
+            "power": "power"
+        }
+    },
+    "FITNESS/FITNESS_POWER_INRANGE": {
+        "text": "Power In Range {{power}}",
+        "slots": {
+            "power": "power"
+        }
+    },
+    "FITNESS/FITNESS_BATTERY_LOW": {
+        "text": "Battery Low"
+    },
+    "FITNESS/FITNESS_HEART_RATE_HIGH_BPM": {
+        "text": "Heart Rate High {{bpm}}",
+        "slots": {
+            "bpm": "bpm"
+        }
+    },
+    "FITNESS/FITNESS_HEART_RATE_LOW_BPM": {
+        "text": "Heart Rate Low {{bpm}}",
+        "slots": {
+            "bpm": "bpm"
+        }
+    },
+    "FITNESS/FITNESS_HEART_RATE_INRANGE_BPM": {
+        "text": "Heart Rate In Range {{bpm}}",
+        "slots": {
+            "bpm": "bpm"
+        }
+    },
+    "FITNESS/FITNESS_CUR_PACE_HIGH": {
+        "text": "[Current] Pace High {{time}}",
+        "slots": {
+            "time": "time_m_s"
+        }
+    },
+    "FITNESS/FITNESS_CUR_PACE_LOW": {
+        "text": "[Current] Pace Low {{time}}",
+        "slots": {
+            "time": "time_m_s"
+        }
+    },
+    "FITNESS/FITNESS_CUR_PACE_INRANGE": {
+        "text": "[Current] Pace In Range {{time}}",
+        "slots": {
+            "time": "time_m_s"
+        }
+    },
+    "FITNESS/FITNESS_CUR_SPEED_HIGH": {
+        "text": "[Current] Speed High {{speed.value}}",
+        "slots": {
+            "speed": "speed_no_unit_tenth"
+        }
+    },
+    "FITNESS/FITNESS_CUR_SPEED_LOW": {
+        "text": "[Current] Speed Low {{speed.value}}",
+        "slots": {
+            "speed": "speed_no_unit_tenth"
+        }
+    },
+    "FITNESS/FITNESS_CUR_SPEED_INRANGE": {
+        "text": "[Current] Speed In Range {{speed.value}}",
+        "slots": {
+            "speed": "speed_no_unit_tenth"
+        }
+    },
+    "FITNESS/FITNESS_CADENCE_HIGH": {
+        "text": "Cadence High {{cadence}}",
+        "slots": {
+            "cadence": "cadence"
+        }
+    },
+    "FITNESS/FITNESS_CADENCE_LOW": {
+        "text": "Cadence Low {{cadence}}",
+        "slots": {
+            "cadence": "cadence"
+        }
+    },
+    "FITNESS/FITNESS_CADENCE_INRANGE": {
+        "text": "Cadence In Range {{cadence}}",
+        "slots": {
+            "cadence": "cadence"
+        }
+    },
+    "FITNESS/FITNESS_BIKE_CADENCE_HIGH": {
+        "text": "[Bike] Cadence High {{bike_cadence}}",
+        "slots": {
+            "bike_cadence": "bike_cadence"
+        }
+    },
+    "FITNESS/FITNESS_BIKE_CADENCE_LOW": {
+        "text": "[Bike] Cadence Low {{bike_cadence}}",
+        "slots": {
+            "bike_cadence": "bike_cadence"
+        }
+    },
+    "FITNESS/FITNESS_BIKE_CADENCE_INRANGE": {
+        "text": "[Bike] Cadence In Range {{bike_cadence}}",
+        "slots": {
+            "bike_cadence": "bike_cadence"
+        }
+    },
+    "FITNESS/FITNESS_ELEVATION_HIGH": {
+        "text": "Elevation High {{elevation.value}}",
+        "slots": {
+            "elevation": "elevation_no_unit"
+        }
+    },
+    "FITNESS/FITNESS_ELEVATION_LOW": {
+        "text": "Elevation Low {{elevation.value}}",
+        "slots": {
+            "elevation": "elevation_no_unit"
+        }
+    },
+    "FITNESS/FITNESS_ELEVATION_INRANGE": {
+        "text": "Elevation In Range {{elevation.value}}",
+        "slots": {
+            "elevation": "elevation_no_unit"
+        }
+    },
+    "FITNESS/FITNESS_PAUSE_200MS": {
+        "text": "."
+    },
+    "FITNESS/FITNESS_STEP_RUN": {
+        "text": "Run"
+    },
+    "FITNESS/FITNESS_STEP_BIKE": {
+        "text": "Bike"
+    },
+    "FITNESS/FITNESS_STEP_WARMUP": {
+        "text": "Warmup"
+    },
+    "FITNESS/FITNESS_STEP_RECOVER": {
+        "text": "Recover"
+    },
+    "FITNESS/FITNESS_STEP_REST": {
+        "text": "Rest"
+    },
+    "FITNESS/FITNESS_STEP_COOLDOWN": {
+        "text": "Cooldown"
+    },
+    "FITNESS/FITNESS_UNTIL_TIME": {
+        "text": "{{time}}",
+        "slots": {
+            "time": "time_m_s"
+        }
+    },
+    "FITNESS/FITNESS_UNTIL_HR_ABOVE": {
+        "text": "Until heart rate above {{bpm}}",
+        "slots": {
+            "bpm": "bpm"
+        }
+    },
+    "FITNESS/FITNESS_UNTIL_HR_BELOW": {
+        "text": "Until heart rate below {{bpm}}",
+        "slots": {
+            "bpm": "bpm"
+        }
+    },
+    "FITNESS/FITNESS_UNTIL_PWR_ABOVE": {
+        "text": "Until power above {{power}}",
+        "slots": {
+            "power": "power"
+        }
+    },
+    "FITNESS/FITNESS_UNTIL_PWR_BELOW": {
+        "text": "Until power below {{power}}",
+        "slots": {
+            "power": "power"
+        }
+    },
+    "FITNESS/FITNESS_UNTIL_LAP_PRESS": {
+        "text": "Until lap press"
+    },
+    "FITNESS/FITNESS_UNTIL_CALORIES": {
+        "text": "Until {{calories}} Calorie(s)",
+        "slots": {
+            "calories": "calories"
+        }
+    },
+    "FITNESS/FITNESS_UNTIL_DISTANCE": {
+        "text": "{{distance.value}} {{distance.unit}}(s)",
+        "slots": {
+            "distance": "distance_mile_meter_kilometer"
+        }
+    },
+    "FITNESS/FITNESS_RANGE_PACE": {
+        "text": "Pace [from] {{time_from}} to {{time_to}}",
+        "slots": {
+            "time_from": "time_m_s",
+            "time_to": "time_m_s"
+        }
+    },
+    "FITNESS/FITNESS_RANGE_SPEED": {
+        "text": "Speed [from] {{speed_from.value}} to {{speed_to.value}}",
+        "slots": {
+            "speed_from": "speed_no_unit_tenth",
+            "speed_to": "speed_no_unit_tenth"
+        }
+    },
+    "FITNESS/FITNESS_RANGE_CADENCE": {
+        "text": "Cadence [from] {{cadence_from}} to {{cadence_to}}",
+        "slots": {
+            "cadence_from": "cadence",
+            "cadence_to": "cadence"
+        }
+    },
+    "FITNESS/FITNESS_RANGE_BIKE_CADENCE": {
+        "text": "[Bike] cadence [from] {{bike_cadence_from}} to {{bike_cadence_to}}",
+        "slots": {
+            "bike_cadence_from": "bike_cadence",
+            "bike_cadence_to": "bike_cadence"
+        }
+    },
+    "FITNESS/FITNESS_RANGE_HR": {
+        "text": "Heart rate [from] {{bpm_from}} to {{bpm_to}}",
+        "slots": {
+            "heart_rate_from": "bpm",
+            "heart_rate_to": "bpm"
+        }
+    },
+    "FITNESS/FITNESS_RANGE_PWR": {
+        "text": "Power [from] {{power_from}} to {{power_to}}",
+        "slots": {
+            "power_from": "power",
+            "power_to": "power"
+        }
+    },
+    "FITNESS/FITNESS_POWER_ZONE": {
+        "text": "Power Zone {{zone_value}}",
+        "slots": {
+            "zone_value": "power_zone_value"
+        }
+    },
+    "FITNESS/FITNESS_NEXT_SPLIT_PACE": {
+        "text": "Next Split Pace {{time}}",
+        "slots": {
+            "time": "time_m_s"
+        }
+    },
+    "FITNESS/FITNESS_AHEAD": {
+        "text": "Ahead {{time}}",
+        "slots": {
+            "time": "time_m_s"
+        }
+    },
+    "FITNESS/FITNESS_BEHIND": {
+        "text": "Behind {{time}}",
+        "slots": {
+            "time": "time_m_s"
+        }
+    },
+    "FITNESS/FITNESS_DISTANCE_INTEGER": {
+        "text": "Distance {{distance.value}}",
+        "slots": {
+            "distance": "distance_no_unit"
+        }
+    },
+    "FITNESS/FITNESS_MID_PACE": {
+        "text": "Pace {{time}}",
+        "slots": {
+            "time": "time_m_s"
+        }
+    },
+    "FITNESS/FITNESS_MID_SPEED": {
+        "text": "Speed {{speed.value}}",
+        "slots": {
+            "speed": "speed_no_unit_tenth"
+        }
+    },
+    "FITNESS/FITNESS_MID_CADENCE": {
+        "text": "Cadence {{cadence}}",
+        "slots": {
+            "cadence": "cadence"
+        }
+    },
+    "FITNESS/FITNESS_MID_BIKE_CADENCE": {
+        "text": "[Bike] cadence {{bike_cadence}}",
+        "slots": {
+            "bike_cadence": "bike_cadence"
+        }
+    },
+    "FITNESS/FITNESS_MID_HR": {
+        "text": "Heart rate {{bpm}}",
+        "slots": {
+            "bpm": "bpm"
+        }
+    },
+    "FITNESS/FITNESS_MID_PWR": {
+        "text": "Power {{power}}",
+        "slots": {
+            "power": "power"
+        }
+    },
+    "FITNESS/FITNESS_STEP_WARMUP_COMPLETE_TIME": {
+        "text": "Warmup completed. {{time}}",
+        "slots": {
+            "time": "time_m_s"
+        }
+    },
+    "FITNESS/FITNESS_STEP_WARMUP_COMPLETE_DISTANCE": {
+        "text": "Warmup completed. {{distance.value}} {{distance.unit}}(s)",
+        "slots": {
+            "distance": "distance_mile_meter_kilometer"
+        }
+    },
+    "FITNESS/FITNESS_STEP_INTERVAL_COMPLETE_TIME": {
+        "text": "Interval {{interval}} completed. {{time}}",
+        "slots": {
+            "interval": "interval",
+            "time": "time_m_s"
+        }
+    },
+    "FITNESS/FITNESS_STEP_INTERVAL_COMPLETE_DISTANCE": {
+        "text": "Interval {{interval}} completed. {{distance.value}} {{distance.unit}}(s)",
+        "slots": {
+            "interval": "interval",
+            "distance": "distance_mile_meter_kilometer"
+        }
+    },
+    "FITNESS/FITNESS_STEP_RECOVER_COMPLETE_TIME": {
+        "text": "Recovery completed. {{time}}",
+        "slots": {
+            "time": "time_m_s"
+        }
+    },
+    "FITNESS/FITNESS_STEP_REST_COMPLETE_TIME": {
+        "text": "Rest completed. {{time}}",
+        "slots": {
+            "time": "time_m_s"
+        }
+    },
+    "FITNESS/FITNESS_STEP_COOLDOWN_COMPLETE_TIME": {
+        "text": "Cooldown completed. {{time}}",
+        "slots": {
+            "time": "time_m_s"
+        }
+    },
+    "FITNESS/FITNESS_STEP_COOLDOWN_COMPLETE_DISTANCE": {
+        "text": "Cooldown completed. {{distance.value}} {{distance.unit}}(s)",
+        "slots": {
+            "distance": "distance_mile_meter_kilometer"
+        }
+    },
+    "FITNESS/FITNESS_STEP_DISTANCE_AUTOLAP_COMPLETE_TIME": {
+        "text": "{{distance.value}} {{distance.unit}} Auto Lap. {{time}}",
+        "slots": {
+            "distance": "distance_mile_meter_kilometer",
+            "time": "time_m_s"
+        }
+    },
+    "FITNESS/FITNESS_STEP_LAP_TIME": {
+        "text": "Lap time: {{time}}",
+        "slots": {
+            "time": "time_m_s"
+        }
+    },
+    "FITNESS/FITNESS_STEP_WORKOUT_COMPLETE": {
+        "text": "Workout completed."
+    },
+    "FITNESS/COURSE_POINT_FINISH_IN_DISTANCE": {
+        "text": "Finish in {{distance.value}} {{distance.unit}}(s)",
+        "slots": {
+            "distance": "distance_foot_mile_meter_kilometer"
+        }
+    },
+    "FITNESS/COURSE_POINT_FINISH_APPROACHING": {
+        "text": "Approaching Finish"
+    },
+    "FITNESS/COURSE_POINT_SUMMIT_IN_DISTANCE": {
+        "text": "Summit in {{distance.value}} {{distance.unit}}(s)",
+        "slots": {
+            "distance": "distance_foot_mile_meter_kilometer"
+        }
+    },
+    "FITNESS/COURSE_POINT_SUMMIT_APPROACHING": {
+        "text": "Approaching Summit"
+    },
+    "FITNESS/COURSE_POINT_VALLEY_IN_DISTANCE": {
+        "text": "Valley in {{distance.value}} {{distance.unit}}(s)",
+        "slots": {
+            "distance": "distance_foot_mile_meter_kilometer"
+        }
+    },
+    "FITNESS/COURSE_POINT_VALLEY_APPROACHING": {
+        "text": "Approaching Valley"
+    },
+    "FITNESS/COURSE_POINT_WATER_IN_DISTANCE": {
+        "text": "Water in {{distance.value}} {{distance.unit}}(s)",
+        "slots": {
+            "distance": "distance_foot_mile_meter_kilometer"
+        }
+    },
+    "FITNESS/COURSE_POINT_WATER_APPROACHING": {
+        "text": "Approaching Water"
+    },
+    "FITNESS/COURSE_POINT_FOOD_IN_DISTANCE": {
+        "text": "Food in {{distance.value}} {{distance.unit}}(s)",
+        "slots": {
+            "distance": "distance_foot_mile_meter_kilometer"
+        }
+    },
+    "FITNESS/COURSE_POINT_FOOD_APPROACHING": {
+        "text": "Approaching Food"
+    },
+    "FITNESS/COURSE_POINT_DANGER_IN_DISTANCE": {
+        "text": "Danger in {{distance.value}} {{distance.unit}}(s)",
+        "slots": {
+            "distance": "distance_foot_mile_meter_kilometer"
+        }
+    },
+    "FITNESS/COURSE_POINT_DANGER_APPROACHING": {
+        "text": "Approaching Danger"
+    },
+    "FITNESS/COURSE_POINT_FIRST_AID_IN_DISTANCE": {
+        "text": "First Aid in {{distance.value}} {{distance.unit}}(s)",
+        "slots": {
+            "distance": "distance_foot_mile_meter_kilometer"
+        }
+    },
+    "FITNESS/COURSE_POINT_FIRST_AID_APPROACHING": {
+        "text": "Approaching First Aid"
+    },
+    "FITNESS/COURSE_POINT_SPRINT_IN_DISTANCE": {
+        "text": "Sprint in {{distance.value}} {{distance.unit}}(s)",
+        "slots": {
+            "distance": "distance_foot_mile_meter_kilometer"
+        }
+    },
+    "FITNESS/COURSE_POINT_SPRINT_APPROACHING": {
+        "text": "Approaching Sprint"
+    },
+    "FITNESS/COURSE_POINT_CATEGORY_4_IN_DISTANCE": {
+        "text": "Cat. 4 in {{distance.value}} {{distance.unit}}(s)",
+        "slots": {
+            "distance": "distance_foot_mile_meter_kilometer"
+        }
+    },
+    "FITNESS/COURSE_POINT_CATEGORY_4_APPROACHING": {
+        "text": "Approaching Cat. 4"
+    },
+    "FITNESS/COURSE_POINT_CATEGORY_3_IN_DISTANCE": {
+        "text": "Cat. 3 in {{distance.value}} {{distance.unit}}(s)",
+        "slots": {
+            "distance": "distance_foot_mile_meter_kilometer"
+        }
+    },
+    "FITNESS/COURSE_POINT_CATEGORY_3_APPROACHING": {
+        "text": "Approaching Cat. 3"
+    },
+    "FITNESS/COURSE_POINT_CATEGORY_2_IN_DISTANCE": {
+        "text": "Cat. 2 in {{distance.value}} {{distance.unit}}(s)",
+        "slots": {
+            "distance": "distance_foot_mile_meter_kilometer"
+        }
+    },
+    "FITNESS/COURSE_POINT_CATEGORY_2_APPROACHING": {
+        "text": "Approaching Cat. 2"
+    },
+    "FITNESS/COURSE_POINT_CATEGORY_1_IN_DISTANCE": {
+        "text": "Cat. 1 in {{distance.value}} {{distance.unit}}(s)",
+        "slots": {
+            "distance": "distance_foot_mile_meter_kilometer"
+        }
+    },
+    "FITNESS/COURSE_POINT_CATEGORY_1_APPROACHING": {
+        "text": "Approaching Cat. 1"
+    },
+    "FITNESS/COURSE_POINT_HORS_CATEGORY_IN_DISTANCE": {
+        "text": "HC Climb in {{distance.value}} {{distance.unit}}(s)",
+        "slots": {
+            "distance": "distance_foot_mile_meter_kilometer"
+        }
+    },
+    "FITNESS/COURSE_POINT_HORS_CATEGORY_APPROACHING": {
+        "text": "Approaching HC Climb"
+    },
+    "FITNESS/COURSE_POINT_GENERIC_IN_DISTANCE": {
+        "text": "Point in {{distance.value}} {{distance.unit}}(s)",
+        "slots": {
+            "distance": "distance_foot_mile_meter_kilometer"
+        }
+    },
+    "FITNESS/COURSE_POINT_GENERIC_APPROACHING": {
+        "text": "Approaching Point"
+    },
+    "FITNESS/COURSE_POINT_CAMPSITE_IN_DISTANCE": {
+        "text": "Campsite in {{distance.value}} {{distance.unit}}(s)",
+        "slots": {
+            "distance": "distance_foot_mile_meter_kilometer"
+        }
+    },
+    "FITNESS/COURSE_POINT_CAMPSITE_APPROACHING": {
+        "text": "Approaching Campsite"
+    },
+    "FITNESS/COURSE_POINT_AID_STATION_IN_DISTANCE": {
+        "text": "Aid Station in {{distance.value}} {{distance.unit}}(s)",
+        "slots": {
+            "distance": "distance_foot_mile_meter_kilometer"
+        }
+    },
+    "FITNESS/COURSE_POINT_AID_STATION_APPROACHING": {
+        "text": "Approaching Aid Station"
+    },
+    "FITNESS/COURSE_POINT_REST_AREA_IN_DISTANCE": {
+        "text": "Rest Area in {{distance.value}} {{distance.unit}}(s)",
+        "slots": {
+            "distance": "distance_foot_mile_meter_kilometer"
+        }
+    },
+    "FITNESS/COURSE_POINT_REST_AREA_APPROACHING": {
+        "text": "Approaching Rest Area"
+    },
+    "FITNESS/COURSE_POINT_GENERAL_DIST_IN_DISTANCE": {
+        "text": "Distance in {{distance.value}} {{distance.unit}}(s)",
+        "slots": {
+            "distance": "distance_foot_mile_meter_kilometer"
+        }
+    },
+    "FITNESS/COURSE_POINT_GENERAL_DIST_APPROACHING": {
+        "text": "Approaching Distance"
+    },
+    "FITNESS/COURSE_POINT_SERVICE_IN_DISTANCE": {
+        "text": "Service in {{distance.value}} {{distance.unit}}(s)",
+        "slots": {
+            "distance": "distance_foot_mile_meter_kilometer"
+        }
+    },
+    "FITNESS/COURSE_POINT_SERVICE_APPROACHING": {
+        "text": "Approaching Service"
+    },
+    "FITNESS/COURSE_POINT_ENERGY_GEL_IN_DISTANCE": {
+        "text": "Energy Gel in {{distance.value}} {{distance.unit}}(s)",
+        "slots": {
+            "distance": "distance_foot_mile_meter_kilometer"
+        }
+    },
+    "FITNESS/COURSE_POINT_ENERGY_GEL_APPROACHING": {
+        "text": "Approaching Energy Gel"
+    },
+    "FITNESS/COURSE_POINT_SPORTS_DRINK_IN_DISTANCE": {
+        "text": "Drinks in {{distance.value}} {{distance.unit}}(s)",
+        "slots": {
+            "distance": "distance_foot_mile_meter_kilometer"
+        }
+    },
+    "FITNESS/COURSE_POINT_SPORTS_DRINK_APPROACHING": {
+        "text": "Approaching Drinks"
+    },
+    "FITNESS/COURSE_POINT_MILE_MARKER_IN_DISTANCE": {
+        "text": "Mile Marker in {{distance.value}} {{distance.unit}}(s)",
+        "slots": {
+            "distance": "distance_foot_mile_meter_kilometer"
+        }
+    },
+    "FITNESS/COURSE_POINT_MILE_MARKER_APPROACHING": {
+        "text": "Approaching Mile Marker"
+    },
+    "FITNESS/COURSE_POINT_CHECKPOINT_IN_DISTANCE": {
+        "text": "Checkpoint in {{distance.value}} {{distance.unit}}(s)",
+        "slots": {
+            "distance": "distance_foot_mile_meter_kilometer"
+        }
+    },
+    "FITNESS/COURSE_POINT_CHECKPOINT_APPROACHING": {
+        "text": "Approaching Checkpoint"
+    },
+    "FITNESS/COURSE_POINT_SHELTER_IN_DISTANCE": {
+        "text": "Shelter in {{distance.value}} {{distance.unit}}(s)",
+        "slots": {
+            "distance": "distance_foot_mile_meter_kilometer"
+        }
+    },
+    "FITNESS/COURSE_POINT_SHELTER_APPROACHING": {
+        "text": "Approaching Shelter"
+    },
+    "FITNESS/COURSE_POINT_MEETING_SPOT_IN_DISTANCE": {
+        "text": "Meet Spot in {{distance.value}} {{distance.unit}}(s)",
+        "slots": {
+            "distance": "distance_foot_mile_meter_kilometer"
+        }
+    },
+    "FITNESS/COURSE_POINT_MEETING_SPOT_APPROACHING": {
+        "text": "Approaching Meet Spot"
+    },
+    "FITNESS/COURSE_POINT_OVERLOOK_IN_DISTANCE": {
+        "text": "Overlook in {{distance.value}} {{distance.unit}}(s)",
+        "slots": {
+            "distance": "distance_foot_mile_meter_kilometer"
+        }
+    },
+    "FITNESS/COURSE_POINT_OVERLOOK_APPROACHING": {
+        "text": "Approaching Overlook"
+    },
+    "FITNESS/COURSE_POINT_TOILET_IN_DISTANCE": {
+        "text": "Toilet in {{distance.value}} {{distance.unit}}(s)",
+        "slots": {
+            "distance": "distance_foot_mile_meter_kilometer"
+        }
+    },
+    "FITNESS/COURSE_POINT_TOILET_APPROACHING": {
+        "text": "Approaching Toilet"
+    },
+    "FITNESS/COURSE_POINT_SHOWER_IN_DISTANCE": {
+        "text": "Shower in {{distance.value}} {{distance.unit}}(s)",
+        "slots": {
+            "distance": "distance_foot_mile_meter_kilometer"
+        }
+    },
+    "FITNESS/COURSE_POINT_SHOWER_APPROACHING": {
+        "text": "Approaching Shower"
+    },
+    "FITNESS/COURSE_POINT_GEAR_IN_DISTANCE": {
+        "text": "Gear in {{distance.value}} {{distance.unit}}(s)",
+        "slots": {
+            "distance": "distance_foot_mile_meter_kilometer"
+        }
+    },
+    "FITNESS/COURSE_POINT_GEAR_APPROACHING": {
+        "text": "Approaching Gear"
+    },
+    "FITNESS/COURSE_POINT_SHARP_CURVE_IN_DISTANCE": {
+        "text": "Sharp Curve in {{distance.value}} {{distance.unit}}(s)",
+        "slots": {
+            "distance": "distance_foot_mile_meter_kilometer"
+        }
+    },
+    "FITNESS/COURSE_POINT_SHARP_CURVE_APPROACHING": {
+        "text": "Approaching Sharp Curve"
+    },
+    "FITNESS/COURSE_POINT_STEEP_INCLINE_IN_DISTANCE": {
+        "text": "Incline in {{distance.value}} {{distance.unit}}(s)",
+        "slots": {
+            "distance": "distance_foot_mile_meter_kilometer"
+        }
+    },
+    "FITNESS/COURSE_POINT_STEEP_INCLINE_APPROACHING": {
+        "text": "Approaching Incline"
+    },
+    "FITNESS/COURSE_POINT_TUNNEL_IN_DISTANCE": {
+        "text": "Tunnel in {{distance.value}} {{distance.unit}}(s)",
+        "slots": {
+            "distance": "distance_foot_mile_meter_kilometer"
+        }
+    },
+    "FITNESS/COURSE_POINT_TUNNEL_APPROACHING": {
+        "text": "Approaching Tunnel"
+    },
+    "FITNESS/COURSE_POINT_BRIDGE_IN_DISTANCE": {
+        "text": "Bridge in {{distance.value}} {{distance.unit}}(s)",
+        "slots": {
+            "distance": "distance_foot_mile_meter_kilometer"
+        }
+    },
+    "FITNESS/COURSE_POINT_BRIDGE_APPROACHING": {
+        "text": "Approaching Bridge"
+    },
+    "FITNESS/COURSE_POINT_OBSTACLE_IN_DISTANCE": {
+        "text": "Obstacle in {{distance.value}} {{distance.unit}}(s)",
+        "slots": {
+            "distance": "distance_foot_mile_meter_kilometer"
+        }
+    },
+    "FITNESS/COURSE_POINT_OBSTACLE_APPROACHING": {
+        "text": "Approaching Obstacle"
+    },
+    "FITNESS/COURSE_POINT_CROSSING_IN_DISTANCE": {
+        "text": "Crossing in {{distance.value}} {{distance.unit}}(s)",
+        "slots": {
+            "distance": "distance_foot_mile_meter_kilometer"
+        }
+    },
+    "FITNESS/COURSE_POINT_CROSSING_APPROACHING": {
+        "text": "Approaching Crossing"
+    },
+    "FITNESS/COURSE_POINT_STORE_IN_DISTANCE": {
+        "text": "Store in {{distance.value}} {{distance.unit}}(s)",
+        "slots": {
+            "distance": "distance_foot_mile_meter_kilometer"
+        }
+    },
+    "FITNESS/COURSE_POINT_STORE_APPROACHING": {
+        "text": "Approaching Store"
+    },
+    "FITNESS/COURSE_POINT_TRANSITION_IN_DISTANCE": {
+        "text": "Transition in {{distance.value}} {{distance.unit}}(s)",
+        "slots": {
+            "distance": "distance_foot_mile_meter_kilometer"
+        }
+    },
+    "FITNESS/COURSE_POINT_TRANSITION_APPROACHING": {
+        "text": "Approaching Transition"
+    },
+    "FITNESS/COURSE_POINT_NAVAID_IN_DISTANCE": {
+        "text": "Navaid in {{distance.value}} {{distance.unit}}(s)",
+        "slots": {
+            "distance": "distance_foot_mile_meter_kilometer"
+        }
+    },
+    "FITNESS/COURSE_POINT_NAVAID_APPROACHING": {
+        "text": "Approaching Navaid"
+    },
+    "FITNESS/COURSE_POINT_TRANSPORT_IN_DISTANCE": {
+        "text": "Transport in {{distance.value}} {{distance.unit}}(s)",
+        "slots": {
+            "distance": "distance_foot_mile_meter_kilometer"
+        }
+    },
+    "FITNESS/COURSE_POINT_TRANSPORT_APPROACHING": {
+        "text": "Approaching Transport"
+    },
+    "FITNESS/COURSE_POINT_ALERT_IN_DISTANCE": {
+        "text": "Alert in {{distance.value}} {{distance.unit}}(s)",
+        "slots": {
+            "distance": "distance_foot_mile_meter_kilometer"
+        }
+    },
+    "FITNESS/COURSE_POINT_ALERT_APPROACHING": {
+        "text": "Approaching Alert"
+    },
+    "FITNESS/COURSE_POINT_INFO_IN_DISTANCE": {
+        "text": "Info in {{distance.value}} {{distance.unit}}(s)",
+        "slots": {
+            "distance": "distance_foot_mile_meter_kilometer"
+        }
+    },
+    "FITNESS/COURSE_POINT_INFO_APPROACHING": {
+        "text": "Approaching Info"
+    },
+    "FITNESS/COURSE_POINT_OBSTACLE_START_IN_DISTANCE": {
+        "text": "Obstacle Start in {{distance.value}} {{distance.unit}}(s)",
+        "slots": {
+            "distance": "distance_foot_mile_meter_kilometer"
+        }
+    },
+    "FITNESS/COURSE_POINT_OBSTACLE_START_APPROACHING": {
+        "text": "Approaching Obstacle Start"
+    },
+    "FITNESS/COURSE_POINT_OBSTACLE_END_IN_DISTANCE": {
+        "text": "Obstacle End in {{distance.value}} {{distance.unit}}(s)",
+        "slots": {
+            "distance": "distance_foot_mile_meter_kilometer"
+        }
+    },
+    "FITNESS/COURSE_POINT_OBSTACLE_END_APPROACHING": {
+        "text": "Approaching Obstacle End"
+    },
+    "FITNESS/NAVIGATION_TURN_LEFT_IN_DISTANCE": {
+        "text": "Left Turn in {{distance.value}} {{distance.unit}}(s)",
+        "slots": {
+            "distance": "distance_foot_mile_meter_kilometer"
+        }
+    },
+    "FITNESS/NAVIGATION_TURN_LEFT_APPROACHING": {
+        "text": "Approaching Left Turn"
+    },
+    "FITNESS/NAVIGATION_TURN_LEFT": {
+        "text": "Turn Left"
+    },
+    "FITNESS/NAVIGATION_TURN_SLIGHTLY_LEFT_IN_DISTANCE": {
+        "text": "Slight Left in {{distance.value}} {{distance.unit}}(s)",
+        "slots": {
+            "distance": "distance_foot_mile_meter_kilometer"
+        }
+    },
+    "FITNESS/NAVIGATION_TURN_SLIGHTLY_LEFT_APPROACHING": {
+        "text": "Approaching Slight Left"
+    },
+    "FITNESS/NAVIGATION_TURN_SLIGHTLY_LEFT": {
+        "text": "Slight Left"
+    },
+    "FITNESS/NAVIGATION_TURN_SHARPLY_LEFT_IN_DISTANCE": {
+        "text": "Sharp Left in {{distance.value}} {{distance.unit}}(s)",
+        "slots": {
+            "distance": "distance_foot_mile_meter_kilometer"
+        }
+    },
+    "FITNESS/NAVIGATION_TURN_SHARPLY_LEFT_APPROACHING": {
+        "text": "Approaching Sharp Left"
+    },
+    "FITNESS/NAVIGATION_TURN_SHARPLY_LEFT": {
+        "text": "Sharp Left"
+    },
+    "FITNESS/NAVIGATION_TURN_RIGHT_IN_DISTANCE": {
+        "text": "Right Turn in {{distance.value}} {{distance.unit}}(s)",
+        "slots": {
+            "distance": "distance_foot_mile_meter_kilometer"
+        }
+    },
+    "FITNESS/NAVIGATION_TURN_RIGHT_APPROACHING": {
+        "text": "Approaching Right Turn"
+    },
+    "FITNESS/NAVIGATION_TURN_RIGHT": {
+        "text": "Turn Right"
+    },
+    "FITNESS/NAVIGATION_TURN_SLIGHTLY_RIGHT_IN_DISTANCE": {
+        "text": "Slight Right in {{distance.value}} {{distance.unit}}(s)",
+        "slots": {
+            "distance": "distance_foot_mile_meter_kilometer"
+        }
+    },
+    "FITNESS/NAVIGATION_TURN_SLIGHTLY_RIGHT_APPROACHING": {
+        "text": "Approaching Slight Right"
+    },
+    "FITNESS/NAVIGATION_TURN_SLIGHTLY_RIGHT": {
+        "text": "Slight Right"
+    },
+    "FITNESS/NAVIGATION_TURN_SHARPLY_RIGHT_IN_DISTANCE": {
+        "text": "Sharp Right in {{distance.value}} {{distance.unit}}(s)",
+        "slots": {
+            "distance": "distance_foot_mile_meter_kilometer"
+        }
+    },
+    "FITNESS/NAVIGATION_TURN_SHARPLY_RIGHT_APPROACHING": {
+        "text": "Approaching Sharp Right"
+    },
+    "FITNESS/NAVIGATION_TURN_SHARPLY_RIGHT": {
+        "text": "Sharp Right"
+    },
+    "FITNESS/NAVIGATION_U_TURN_IN_DISTANCE": {
+        "text": "U-Turn in {{distance.value}} {{distance.unit}}(s)",
+        "slots": {
+            "distance": "distance_foot_mile_meter_kilometer"
+        }
+    },
+    "FITNESS/NAVIGATION_U_TURN_APPROACHING": {
+        "text": "Approaching U-Turn"
+    },
+    "FITNESS/NAVIGATION_U_TURN": {
+        "text": "U-Turn"
+    },
+    "FITNESS/NAVIGATION_MIDDLE_FORK_IN_DISTANCE": {
+        "text": "Middle Fork in {{distance.value}} {{distance.unit}}(s)",
+        "slots": {
+            "distance": "distance_foot_mile_meter_kilometer"
+        }
+    },
+    "FITNESS/NAVIGATION_MIDDLE_FORK_APPROACHING": {
+        "text": "Approaching Middle Fork"
+    },
+    "FITNESS/NAVIGATION_MIDDLE_FORK": {
+        "text": "Fork Middle"
+    },
+    "FITNESS/NAVIGATION_LEFT_FORK_IN_DISTANCE": {
+        "text": "Left Fork in {{distance.value}} {{distance.unit}}(s)",
+        "slots": {
+            "distance": "distance_foot_mile_meter_kilometer"
+        }
+    },
+    "FITNESS/NAVIGATION_LEFT_FORK_APPROACHING": {
+        "text": "Approaching Left Fork"
+    },
+    "FITNESS/NAVIGATION_LEFT_FORK": {
+        "text": "Fork Left"
+    },
+    "FITNESS/NAVIGATION_RIGHT_FORK_IN_DISTANCE": {
+        "text": "Right Fork in {{distance.value}} {{distance.unit}}(s)",
+        "slots": {
+            "distance": "distance_foot_mile_meter_kilometer"
+        }
+    },
+    "FITNESS/NAVIGATION_RIGHT_FORK_APPROACHING": {
+        "text": "Approaching Right Fork"
+    },
+    "FITNESS/NAVIGATION_RIGHT_FORK": {
+        "text": "Fork Right"
+    },
+    "FITNESS/NAVIGATION_STRAIGHT_AHEAD_IN_DISTANCE": {
+        "text": "Straight ahead in {{distance.value}} {{distance.unit}}(s)",
+        "slots": {
+            "distance": "distance_foot_mile_meter_kilometer"
+        }
+    },
+    "FITNESS/NAVIGATION_STRAIGHT_AHEAD_APPROACHING": {
+        "text": "Approaching straight ahead"
+    },
+    "FITNESS/NAVIGATION_STRAIGHT_AHEAD": {
+        "text": "Straight ahead"
+    },
+    "FITNESS/FITNESS_STEP_NEXT": {
+        "text": "Next Step:"
+    },
+    "FITNESS/NAVIGATION_ROUNDABOUT_ORD_EXIT_IN_DISTANCE": {
+        "text": "In {{distance.value}} {{distance.unit}}(s), take the roundabout to the {{exit_ordinal}} exit",
+        "slots": {
+            "distance": "distance_foot_mile_meter_kilometer",
+            "exit_ordinal": "exit_ordinal"
+        }
+    },
+    "FITNESS/NAVIGATION_ROUNDABOUT_ORD_EXIT_APPROACHING": {
+        "text": "At the roundabout, take the {{exit_ordinal}} exit",
+        "slots": {
+            "exit_ordinal": "exit_ordinal"
+        }
+    },
+    "FITNESS/NAVIGATION_ROUNDABOUT_ORD_EXIT": {
+        "text": "Take the {{exit_ordinal}} exit",
+        "slots": {
+            "exit_ordinal": "exit_ordinal"
+        }
+    },
+    "FITNESS/NAVIGATION_ROUNDABOUT_IN_DISTANCE": {
+        "text": "Roundabout in {{distance.value}} {{distance.unit}}(s)",
+        "slots": {
+            "distance": "distance_foot_mile_meter_kilometer"
+        }
+    },
+    "FITNESS/NAVIGATION_ROUNDABOUT_APPROACHING": {
+        "text": "Approaching roundabout"
+    },
+    "FITNESS/NAVIGATION_ROUNDABOUT": {
+        "text": "Enter roundabout"
+    },
+    "FITNESS/NAVIGATION_FERRY_BOARD_IN_DISTANCE": {
+        "text": "Board ferry in {{distance.value}} {{distance.unit}}(s)",
+        "slots": {
+            "distance": "distance_foot_mile_meter_kilometer"
+        }
+    },
+    "FITNESS/NAVIGATION_FERRY_BOARD_APPROACHING": {
+        "text": "Approaching board ferry"
+    },
+    "FITNESS/NAVIGATION_FERRY_BOARD": {
+        "text": "Board ferry"
+    },
+    "FITNESS/NAVIGATION_FERRY_LEAVE_IN_DISTANCE": {
+        "text": "Leave ferry in {{distance.value}} {{distance.unit}}(s)",
+        "slots": {
+            "distance": "distance_foot_mile_meter_kilometer"
+        }
+    },
+    "FITNESS/NAVIGATION_FERRY_LEAVE_APPROACHING": {
+        "text": "Approaching leave ferry"
+    },
+    "FITNESS/NAVIGATION_FERRY_LEAVE": {
+        "text": "Leave ferry"
+    },
+    "FITNESS/FITNESS_STEP_WARMUP_COMPLETE_PACE": {
+        "text": "Warmup completed at {{time}} pace",
+        "slots": {
+            "time": "time_m_s"
+        }
+    },
+    "FITNESS/FITNESS_STEP_INTERVAL_COMPLETE_PACE": {
+        "text": "Interval {{interval}} completed at {{time}} pace",
+        "slots": {
+            "interval": "interval",
+            "time": "time_m_s"
+        }
+    },
+    "FITNESS/FITNESS_STEP_COOLDOWN_COMPLETE_PACE": {
+        "text": "Cooldown completed at {{time}} pace",
+        "slots": {
+            "time": "time_m_s"
+        }
+    },
+    "FITNESS/FITNESS_LIGHT_DISCONNECTED": {
+        "text": "Light disconnected"
+    },
+    "FITNESS/FITNESS_HAZARD_ANIMAL": {
+        "text": "Animal nearby"
+    },
+    "FITNESS/FITNESS_HAZARD_POTHOLE": {
+        "text": "Pothole nearby"
+    },
+    "FITNESS/FITNESS_HAZARD_OBSTRUCTION": {
+        "text": "Obstruction nearby"
+    },
+    "FITNESS/FITNESS_HAZARD_SLIPPERY": {
+        "text": "Slippery surface nearby"
+    },
+    "FITNESS/FITNESS_HAZARD_GENERAL": {
+        "text": "Hazard nearby"
+    },
+    "FITNESS/FITNESS_HAZARD_MULTIPLE": {
+        "text": "{{count}} hazards nearby",
+        "slots": {
+            "count": "hazard_count"
+        }
+    },
+    "FITNESS/FITNESS_GRAVEL_ROAD_AHEAD": {
+        "text": "Gravel road ahead"
+    },
+    "FITNESS/FITNESS_HIGH_TRAFFIC_ROAD": {
+        "text": "High traffic road ahead"
+    },
+    "FITNESS/FITNESS_RADAR_DISCONNECTED": {
+        "text": "Radar disconnected"
+    },
+    "FITNESS/FITNESS_CLOSE_VEHICLE_APPROACHING": {
+        "text": "Close passing vehicle"
+    },
+    "FITNESS/FITNESS_CLOSE_VEHICLE_LEFT": {
+        "text": "Close vehicle on the left"
+    },
+    "FITNESS/FITNESS_CLOSE_VEHICLE_RIGHT": {
+        "text": "Close vehicle on the right"
+    },
+    "FITNESS/FITNESS_LARGE_VEHICLE_APPROACHING": {
+        "text": "Large vehicle approaching"
+    },
+    "FITNESS/FITNESS_LARGE_VEHICLE_LEFT": {
+        "text": "Large vehicle on the left"
+    },
+    "FITNESS/FITNESS_LARGE_VEHICLE_RIGHT": {
+        "text": "Large vehicle on the right"
+    },
+    "FITNESS/FITNESS_QUICK_VEHICLE_APPROACHING": {
+        "text": "Vehicle quickly approaching"
+    },
+    "FITNESS/FITNESS_QUICK_VEHICLE_LEFT": {
+        "text": "Quick vehicle on the left"
+    },
+    "FITNESS/FITNESS_QUICK_VEHICLE_RIGHT": {
+        "text": "Quick vehicle on the right"
+    },
+    "FITNESS/FITNESS_VEHICLE_APPROACHING": {
+        "text": "Vehicle approaching"
+    },
+    "FITNESS/FITNESS_VEHICLE_LEFT": {
+        "text": "Vehicle on the left"
+    },
+    "FITNESS/FITNESS_VEHICLE_RIGHT": {
+        "text": "Vehicle on the right"
+    }
+}

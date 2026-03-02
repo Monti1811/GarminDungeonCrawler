@@ -1,0 +1,102 @@
+{
+    "bike_cadence": {
+        "max": 999
+    },
+    "bpm": {
+        "max": 250
+    },
+    "cadence": {
+        "max": 999
+    },
+    "calories": {
+        "max": 9999
+    },
+    "distance_foot_mile_meter_kilometer": {
+        "subkey": "unit",
+        "subphrases": {
+            "foot": {
+                "subkey": "value",
+                "max": 999
+            },
+            "mile": {
+                "subkey": "value",
+                "max": 99.9
+            },
+            "meter": {
+                "subkey": "value",
+                "max": 9999
+            },
+            "kilometer": {
+                "subkey": "value",
+                "max": 99.9
+            }
+        }
+    },
+    "distance_mile_meter_kilometer": {
+        "subkey": "unit",
+        "subphrases": {
+            "mile": {
+                "subkey": "value",
+                "max": 99.99
+            },
+            "meter": {
+                "subkey": "value",
+                "max": 9999
+            },
+            "kilometer": {
+                "subkey": "value",
+                "max": 99.99
+            }
+        }
+    },
+    "distance_no_unit": {
+        "subkey": "value",
+        "max": 10000
+    },
+    "distance_no_unit_tenth": {
+        "subkey": "value",
+        "max": 99.9
+    },
+    "elevation_no_unit": {
+        "subkey": "value",
+        "max": 29999
+    },
+    "exit_ordinal": {
+        "max": 8,
+        "min": 1
+    },
+    "hazard_count": {
+        "max": 99,
+        "min": 2
+    },
+    "hr_percent": {
+        "max": 200
+    },
+    "hr_zone_value": {
+        "max": 5.9
+    },
+    "hund": {
+        "max": 0.99
+    },
+    "interval": {
+        "max": 999,
+        "min": 1
+    },
+    "lap": {
+        "max": 999,
+        "min": 1
+    },
+    "power": {
+        "max": 2999
+    },
+    "power_zone_value": {
+        "max": 7.9
+    },
+    "speed_no_unit_tenth": {
+        "subkey": "value",
+        "max": 99.9
+    },
+    "time_m_s": {
+        "max": 5999
+    }
+}
