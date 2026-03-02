@@ -17,6 +17,8 @@ class DCGameView extends WatchUi.View {
 
     private var damage_texts as Array<Text> = [];
 
+    private var rightTopHint as Bitmap?;
+
     function initialize(player as Player, room as Room, options as Dictionary?) {
         View.initialize();
         var map_data = room.getMapData();
@@ -60,10 +62,47 @@ class DCGameView extends WatchUi.View {
             (player_sprite_dimensions[1] - _tile_height) / 2
         ];
 
+        setHint();
+
+    }
+
+    (:venu2)
+    function setHint() as Void {
+        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 345, :locY => 67});
+    }
+
+    (:venu2plus)
+    function setHint() as Void {
+        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 345, :locY => 67});
+    }
+
+    (:venu2s)
+    function setHint() as Void {
+        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 300, :locY => 59});
+    }
+
+    (:venu3)
+    function setHint() as Void {
+        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 360, :locY => 54});
+    }
+
+    (:venu3s)
+    function setHint() as Void {
+        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 318, :locY => 59});
+    }
+
+    (:venu441mm)
+    function setHint() as Void {
+        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 319, :locY => 72});
+    }
+
+    (:venu445mm)
+    function setHint() as Void {
+        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 360, :locY => 54});
     }
 
     function onLayout(dc as Dc) as Void {
-        setLayout($.Rez.Layouts.DCGameView(dc));
+        //setLayout($.Rez.Layouts.DCGameView(dc));
     }
 
     function autoSave() as Void {
@@ -116,6 +155,8 @@ class DCGameView extends WatchUi.View {
 		View.onUpdate(dc);
 
         _room_drawable.drawAll(dc, $.Game.getCurrentRoom());
+        rightTopHint.draw(dc);
+
 
 		drawPlayer(dc);
         addPlayerDamage();
@@ -173,27 +214,27 @@ class DCGameView extends WatchUi.View {
         var bar_radius = (min_size * 175 / 360).toNumber();
         var outer_outline_radius = (min_size * 178 / 360).toNumber();
         var inner_outline_radius = (min_size * 172 / 360).toNumber();
-        var line_x1 = (Constants.SCREEN_WIDTH * 355 / 360).toNumber();
-        var line_y1 = (Constants.SCREEN_HEIGHT * 149 / 360).toNumber();
-        var line_x2 = (Constants.SCREEN_WIDTH * 349 / 360).toNumber();
-        var line_y2 = (Constants.SCREEN_HEIGHT * 150 / 360).toNumber();
-        var line2_x1 = (Constants.SCREEN_WIDTH * 210 / 360).toNumber();
-        var line2_y1 = (Constants.SCREEN_HEIGHT * 11 / 360).toNumber();
-        var line2_x2 = (Constants.SCREEN_WIDTH * 211 / 360).toNumber();
-        var line2_y2 = (Constants.SCREEN_HEIGHT * 5 / 360).toNumber();
+        var line_x1 = (Constants.SCREEN_WIDTH * 5 / 360).toNumber();
+        var line_y1 = (Constants.SCREEN_HEIGHT * 211 / 360).toNumber();
+        var line_x2 = (Constants.SCREEN_WIDTH * 11 / 360).toNumber();
+        var line_y2 = (Constants.SCREEN_HEIGHT * 210 / 360).toNumber();
+        var line2_x1 = (Constants.SCREEN_WIDTH * 150 / 360).toNumber();
+        var line2_y1 = (Constants.SCREEN_HEIGHT * 349 / 360).toNumber();
+        var line2_x2 = (Constants.SCREEN_WIDTH * 149 / 360).toNumber();
+        var line2_y2 = (Constants.SCREEN_HEIGHT * 355 / 360).toNumber();
 
         var method = new Lang.Method(self, bar_to_fn[player.second_bar]);
         var bar_values = method.invoke(player) as [Numeric, Numeric];
         // Draw second bar
         dc.setColor(bar_values[0], Graphics.COLOR_BLACK);
         dc.setPenWidth(5);
-        var val = MathUtil.clamp(10 + bar_values[1], 11, 80);
-        dc.drawArc(center_x, center_y, bar_radius, Graphics.ARC_CLOCKWISE, val, 10);
+        var val = MathUtil.clamp(190 + bar_values[1], 191, 260);
+        dc.drawArc(center_x, center_y, bar_radius, Graphics.ARC_CLOCKWISE, val, 190);
         // Draw health bar outline
         dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_BLACK);
         dc.setPenWidth(1);
-        dc.drawArc(center_x, center_y, outer_outline_radius, Graphics.ARC_CLOCKWISE, 80, 10);
-        dc.drawArc(center_x, center_y, inner_outline_radius, Graphics.ARC_CLOCKWISE, 80, 10);
+        dc.drawArc(center_x, center_y, outer_outline_radius, Graphics.ARC_CLOCKWISE, 260, 190);
+        dc.drawArc(center_x, center_y, inner_outline_radius, Graphics.ARC_CLOCKWISE, 260, 190);
         dc.drawLine(line_x1, line_y1, line_x2, line_y2);
         dc.drawLine(line2_x1, line2_y1, line2_x2, line2_y2);
     }
@@ -266,6 +307,7 @@ class DCGameView extends WatchUi.View {
             _autosave_timer = null;
         }
         damage_texts = [];
+        rightTopHint = null;
     }
 
 }

@@ -34,6 +34,13 @@ class DCGameDelegate extends WatchUi.BehaviorDelegate {
         WatchUi.pushView(dialog, new DCGameExitConfirmDelegate(), WatchUi.SLIDE_UP);
     }
 
+    function onKey(keyEvent as KeyEvent) as Boolean {
+        if (keyEvent.getKey() == KEY_ENTER) {
+            showMenu();
+        }
+        return true;
+    }
+
 
     function onTap(clickEvent as ClickEvent) as Boolean {
         var coord = clickEvent.getCoordinates() as Array<Number>;
@@ -76,7 +83,7 @@ class DCGameDelegate extends WatchUi.BehaviorDelegate {
     }
 
 
-    function onMenu() as Boolean {
+    function showMenu() as Void {
         var actionMenu = new WatchUi.Menu2({:title=>"Game Menu"});
         actionMenu.addItem(new WatchUi.MenuItem(getApp().getPlayer().getName(), "Show details", :player, null));
         actionMenu.addItem(new WatchUi.MenuItem("Inventory", "Show inventory", :inventory, null));
@@ -89,7 +96,6 @@ class DCGameDelegate extends WatchUi.BehaviorDelegate {
         self.addDebugMenu(actionMenu);
 
         WatchUi.pushView(actionMenu, new DCGameMenuDelegate(), SLIDE_UP);
-        return true;
     }
 
     (:debug) 

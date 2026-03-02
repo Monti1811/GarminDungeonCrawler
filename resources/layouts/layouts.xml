@@ -20,15 +20,15 @@
 
     <layout id="DCMainMenuView" >
 		<bitmap id="LauncherIcon" filename="../drawables/launcher_icon.png" packingFormat="png" x="center" y="center" />
-        <bitmap id="rightLow" personality="
-            system_icon_light__hint_button_right_bottom
-            system_loc__hint_button_right_bottom" />
+        <bitmap id="rightTop" personality="
+            system_icon_light__hint_button_right_top
+            system_loc__hint_button_right_top" />
     </layout>
 
     <layout id="DCGameView" >
-        <bitmap id="rightLow" personality="
-            system_icon_light__hint_button_right_bottom
-            system_loc__hint_button_right_bottom" />
+        <bitmap id="rightTop" personality="
+            system_icon_light__hint_button_right_top
+            system_loc__hint_button_right_top" />
     </layout>
 
     <layout id="DCAttributesViewHint" >
