@@ -19,7 +19,7 @@
 
 
     <layout id="DCMainMenuView" >
-		<bitmap id="LauncherIcon" filename="../drawables/launcher_icon.png" packingFormat="png" x="center" y="center" />
+		<bitmap id="LauncherIconMainScreen" filename="../drawables/launcher_icon_mainscreen.png" packingFormat="png" x="center" y="center" />
         <bitmap id="rightTop" personality="
             system_icon_light__hint_button_right_top
             system_loc__hint_button_right_top" />

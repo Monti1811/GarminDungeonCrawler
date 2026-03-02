@@ -11,6 +11,11 @@ class DCMainMenuDelegate extends WatchUi.BehaviorDelegate {
         _view = view;
     }
 
+    function onBack() as Boolean {
+        WatchUi.popView(WatchUi.SLIDE_DOWN);
+        return true;
+    }
+
     function onKey(keyEvent as KeyEvent) as Boolean {
         if (keyEvent.getKey() == KEY_ENTER) {
             showMenu();
