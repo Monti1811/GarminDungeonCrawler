@@ -1,0 +1,160 @@
+name: Build and Release PRG
+
+on:
+  push:
+    tags:
+      - "*"
+
+permissions:
+  contents: write
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      devices: ${{ steps.devices.outputs.devices }}
+      device_list: ${{ steps.devices.outputs.device_list }}
+    steps:
+      - name: Resolve build devices
+        id: devices
+        env:
+          DEFAULT_DEVICES: "venu2,venu2plus,venu2s,venu3,venu3s,venu441mm,venu445mm"
+          GARMIN_DEVICES: ${{ vars.GARMIN_DEVICES }}
+        run: |
+          set -euo pipefail
+
+          selected_raw="${GARMIN_DEVICES:-$DEFAULT_DEVICES}"
+          allowed=(venu2 venu2plus venu2s venu3 venu3s venu441mm venu445mm)
+
+          declare -A valid
+          for item in "${allowed[@]}"; do
+            valid["$item"]=1
+          done
+
+          declare -A seen
+          selected=()
+          IFS=',' read -r -a requested <<< "$selected_raw"
+
+          for item in "${requested[@]}"; do
+            device="$(echo "$item" | xargs)"
+            if [ -z "$device" ]; then
+              continue
+            fi
+
+            if [ -z "${valid[$device]+x}" ]; then
+              echo "Invalid device '$device'. Allowed devices: ${allowed[*]}"
+              exit 1
+            fi
+
+            if [ -z "${seen[$device]+x}" ]; then
+              selected+=("$device")
+              seen["$device"]=1
+            fi
+          done
+
+          if [ ${#selected[@]} -eq 0 ]; then
+            echo "No devices selected. Configure repo variable GARMIN_DEVICES or use defaults."
+            exit 1
+          fi
+
+          devices_json="$(printf '%s\n' "${selected[@]}" | jq -R . | jq -s -c .)"
+          device_list="$(IFS=','; echo "${selected[*]}")"
+
+          echo "devices=$devices_json" >> "$GITHUB_OUTPUT"
+          echo "device_list=$device_list" >> "$GITHUB_OUTPUT"
+
+  build:
+    runs-on: ubuntu-latest
+    needs: prepare
+    strategy:
+      fail-fast: false
+      matrix:
+        device: ${{ fromJson(needs.prepare.outputs.devices) }}
+        variant: [debug, release]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Use local monkeybrains jar
+        run: |
+          set -euo pipefail
+
+          MONKEYBRAINS_JAR="$GITHUB_WORKSPACE/resources/monkeybrains_8_4_1.jar"
+          if [ ! -f "$MONKEYBRAINS_JAR" ]; then
+            echo "Local monkeybrains.jar not found at $MONKEYBRAINS_JAR"
+            exit 1
+          fi
+
+          echo "MONKEYBRAINS_JAR=$MONKEYBRAINS_JAR" >> "$GITHUB_ENV"
+
+      - name: Prepare developer key
+        env:
+          GARMIN_DEVELOPER_KEY_B64: ${{ secrets.GARMIN_DEVELOPER_KEY_B64 }}
+        run: |
+          set -euo pipefail
+
+          if [ -z "${GARMIN_DEVELOPER_KEY_B64:-}" ]; then
+            echo "Secret GARMIN_DEVELOPER_KEY_B64 is required (base64 of developer key file)."
+            exit 1
+          fi
+
+          KEY_PATH="$RUNNER_TEMP/developer_key"
+          echo "$GARMIN_DEVELOPER_KEY_B64" | base64 -d > "$KEY_PATH"
+          echo "GARMIN_KEY_PATH=$KEY_PATH" >> "$GITHUB_ENV"
+
+      - name: Build PRG
+        env:
+          DEVICE: ${{ matrix.device }}
+          VARIANT: ${{ matrix.variant }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+
+          mkdir -p dist
+          output="dist/DungeonCrawler-${TAG}-${DEVICE}-${VARIANT}.prg"
+
+          extra_flags=()
+          if [ "$VARIANT" = "release" ]; then
+            extra_flags+=("-r")
+          fi
+
+          java -Xms1g -Dfile.encoding=UTF-8 -jar "$MONKEYBRAINS_JAR" \
+            -o "$output" \
+            -f "$GITHUB_WORKSPACE/monkey.jungle" \
+            -y "$GARMIN_KEY_PATH" \
+            -d "$DEVICE" \
+            "${extra_flags[@]}"
+
+          ls -lh "$output"
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: DungeonCrawler-${{ matrix.device }}-${{ matrix.variant }}
+          path: dist/*.prg
+
+  release:
+    runs-on: ubuntu-latest
+    needs: [prepare, build]
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: DungeonCrawler-*
+          path: dist
+          merge-multiple: true
+
+      - name: Create GitHub release and upload PRGs
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: ${{ github.ref_name }}
+          generate_release_notes: true
+          files: dist/*.prg
