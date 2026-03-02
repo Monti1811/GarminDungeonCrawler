@@ -53,3 +53,32 @@ DungeonCrawler is a lightweight, turn-based roguelike built for Garmin watches (
    <img src="media/attributes.png" alt="Attributes" width="170" />
    <img src="media/equips.png" alt="Equipment" width="170" />
 </p>
+
+## Local release script
+Use `helpers/create-release.ps1` to build `.prg` files locally and publish a GitHub release.
+
+### Prerequisites
+- Java in `PATH`
+- Git in `PATH`
+- GitHub CLI (`gh`) in `PATH` and authenticated (`gh auth login`)
+- Garmin developer key file on disk
+- Connect IQ SDK installed locally (the script auto-detects `monkeybrains.jar` in `%APPDATA%\Garmin\ConnectIQ\Sdks`)
+
+### Create release from local build
+```powershell
+.\helpers\create-release.ps1 -Tag v1.2.0 -DeveloperKeyPath "F:\Code\Garmin\developer_key"
+```
+
+### Optional parameters
+- Build selected devices only:
+```powershell
+.\helpers\create-release.ps1 -Tag v1.2.0 -DeveloperKeyPath "F:\Code\Garmin\developer_key" -Devices venu2s,venu3
+```
+- Create and push the tag if missing:
+```powershell
+.\helpers\create-release.ps1 -Tag v1.2.0 -DeveloperKeyPath "F:\Code\Garmin\developer_key" -CreateTag
+```
+- Override monkeybrains jar path:
+```powershell
+.\helpers\create-release.ps1 -Tag v1.2.0 -DeveloperKeyPath "F:\Code\Garmin\developer_key" -MonkeybrainsJarPath "C:\Users\<you>\AppData\Roaming\Garmin\ConnectIQ\Sdks\<sdk>\bin\monkeybrains.jar"
+```
