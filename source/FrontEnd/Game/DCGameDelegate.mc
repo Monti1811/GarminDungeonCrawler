@@ -25,6 +25,9 @@ class DCGameDelegate extends WatchUi.BehaviorDelegate {
     }
 
     function onBack() as Boolean {
+        if (_view.getTurns().isProcessingTurn()) {
+            return true;
+        }
         showConfirmation("Do you want to exit the game?");
         return true;
     }
@@ -35,6 +38,9 @@ class DCGameDelegate extends WatchUi.BehaviorDelegate {
     }
 
     function onKey(keyEvent as KeyEvent) as Boolean {
+        if (_view.getTurns().isProcessingTurn()) {
+            return true;
+        }
         if (keyEvent.getKey() == KEY_ENTER) {
             showMenu();
         }
@@ -43,6 +49,9 @@ class DCGameDelegate extends WatchUi.BehaviorDelegate {
 
 
     function onTap(clickEvent as ClickEvent) as Boolean {
+        if (_view.getTurns().isProcessingTurn()) {
+            return true;
+        }
         var coord = clickEvent.getCoordinates() as Array<Number>;
         var center_x = Constants.SCREEN_WIDTH / 2;
         var center_y = Constants.SCREEN_HEIGHT / 2;
