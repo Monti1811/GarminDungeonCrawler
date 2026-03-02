@@ -97,9 +97,10 @@ class Turn {
     function loadRoom(room as Room) as Void {
         _view.setRoom(room);
         var map_data = room.getMapData();
+        var map_string = room.getMap().getMapString();
         _view.setMapData(map_data);
         _view.getRoomDrawable().updateToNewRoom({
-            :map_string => map_data[:map_string]
+            :map_string => map_string
         });
         _player_pos = map_data[:start_pos];
         _player.setPos(_player_pos);

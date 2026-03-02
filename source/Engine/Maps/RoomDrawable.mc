@@ -11,6 +11,7 @@ class RoomDrawable extends WatchUi.Drawable {
 
     private var _map_string as Array<String>?;
     private var _font as FontReference?;
+    private var _color as [Number, Number];
 
 
     function initialize(options as Dictionary?) {
@@ -21,8 +22,26 @@ class RoomDrawable extends WatchUi.Drawable {
 
         printRoom();
 
+        _color = self.getMapColors();
+
         _font = WatchUi.loadResource($.Rez.Fonts.dungeon);
 
+    }
+
+    function getMapColors() {
+        var dungeonStyle = $.Game.getDungeon().getStyle();
+        switch (dungeonStyle) {
+            case DUNGEONSTYLE_NORMAL:
+                return [Graphics.COLOR_DK_GRAY, Graphics.COLOR_BLACK];
+            case DUNGEONSTYLE_FIRE:
+                return [0x7e0306, Graphics.COLOR_BLACK];
+            case DUNGEONSTYLE_ICE:
+                return [Graphics.COLOR_BLACK, 0x3fd0d4];
+            case DUNGEONSTYLE_BOSS:
+                return [Graphics.COLOR_PURPLE, Graphics.COLOR_BLACK];
+            default:
+                return [Graphics.COLOR_DK_GRAY, Graphics.COLOR_BLACK];
+        }
     }
 
     function freeMemory() as Void {
@@ -92,7 +111,11 @@ class RoomDrawable extends WatchUi.Drawable {
         var enemy_pos = enemy.getPos();
         var health_percent = enemy.getHealthPercent();
         var bar_percent = (16 * health_percent).toNumber();
-        dc.setColor(Graphics.COLOR_DK_RED, Graphics.COLOR_BLACK);
+        if (_color[0] == Graphics.COLOR_DK_RED) {
+            dc.setColor(Graphics.COLOR_DK_GREEN, Graphics.COLOR_BLACK);
+        } else {
+            dc.setColor(Graphics.COLOR_DK_RED, Graphics.COLOR_BLACK);
+        }
         dc.fillRectangle(enemy_pos[0] * _tile_width, enemy_pos[1] * _tile_height + _tile_height, bar_percent, 2);
     }
 
@@ -117,7 +140,7 @@ class RoomDrawable extends WatchUi.Drawable {
 
     function draw(dc as Dc) as Void {
 
-        dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_BLACK);
+        dc.setColor(_color[0], _color[1]);
         for (var i = 0; i < _map_string.size(); i++) {
             dc.drawText(0, i * 16, _font, _map_string[i], Graphics.TEXT_JUSTIFY_LEFT);
         }
@@ -125,7 +148,7 @@ class RoomDrawable extends WatchUi.Drawable {
 
     function drawAll(dc as Dc, room as Room) as Void {
 
-        dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_BLACK);
+        dc.setColor(_color[0], _color[1]);
         for (var i = 0; i < _map_string.size(); i++) {
             dc.drawText(0, i * 16, _font, _map_string[i], Graphics.TEXT_JUSTIFY_LEFT);
         }
