@@ -1,0 +1,16 @@
+{
+  "strictRealism": true,
+  "roundsPerDepth": 5,
+  "depthRange": { "start": 1, "end": 8, "step": 1 },
+  "maxAdjustmentPercentPerRun": 12,
+  "tolerance": 0.05,
+  "variation": {
+    "enemyCountMultiplier": 1.0,
+    "enemyWeightJitter": 0.15,
+    "itemWeightJitter": 0.2
+  },
+  "targetWinRateByDepth": [
+    { "maxDepth": 1, "target": 1.0 },
+    { "maxDepth": 8, "target": 0.85 }
+  ]
+}

@@ -1,0 +1,1375 @@
+{
+  "config": {
+    "strictRealism": true,
+    "roundsPerDepth": 300,
+    "depthRange": {
+      "start": 1,
+      "end": 200,
+      "step": 1
+    },
+    "maxAdjustmentPercentPerRun": 12,
+    "tolerance": 0.05,
+    "roomsPerDepthForProgression": 4,
+    "variation": {
+      "enemyCountMultiplier": 1.0,
+      "enemyWeightJitter": 0.15,
+      "itemWeightJitter": 0.2,
+      "enemyBudgetScaleByDepth": [
+        {
+          "maxDepth": 20,
+          "value": 0.7
+        },
+        {
+          "maxDepth": 60,
+          "value": 0.9
+        },
+        {
+          "maxDepth": 120,
+          "value": 1.1
+        },
+        {
+          "maxDepth": 200,
+          "value": 1.25
+        }
+      ],
+      "itemDropScaleByDepth": [
+        {
+          "maxDepth": 20,
+          "value": 1.35
+        },
+        {
+          "maxDepth": 80,
+          "value": 1.1
+        },
+        {
+          "maxDepth": 160,
+          "value": 0.95
+        },
+        {
+          "maxDepth": 200,
+          "value": 0.85
+        }
+      ]
+    },
+    "targetWinRateByDepth": [
+      {
+        "maxDepth": 1,
+        "target": 1.0
+      },
+      {
+        "maxDepth": 10,
+        "target": 0.95
+      },
+      {
+        "maxDepth": 25,
+        "target": 0.85
+      },
+      {
+        "maxDepth": 50,
+        "target": 0.72
+      },
+      {
+        "maxDepth": 100,
+        "target": 0.5
+      },
+      {
+        "maxDepth": 150,
+        "target": 0.32
+      },
+      {
+        "maxDepth": 200,
+        "target": 0.2
+      }
+    ]
+  },
+  "classResults": {
+    "2": {
+      "actualWinRate": 0.3420164874078805,
+      "targetWinRate": 0.38486300038583166
+    },
+    "1": {
+      "actualWinRate": 0.44048177976813896,
+      "targetWinRate": 0.38560394019869193
+    },
+    "3": {
+      "actualWinRate": 0.2046498011410292,
+      "targetWinRate": 0.3839571864191957
+    },
+    "4": {
+      "actualWinRate": 0.4617941433489119,
+      "targetWinRate": 0.3834638762074428
+    },
+    "0": {
+      "actualWinRate": 0.3781137407276581,
+      "targetWinRate": 0.383148993294478
+    }
+  },
+  "depthResults": {
+    "1": {
+      "actualWinRate": 0.8394160583941606,
+      "targetWinRate": 1.0
+    },
+    "2": {
+      "actualWinRate": 0.8822695035460993,
+      "targetWinRate": 0.95
+    },
+    "3": {
+      "actualWinRate": 0.9268909688843916,
+      "targetWinRate": 0.95
+    },
+    "4": {
+      "actualWinRate": 0.9523809523809523,
+      "targetWinRate": 0.95
+    },
+    "5": {
+      "actualWinRate": 0.9049157627509808,
+      "targetWinRate": 0.95
+    },
+    "6": {
+      "actualWinRate": 0.8642034548944337,
+      "targetWinRate": 0.95
+    },
+    "7": {
+      "actualWinRate": 0.8244064053009387,
+      "targetWinRate": 0.95
+    },
+    "8": {
+      "actualWinRate": 0.8102329133256968,
+      "targetWinRate": 0.95
+    },
+    "9": {
+      "actualWinRate": 0.8268135904499541,
+      "targetWinRate": 0.95
+    },
+    "10": {
+      "actualWinRate": 0.8099280310020299,
+      "targetWinRate": 0.95
+    },
+    "11": {
+      "actualWinRate": 0.7917764891934633,
+      "targetWinRate": 0.85
+    },
+    "12": {
+      "actualWinRate": 0.7886784850926672,
+      "targetWinRate": 0.85
+    },
+    "13": {
+      "actualWinRate": 0.8004935459377372,
+      "targetWinRate": 0.85
+    },
+    "14": {
+      "actualWinRate": 0.8142403947832217,
+      "targetWinRate": 0.85
+    },
+    "15": {
+      "actualWinRate": 0.7854105332024861,
+      "targetWinRate": 0.85
+    },
+    "16": {
+      "actualWinRate": 0.8024604569420035,
+      "targetWinRate": 0.85
+    },
+    "17": {
+      "actualWinRate": 0.7972691067703395,
+      "targetWinRate": 0.85
+    },
+    "18": {
+      "actualWinRate": 0.7143530520857884,
+      "targetWinRate": 0.85
+    },
+    "19": {
+      "actualWinRate": 0.6639901173563928,
+      "targetWinRate": 0.85
+    },
+    "20": {
+      "actualWinRate": 0.6414596614640581,
+      "targetWinRate": 0.85
+    },
+    "21": {
+      "actualWinRate": 0.42050130939019825,
+      "targetWinRate": 0.85
+    },
+    "22": {
+      "actualWinRate": 0.417658411064651,
+      "targetWinRate": 0.85
+    },
+    "23": {
+      "actualWinRate": 0.40144727773949,
+      "targetWinRate": 0.85
+    },
+    "24": {
+      "actualWinRate": 0.3843173717650705,
+      "targetWinRate": 0.85
+    },
+    "25": {
+      "actualWinRate": 0.336906095024796,
+      "targetWinRate": 0.85
+    },
+    "26": {
+      "actualWinRate": 0.35358931552587647,
+      "targetWinRate": 0.72
+    },
+    "27": {
+      "actualWinRate": 0.3241585639491399,
+      "targetWinRate": 0.72
+    },
+    "28": {
+      "actualWinRate": 0.33491404860699464,
+      "targetWinRate": 0.72
+    },
+    "29": {
+      "actualWinRate": 0.31716013021237016,
+      "targetWinRate": 0.72
+    },
+    "30": {
+      "actualWinRate": 0.32449512295645005,
+      "targetWinRate": 0.72
+    },
+    "31": {
+      "actualWinRate": 0.3088487972508591,
+      "targetWinRate": 0.72
+    },
+    "32": {
+      "actualWinRate": 0.30646648228631634,
+      "targetWinRate": 0.72
+    },
+    "33": {
+      "actualWinRate": 0.3134057971014493,
+      "targetWinRate": 0.72
+    },
+    "34": {
+      "actualWinRate": 0.26907685939009246,
+      "targetWinRate": 0.72
+    },
+    "35": {
+      "actualWinRate": 0.2565432680971469,
+      "targetWinRate": 0.72
+    },
+    "36": {
+      "actualWinRate": 0.2754329698524695,
+      "targetWinRate": 0.72
+    },
+    "37": {
+      "actualWinRate": 0.2522556868725378,
+      "targetWinRate": 0.72
+    },
+    "38": {
+      "actualWinRate": 0.25011671335200747,
+      "targetWinRate": 0.72
+    },
+    "39": {
+      "actualWinRate": 0.23155917345021917,
+      "targetWinRate": 0.72
+    },
+    "40": {
+      "actualWinRate": 0.2705290290904627,
+      "targetWinRate": 0.72
+    },
+    "41": {
+      "actualWinRate": 0.24688420575572173,
+      "targetWinRate": 0.72
+    },
+    "42": {
+      "actualWinRate": 0.2472862957937585,
+      "targetWinRate": 0.72
+    },
+    "43": {
+      "actualWinRate": 0.27089092068892195,
+      "targetWinRate": 0.72
+    },
+    "44": {
+      "actualWinRate": 0.27504779039694144,
+      "targetWinRate": 0.72
+    },
+    "45": {
+      "actualWinRate": 0.25497062810664256,
+      "targetWinRate": 0.72
+    },
+    "46": {
+      "actualWinRate": 0.23229198886483143,
+      "targetWinRate": 0.72
+    },
+    "47": {
+      "actualWinRate": 0.23303581030218304,
+      "targetWinRate": 0.72
+    },
+    "48": {
+      "actualWinRate": 0.26104152933421226,
+      "targetWinRate": 0.72
+    },
+    "49": {
+      "actualWinRate": 0.21776259607173357,
+      "targetWinRate": 0.72
+    },
+    "50": {
+      "actualWinRate": 0.21644546452449856,
+      "targetWinRate": 0.72
+    },
+    "51": {
+      "actualWinRate": 0.23171764705882353,
+      "targetWinRate": 0.5
+    },
+    "52": {
+      "actualWinRate": 0.21775561097256857,
+      "targetWinRate": 0.5
+    },
+    "53": {
+      "actualWinRate": 0.22892626637981617,
+      "targetWinRate": 0.5
+    },
+    "54": {
+      "actualWinRate": 0.23816962234677938,
+      "targetWinRate": 0.5
+    },
+    "55": {
+      "actualWinRate": 0.2148411250839973,
+      "targetWinRate": 0.5
+    },
+    "56": {
+      "actualWinRate": 0.22697818746007117,
+      "targetWinRate": 0.5
+    },
+    "57": {
+      "actualWinRate": 0.21980572509240953,
+      "targetWinRate": 0.5
+    },
+    "58": {
+      "actualWinRate": 0.2088030059044552,
+      "targetWinRate": 0.5
+    },
+    "59": {
+      "actualWinRate": 0.20129703899650142,
+      "targetWinRate": 0.5
+    },
+    "60": {
+      "actualWinRate": 0.20416772125200372,
+      "targetWinRate": 0.5
+    },
+    "61": {
+      "actualWinRate": 0.14345506770619615,
+      "targetWinRate": 0.5
+    },
+    "62": {
+      "actualWinRate": 0.13330667732906837,
+      "targetWinRate": 0.5
+    },
+    "63": {
+      "actualWinRate": 0.12385832033860548,
+      "targetWinRate": 0.5
+    },
+    "64": {
+      "actualWinRate": 0.12626300995213857,
+      "targetWinRate": 0.5
+    },
+    "65": {
+      "actualWinRate": 0.1370585134422773,
+      "targetWinRate": 0.5
+    },
+    "66": {
+      "actualWinRate": 0.1354482132041187,
+      "targetWinRate": 0.5
+    },
+    "67": {
+      "actualWinRate": 0.1348380477795691,
+      "targetWinRate": 0.5
+    },
+    "68": {
+      "actualWinRate": 0.1343784994400896,
+      "targetWinRate": 0.5
+    },
+    "69": {
+      "actualWinRate": 0.12134264072478836,
+      "targetWinRate": 0.5
+    },
+    "70": {
+      "actualWinRate": 0.12976884704559827,
+      "targetWinRate": 0.5
+    },
+    "71": {
+      "actualWinRate": 0.12378048780487805,
+      "targetWinRate": 0.5
+    },
+    "72": {
+      "actualWinRate": 0.11923601637107777,
+      "targetWinRate": 0.5
+    },
+    "73": {
+      "actualWinRate": 0.12323846366399557,
+      "targetWinRate": 0.5
+    },
+    "74": {
+      "actualWinRate": 0.13861727034843685,
+      "targetWinRate": 0.5
+    },
+    "75": {
+      "actualWinRate": 0.12977509231285667,
+      "targetWinRate": 0.5
+    },
+    "76": {
+      "actualWinRate": 0.14240612615033252,
+      "targetWinRate": 0.5
+    },
+    "77": {
+      "actualWinRate": 0.12414681262073406,
+      "targetWinRate": 0.5
+    },
+    "78": {
+      "actualWinRate": 0.12576608784473953,
+      "targetWinRate": 0.5
+    },
+    "79": {
+      "actualWinRate": 0.14241665060705339,
+      "targetWinRate": 0.5
+    },
+    "80": {
+      "actualWinRate": 0.14157739773225583,
+      "targetWinRate": 0.5
+    },
+    "81": {
+      "actualWinRate": 0.1407275275530356,
+      "targetWinRate": 0.5
+    },
+    "82": {
+      "actualWinRate": 0.15637755102040815,
+      "targetWinRate": 0.5
+    },
+    "83": {
+      "actualWinRate": 0.1597580949981101,
+      "targetWinRate": 0.5
+    },
+    "84": {
+      "actualWinRate": 0.1588779468815279,
+      "targetWinRate": 0.5
+    },
+    "85": {
+      "actualWinRate": 0.15576786138143842,
+      "targetWinRate": 0.5
+    },
+    "86": {
+      "actualWinRate": 0.17498788172564228,
+      "targetWinRate": 0.5
+    },
+    "87": {
+      "actualWinRate": 0.1626750742739344,
+      "targetWinRate": 0.5
+    },
+    "88": {
+      "actualWinRate": 0.1853576973605637,
+      "targetWinRate": 0.5
+    },
+    "89": {
+      "actualWinRate": 0.1736214162758948,
+      "targetWinRate": 0.5
+    },
+    "90": {
+      "actualWinRate": 0.1682761087267525,
+      "targetWinRate": 0.5
+    },
+    "91": {
+      "actualWinRate": 0.18752188630792577,
+      "targetWinRate": 0.5
+    },
+    "92": {
+      "actualWinRate": 0.19008409250175193,
+      "targetWinRate": 0.5
+    },
+    "93": {
+      "actualWinRate": 0.2042570373788648,
+      "targetWinRate": 0.5
+    },
+    "94": {
+      "actualWinRate": 0.20126810540399045,
+      "targetWinRate": 0.5
+    },
+    "95": {
+      "actualWinRate": 0.19940580216707446,
+      "targetWinRate": 0.5
+    },
+    "96": {
+      "actualWinRate": 0.20824814533559202,
+      "targetWinRate": 0.5
+    },
+    "97": {
+      "actualWinRate": 0.2009221902017291,
+      "targetWinRate": 0.5
+    },
+    "98": {
+      "actualWinRate": 0.22136563876651982,
+      "targetWinRate": 0.5
+    },
+    "99": {
+      "actualWinRate": 0.2263484155031574,
+      "targetWinRate": 0.5
+    },
+    "100": {
+      "actualWinRate": 0.2683571962509344,
+      "targetWinRate": 0.5
+    },
+    "101": {
+      "actualWinRate": 0.22625344986200552,
+      "targetWinRate": 0.32
+    },
+    "102": {
+      "actualWinRate": 0.2288726309119189,
+      "targetWinRate": 0.32
+    },
+    "103": {
+      "actualWinRate": 0.25073389742704194,
+      "targetWinRate": 0.32
+    },
+    "104": {
+      "actualWinRate": 0.2487610925435058,
+      "targetWinRate": 0.32
+    },
+    "105": {
+      "actualWinRate": 0.24683946198695375,
+      "targetWinRate": 0.32
+    },
+    "106": {
+      "actualWinRate": 0.2566315668335347,
+      "targetWinRate": 0.32
+    },
+    "107": {
+      "actualWinRate": 0.26204906204906203,
+      "targetWinRate": 0.32
+    },
+    "108": {
+      "actualWinRate": 0.25483870967741934,
+      "targetWinRate": 0.32
+    },
+    "109": {
+      "actualWinRate": 0.29526221864026253,
+      "targetWinRate": 0.32
+    },
+    "110": {
+      "actualWinRate": 0.2703149965761242,
+      "targetWinRate": 0.32
+    },
+    "111": {
+      "actualWinRate": 0.28427709111813737,
+      "targetWinRate": 0.32
+    },
+    "112": {
+      "actualWinRate": 0.31354124632501296,
+      "targetWinRate": 0.32
+    },
+    "113": {
+      "actualWinRate": 0.26182820395039047,
+      "targetWinRate": 0.32
+    },
+    "114": {
+      "actualWinRate": 0.2941444520391889,
+      "targetWinRate": 0.32
+    },
+    "115": {
+      "actualWinRate": 0.2799448497730798,
+      "targetWinRate": 0.32
+    },
+    "116": {
+      "actualWinRate": 0.3086065338462422,
+      "targetWinRate": 0.32
+    },
+    "117": {
+      "actualWinRate": 0.3271995399654974,
+      "targetWinRate": 0.32
+    },
+    "118": {
+      "actualWinRate": 0.30244685118331327,
+      "targetWinRate": 0.32
+    },
+    "119": {
+      "actualWinRate": 0.31699477701888307,
+      "targetWinRate": 0.32
+    },
+    "120": {
+      "actualWinRate": 0.30018890606216725,
+      "targetWinRate": 0.32
+    },
+    "121": {
+      "actualWinRate": 0.3173875680320825,
+      "targetWinRate": 0.32
+    },
+    "122": {
+      "actualWinRate": 0.3015155847869603,
+      "targetWinRate": 0.32
+    },
+    "123": {
+      "actualWinRate": 0.3001665996438215,
+      "targetWinRate": 0.32
+    },
+    "124": {
+      "actualWinRate": 0.3275121671915259,
+      "targetWinRate": 0.32
+    },
+    "125": {
+      "actualWinRate": 0.36496225120109815,
+      "targetWinRate": 0.32
+    },
+    "126": {
+      "actualWinRate": 0.344009625852289,
+      "targetWinRate": 0.32
+    },
+    "127": {
+      "actualWinRate": 0.341941434171086,
+      "targetWinRate": 0.32
+    },
+    "128": {
+      "actualWinRate": 0.3762019230769231,
+      "targetWinRate": 0.32
+    },
+    "129": {
+      "actualWinRate": 0.3769380957850006,
+      "targetWinRate": 0.32
+    },
+    "130": {
+      "actualWinRate": 0.36544508604425135,
+      "targetWinRate": 0.32
+    },
+    "131": {
+      "actualWinRate": 0.40650641396047615,
+      "targetWinRate": 0.32
+    },
+    "132": {
+      "actualWinRate": 0.38976445641584045,
+      "targetWinRate": 0.32
+    },
+    "133": {
+      "actualWinRate": 0.39996552516662837,
+      "targetWinRate": 0.32
+    },
+    "134": {
+      "actualWinRate": 0.4036639292482628,
+      "targetWinRate": 0.32
+    },
+    "135": {
+      "actualWinRate": 0.43977318288561773,
+      "targetWinRate": 0.32
+    },
+    "136": {
+      "actualWinRate": 0.4164411950952737,
+      "targetWinRate": 0.32
+    },
+    "137": {
+      "actualWinRate": 0.4062464183381089,
+      "targetWinRate": 0.32
+    },
+    "138": {
+      "actualWinRate": 0.4165570865016294,
+      "targetWinRate": 0.32
+    },
+    "139": {
+      "actualWinRate": 0.4426144841042121,
+      "targetWinRate": 0.32
+    },
+    "140": {
+      "actualWinRate": 0.42650327728697635,
+      "targetWinRate": 0.32
+    },
+    "141": {
+      "actualWinRate": 0.41763195435092726,
+      "targetWinRate": 0.32
+    },
+    "142": {
+      "actualWinRate": 0.47010698552548774,
+      "targetWinRate": 0.32
+    },
+    "143": {
+      "actualWinRate": 0.4592783505154639,
+      "targetWinRate": 0.32
+    },
+    "144": {
+      "actualWinRate": 0.4364353492626043,
+      "targetWinRate": 0.32
+    },
+    "145": {
+      "actualWinRate": 0.4324773587068669,
+      "targetWinRate": 0.32
+    },
+    "146": {
+      "actualWinRate": 0.45734161205013224,
+      "targetWinRate": 0.32
+    },
+    "147": {
+      "actualWinRate": 0.46568961599636444,
+      "targetWinRate": 0.32
+    },
+    "148": {
+      "actualWinRate": 0.47259725400457664,
+      "targetWinRate": 0.32
+    },
+    "149": {
+      "actualWinRate": 0.4579786322344741,
+      "targetWinRate": 0.32
+    },
+    "150": {
+      "actualWinRate": 0.46406911545943474,
+      "targetWinRate": 0.32
+    },
+    "151": {
+      "actualWinRate": 0.4715531085111264,
+      "targetWinRate": 0.2
+    },
+    "152": {
+      "actualWinRate": 0.46130544124371287,
+      "targetWinRate": 0.2
+    },
+    "153": {
+      "actualWinRate": 0.4534392138939671,
+      "targetWinRate": 0.2
+    },
+    "154": {
+      "actualWinRate": 0.4859020930634838,
+      "targetWinRate": 0.2
+    },
+    "155": {
+      "actualWinRate": 0.47983548497657946,
+      "targetWinRate": 0.2
+    },
+    "156": {
+      "actualWinRate": 0.49519835372127585,
+      "targetWinRate": 0.2
+    },
+    "157": {
+      "actualWinRate": 0.4658274415129045,
+      "targetWinRate": 0.2
+    },
+    "158": {
+      "actualWinRate": 0.49793577981651377,
+      "targetWinRate": 0.2
+    },
+    "159": {
+      "actualWinRate": 0.49450800915331805,
+      "targetWinRate": 0.2
+    },
+    "160": {
+      "actualWinRate": 0.48145816641867917,
+      "targetWinRate": 0.2
+    },
+    "161": {
+      "actualWinRate": 0.4771987900234005,
+      "targetWinRate": 0.2
+    },
+    "162": {
+      "actualWinRate": 0.4947689123936537,
+      "targetWinRate": 0.2
+    },
+    "163": {
+      "actualWinRate": 0.46162624821683307,
+      "targetWinRate": 0.2
+    },
+    "164": {
+      "actualWinRate": 0.4847926267281106,
+      "targetWinRate": 0.2
+    },
+    "165": {
+      "actualWinRate": 0.49394493316577176,
+      "targetWinRate": 0.2
+    },
+    "166": {
+      "actualWinRate": 0.5074533097264264,
+      "targetWinRate": 0.2
+    },
+    "167": {
+      "actualWinRate": 0.4753883051621745,
+      "targetWinRate": 0.2
+    },
+    "168": {
+      "actualWinRate": 0.4841425441125591,
+      "targetWinRate": 0.2
+    },
+    "169": {
+      "actualWinRate": 0.49061677537475684,
+      "targetWinRate": 0.2
+    },
+    "170": {
+      "actualWinRate": 0.48933127395457926,
+      "targetWinRate": 0.2
+    },
+    "171": {
+      "actualWinRate": 0.4786061125392745,
+      "targetWinRate": 0.2
+    },
+    "172": {
+      "actualWinRate": 0.4983317993557294,
+      "targetWinRate": 0.2
+    },
+    "173": {
+      "actualWinRate": 0.5115772581384685,
+      "targetWinRate": 0.2
+    },
+    "174": {
+      "actualWinRate": 0.46368619390202126,
+      "targetWinRate": 0.2
+    },
+    "175": {
+      "actualWinRate": 0.5165782114934657,
+      "targetWinRate": 0.2
+    },
+    "176": {
+      "actualWinRate": 0.49773600045853156,
+      "targetWinRate": 0.2
+    },
+    "177": {
+      "actualWinRate": 0.4977552991987271,
+      "targetWinRate": 0.2
+    },
+    "178": {
+      "actualWinRate": 0.5075080238422742,
+      "targetWinRate": 0.2
+    },
+    "179": {
+      "actualWinRate": 0.5330429300166217,
+      "targetWinRate": 0.2
+    },
+    "180": {
+      "actualWinRate": 0.5296690647482014,
+      "targetWinRate": 0.2
+    },
+    "181": {
+      "actualWinRate": 0.5289431453461715,
+      "targetWinRate": 0.2
+    },
+    "182": {
+      "actualWinRate": 0.5155502392344498,
+      "targetWinRate": 0.2
+    },
+    "183": {
+      "actualWinRate": 0.5222623345367028,
+      "targetWinRate": 0.2
+    },
+    "184": {
+      "actualWinRate": 0.5252588820870759,
+      "targetWinRate": 0.2
+    },
+    "185": {
+      "actualWinRate": 0.5552825552825553,
+      "targetWinRate": 0.2
+    },
+    "186": {
+      "actualWinRate": 0.5330101569713758,
+      "targetWinRate": 0.2
+    },
+    "187": {
+      "actualWinRate": 0.5207585853408508,
+      "targetWinRate": 0.2
+    },
+    "188": {
+      "actualWinRate": 0.5636082828051711,
+      "targetWinRate": 0.2
+    },
+    "189": {
+      "actualWinRate": 0.5326130452180873,
+      "targetWinRate": 0.2
+    },
+    "190": {
+      "actualWinRate": 0.5451686678101773,
+      "targetWinRate": 0.2
+    },
+    "191": {
+      "actualWinRate": 0.5685064564049823,
+      "targetWinRate": 0.2
+    },
+    "192": {
+      "actualWinRate": 0.557037037037037,
+      "targetWinRate": 0.2
+    },
+    "193": {
+      "actualWinRate": 0.5319784131358365,
+      "targetWinRate": 0.2
+    },
+    "194": {
+      "actualWinRate": 0.5420929302166085,
+      "targetWinRate": 0.2
+    },
+    "195": {
+      "actualWinRate": 0.5560445841669048,
+      "targetWinRate": 0.2
+    },
+    "196": {
+      "actualWinRate": 0.5894066337656375,
+      "targetWinRate": 0.2
+    },
+    "197": {
+      "actualWinRate": 0.5559750586350896,
+      "targetWinRate": 0.2
+    },
+    "198": {
+      "actualWinRate": 0.5732285284938158,
+      "targetWinRate": 0.2
+    },
+    "199": {
+      "actualWinRate": 0.5824821683309558,
+      "targetWinRate": 0.2
+    },
+    "200": {
+      "actualWinRate": 0.5938158419224417,
+      "targetWinRate": 0.2
+    }
+  },
+  "adjustments": {
+    "players": [
+      {
+        "classId": 3,
+        "className": "Nameless",
+        "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Entities\\Player\\Classes\\Nameless.mc",
+        "field": "maxHealth",
+        "old": 100,
+        "new": 104
+      },
+      {
+        "classId": 4,
+        "className": "Paladin",
+        "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Entities\\Player\\Classes\\Paladin.mc",
+        "field": "maxHealth",
+        "old": 60,
+        "new": 59
+      }
+    ],
+    "enemies": [
+      {
+        "enemyId": 7,
+        "enemyName": "Small Zombie",
+        "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Entities\\Enemies\\Easy\\ZombieSmall.mc",
+        "field": "maxHealth",
+        "old": 20,
+        "new": 19
+      },
+      {
+        "enemyId": 0,
+        "enemyName": "Frog",
+        "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Entities\\Enemies\\Easy\\Frog.mc",
+        "field": "maxHealth",
+        "old": 35,
+        "new": 34
+      },
+      {
+        "enemyId": 28,
+        "enemyName": "Chort",
+        "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Entities\\Enemies\\Normal\\Chort.mc",
+        "field": "damage",
+        "old": 25,
+        "new": 26
+      },
+      {
+        "enemyId": 28,
+        "enemyName": "Chort",
+        "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Entities\\Enemies\\Normal\\Chort.mc",
+        "field": "maxHealth",
+        "old": 150,
+        "new": 153
+      },
+      {
+        "enemyId": 10,
+        "enemyName": "Ogre",
+        "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Entities\\Enemies\\Bosses\\Ogre.mc",
+        "field": "damage",
+        "old": 200,
+        "new": 177
+      },
+      {
+        "enemyId": 10,
+        "enemyName": "Ogre",
+        "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Entities\\Enemies\\Bosses\\Ogre.mc",
+        "field": "maxHealth",
+        "old": 1000,
+        "new": 885
+      },
+      {
+        "enemyId": 10,
+        "enemyName": "Ogre",
+        "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Entities\\Enemies\\Bosses\\Ogre.mc",
+        "field": "armor",
+        "old": 60,
+        "new": 53
+      },
+      {
+        "enemyId": 2,
+        "enemyName": "Demon",
+        "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Entities\\Enemies\\Bosses\\Demon.mc",
+        "field": "damage",
+        "old": 125,
+        "new": 120
+      },
+      {
+        "enemyId": 2,
+        "enemyName": "Demon",
+        "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Entities\\Enemies\\Bosses\\Demon.mc",
+        "field": "maxHealth",
+        "old": 750,
+        "new": 719
+      },
+      {
+        "enemyId": 2,
+        "enemyName": "Demon",
+        "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Entities\\Enemies\\Bosses\\Demon.mc",
+        "field": "armor",
+        "old": 50,
+        "new": 48
+      },
+      {
+        "enemyId": 29,
+        "enemyName": "Bies",
+        "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Entities\\Enemies\\Normal\\Bies.mc",
+        "field": "maxHealth",
+        "old": 250,
+        "new": 256
+      }
+    ],
+    "items": [
+      {
+        "itemId": 1061,
+        "itemName": "GoldBreastPlate",
+        "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Items\\ArmorItems\\Armors\\6_Gold\\GoldBreastPlate.mc",
+        "field": "defense",
+        "old": 20,
+        "new": 21
+      },
+      {
+        "itemId": 1062,
+        "itemName": "GoldGauntlets",
+        "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Items\\ArmorItems\\Armors\\6_Gold\\GoldGauntlets.mc",
+        "field": "defense",
+        "old": 9,
+        "new": 10
+      },
+      {
+        "itemId": 1060,
+        "itemName": "GoldHelmet",
+        "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Items\\ArmorItems\\Armors\\6_Gold\\GoldHelmet.mc",
+        "field": "defense",
+        "old": 9,
+        "new": 10
+      },
+      {
+        "itemId": 1064,
+        "itemName": "GoldRing1",
+        "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Items\\ArmorItems\\Armors\\6_Gold\\GoldRing1.mc",
+        "field": "defense",
+        "old": 9,
+        "new": 10
+      },
+      {
+        "itemId": 1063,
+        "itemName": "GoldShoes",
+        "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Items\\ArmorItems\\Armors\\6_Gold\\GoldShoes.mc",
+        "field": "defense",
+        "old": 9,
+        "new": 10
+      },
+      {
+        "itemId": 1071,
+        "itemName": "DemonBreastPlate",
+        "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Items\\ArmorItems\\Armors\\7_Demon\\DemonBreastPlate.mc",
+        "field": "defense",
+        "old": 40,
+        "new": 44
+      },
+      {
+        "itemId": 1072,
+        "itemName": "DemonGauntlets",
+        "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Items\\ArmorItems\\Armors\\7_Demon\\DemonGauntlets.mc",
+        "field": "defense",
+        "old": 15,
+        "new": 17
+      },
+      {
+        "itemId": 1070,
+        "itemName": "DemonHelmet",
+        "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Items\\ArmorItems\\Armors\\7_Demon\\DemonHelmet.mc",
+        "field": "defense",
+        "old": 18,
+        "new": 20
+      },
+      {
+        "itemId": 1074,
+        "itemName": "DemonRing1",
+        "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Items\\ArmorItems\\Armors\\7_Demon\\DemonRing1.mc",
+        "field": "defense",
+        "old": 7,
+        "new": 8
+      },
+      {
+        "itemId": 1075,
+        "itemName": "DemonRing2",
+        "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Items\\ArmorItems\\Armors\\7_Demon\\DemonRing2.mc",
+        "field": "defense",
+        "old": 7,
+        "new": 8
+      },
+      {
+        "itemId": 1073,
+        "itemName": "DemonShoes",
+        "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Items\\ArmorItems\\Armors\\7_Demon\\DemonShoes.mc",
+        "field": "defense",
+        "old": 15,
+        "new": 17
+      },
+      {
+        "itemId": 1081,
+        "itemName": "BloodBreastPlate",
+        "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Items\\ArmorItems\\Armors\\8_Blood\\BloodBreastPlate.mc",
+        "field": "defense",
+        "old": 40,
+        "new": 41
+      },
+      {
+        "itemId": 23,
+        "itemName": "FireGreatsword",
+        "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Items\\WeaponItems\\2_Fire\\FireGreatsword.mc",
+        "field": "attack",
+        "old": 18,
+        "new": 19
+      },
+      {
+        "itemId": 60,
+        "itemName": "GoldAxe",
+        "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Items\\WeaponItems\\6_Gold\\GoldAxe.mc",
+        "field": "attack",
+        "old": 14,
+        "new": 15
+      },
+      {
+        "itemId": 62,
+        "itemName": "GoldDagger",
+        "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Items\\WeaponItems\\6_Gold\\GoldDagger.mc",
+        "field": "attack",
+        "old": 12,
+        "new": 13
+      },
+      {
+        "itemId": 63,
+        "itemName": "GoldGreatsword",
+        "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Items\\WeaponItems\\6_Gold\\GoldGreatsword.mc",
+        "field": "attack",
+        "old": 14,
+        "new": 15
+      },
+      {
+        "itemId": 64,
+        "itemName": "GoldKatana",
+        "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Items\\WeaponItems\\6_Gold\\GoldKatana.mc",
+        "field": "attack",
+        "old": 16,
+        "new": 17
+      },
+      {
+        "itemId": 65,
+        "itemName": "GoldLance",
+        "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Items\\WeaponItems\\6_Gold\\GoldLance.mc",
+        "field": "attack",
+        "old": 16,
+        "new": 17
+      },
+      {
+        "itemId": 66,
+        "itemName": "GoldSpell",
+        "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Items\\WeaponItems\\6_Gold\\GoldSpell.mc",
+        "field": "attack",
+        "old": 16,
+        "new": 17
+      },
+      {
+        "itemId": 68,
+        "itemName": "GoldSword",
+        "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Items\\WeaponItems\\6_Gold\\GoldSword.mc",
+        "field": "attack",
+        "old": 16,
+        "new": 17
+      },
+      {
+        "itemId": 70,
+        "itemName": "DemonAxe",
+        "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Items\\WeaponItems\\7_Demon\\DemonAxe.mc",
+        "field": "attack",
+        "old": 20,
+        "new": 22
+      },
+      {
+        "itemId": 71,
+        "itemName": "DemonBow",
+        "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Items\\WeaponItems\\7_Demon\\DemonBow.mc",
+        "field": "attack",
+        "old": 9,
+        "new": 10
+      },
+      {
+        "itemId": 72,
+        "itemName": "DemonSpell",
+        "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Items\\WeaponItems\\7_Demon\\DemonSpell.mc",
+        "field": "attack",
+        "old": 18,
+        "new": 20
+      },
+      {
+        "itemId": 73,
+        "itemName": "DemonGreatsword",
+        "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Items\\WeaponItems\\7_Demon\\DemonGreatsword.mc",
+        "field": "attack",
+        "old": 24,
+        "new": 27
+      },
+      {
+        "itemId": 74,
+        "itemName": "DemonKatana",
+        "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Items\\WeaponItems\\7_Demon\\DemonKatana.mc",
+        "field": "attack",
+        "old": 24,
+        "new": 27
+      },
+      {
+        "itemId": 75,
+        "itemName": "DemonLance",
+        "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Items\\WeaponItems\\7_Demon\\DemonLance.mc",
+        "field": "attack",
+        "old": 20,
+        "new": 22
+      },
+      {
+        "itemId": 77,
+        "itemName": "DemonStaff",
+        "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Items\\WeaponItems\\7_Demon\\DemonStaff.mc",
+        "field": "attack",
+        "old": 6,
+        "new": 7
+      },
+      {
+        "itemId": 78,
+        "itemName": "DemonSword",
+        "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Items\\WeaponItems\\7_Demon\\DemonSword.mc",
+        "field": "attack",
+        "old": 20,
+        "new": 22
+      },
+      {
+        "itemId": 80,
+        "itemName": "BloodAxe",
+        "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Items\\WeaponItems\\8_Blood\\BloodAxe.mc",
+        "field": "attack",
+        "old": 40,
+        "new": 41
+      },
+      {
+        "itemId": 83,
+        "itemName": "BloodGreatsword",
+        "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Items\\WeaponItems\\8_Blood\\BloodGreatsword.mc",
+        "field": "attack",
+        "old": 56,
+        "new": 57
+      },
+      {
+        "itemId": 84,
+        "itemName": "BloodKatana",
+        "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Items\\WeaponItems\\8_Blood\\BloodKatana.mc",
+        "field": "attack",
+        "old": 48,
+        "new": 49
+      },
+      {
+        "itemId": 85,
+        "itemName": "BloodLance",
+        "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Items\\WeaponItems\\8_Blood\\BloodLance.mc",
+        "field": "attack",
+        "old": 40,
+        "new": 41
+      },
+      {
+        "itemId": 86,
+        "itemName": "BloodSpell",
+        "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Items\\WeaponItems\\8_Blood\\BloodSpell.mc",
+        "field": "attack",
+        "old": 64,
+        "new": 65
+      },
+      {
+        "itemId": 88,
+        "itemName": "BloodSword",
+        "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Items\\WeaponItems\\8_Blood\\BloodSword.mc",
+        "field": "attack",
+        "old": 40,
+        "new": 41
+      }
+    ],
+    "strictTables": [
+      {
+        "category": "strict-tables",
+        "table": "enemy",
+        "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+        "enemyId": 11,
+        "maxDepth": 999,
+        "field": "weight",
+        "old": 5,
+        "new": 6
+      },
+      {
+        "category": "strict-tables",
+        "table": "enemy",
+        "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+        "enemyId": 31,
+        "maxDepth": 999,
+        "field": "weight",
+        "old": 7,
+        "new": 8
+      },
+      {
+        "category": "strict-tables",
+        "table": "enemy",
+        "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+        "enemyId": 25,
+        "maxDepth": 999,
+        "field": "weight",
+        "old": 6,
+        "new": 7
+      },
+      {
+        "category": "strict-tables",
+        "table": "item-consumable",
+        "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\ItemSpecificValues.mc",
+        "itemId": 2001,
+        "maxDepth": 30,
+        "field": "weight",
+        "old": 6,
+        "new": 7
+      },
+      {
+        "category": "strict-tables",
+        "table": "item-consumable",
+        "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\ItemSpecificValues.mc",
+        "itemId": 2002,
+        "maxDepth": 30,
+        "field": "weight",
+        "old": 7,
+        "new": 8
+      },
+      {
+        "category": "strict-tables",
+        "table": "item-consumable",
+        "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\ItemSpecificValues.mc",
+        "itemId": 2003,
+        "maxDepth": 30,
+        "field": "weight",
+        "old": 6,
+        "new": 7
+      },
+      {
+        "category": "strict-tables",
+        "table": "item-consumable",
+        "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\ItemSpecificValues.mc",
+        "itemId": 2004,
+        "maxDepth": 60,
+        "field": "weight",
+        "old": 5,
+        "new": 6
+      },
+      {
+        "category": "strict-tables",
+        "table": "item-consumable",
+        "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\ItemSpecificValues.mc",
+        "itemId": 2005,
+        "maxDepth": 60,
+        "field": "weight",
+        "old": 5,
+        "new": 6
+      }
+    ]
+  }
+}
