@@ -18,7 +18,7 @@ class Turn {
     private var _is_processing_turn as Boolean = false;
 
     private const ENEMY_ACTION_DELAY_MS as Number = 50;
-    private const MAX_ENEMY_ITERATIONS as Number = 10;
+    private const MAX_ENEMY_ITERATIONS as Number = 5;
 
     private var MIN_ENERGY = $.Constants.MIN_ENERGY_PER_TURN;
 
@@ -29,6 +29,8 @@ class Turn {
         // Use provided map data once during construction; afterward, we always fetch via Game.
         _player_pos = map_data[:player_pos] as Point2D;
         _player.setPos(_player_pos);
+
+        _combat_timer = new Timer.Timer();
     }
 
     function setAutoSave(autosave as Boolean) as Void {
@@ -264,10 +266,6 @@ class Turn {
         _enemy_iteration = 0;
         _enemy_queue = buildEnemyQueue(room);
 
-        if (_combat_timer == null) {
-            _combat_timer = new Timer.Timer();
-        }
-
         if (_enemy_queue.size() == 0) {
             finishTurn(room);
             return;
@@ -333,7 +331,10 @@ class Turn {
             return;
         }
 
-        var next_pos = enemy.findNextMove(map);
+        var next_pos = enemy.findNextMove(map) as Point2D?;
+        if (next_pos == null) {
+            return;
+        }
         if (next_pos != curr_pos) {
             if (MapUtil.isPosPlayer(map, next_pos)) {
                 Battle.attackPlayer(enemy, _player);

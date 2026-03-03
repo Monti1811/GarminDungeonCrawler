@@ -131,21 +131,21 @@ class Enemy extends Entity {
 
 	function followPlayerSimple(map as Map) as Point2D {
 		var next_pos = followPlayerDirect(map);
-		if (next_pos != null) {
-			Toybox.System.println(name + " moving to " + next_pos);
-			self.next_pos = next_pos;
-			return next_pos;
-		}
-		self.next_pos = self.pos;
-		return self.next_pos;
+		Toybox.System.println(name + " moving to " + next_pos);
+		self.next_pos = next_pos;
+		return next_pos;
 	}
 
-	function followPlayerDirect(map as Map) as Point2D? {
+	function followPlayerDirect(map as Map) as Point2D {
 		var player_pos = $.getApp().getPlayer().getPos();
 		var next_pos = Pathfinder.findPathToPos(map, pos, player_pos);
 		if (next_pos == null) {
 			next_pos = Pathfinder.findSimplePathToPos(map, pos, player_pos);
 		}
+		if (next_pos == null) {
+			next_pos = self.pos;
+		}
+		self.next_pos = next_pos;
 		return next_pos;
 	}
 

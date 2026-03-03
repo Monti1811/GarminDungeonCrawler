@@ -25,7 +25,6 @@ class RoomDrawable extends WatchUi.Drawable {
         _color = self.getMapColors();
 
         _font = WatchUi.loadResource($.Rez.Fonts.dungeon);
-
     }
 
     function getMapColors() {
@@ -139,24 +138,24 @@ class RoomDrawable extends WatchUi.Drawable {
     }
 
     function draw(dc as Dc) as Void {
-
+        dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_BLACK);
+        dc.clear();
         dc.setColor(_color[0], _color[1]);
         for (var i = 0; i < _map_string.size(); i++) {
             dc.drawText(0, i * 16, _font, _map_string[i], Graphics.TEXT_JUSTIFY_LEFT);
         }
     }
 
-    function drawAll(dc as Dc, room as Room) as Void {
-
-        dc.setColor(_color[0], _color[1]);
-        for (var i = 0; i < _map_string.size(); i++) {
-            dc.drawText(0, i * 16, _font, _map_string[i], Graphics.TEXT_JUSTIFY_LEFT);
-        }
-
+    function drawForeground(dc as Dc, room as Room) as Void {
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
         drawItems(dc, room.getItems());
         drawEnemies(dc, room.getEnemies());
         drawNPCs(dc, room.getNPCs());
+    }
+
+    function drawAll(dc as Dc, room as Room) as Void {
+        draw(dc);
+        drawForeground(dc, room);
     }
 
 
