@@ -24,12 +24,7 @@ class Necromancer extends Enemy {
 	}
 
 	function findNextMove(map as Map) as Point2D {
-        var player_pos = $.getApp().getPlayer().getPos();
-        var dist = $.MathUtil.abs(player_pos[0] - pos[0]) + $.MathUtil.abs(player_pos[1] - pos[1]);
-        if (dist <= 3) {
-            return Enemy.walkAwayFromPlayer(map);
-        }
-        return Enemy.followPlayerSimple(map);
+        return Enemy.followPlayerKiting(map, 3, 5);
     }
 
     function doAction(map as Map) as Boolean {

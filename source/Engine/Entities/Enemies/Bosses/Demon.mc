@@ -23,7 +23,7 @@ class Demon extends Enemy {
 	}
 
 	function findNextMove(map) as Point2D {
-        return Enemy.followPlayerSimple(map);
+		return Enemy.followPlayerTeleportBehind(map);
     }
 
 	function onLoad(save_data as Dictionary) as Void {

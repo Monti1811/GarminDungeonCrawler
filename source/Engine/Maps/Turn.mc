@@ -1,5 +1,6 @@
 import Toybox.Lang;
 import Toybox.WatchUi;
+import Toybox.Timer;
 
 class Turn {
 
@@ -9,6 +10,15 @@ class Turn {
     private var _player as Player;
 
     private var _autosave as Boolean = false;
+    private var _combat_timer as Timer.Timer?;
+
+    private var _enemy_queue as Array<Enemy>?;
+    private var _enemy_target_pos as Point2D?;
+    private var _enemy_iteration as Number = 0;
+    private var _is_processing_turn as Boolean = false;
+
+    private const ENEMY_ACTION_DELAY_MS as Number = 50;
+    private const MAX_ENEMY_ITERATIONS as Number = 5;
 
     private var MIN_ENERGY = $.Constants.MIN_ENERGY_PER_TURN;
 
@@ -19,13 +29,23 @@ class Turn {
         // Use provided map data once during construction; afterward, we always fetch via Game.
         _player_pos = map_data[:player_pos] as Point2D;
         _player.setPos(_player_pos);
+
+        _combat_timer = new Timer.Timer();
     }
 
     function setAutoSave(autosave as Boolean) as Void {
         _autosave = autosave;
     }
 
+    function isProcessingTurn() as Boolean {
+        return _is_processing_turn;
+    }
+
     function doTurn(direction as WalkDirection) as Void {
+        if (_is_processing_turn) {
+            return;
+        }
+
         // Remove existing damage texts
         _view.removeDamageTexts();
 
@@ -67,19 +87,7 @@ class Turn {
             resolvePlayerActions(map, new_pos, direction, map_element);
         }
         // Resolve enemy action
-        resolveEnemyActions(room.getEnemies().values(), _player_pos);
-
-        _view.getTimer().start(new Lang.Method(_view, (:removeDamageTexts)), 1000, false);
-
-        // Do stuff after the turn is over
-        _player.onTurnDone();
-        room.onTurnDone();
-
-        if (_autosave) {
-            $.SaveData.saveGame();
-        }
-
-		WatchUi.requestUpdate();
+		startEnemyActionResolution(room, _player_pos);
 	}
 
     // Move the player if nothing is in the waym except for items (which can be interacted with)
@@ -181,6 +189,9 @@ class Turn {
     function freeMemory() as Void {
         _view.freeMemory();
         _view = null;
+        _combat_timer = null;
+        _enemy_queue = null;
+        _enemy_target_pos = null;
     }
 
     function goToNextDungeon() as Void {
@@ -249,54 +260,106 @@ class Turn {
         return false;
     }
 
-    function resolveEnemyActions(enemies as Array<Enemy>, target_pos as Point2D) as Void {
-        for (var i = enemies.size() - 1; i >= 0; i--) {
-            var enemy = enemies[i];
-            if (enemy.getEnergy() < MIN_ENERGY) {
-                enemies.remove(enemy);
-            }
-        }
-        // Do enemy actions
-        // Sort enemies by distance to player
-        var comparator = new MapUtil.EnemyDistanceCompare(_player_pos);
-        enemies.sort(comparator);
+    function startEnemyActionResolution(room as Room, target_pos as Point2D) as Void {
+        _is_processing_turn = true;
+        _enemy_target_pos = target_pos;
+        _enemy_iteration = 0;
+        _enemy_queue = buildEnemyQueue(room);
 
-        var room = $.Game.getCurrentRoom();
-        var map = room.getMap();
-        
-        var maxIterations = 10; 
-        var iterations = 0;
-        while (iterations < maxIterations) {
-            for (var i = 0; i < enemies.size(); i++) {
-                var enemy = enemies[i];
-                var curr_pos = enemy.getPos();
-                if (enemy.doAction(map) || 
-                        enemy.attackNearbyPlayer(map, target_pos)) {
-                    enemy.doTurnEnergyDelta(-MIN_ENERGY, 0, 2 * MIN_ENERGY);
-                    if (enemy.energy <= 0) {
-                        enemies.remove(enemy);
-                    }
-                    continue;
-                }	
-                var next_pos = enemy.findNextMove(map);
-                if (next_pos != curr_pos) {
-                    if (MapUtil.isPosPlayer(map, next_pos)) {
-                        Battle.attackPlayer(enemy, _player);
-                        enemy.doTurnEnergyDelta(-MIN_ENERGY, 0, 2 * MIN_ENERGY);
-                        if (enemy.energy <= 0) {
-                            enemies.remove(enemy);
-                        }
-                    } else {
-                        room.moveEnemy(enemy);
-                        enemy.doTurnEnergyDelta(-MIN_ENERGY, 0, 2 * MIN_ENERGY);
-                        if (enemy.energy <= 0) {
-                            enemies.remove(enemy);
-                        }
-                    }
-                }
-            }
-            iterations++;
+        if (_enemy_queue.size() == 0) {
+            finishTurn(room);
+            return;
         }
+
+        _combat_timer.start(method(:onEnemyActionTimer), ENEMY_ACTION_DELAY_MS, false);
+    }
+
+    function buildEnemyQueue(room as Room) as Array<Enemy> {
+        var enemies = room.getEnemies().values();
+        var queue = [] as Array<Enemy>;
+        for (var i = 0; i < enemies.size(); i++) {
+            var enemy = enemies[i] as Enemy;
+            if (enemy.getEnergy() >= MIN_ENERGY) {
+                queue.add(enemy);
+            }
+        }
+
+        var comparator = new MapUtil.EnemyDistanceCompare(_player_pos);
+        queue.sort(comparator);
+        return queue;
+    }
+
+    function onEnemyActionTimer() as Void {
+        var room = $.Game.getCurrentRoom();
+        if (_enemy_queue == null || _enemy_target_pos == null) {
+            finishTurn(room);
+            return;
+        }
+
+        if (_enemy_iteration >= MAX_ENEMY_ITERATIONS) {
+            finishTurn(room);
+            return;
+        }
+
+        if (_enemy_queue.size() == 0) {
+            _enemy_iteration += 1;
+            _enemy_queue = buildEnemyQueue(room);
+            if (_enemy_queue.size() == 0) {
+                finishTurn(room);
+                return;
+            }
+        }
+
+        var enemy = _enemy_queue[0];
+        _enemy_queue.remove(enemy);
+        processEnemyAction(room, enemy, _enemy_target_pos);
+        WatchUi.requestUpdate();
+
+        _combat_timer.start(method(:onEnemyActionTimer), ENEMY_ACTION_DELAY_MS, false);
+    }
+
+    function processEnemyAction(room as Room, enemy as Enemy, target_pos as Point2D) as Void {
+        if (enemy.getEnergy() < MIN_ENERGY) {
+            return;
+        }
+
+        var map = room.getMap();
+        var curr_pos = enemy.getPos();
+
+        if (enemy.doAction(map) || enemy.attackNearbyPlayer(map, target_pos)) {
+            enemy.doTurnEnergyDelta(-MIN_ENERGY, 0, 2 * MIN_ENERGY);
+            return;
+        }
+
+        var next_pos = enemy.findNextMove(map) as Point2D?;
+        if (next_pos == null) {
+            return;
+        }
+        if (next_pos != curr_pos) {
+            if (MapUtil.isPosPlayer(map, next_pos)) {
+                Battle.attackPlayer(enemy, _player);
+                enemy.doTurnEnergyDelta(-MIN_ENERGY, 0, 2 * MIN_ENERGY);
+            } else {
+                room.moveEnemy(enemy);
+                enemy.doTurnEnergyDelta(-MIN_ENERGY, 0, 2 * MIN_ENERGY);
+            }
+        }
+    }
+
+    function finishTurn(room as Room) as Void {
+        _view.getTimer().start(new Lang.Method(_view, (:removeDamageTexts)), 1000, false);
+
+        _player.onTurnDone();
+        room.onTurnDone();
+
+        if (_autosave) {
+            $.SaveData.saveGame();
+        }
+
+        _is_processing_turn = false;
+        _enemy_queue = null;
+        _enemy_target_pos = null;
+        WatchUi.requestUpdate();
     }
         
 
