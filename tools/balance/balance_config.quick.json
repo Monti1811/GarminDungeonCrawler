@@ -4,6 +4,7 @@
   "depthRange": { "start": 1, "end": 8, "step": 1 },
   "maxAdjustmentPercentPerRun": 12,
   "tolerance": 0.05,
+  "initialAttributePoints": 5,
   "variation": {
     "enemyCountMultiplier": 1.0,
     "enemyWeightJitter": 0.15,

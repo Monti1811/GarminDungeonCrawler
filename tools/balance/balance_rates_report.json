@@ -1,0 +1,1930 @@
+{
+  "config": {
+    "strictRealism": true,
+    "roundsPerDepth": 10,
+    "depthRange": {
+      "start": 1,
+      "end": 200,
+      "step": 1
+    },
+    "roomsPerDepthForProgression": 4,
+    "initialAttributePoints": 5,
+    "maxRateAdjustmentPercentPerRun": 12,
+    "maxBoundaryShift": 2,
+    "variation": {
+      "enemyCountMultiplier": 1.0,
+      "enemyWeightJitter": 0.15,
+      "itemWeightJitter": 0.2,
+      "enemyBudgetScaleByDepth": [
+        {
+          "maxDepth": 20,
+          "value": 0.7
+        },
+        {
+          "maxDepth": 60,
+          "value": 0.9
+        },
+        {
+          "maxDepth": 120,
+          "value": 1.1
+        },
+        {
+          "maxDepth": 200,
+          "value": 1.25
+        }
+      ],
+      "itemDropScaleByDepth": [
+        {
+          "maxDepth": 20,
+          "value": 1.35
+        },
+        {
+          "maxDepth": 80,
+          "value": 1.1
+        },
+        {
+          "maxDepth": 160,
+          "value": 0.95
+        },
+        {
+          "maxDepth": 200,
+          "value": 0.85
+        }
+      ]
+    },
+    "targetWinRateByDepth": [
+      {
+        "maxDepth": 1,
+        "target": 1.0
+      },
+      {
+        "maxDepth": 10,
+        "target": 0.95
+      },
+      {
+        "maxDepth": 25,
+        "target": 0.85
+      },
+      {
+        "maxDepth": 50,
+        "target": 0.72
+      },
+      {
+        "maxDepth": 100,
+        "target": 0.5
+      },
+      {
+        "maxDepth": 150,
+        "target": 0.32
+      },
+      {
+        "maxDepth": 200,
+        "target": 0.2
+      }
+    ]
+  },
+  "depthResults": {
+    "1": {
+      "actualWinRate": 0.9157894736842105,
+      "targetWinRate": 1.0
+    },
+    "2": {
+      "actualWinRate": 0.9009009009009009,
+      "targetWinRate": 0.95
+    },
+    "3": {
+      "actualWinRate": 1.0,
+      "targetWinRate": 0.95
+    },
+    "4": {
+      "actualWinRate": 1.0,
+      "targetWinRate": 0.95
+    },
+    "5": {
+      "actualWinRate": 0.9455782312925171,
+      "targetWinRate": 0.95
+    },
+    "6": {
+      "actualWinRate": 0.9166666666666666,
+      "targetWinRate": 0.95
+    },
+    "7": {
+      "actualWinRate": 0.8835978835978836,
+      "targetWinRate": 0.95
+    },
+    "8": {
+      "actualWinRate": 0.7294117647058823,
+      "targetWinRate": 0.95
+    },
+    "9": {
+      "actualWinRate": 0.8743169398907104,
+      "targetWinRate": 0.95
+    },
+    "10": {
+      "actualWinRate": 0.8360655737704918,
+      "targetWinRate": 0.95
+    },
+    "11": {
+      "actualWinRate": 0.7382198952879581,
+      "targetWinRate": 0.85
+    },
+    "12": {
+      "actualWinRate": 0.8395061728395061,
+      "targetWinRate": 0.85
+    },
+    "13": {
+      "actualWinRate": 0.7294117647058823,
+      "targetWinRate": 0.85
+    },
+    "14": {
+      "actualWinRate": 0.806930693069307,
+      "targetWinRate": 0.85
+    },
+    "15": {
+      "actualWinRate": 0.84,
+      "targetWinRate": 0.85
+    },
+    "16": {
+      "actualWinRate": 0.7745098039215687,
+      "targetWinRate": 0.85
+    },
+    "17": {
+      "actualWinRate": 0.73224043715847,
+      "targetWinRate": 0.85
+    },
+    "18": {
+      "actualWinRate": 0.6911764705882353,
+      "targetWinRate": 0.85
+    },
+    "19": {
+      "actualWinRate": 0.5405405405405406,
+      "targetWinRate": 0.85
+    },
+    "20": {
+      "actualWinRate": 0.610738255033557,
+      "targetWinRate": 0.85
+    },
+    "21": {
+      "actualWinRate": 0.5051546391752577,
+      "targetWinRate": 0.85
+    },
+    "22": {
+      "actualWinRate": 0.4925373134328358,
+      "targetWinRate": 0.85
+    },
+    "23": {
+      "actualWinRate": 0.455026455026455,
+      "targetWinRate": 0.85
+    },
+    "24": {
+      "actualWinRate": 0.35398230088495575,
+      "targetWinRate": 0.85
+    },
+    "25": {
+      "actualWinRate": 0.41836734693877553,
+      "targetWinRate": 0.85
+    },
+    "26": {
+      "actualWinRate": 0.4221105527638191,
+      "targetWinRate": 0.72
+    },
+    "27": {
+      "actualWinRate": 0.3185840707964602,
+      "targetWinRate": 0.72
+    },
+    "28": {
+      "actualWinRate": 0.2638888888888889,
+      "targetWinRate": 0.72
+    },
+    "29": {
+      "actualWinRate": 0.29441624365482233,
+      "targetWinRate": 0.72
+    },
+    "30": {
+      "actualWinRate": 0.36363636363636365,
+      "targetWinRate": 0.72
+    },
+    "31": {
+      "actualWinRate": 0.3406113537117904,
+      "targetWinRate": 0.72
+    },
+    "32": {
+      "actualWinRate": 0.3020408163265306,
+      "targetWinRate": 0.72
+    },
+    "33": {
+      "actualWinRate": 0.29699248120300753,
+      "targetWinRate": 0.72
+    },
+    "34": {
+      "actualWinRate": 0.3412698412698413,
+      "targetWinRate": 0.72
+    },
+    "35": {
+      "actualWinRate": 0.18456375838926176,
+      "targetWinRate": 0.72
+    },
+    "36": {
+      "actualWinRate": 0.25096525096525096,
+      "targetWinRate": 0.72
+    },
+    "37": {
+      "actualWinRate": 0.34274193548387094,
+      "targetWinRate": 0.72
+    },
+    "38": {
+      "actualWinRate": 0.2446043165467626,
+      "targetWinRate": 0.72
+    },
+    "39": {
+      "actualWinRate": 0.21678321678321677,
+      "targetWinRate": 0.72
+    },
+    "40": {
+      "actualWinRate": 0.1906474820143885,
+      "targetWinRate": 0.72
+    },
+    "41": {
+      "actualWinRate": 0.3089700996677741,
+      "targetWinRate": 0.72
+    },
+    "42": {
+      "actualWinRate": 0.26666666666666666,
+      "targetWinRate": 0.72
+    },
+    "43": {
+      "actualWinRate": 0.30158730158730157,
+      "targetWinRate": 0.72
+    },
+    "44": {
+      "actualWinRate": 0.38461538461538464,
+      "targetWinRate": 0.72
+    },
+    "45": {
+      "actualWinRate": 0.36298932384341637,
+      "targetWinRate": 0.72
+    },
+    "46": {
+      "actualWinRate": 0.2857142857142857,
+      "targetWinRate": 0.72
+    },
+    "47": {
+      "actualWinRate": 0.2389937106918239,
+      "targetWinRate": 0.72
+    },
+    "48": {
+      "actualWinRate": 0.1757188498402556,
+      "targetWinRate": 0.72
+    },
+    "49": {
+      "actualWinRate": 0.38243626062322944,
+      "targetWinRate": 0.72
+    },
+    "50": {
+      "actualWinRate": 0.32142857142857145,
+      "targetWinRate": 0.72
+    },
+    "51": {
+      "actualWinRate": 0.215633423180593,
+      "targetWinRate": 0.5
+    },
+    "52": {
+      "actualWinRate": 0.21779141104294478,
+      "targetWinRate": 0.5
+    },
+    "53": {
+      "actualWinRate": 0.371875,
+      "targetWinRate": 0.5
+    },
+    "54": {
+      "actualWinRate": 0.2664835164835165,
+      "targetWinRate": 0.5
+    },
+    "55": {
+      "actualWinRate": 0.1791044776119403,
+      "targetWinRate": 0.5
+    },
+    "56": {
+      "actualWinRate": 0.22437673130193905,
+      "targetWinRate": 0.5
+    },
+    "57": {
+      "actualWinRate": 0.31466666666666665,
+      "targetWinRate": 0.5
+    },
+    "58": {
+      "actualWinRate": 0.330749354005168,
+      "targetWinRate": 0.5
+    },
+    "59": {
+      "actualWinRate": 0.22193211488250653,
+      "targetWinRate": 0.5
+    },
+    "60": {
+      "actualWinRate": 0.1486146095717884,
+      "targetWinRate": 0.5
+    },
+    "61": {
+      "actualWinRate": 0.11793611793611794,
+      "targetWinRate": 0.5
+    },
+    "62": {
+      "actualWinRate": 0.09026128266033254,
+      "targetWinRate": 0.5
+    },
+    "63": {
+      "actualWinRate": 0.20915032679738563,
+      "targetWinRate": 0.5
+    },
+    "64": {
+      "actualWinRate": 0.09318181818181819,
+      "targetWinRate": 0.5
+    },
+    "65": {
+      "actualWinRate": 0.22429906542056074,
+      "targetWinRate": 0.5
+    },
+    "66": {
+      "actualWinRate": 0.13488372093023257,
+      "targetWinRate": 0.5
+    },
+    "67": {
+      "actualWinRate": 0.2074235807860262,
+      "targetWinRate": 0.5
+    },
+    "68": {
+      "actualWinRate": 0.11084905660377359,
+      "targetWinRate": 0.5
+    },
+    "69": {
+      "actualWinRate": 0.11032863849765258,
+      "targetWinRate": 0.5
+    },
+    "70": {
+      "actualWinRate": 0.0811965811965812,
+      "targetWinRate": 0.5
+    },
+    "71": {
+      "actualWinRate": 0.10669456066945607,
+      "targetWinRate": 0.5
+    },
+    "72": {
+      "actualWinRate": 0.07407407407407407,
+      "targetWinRate": 0.5
+    },
+    "73": {
+      "actualWinRate": 0.13865546218487396,
+      "targetWinRate": 0.5
+    },
+    "74": {
+      "actualWinRate": 0.1948608137044968,
+      "targetWinRate": 0.5
+    },
+    "75": {
+      "actualWinRate": 0.15040650406504066,
+      "targetWinRate": 0.5
+    },
+    "76": {
+      "actualWinRate": 0.13692946058091288,
+      "targetWinRate": 0.5
+    },
+    "77": {
+      "actualWinRate": 0.08108108108108109,
+      "targetWinRate": 0.5
+    },
+    "78": {
+      "actualWinRate": 0.15487571701720843,
+      "targetWinRate": 0.5
+    },
+    "79": {
+      "actualWinRate": 0.1579925650557621,
+      "targetWinRate": 0.5
+    },
+    "80": {
+      "actualWinRate": 0.10246679316888045,
+      "targetWinRate": 0.5
+    },
+    "81": {
+      "actualWinRate": 0.17958412098298676,
+      "targetWinRate": 0.5
+    },
+    "82": {
+      "actualWinRate": 0.3092369477911647,
+      "targetWinRate": 0.5
+    },
+    "83": {
+      "actualWinRate": 0.10760667903525047,
+      "targetWinRate": 0.5
+    },
+    "84": {
+      "actualWinRate": 0.07547169811320754,
+      "targetWinRate": 0.5
+    },
+    "85": {
+      "actualWinRate": 0.19636363636363635,
+      "targetWinRate": 0.5
+    },
+    "86": {
+      "actualWinRate": 0.1996370235934664,
+      "targetWinRate": 0.5
+    },
+    "87": {
+      "actualWinRate": 0.11030741410488246,
+      "targetWinRate": 0.5
+    },
+    "88": {
+      "actualWinRate": 0.1925925925925926,
+      "targetWinRate": 0.5
+    },
+    "89": {
+      "actualWinRate": 0.16399286987522282,
+      "targetWinRate": 0.5
+    },
+    "90": {
+      "actualWinRate": 0.16518650088809947,
+      "targetWinRate": 0.5
+    },
+    "91": {
+      "actualWinRate": 0.2072072072072072,
+      "targetWinRate": 0.5
+    },
+    "92": {
+      "actualWinRate": 0.1494661921708185,
+      "targetWinRate": 0.5
+    },
+    "93": {
+      "actualWinRate": 0.19400352733686066,
+      "targetWinRate": 0.5
+    },
+    "94": {
+      "actualWinRate": 0.12299465240641712,
+      "targetWinRate": 0.5
+    },
+    "95": {
+      "actualWinRate": 0.2760416666666667,
+      "targetWinRate": 0.5
+    },
+    "96": {
+      "actualWinRate": 0.26573426573426573,
+      "targetWinRate": 0.5
+    },
+    "97": {
+      "actualWinRate": 0.13322091062394603,
+      "targetWinRate": 0.5
+    },
+    "98": {
+      "actualWinRate": 0.21760797342192692,
+      "targetWinRate": 0.5
+    },
+    "99": {
+      "actualWinRate": 0.2702702702702703,
+      "targetWinRate": 0.5
+    },
+    "100": {
+      "actualWinRate": 0.30016863406408095,
+      "targetWinRate": 0.5
+    },
+    "101": {
+      "actualWinRate": 0.24666666666666667,
+      "targetWinRate": 0.32
+    },
+    "102": {
+      "actualWinRate": 0.16753022452504318,
+      "targetWinRate": 0.32
+    },
+    "103": {
+      "actualWinRate": 0.21525423728813559,
+      "targetWinRate": 0.32
+    },
+    "104": {
+      "actualWinRate": 0.24686940966010734,
+      "targetWinRate": 0.32
+    },
+    "105": {
+      "actualWinRate": 0.194675540765391,
+      "targetWinRate": 0.32
+    },
+    "106": {
+      "actualWinRate": 0.3808724832214765,
+      "targetWinRate": 0.32
+    },
+    "107": {
+      "actualWinRate": 0.24428822495606328,
+      "targetWinRate": 0.32
+    },
+    "108": {
+      "actualWinRate": 0.22473867595818817,
+      "targetWinRate": 0.32
+    },
+    "109": {
+      "actualWinRate": 0.24013722126929674,
+      "targetWinRate": 0.32
+    },
+    "110": {
+      "actualWinRate": 0.3356521739130435,
+      "targetWinRate": 0.32
+    },
+    "111": {
+      "actualWinRate": 0.32538330494037476,
+      "targetWinRate": 0.32
+    },
+    "112": {
+      "actualWinRate": 0.3818493150684932,
+      "targetWinRate": 0.32
+    },
+    "113": {
+      "actualWinRate": 0.3339222614840989,
+      "targetWinRate": 0.32
+    },
+    "114": {
+      "actualWinRate": 0.33276740237691,
+      "targetWinRate": 0.32
+    },
+    "115": {
+      "actualWinRate": 0.32006920415224915,
+      "targetWinRate": 0.32
+    },
+    "116": {
+      "actualWinRate": 0.32825719120135366,
+      "targetWinRate": 0.32
+    },
+    "117": {
+      "actualWinRate": 0.3858407079646018,
+      "targetWinRate": 0.32
+    },
+    "118": {
+      "actualWinRate": 0.24869565217391304,
+      "targetWinRate": 0.32
+    },
+    "119": {
+      "actualWinRate": 0.29743589743589743,
+      "targetWinRate": 0.32
+    },
+    "120": {
+      "actualWinRate": 0.38687392055267705,
+      "targetWinRate": 0.32
+    },
+    "121": {
+      "actualWinRate": 0.3071786310517529,
+      "targetWinRate": 0.32
+    },
+    "122": {
+      "actualWinRate": 0.3456140350877193,
+      "targetWinRate": 0.32
+    },
+    "123": {
+      "actualWinRate": 0.26352530541012215,
+      "targetWinRate": 0.32
+    },
+    "124": {
+      "actualWinRate": 0.28350515463917525,
+      "targetWinRate": 0.32
+    },
+    "125": {
+      "actualWinRate": 0.45723684210526316,
+      "targetWinRate": 0.32
+    },
+    "126": {
+      "actualWinRate": 0.38235294117647056,
+      "targetWinRate": 0.32
+    },
+    "127": {
+      "actualWinRate": 0.3143350604490501,
+      "targetWinRate": 0.32
+    },
+    "128": {
+      "actualWinRate": 0.33217993079584773,
+      "targetWinRate": 0.32
+    },
+    "129": {
+      "actualWinRate": 0.3083475298126065,
+      "targetWinRate": 0.32
+    },
+    "130": {
+      "actualWinRate": 0.31669535283993117,
+      "targetWinRate": 0.32
+    },
+    "131": {
+      "actualWinRate": 0.37630662020905925,
+      "targetWinRate": 0.32
+    },
+    "132": {
+      "actualWinRate": 0.3904923599320883,
+      "targetWinRate": 0.32
+    },
+    "133": {
+      "actualWinRate": 0.42807625649913345,
+      "targetWinRate": 0.32
+    },
+    "134": {
+      "actualWinRate": 0.30220713073005095,
+      "targetWinRate": 0.32
+    },
+    "135": {
+      "actualWinRate": 0.3969594594594595,
+      "targetWinRate": 0.32
+    },
+    "136": {
+      "actualWinRate": 0.4196277495769882,
+      "targetWinRate": 0.32
+    },
+    "137": {
+      "actualWinRate": 0.3679727427597956,
+      "targetWinRate": 0.32
+    },
+    "138": {
+      "actualWinRate": 0.38372093023255816,
+      "targetWinRate": 0.32
+    },
+    "139": {
+      "actualWinRate": 0.4745762711864407,
+      "targetWinRate": 0.32
+    },
+    "140": {
+      "actualWinRate": 0.3445378151260504,
+      "targetWinRate": 0.32
+    },
+    "141": {
+      "actualWinRate": 0.5070422535211268,
+      "targetWinRate": 0.32
+    },
+    "142": {
+      "actualWinRate": 0.4501779359430605,
+      "targetWinRate": 0.32
+    },
+    "143": {
+      "actualWinRate": 0.3674911660777385,
+      "targetWinRate": 0.32
+    },
+    "144": {
+      "actualWinRate": 0.5026548672566372,
+      "targetWinRate": 0.32
+    },
+    "145": {
+      "actualWinRate": 0.5187165775401069,
+      "targetWinRate": 0.32
+    },
+    "146": {
+      "actualWinRate": 0.3080895008605852,
+      "targetWinRate": 0.32
+    },
+    "147": {
+      "actualWinRate": 0.4899328859060403,
+      "targetWinRate": 0.32
+    },
+    "148": {
+      "actualWinRate": 0.5072992700729927,
+      "targetWinRate": 0.32
+    },
+    "149": {
+      "actualWinRate": 0.42907801418439717,
+      "targetWinRate": 0.32
+    },
+    "150": {
+      "actualWinRate": 0.4226086956521739,
+      "targetWinRate": 0.32
+    },
+    "151": {
+      "actualWinRate": 0.5147313691507799,
+      "targetWinRate": 0.2
+    },
+    "152": {
+      "actualWinRate": 0.4427350427350427,
+      "targetWinRate": 0.2
+    },
+    "153": {
+      "actualWinRate": 0.4676258992805755,
+      "targetWinRate": 0.2
+    },
+    "154": {
+      "actualWinRate": 0.5366666666666666,
+      "targetWinRate": 0.2
+    },
+    "155": {
+      "actualWinRate": 0.436426116838488,
+      "targetWinRate": 0.2
+    },
+    "156": {
+      "actualWinRate": 0.45422535211267606,
+      "targetWinRate": 0.2
+    },
+    "157": {
+      "actualWinRate": 0.5127768313458262,
+      "targetWinRate": 0.2
+    },
+    "158": {
+      "actualWinRate": 0.5173010380622838,
+      "targetWinRate": 0.2
+    },
+    "159": {
+      "actualWinRate": 0.4421416234887737,
+      "targetWinRate": 0.2
+    },
+    "160": {
+      "actualWinRate": 0.4642857142857143,
+      "targetWinRate": 0.2
+    },
+    "161": {
+      "actualWinRate": 0.40407470288624786,
+      "targetWinRate": 0.2
+    },
+    "162": {
+      "actualWinRate": 0.4853195164075993,
+      "targetWinRate": 0.2
+    },
+    "163": {
+      "actualWinRate": 0.46075085324232085,
+      "targetWinRate": 0.2
+    },
+    "164": {
+      "actualWinRate": 0.5008849557522124,
+      "targetWinRate": 0.2
+    },
+    "165": {
+      "actualWinRate": 0.4703770197486535,
+      "targetWinRate": 0.2
+    },
+    "166": {
+      "actualWinRate": 0.4629948364888124,
+      "targetWinRate": 0.2
+    },
+    "167": {
+      "actualWinRate": 0.5017064846416383,
+      "targetWinRate": 0.2
+    },
+    "168": {
+      "actualWinRate": 0.40425531914893614,
+      "targetWinRate": 0.2
+    },
+    "169": {
+      "actualWinRate": 0.47818791946308725,
+      "targetWinRate": 0.2
+    },
+    "170": {
+      "actualWinRate": 0.484375,
+      "targetWinRate": 0.2
+    },
+    "171": {
+      "actualWinRate": 0.45896147403685095,
+      "targetWinRate": 0.2
+    },
+    "172": {
+      "actualWinRate": 0.5658362989323843,
+      "targetWinRate": 0.2
+    },
+    "173": {
+      "actualWinRate": 0.6185567010309279,
+      "targetWinRate": 0.2
+    },
+    "174": {
+      "actualWinRate": 0.5244755244755245,
+      "targetWinRate": 0.2
+    },
+    "175": {
+      "actualWinRate": 0.48976109215017066,
+      "targetWinRate": 0.2
+    },
+    "176": {
+      "actualWinRate": 0.5574324324324325,
+      "targetWinRate": 0.2
+    },
+    "177": {
+      "actualWinRate": 0.5883361921097771,
+      "targetWinRate": 0.2
+    },
+    "178": {
+      "actualWinRate": 0.5420240137221269,
+      "targetWinRate": 0.2
+    },
+    "179": {
+      "actualWinRate": 0.5746924428822495,
+      "targetWinRate": 0.2
+    },
+    "180": {
+      "actualWinRate": 0.4217687074829932,
+      "targetWinRate": 0.2
+    },
+    "181": {
+      "actualWinRate": 0.6770833333333334,
+      "targetWinRate": 0.2
+    },
+    "182": {
+      "actualWinRate": 0.5992970123022847,
+      "targetWinRate": 0.2
+    },
+    "183": {
+      "actualWinRate": 0.5897858319604613,
+      "targetWinRate": 0.2
+    },
+    "184": {
+      "actualWinRate": 0.5496575342465754,
+      "targetWinRate": 0.2
+    },
+    "185": {
+      "actualWinRate": 0.5152542372881356,
+      "targetWinRate": 0.2
+    },
+    "186": {
+      "actualWinRate": 0.6228373702422145,
+      "targetWinRate": 0.2
+    },
+    "187": {
+      "actualWinRate": 0.58147512864494,
+      "targetWinRate": 0.2
+    },
+    "188": {
+      "actualWinRate": 0.5092436974789916,
+      "targetWinRate": 0.2
+    },
+    "189": {
+      "actualWinRate": 0.5257903494176372,
+      "targetWinRate": 0.2
+    },
+    "190": {
+      "actualWinRate": 0.3993115318416523,
+      "targetWinRate": 0.2
+    },
+    "191": {
+      "actualWinRate": 0.7201365187713311,
+      "targetWinRate": 0.2
+    },
+    "192": {
+      "actualWinRate": 0.5043478260869565,
+      "targetWinRate": 0.2
+    },
+    "193": {
+      "actualWinRate": 0.5614334470989761,
+      "targetWinRate": 0.2
+    },
+    "194": {
+      "actualWinRate": 0.646551724137931,
+      "targetWinRate": 0.2
+    },
+    "195": {
+      "actualWinRate": 0.581787521079258,
+      "targetWinRate": 0.2
+    },
+    "196": {
+      "actualWinRate": 0.6337308347529813,
+      "targetWinRate": 0.2
+    },
+    "197": {
+      "actualWinRate": 0.5360824742268041,
+      "targetWinRate": 0.2
+    },
+    "198": {
+      "actualWinRate": 0.5069204152249135,
+      "targetWinRate": 0.2
+    },
+    "199": {
+      "actualWinRate": 0.65,
+      "targetWinRate": 0.2
+    },
+    "200": {
+      "actualWinRate": 0.5765124555160143,
+      "targetWinRate": 0.2
+    }
+  },
+  "rateAdjustments": [
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 0,
+      "tierIndex": 1,
+      "field": "weight",
+      "maxDepth": 9,
+      "old": 12,
+      "new": 11
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 0,
+      "tierIndex": 2,
+      "field": "maxDepth",
+      "old": 16,
+      "new": 15,
+      "weight": 6
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 1,
+      "tierIndex": 1,
+      "field": "weight",
+      "maxDepth": 9,
+      "old": 12,
+      "new": 11
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 1,
+      "tierIndex": 2,
+      "field": "maxDepth",
+      "old": 16,
+      "new": 15,
+      "weight": 6
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 4,
+      "tierIndex": 1,
+      "field": "weight",
+      "maxDepth": 10,
+      "old": 12,
+      "new": 11
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 4,
+      "tierIndex": 2,
+      "field": "maxDepth",
+      "old": 18,
+      "new": 17,
+      "weight": 6
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 7,
+      "tierIndex": 1,
+      "field": "weight",
+      "maxDepth": 9,
+      "old": 12,
+      "new": 11
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 7,
+      "tierIndex": 2,
+      "field": "maxDepth",
+      "old": 16,
+      "new": 15,
+      "weight": 6
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 8,
+      "tierIndex": 1,
+      "field": "weight",
+      "maxDepth": 10,
+      "old": 12,
+      "new": 11
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 8,
+      "tierIndex": 2,
+      "field": "maxDepth",
+      "old": 18,
+      "new": 17,
+      "weight": 6
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 3,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 4,
+      "new": 3,
+      "weight": 0
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 3,
+      "tierIndex": 1,
+      "field": "weight",
+      "maxDepth": 10,
+      "old": 10,
+      "new": 9
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 3,
+      "tierIndex": 2,
+      "field": "maxDepth",
+      "old": 18,
+      "new": 17,
+      "weight": 8
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 5,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 5,
+      "new": 4,
+      "weight": 0
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 5,
+      "tierIndex": 2,
+      "field": "maxDepth",
+      "old": 18,
+      "new": 17,
+      "weight": 8
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 25,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 3,
+      "new": 2,
+      "weight": 0
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 25,
+      "tierIndex": 2,
+      "field": "maxDepth",
+      "old": 16,
+      "new": 15,
+      "weight": 10
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 9,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 5,
+      "new": 4,
+      "weight": 0
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 9,
+      "tierIndex": 2,
+      "field": "maxDepth",
+      "old": 16,
+      "new": 15,
+      "weight": 8
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 10,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 7,
+      "new": 6,
+      "weight": 0
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 10,
+      "tierIndex": 2,
+      "field": "maxDepth",
+      "old": 18,
+      "new": 17,
+      "weight": 7
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 6,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 7,
+      "new": 6,
+      "weight": 0
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 6,
+      "tierIndex": 2,
+      "field": "maxDepth",
+      "old": 18,
+      "new": 17,
+      "weight": 6
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 11,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 11,
+      "new": 10,
+      "weight": 0
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 11,
+      "tierIndex": 2,
+      "field": "weight",
+      "maxDepth": 22,
+      "old": 6,
+      "new": 5
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 11,
+      "tierIndex": 2,
+      "field": "maxDepth",
+      "old": 22,
+      "new": 21,
+      "weight": 6
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 12,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 4,
+      "new": 3,
+      "weight": 0
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 12,
+      "tierIndex": 2,
+      "field": "maxDepth",
+      "old": 16,
+      "new": 15,
+      "weight": 7
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 13,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 4,
+      "new": 3,
+      "weight": 0
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 13,
+      "tierIndex": 2,
+      "field": "maxDepth",
+      "old": 16,
+      "new": 15,
+      "weight": 7
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 14,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 4,
+      "new": 3,
+      "weight": 0
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 14,
+      "tierIndex": 2,
+      "field": "maxDepth",
+      "old": 16,
+      "new": 15,
+      "weight": 7
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 15,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 4,
+      "new": 3,
+      "weight": 0
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 15,
+      "tierIndex": 2,
+      "field": "maxDepth",
+      "old": 16,
+      "new": 15,
+      "weight": 7
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 16,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 4,
+      "new": 3,
+      "weight": 0
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 16,
+      "tierIndex": 2,
+      "field": "maxDepth",
+      "old": 16,
+      "new": 15,
+      "weight": 7
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 30,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 4,
+      "new": 3,
+      "weight": 0
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 30,
+      "tierIndex": 2,
+      "field": "maxDepth",
+      "old": 16,
+      "new": 15,
+      "weight": 7
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 17,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 4,
+      "new": 3,
+      "weight": 0
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 17,
+      "tierIndex": 2,
+      "field": "maxDepth",
+      "old": 16,
+      "new": 15,
+      "weight": 7
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 18,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 11,
+      "new": 10,
+      "weight": 0
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 18,
+      "tierIndex": 2,
+      "field": "weight",
+      "maxDepth": 22,
+      "old": 7,
+      "new": 6
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 18,
+      "tierIndex": 2,
+      "field": "maxDepth",
+      "old": 22,
+      "new": 21,
+      "weight": 7
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 19,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 11,
+      "new": 10,
+      "weight": 0
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 19,
+      "tierIndex": 2,
+      "field": "weight",
+      "maxDepth": 22,
+      "old": 7,
+      "new": 6
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 19,
+      "tierIndex": 2,
+      "field": "maxDepth",
+      "old": 22,
+      "new": 21,
+      "weight": 7
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 20,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 11,
+      "new": 10,
+      "weight": 0
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 20,
+      "tierIndex": 2,
+      "field": "weight",
+      "maxDepth": 22,
+      "old": 7,
+      "new": 6
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 20,
+      "tierIndex": 2,
+      "field": "maxDepth",
+      "old": 22,
+      "new": 21,
+      "weight": 7
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 21,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 11,
+      "new": 10,
+      "weight": 0
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 21,
+      "tierIndex": 2,
+      "field": "weight",
+      "maxDepth": 22,
+      "old": 7,
+      "new": 6
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 21,
+      "tierIndex": 2,
+      "field": "maxDepth",
+      "old": 22,
+      "new": 21,
+      "weight": 7
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 22,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 11,
+      "new": 10,
+      "weight": 0
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 22,
+      "tierIndex": 2,
+      "field": "weight",
+      "maxDepth": 22,
+      "old": 7,
+      "new": 6
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 22,
+      "tierIndex": 2,
+      "field": "maxDepth",
+      "old": 22,
+      "new": 21,
+      "weight": 7
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 23,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 11,
+      "new": 10,
+      "weight": 0
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 23,
+      "tierIndex": 2,
+      "field": "weight",
+      "maxDepth": 22,
+      "old": 7,
+      "new": 6
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 23,
+      "tierIndex": 2,
+      "field": "maxDepth",
+      "old": 22,
+      "new": 21,
+      "weight": 7
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 24,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 11,
+      "new": 10,
+      "weight": 0
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 24,
+      "tierIndex": 2,
+      "field": "weight",
+      "maxDepth": 22,
+      "old": 7,
+      "new": 6
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 24,
+      "tierIndex": 2,
+      "field": "maxDepth",
+      "old": 22,
+      "new": 21,
+      "weight": 7
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 26,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 6,
+      "new": 5,
+      "weight": 0
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 26,
+      "tierIndex": 2,
+      "field": "maxDepth",
+      "old": 18,
+      "new": 17,
+      "weight": 7
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 2,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 9,
+      "new": 8,
+      "weight": 0
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 2,
+      "tierIndex": 2,
+      "field": "weight",
+      "maxDepth": 20,
+      "old": 6,
+      "new": 5
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 2,
+      "tierIndex": 2,
+      "field": "maxDepth",
+      "old": 20,
+      "new": 19,
+      "weight": 6
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 27,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 13,
+      "new": 12,
+      "weight": 0
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 27,
+      "tierIndex": 2,
+      "field": "weight",
+      "maxDepth": 24,
+      "old": 7,
+      "new": 6
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 27,
+      "tierIndex": 2,
+      "field": "maxDepth",
+      "old": 24,
+      "new": 23,
+      "weight": 7
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 33,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 7,
+      "new": 6,
+      "weight": 0
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 33,
+      "tierIndex": 2,
+      "field": "weight",
+      "maxDepth": 20,
+      "old": 7,
+      "new": 6
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 33,
+      "tierIndex": 2,
+      "field": "maxDepth",
+      "old": 20,
+      "new": 19,
+      "weight": 7
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 32,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 5,
+      "new": 4,
+      "weight": 0
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 32,
+      "tierIndex": 2,
+      "field": "maxDepth",
+      "old": 18,
+      "new": 17,
+      "weight": 7
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 31,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 9,
+      "new": 8,
+      "weight": 0
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 31,
+      "tierIndex": 2,
+      "field": "weight",
+      "maxDepth": 22,
+      "old": 7,
+      "new": 6
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 31,
+      "tierIndex": 2,
+      "field": "maxDepth",
+      "old": 22,
+      "new": 21,
+      "weight": 7
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 34,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 11,
+      "new": 10,
+      "weight": 0
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 34,
+      "tierIndex": 2,
+      "field": "weight",
+      "maxDepth": 24,
+      "old": 7,
+      "new": 6
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 34,
+      "tierIndex": 2,
+      "field": "maxDepth",
+      "old": 24,
+      "new": 23,
+      "weight": 7
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 28,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 15,
+      "new": 14,
+      "weight": 0
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 28,
+      "tierIndex": 2,
+      "field": "weight",
+      "maxDepth": 26,
+      "old": 6,
+      "new": 5
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 28,
+      "tierIndex": 2,
+      "field": "maxDepth",
+      "old": 26,
+      "new": 25,
+      "weight": 6
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 29,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 17,
+      "new": 16,
+      "weight": 0
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 29,
+      "tierIndex": 1,
+      "field": "maxDepth",
+      "old": 22,
+      "new": 21,
+      "weight": 3
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 35,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 19,
+      "new": 18,
+      "weight": 0
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 35,
+      "tierIndex": 1,
+      "field": "maxDepth",
+      "old": 24,
+      "new": 23,
+      "weight": 4
+    },
+    {
+      "table": "item-consumable",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\ItemSpecificValues.mc",
+      "itemId": 2000,
+      "tierIndex": 2,
+      "field": "maxDepth",
+      "old": 30,
+      "new": 31,
+      "weight": 4
+    },
+    {
+      "table": "item-consumable",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\ItemSpecificValues.mc",
+      "itemId": 2001,
+      "tierIndex": 2,
+      "field": "weight",
+      "maxDepth": 30,
+      "old": 6,
+      "new": 7
+    },
+    {
+      "table": "item-consumable",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\ItemSpecificValues.mc",
+      "itemId": 2001,
+      "tierIndex": 2,
+      "field": "maxDepth",
+      "old": 30,
+      "new": 31,
+      "weight": 6
+    },
+    {
+      "table": "item-consumable",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\ItemSpecificValues.mc",
+      "itemId": 2002,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 9,
+      "new": 10,
+      "weight": 0
+    },
+    {
+      "table": "item-consumable",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\ItemSpecificValues.mc",
+      "itemId": 2002,
+      "tierIndex": 2,
+      "field": "weight",
+      "maxDepth": 30,
+      "old": 7,
+      "new": 8
+    },
+    {
+      "table": "item-consumable",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\ItemSpecificValues.mc",
+      "itemId": 2002,
+      "tierIndex": 2,
+      "field": "maxDepth",
+      "old": 30,
+      "new": 31,
+      "weight": 7
+    },
+    {
+      "table": "item-consumable",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\ItemSpecificValues.mc",
+      "itemId": 2003,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 9,
+      "new": 10,
+      "weight": 0
+    },
+    {
+      "table": "item-consumable",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\ItemSpecificValues.mc",
+      "itemId": 2003,
+      "tierIndex": 2,
+      "field": "weight",
+      "maxDepth": 30,
+      "old": 6,
+      "new": 7
+    },
+    {
+      "table": "item-consumable",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\ItemSpecificValues.mc",
+      "itemId": 2003,
+      "tierIndex": 2,
+      "field": "maxDepth",
+      "old": 30,
+      "new": 31,
+      "weight": 6
+    },
+    {
+      "table": "item-consumable",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\ItemSpecificValues.mc",
+      "itemId": 2004,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 39,
+      "new": 40,
+      "weight": 0
+    },
+    {
+      "table": "item-consumable",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\ItemSpecificValues.mc",
+      "itemId": 2004,
+      "tierIndex": 1,
+      "field": "weight",
+      "maxDepth": 60,
+      "old": 5,
+      "new": 6
+    },
+    {
+      "table": "item-consumable",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\ItemSpecificValues.mc",
+      "itemId": 2004,
+      "tierIndex": 1,
+      "field": "maxDepth",
+      "old": 60,
+      "new": 61,
+      "weight": 5
+    },
+    {
+      "table": "item-consumable",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\ItemSpecificValues.mc",
+      "itemId": 2005,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 39,
+      "new": 40,
+      "weight": 0
+    },
+    {
+      "table": "item-consumable",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\ItemSpecificValues.mc",
+      "itemId": 2005,
+      "tierIndex": 1,
+      "field": "weight",
+      "maxDepth": 60,
+      "old": 5,
+      "new": 6
+    },
+    {
+      "table": "item-consumable",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\ItemSpecificValues.mc",
+      "itemId": 2005,
+      "tierIndex": 1,
+      "field": "maxDepth",
+      "old": 60,
+      "new": 61,
+      "weight": 5
+    },
+    {
+      "table": "item-consumable",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\ItemSpecificValues.mc",
+      "itemId": 3000,
+      "tierIndex": 1,
+      "field": "weight",
+      "maxDepth": 20,
+      "old": 6,
+      "new": 7
+    },
+    {
+      "table": "item-consumable",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\ItemSpecificValues.mc",
+      "itemId": 3000,
+      "tierIndex": 1,
+      "field": "maxDepth",
+      "old": 20,
+      "new": 21,
+      "weight": 6
+    }
+  ]
+}

@@ -8,6 +8,7 @@
   },
   "maxAdjustmentPercentPerRun": 12,
   "tolerance": 0.05,
+  "initialAttributePoints": 5,
   "roomsPerDepthForProgression": 4,
   "variation": {
     "enemyCountMultiplier": 1.0,

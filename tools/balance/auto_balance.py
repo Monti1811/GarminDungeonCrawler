@@ -57,6 +57,7 @@ class PlayerClass:
     id: int
     class_name: str
     file: Path
+    current_health: int
     max_health: int
     max_mana: int
     current_mana: int
@@ -238,7 +239,8 @@ def parse_player_classes(workspace: Path) -> Dict[int, PlayerClass]:
         player_id = parse_number_assignment(body, "id", -1)
         if player_id < 0 or player_id == 999:
             continue
-        max_health = parse_number_assignment(body, "maxHealth", parse_number_assignment(body, "current_health", 30))
+        current_health = parse_number_assignment(body, "current_health", 30)
+        max_health = parse_number_assignment(body, "maxHealth", current_health)
         max_mana = parse_number_assignment(body, "maxMana", 0)
         current_mana = parse_number_assignment(body, "current_mana", max_mana)
         attributes = parse_attributes_dict(body)
@@ -254,6 +256,7 @@ def parse_player_classes(workspace: Path) -> Dict[int, PlayerClass]:
             id=player_id,
             class_name=class_name,
             file=file,
+            current_health=current_health,
             max_health=max_health,
             max_mana=max_mana,
             current_mana=current_mana,
@@ -430,6 +433,7 @@ def projected_player_for_depth(
     enemy_count_multiplier: float,
     enemy_budget_scale_by_depth: List[Dict[str, float]],
     rooms_per_depth_for_progression: int,
+    initial_attribute_points: int,
 ) -> Tuple[int, int, int, Dict[str, int]]:
     cumulative_experience = 0.0
     for explored_depth in range(1, depth):
@@ -461,7 +465,7 @@ def projected_player_for_depth(
 
     max_health = player.max_health + levels_gained * player.level_health_gain
     max_mana = player.max_mana + levels_gained * player.level_mana_gain
-    attributes = distribute_attribute_points(player.attributes, levels_gained * 3)
+    attributes = distribute_attribute_points(player.attributes, max(0, initial_attribute_points) + levels_gained * 3)
     return level, max_health, max_mana, attributes
 
 
@@ -812,6 +816,7 @@ def simulate(
     enemy_budget_scale_by_depth: List[Dict[str, float]],
     item_drop_scale_by_depth: List[Dict[str, float]],
     rooms_per_depth_for_progression: int,
+    initial_attribute_points: int,
 ) -> Tuple[List[EncounterOutcome], Dict[int, float], Dict[int, float], Dict[int, float], Dict[int, float]]:
     outcomes: List[EncounterOutcome] = []
 
@@ -833,11 +838,13 @@ def simulate(
                 enemy_count_multiplier=enemy_count_multiplier,
                 enemy_budget_scale_by_depth=enemy_budget_scale_by_depth,
                 rooms_per_depth_for_progression=rooms_per_depth_for_progression,
+                initial_attribute_points=initial_attribute_points,
             )
             progressed_player = PlayerClass(
                 id=player.id,
                 class_name=player.class_name,
                 file=player.file,
+                current_health=progressed_health,
                 max_health=progressed_health,
                 max_mana=progressed_mana,
                 current_mana=progressed_mana,
@@ -1142,6 +1149,35 @@ def tune(
                 "old": player.max_health,
                 "new": new_hp,
             })
+            adjustments["players"].append({
+                "classId": class_id,
+                "className": player.class_name,
+                "file": str(player.file),
+                "field": "current_health",
+                "old": player.current_health,
+                "new": new_hp,
+            })
+
+        if player.max_mana > 0:
+            mana_factor = clamp(1.0 + delta * 0.20, 1 - max_adj, 1 + max_adj)
+            new_max_mana = bounded_int(player.max_mana * mana_factor, 1)
+            if new_max_mana != player.max_mana:
+                adjustments["players"].append({
+                    "classId": class_id,
+                    "className": player.class_name,
+                    "file": str(player.file),
+                    "field": "maxMana",
+                    "old": player.max_mana,
+                    "new": new_max_mana,
+                })
+                adjustments["players"].append({
+                    "classId": class_id,
+                    "className": player.class_name,
+                    "file": str(player.file),
+                    "field": "current_mana",
+                    "old": player.current_mana,
+                    "new": new_max_mana,
+                })
 
         for att, old in player.attributes.items():
             if att == "luck":
@@ -1399,6 +1435,7 @@ def main() -> None:
     enemy_budget_scale_by_depth = variation.get("enemyBudgetScaleByDepth", []) if isinstance(variation.get("enemyBudgetScaleByDepth", []), list) else []
     item_drop_scale_by_depth = variation.get("itemDropScaleByDepth", []) if isinstance(variation.get("itemDropScaleByDepth", []), list) else []
     rooms_per_depth_for_progression = int(config.get("roomsPerDepthForProgression", 4))
+    initial_attribute_points = int(config.get("initialAttributePoints", 5))
     depths = resolve_depths(config)
 
     players = parse_player_classes(workspace)
@@ -1425,6 +1462,7 @@ def main() -> None:
         enemy_budget_scale_by_depth=enemy_budget_scale_by_depth,
         item_drop_scale_by_depth=item_drop_scale_by_depth,
         rooms_per_depth_for_progression=rooms_per_depth_for_progression,
+        initial_attribute_points=initial_attribute_points,
     )
 
     adjustments = tune(

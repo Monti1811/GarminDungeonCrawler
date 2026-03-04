@@ -9,6 +9,7 @@
     },
     "maxAdjustmentPercentPerRun": 12,
     "tolerance": 0.05,
+    "initialAttributePoints": 5,
     "roomsPerDepthForProgression": 4,
     "variation": {
       "enemyCountMultiplier": 1.0,
@@ -84,733 +85,733 @@
   },
   "classResults": {
     "2": {
-      "actualWinRate": 0.3420164874078805,
+      "actualWinRate": 0.34786610983161154,
       "targetWinRate": 0.38486300038583166
     },
     "1": {
-      "actualWinRate": 0.44048177976813896,
+      "actualWinRate": 0.4477843186825093,
       "targetWinRate": 0.38560394019869193
     },
     "3": {
-      "actualWinRate": 0.2046498011410292,
+      "actualWinRate": 0.21232211583088775,
       "targetWinRate": 0.3839571864191957
     },
     "4": {
-      "actualWinRate": 0.4617941433489119,
+      "actualWinRate": 0.4698588021354806,
       "targetWinRate": 0.3834638762074428
     },
     "0": {
-      "actualWinRate": 0.3781137407276581,
+      "actualWinRate": 0.3830483927940657,
       "targetWinRate": 0.383148993294478
     }
   },
   "depthResults": {
     "1": {
-      "actualWinRate": 0.8394160583941606,
+      "actualWinRate": 0.9040667361835245,
       "targetWinRate": 1.0
     },
     "2": {
-      "actualWinRate": 0.8822695035460993,
+      "actualWinRate": 0.9092198581560283,
       "targetWinRate": 0.95
     },
     "3": {
-      "actualWinRate": 0.9268909688843916,
+      "actualWinRate": 0.957500632431065,
       "targetWinRate": 0.95
     },
     "4": {
-      "actualWinRate": 0.9523809523809523,
+      "actualWinRate": 0.967687074829932,
       "targetWinRate": 0.95
     },
     "5": {
-      "actualWinRate": 0.9049157627509808,
+      "actualWinRate": 0.9383798753750289,
       "targetWinRate": 0.95
     },
     "6": {
-      "actualWinRate": 0.8642034548944337,
+      "actualWinRate": 0.9090690978886756,
       "targetWinRate": 0.95
     },
     "7": {
-      "actualWinRate": 0.8244064053009387,
+      "actualWinRate": 0.8568010307380821,
       "targetWinRate": 0.95
     },
     "8": {
-      "actualWinRate": 0.8102329133256968,
+      "actualWinRate": 0.8505154639175257,
       "targetWinRate": 0.95
     },
     "9": {
-      "actualWinRate": 0.8268135904499541,
+      "actualWinRate": 0.8409550045913682,
       "targetWinRate": 0.95
     },
     "10": {
-      "actualWinRate": 0.8099280310020299,
+      "actualWinRate": 0.8477578889093929,
       "targetWinRate": 0.95
     },
     "11": {
-      "actualWinRate": 0.7917764891934633,
+      "actualWinRate": 0.7952908100509577,
       "targetWinRate": 0.85
     },
     "12": {
-      "actualWinRate": 0.7886784850926672,
+      "actualWinRate": 0.8126510878323933,
       "targetWinRate": 0.85
     },
     "13": {
-      "actualWinRate": 0.8004935459377372,
+      "actualWinRate": 0.8202353834472286,
       "targetWinRate": 0.85
     },
     "14": {
-      "actualWinRate": 0.8142403947832217,
+      "actualWinRate": 0.8424391963341558,
       "targetWinRate": 0.85
     },
     "15": {
-      "actualWinRate": 0.7854105332024861,
+      "actualWinRate": 0.8140333660451423,
       "targetWinRate": 0.85
     },
     "16": {
-      "actualWinRate": 0.8024604569420035,
+      "actualWinRate": 0.8200351493848858,
       "targetWinRate": 0.85
     },
     "17": {
-      "actualWinRate": 0.7972691067703395,
+      "actualWinRate": 0.7982173335861938,
       "targetWinRate": 0.85
     },
     "18": {
-      "actualWinRate": 0.7143530520857884,
+      "actualWinRate": 0.7200094272920103,
       "targetWinRate": 0.85
     },
     "19": {
-      "actualWinRate": 0.6639901173563928,
+      "actualWinRate": 0.6746963145974881,
       "targetWinRate": 0.85
     },
     "20": {
-      "actualWinRate": 0.6414596614640581,
+      "actualWinRate": 0.6509122884150362,
       "targetWinRate": 0.85
     },
     "21": {
-      "actualWinRate": 0.42050130939019825,
+      "actualWinRate": 0.43621399176954734,
       "targetWinRate": 0.85
     },
     "22": {
-      "actualWinRate": 0.417658411064651,
+      "actualWinRate": 0.42312640720488903,
       "targetWinRate": 0.85
     },
     "23": {
-      "actualWinRate": 0.40144727773949,
+      "actualWinRate": 0.40713301171605787,
       "targetWinRate": 0.85
     },
     "24": {
-      "actualWinRate": 0.3843173717650705,
+      "actualWinRate": 0.3995041066170773,
       "targetWinRate": 0.85
     },
     "25": {
-      "actualWinRate": 0.336906095024796,
+      "actualWinRate": 0.3535434330507119,
       "targetWinRate": 0.85
     },
     "26": {
-      "actualWinRate": 0.35358931552587647,
+      "actualWinRate": 0.3631051752921536,
       "targetWinRate": 0.72
     },
     "27": {
-      "actualWinRate": 0.3241585639491399,
+      "actualWinRate": 0.33103964098728494,
       "targetWinRate": 0.72
     },
     "28": {
-      "actualWinRate": 0.33491404860699464,
+      "actualWinRate": 0.34439834024896265,
       "targetWinRate": 0.72
     },
     "29": {
-      "actualWinRate": 0.31716013021237016,
+      "actualWinRate": 0.32708107270190667,
       "targetWinRate": 0.72
     },
     "30": {
-      "actualWinRate": 0.32449512295645005,
+      "actualWinRate": 0.33452397307322435,
       "targetWinRate": 0.72
     },
     "31": {
-      "actualWinRate": 0.3088487972508591,
+      "actualWinRate": 0.31328751431844215,
       "targetWinRate": 0.72
     },
     "32": {
-      "actualWinRate": 0.30646648228631634,
+      "actualWinRate": 0.3147635980508363,
       "targetWinRate": 0.72
     },
     "33": {
-      "actualWinRate": 0.3134057971014493,
+      "actualWinRate": 0.33082497212931994,
       "targetWinRate": 0.72
     },
     "34": {
-      "actualWinRate": 0.26907685939009246,
+      "actualWinRate": 0.2870153166827653,
       "targetWinRate": 0.72
     },
     "35": {
-      "actualWinRate": 0.2565432680971469,
+      "actualWinRate": 0.25937278943645364,
       "targetWinRate": 0.72
     },
     "36": {
-      "actualWinRate": 0.2754329698524695,
+      "actualWinRate": 0.2809493264913406,
       "targetWinRate": 0.72
     },
     "37": {
-      "actualWinRate": 0.2522556868725378,
+      "actualWinRate": 0.25784724869742026,
       "targetWinRate": 0.72
     },
     "38": {
-      "actualWinRate": 0.25011671335200747,
+      "actualWinRate": 0.26552287581699346,
       "targetWinRate": 0.72
     },
     "39": {
-      "actualWinRate": 0.23155917345021917,
+      "actualWinRate": 0.24996869129618035,
       "targetWinRate": 0.72
     },
     "40": {
-      "actualWinRate": 0.2705290290904627,
+      "actualWinRate": 0.28624033386522646,
       "targetWinRate": 0.72
     },
     "41": {
-      "actualWinRate": 0.24688420575572173,
+      "actualWinRate": 0.2581010650351235,
       "targetWinRate": 0.72
     },
     "42": {
-      "actualWinRate": 0.2472862957937585,
+      "actualWinRate": 0.2626639529624604,
       "targetWinRate": 0.72
     },
     "43": {
-      "actualWinRate": 0.27089092068892195,
+      "actualWinRate": 0.2769508824154795,
       "targetWinRate": 0.72
     },
     "44": {
-      "actualWinRate": 0.27504779039694144,
+      "actualWinRate": 0.2828067019003711,
       "targetWinRate": 0.72
     },
     "45": {
-      "actualWinRate": 0.25497062810664256,
+      "actualWinRate": 0.2636692272932671,
       "targetWinRate": 0.72
     },
     "46": {
-      "actualWinRate": 0.23229198886483143,
+      "actualWinRate": 0.23919991751726982,
       "targetWinRate": 0.72
     },
     "47": {
-      "actualWinRate": 0.23303581030218304,
+      "actualWinRate": 0.2503494999462308,
       "targetWinRate": 0.72
     },
     "48": {
-      "actualWinRate": 0.26104152933421226,
+      "actualWinRate": 0.27038013623379475,
       "targetWinRate": 0.72
     },
     "49": {
-      "actualWinRate": 0.21776259607173357,
+      "actualWinRate": 0.23114147452319955,
       "targetWinRate": 0.72
     },
     "50": {
-      "actualWinRate": 0.21644546452449856,
+      "actualWinRate": 0.22861989821375112,
       "targetWinRate": 0.72
     },
     "51": {
-      "actualWinRate": 0.23171764705882353,
+      "actualWinRate": 0.24235294117647058,
       "targetWinRate": 0.5
     },
     "52": {
-      "actualWinRate": 0.21775561097256857,
+      "actualWinRate": 0.22683291770573566,
       "targetWinRate": 0.5
     },
     "53": {
-      "actualWinRate": 0.22892626637981617,
+      "actualWinRate": 0.23635830236651673,
       "targetWinRate": 0.5
     },
     "54": {
-      "actualWinRate": 0.23816962234677938,
+      "actualWinRate": 0.24147753376826242,
       "targetWinRate": 0.5
     },
     "55": {
-      "actualWinRate": 0.2148411250839973,
+      "actualWinRate": 0.2254007871748104,
       "targetWinRate": 0.5
     },
     "56": {
-      "actualWinRate": 0.22697818746007117,
+      "actualWinRate": 0.23190654376197864,
       "targetWinRate": 0.5
     },
     "57": {
-      "actualWinRate": 0.21980572509240953,
+      "actualWinRate": 0.22573712713831343,
       "targetWinRate": 0.5
     },
     "58": {
-      "actualWinRate": 0.2088030059044552,
+      "actualWinRate": 0.2185543030953659,
       "targetWinRate": 0.5
     },
     "59": {
-      "actualWinRate": 0.20129703899650142,
+      "actualWinRate": 0.21358477685809368,
       "targetWinRate": 0.5
     },
     "60": {
-      "actualWinRate": 0.20416772125200372,
+      "actualWinRate": 0.21201383615962205,
       "targetWinRate": 0.5
     },
     "61": {
-      "actualWinRate": 0.14345506770619615,
+      "actualWinRate": 0.14665572425112844,
       "targetWinRate": 0.5
     },
     "62": {
-      "actualWinRate": 0.13330667732906837,
+      "actualWinRate": 0.13842463014794082,
       "targetWinRate": 0.5
     },
     "63": {
-      "actualWinRate": 0.12385832033860548,
+      "actualWinRate": 0.1292789782431128,
       "targetWinRate": 0.5
     },
     "64": {
-      "actualWinRate": 0.12626300995213857,
+      "actualWinRate": 0.13044138874116842,
       "targetWinRate": 0.5
     },
     "65": {
-      "actualWinRate": 0.1370585134422773,
+      "actualWinRate": 0.14157692597334137,
       "targetWinRate": 0.5
     },
     "66": {
-      "actualWinRate": 0.1354482132041187,
+      "actualWinRate": 0.13817383403997577,
       "targetWinRate": 0.5
     },
     "67": {
-      "actualWinRate": 0.1348380477795691,
+      "actualWinRate": 0.13564414480433826,
       "targetWinRate": 0.5
     },
     "68": {
-      "actualWinRate": 0.1343784994400896,
+      "actualWinRate": 0.1364688316536021,
       "targetWinRate": 0.5
     },
     "69": {
-      "actualWinRate": 0.12134264072478836,
+      "actualWinRate": 0.12490717362245655,
       "targetWinRate": 0.5
     },
     "70": {
-      "actualWinRate": 0.12976884704559827,
+      "actualWinRate": 0.138199957844446,
       "targetWinRate": 0.5
     },
     "71": {
-      "actualWinRate": 0.12378048780487805,
+      "actualWinRate": 0.12520325203252033,
       "targetWinRate": 0.5
     },
     "72": {
-      "actualWinRate": 0.11923601637107777,
+      "actualWinRate": 0.12073669849931787,
       "targetWinRate": 0.5
     },
     "73": {
-      "actualWinRate": 0.12323846366399557,
+      "actualWinRate": 0.13760707377728654,
       "targetWinRate": 0.5
     },
     "74": {
-      "actualWinRate": 0.13861727034843685,
+      "actualWinRate": 0.1461919845751274,
       "targetWinRate": 0.5
     },
     "75": {
-      "actualWinRate": 0.12977509231285667,
+      "actualWinRate": 0.1362202081235314,
       "targetWinRate": 0.5
     },
     "76": {
-      "actualWinRate": 0.14240612615033252,
+      "actualWinRate": 0.14610062470611943,
       "targetWinRate": 0.5
     },
     "77": {
-      "actualWinRate": 0.12414681262073406,
+      "actualWinRate": 0.13283966516419832,
       "targetWinRate": 0.5
     },
     "78": {
-      "actualWinRate": 0.12576608784473953,
+      "actualWinRate": 0.13298008171603679,
       "targetWinRate": 0.5
     },
     "79": {
-      "actualWinRate": 0.14241665060705339,
+      "actualWinRate": 0.15096036487441383,
       "targetWinRate": 0.5
     },
     "80": {
-      "actualWinRate": 0.14157739773225583,
+      "actualWinRate": 0.1430808745223329,
       "targetWinRate": 0.5
     },
     "81": {
-      "actualWinRate": 0.1407275275530356,
+      "actualWinRate": 0.1479900617952475,
       "targetWinRate": 0.5
     },
     "82": {
-      "actualWinRate": 0.15637755102040815,
+      "actualWinRate": 0.16198979591836735,
       "targetWinRate": 0.5
     },
     "83": {
-      "actualWinRate": 0.1597580949981101,
+      "actualWinRate": 0.16832556381504346,
       "targetWinRate": 0.5
     },
     "84": {
-      "actualWinRate": 0.1588779468815279,
+      "actualWinRate": 0.1606684571769621,
       "targetWinRate": 0.5
     },
     "85": {
-      "actualWinRate": 0.15576786138143842,
+      "actualWinRate": 0.16360075955376216,
       "targetWinRate": 0.5
     },
     "86": {
-      "actualWinRate": 0.17498788172564228,
+      "actualWinRate": 0.18268298594280175,
       "targetWinRate": 0.5
     },
     "87": {
-      "actualWinRate": 0.1626750742739344,
+      "actualWinRate": 0.1658885587825138,
       "targetWinRate": 0.5
     },
     "88": {
-      "actualWinRate": 0.1853576973605637,
+      "actualWinRate": 0.18935865281261197,
       "targetWinRate": 0.5
     },
     "89": {
-      "actualWinRate": 0.1736214162758948,
+      "actualWinRate": 0.17795453196414793,
       "targetWinRate": 0.5
     },
     "90": {
-      "actualWinRate": 0.1682761087267525,
+      "actualWinRate": 0.17507153075822604,
       "targetWinRate": 0.5
     },
     "91": {
-      "actualWinRate": 0.18752188630792577,
+      "actualWinRate": 0.19487568577098166,
       "targetWinRate": 0.5
     },
     "92": {
-      "actualWinRate": 0.19008409250175193,
+      "actualWinRate": 0.1958654519971969,
       "targetWinRate": 0.5
     },
     "93": {
-      "actualWinRate": 0.2042570373788648,
+      "actualWinRate": 0.21117904937701892,
       "targetWinRate": 0.5
     },
     "94": {
-      "actualWinRate": 0.20126810540399045,
+      "actualWinRate": 0.20789948228724334,
       "targetWinRate": 0.5
     },
     "95": {
-      "actualWinRate": 0.19940580216707446,
+      "actualWinRate": 0.2107072119305604,
       "targetWinRate": 0.5
     },
     "96": {
-      "actualWinRate": 0.20824814533559202,
+      "actualWinRate": 0.21408960803785268,
       "targetWinRate": 0.5
     },
     "97": {
-      "actualWinRate": 0.2009221902017291,
+      "actualWinRate": 0.21498559077809798,
       "targetWinRate": 0.5
     },
     "98": {
-      "actualWinRate": 0.22136563876651982,
+      "actualWinRate": 0.22617667516809645,
       "targetWinRate": 0.5
     },
     "99": {
-      "actualWinRate": 0.2263484155031574,
+      "actualWinRate": 0.23382191066566246,
       "targetWinRate": 0.5
     },
     "100": {
-      "actualWinRate": 0.2683571962509344,
+      "actualWinRate": 0.27330228278994884,
       "targetWinRate": 0.5
     },
     "101": {
-      "actualWinRate": 0.22625344986200552,
+      "actualWinRate": 0.23792548298068078,
       "targetWinRate": 0.32
     },
     "102": {
-      "actualWinRate": 0.2288726309119189,
+      "actualWinRate": 0.24022121089924534,
       "targetWinRate": 0.32
     },
     "103": {
-      "actualWinRate": 0.25073389742704194,
+      "actualWinRate": 0.25896506072641456,
       "targetWinRate": 0.32
     },
     "104": {
-      "actualWinRate": 0.2487610925435058,
+      "actualWinRate": 0.2526218739195574,
       "targetWinRate": 0.32
     },
     "105": {
-      "actualWinRate": 0.24683946198695375,
+      "actualWinRate": 0.25099578594931593,
       "targetWinRate": 0.32
     },
     "106": {
-      "actualWinRate": 0.2566315668335347,
+      "actualWinRate": 0.26399677772023705,
       "targetWinRate": 0.32
     },
     "107": {
-      "actualWinRate": 0.26204906204906203,
+      "actualWinRate": 0.27365079365079364,
       "targetWinRate": 0.32
     },
     "108": {
-      "actualWinRate": 0.25483870967741934,
+      "actualWinRate": 0.26630184331797235,
       "targetWinRate": 0.32
     },
     "109": {
-      "actualWinRate": 0.29526221864026253,
+      "actualWinRate": 0.29814057912612973,
       "targetWinRate": 0.32
     },
     "110": {
-      "actualWinRate": 0.2703149965761242,
+      "actualWinRate": 0.28047249486418624,
       "targetWinRate": 0.32
     },
     "111": {
-      "actualWinRate": 0.28427709111813737,
+      "actualWinRate": 0.2861167002012072,
       "targetWinRate": 0.32
     },
     "112": {
-      "actualWinRate": 0.31354124632501296,
+      "actualWinRate": 0.3163082953824869,
       "targetWinRate": 0.32
     },
     "113": {
-      "actualWinRate": 0.26182820395039047,
+      "actualWinRate": 0.26596233348644926,
       "targetWinRate": 0.32
     },
     "114": {
-      "actualWinRate": 0.2941444520391889,
+      "actualWinRate": 0.2987012987012987,
       "targetWinRate": 0.32
     },
     "115": {
-      "actualWinRate": 0.2799448497730798,
+      "actualWinRate": 0.29005572470845065,
       "targetWinRate": 0.32
     },
     "116": {
-      "actualWinRate": 0.3086065338462422,
+      "actualWinRate": 0.31331457771143134,
       "targetWinRate": 0.32
     },
     "117": {
-      "actualWinRate": 0.3271995399654974,
+      "actualWinRate": 0.330764807360552,
       "targetWinRate": 0.32
     },
     "118": {
-      "actualWinRate": 0.30244685118331327,
+      "actualWinRate": 0.3078906652913873,
       "targetWinRate": 0.32
     },
     "119": {
-      "actualWinRate": 0.31699477701888307,
+      "actualWinRate": 0.3209550594042358,
       "targetWinRate": 0.32
     },
     "120": {
-      "actualWinRate": 0.30018890606216725,
+      "actualWinRate": 0.30494017974698034,
       "targetWinRate": 0.32
     },
     "121": {
-      "actualWinRate": 0.3173875680320825,
+      "actualWinRate": 0.3208822686909195,
       "targetWinRate": 0.32
     },
     "122": {
-      "actualWinRate": 0.3015155847869603,
+      "actualWinRate": 0.30980840720617675,
       "targetWinRate": 0.32
     },
     "123": {
-      "actualWinRate": 0.3001665996438215,
+      "actualWinRate": 0.3127477451599931,
       "targetWinRate": 0.32
     },
     "124": {
-      "actualWinRate": 0.3275121671915259,
+      "actualWinRate": 0.3372459204122531,
       "targetWinRate": 0.32
     },
     "125": {
-      "actualWinRate": 0.36496225120109815,
+      "actualWinRate": 0.372168840082361,
       "targetWinRate": 0.32
     },
     "126": {
-      "actualWinRate": 0.344009625852289,
+      "actualWinRate": 0.35621383143299146,
       "targetWinRate": 0.32
     },
     "127": {
-      "actualWinRate": 0.341941434171086,
+      "actualWinRate": 0.35410421950657134,
       "targetWinRate": 0.32
     },
     "128": {
-      "actualWinRate": 0.3762019230769231,
+      "actualWinRate": 0.3853021978021978,
       "targetWinRate": 0.32
     },
     "129": {
-      "actualWinRate": 0.3769380957850006,
+      "actualWinRate": 0.38199150109107616,
       "targetWinRate": 0.32
     },
     "130": {
-      "actualWinRate": 0.36544508604425135,
+      "actualWinRate": 0.37024755588588415,
       "targetWinRate": 0.32
     },
     "131": {
-      "actualWinRate": 0.40650641396047615,
+      "actualWinRate": 0.42170345544897725,
       "targetWinRate": 0.32
     },
     "132": {
-      "actualWinRate": 0.38976445641584045,
+      "actualWinRate": 0.4042638546621583,
       "targetWinRate": 0.32
     },
     "133": {
-      "actualWinRate": 0.39996552516662837,
+      "actualWinRate": 0.41174442656860494,
       "targetWinRate": 0.32
     },
     "134": {
-      "actualWinRate": 0.4036639292482628,
+      "actualWinRate": 0.4141158904266927,
       "targetWinRate": 0.32
     },
     "135": {
-      "actualWinRate": 0.43977318288561773,
+      "actualWinRate": 0.4459591041869523,
       "targetWinRate": 0.32
     },
     "136": {
-      "actualWinRate": 0.4164411950952737,
+      "actualWinRate": 0.4197800932588797,
       "targetWinRate": 0.32
     },
     "137": {
-      "actualWinRate": 0.4062464183381089,
+      "actualWinRate": 0.41610315186246416,
       "targetWinRate": 0.32
     },
     "138": {
-      "actualWinRate": 0.4165570865016294,
+      "actualWinRate": 0.4273626436453033,
       "targetWinRate": 0.32
     },
     "139": {
-      "actualWinRate": 0.4426144841042121,
+      "actualWinRate": 0.4486399632732698,
       "targetWinRate": 0.32
     },
     "140": {
-      "actualWinRate": 0.42650327728697635,
+      "actualWinRate": 0.43396979196352237,
       "targetWinRate": 0.32
     },
     "141": {
-      "actualWinRate": 0.41763195435092726,
+      "actualWinRate": 0.4248216833095578,
       "targetWinRate": 0.32
     },
     "142": {
-      "actualWinRate": 0.47010698552548774,
+      "actualWinRate": 0.47365409920476,
       "targetWinRate": 0.32
     },
     "143": {
-      "actualWinRate": 0.4592783505154639,
+      "actualWinRate": 0.4626002290950745,
       "targetWinRate": 0.32
     },
     "144": {
-      "actualWinRate": 0.4364353492626043,
+      "actualWinRate": 0.43820738538927634,
       "targetWinRate": 0.32
     },
     "145": {
-      "actualWinRate": 0.4324773587068669,
+      "actualWinRate": 0.43614582139172303,
       "targetWinRate": 0.32
     },
     "146": {
-      "actualWinRate": 0.45734161205013224,
+      "actualWinRate": 0.4622283546050362,
       "targetWinRate": 0.32
     },
     "147": {
-      "actualWinRate": 0.46568961599636444,
+      "actualWinRate": 0.46847307430129514,
       "targetWinRate": 0.32
     },
     "148": {
-      "actualWinRate": 0.47259725400457664,
+      "actualWinRate": 0.4739702517162471,
       "targetWinRate": 0.32
     },
     "149": {
-      "actualWinRate": 0.4579786322344741,
+      "actualWinRate": 0.45992115637319314,
       "targetWinRate": 0.32
     },
     "150": {
-      "actualWinRate": 0.46406911545943474,
+      "actualWinRate": 0.4667009955372468,
       "targetWinRate": 0.32
     },
     "151": {
-      "actualWinRate": 0.4715531085111264,
+      "actualWinRate": 0.47442073870153706,
       "targetWinRate": 0.2
     },
     "152": {
-      "actualWinRate": 0.46130544124371287,
+      "actualWinRate": 0.46330589849108367,
       "targetWinRate": 0.2
     },
     "153": {
-      "actualWinRate": 0.4534392138939671,
+      "actualWinRate": 0.45743829981718465,
       "targetWinRate": 0.2
     },
     "154": {
-      "actualWinRate": 0.4859020930634838,
+      "actualWinRate": 0.4899959637894251,
       "targetWinRate": 0.2
     },
     "155": {
-      "actualWinRate": 0.47983548497657946,
+      "actualWinRate": 0.48303438820975664,
       "targetWinRate": 0.2
     },
     "156": {
-      "actualWinRate": 0.49519835372127585,
+      "actualWinRate": 0.49582714073396594,
       "targetWinRate": 0.2
     },
     "157": {
-      "actualWinRate": 0.4658274415129045,
+      "actualWinRate": 0.4693912743576479,
       "targetWinRate": 0.2
     },
     "158": {
-      "actualWinRate": 0.49793577981651377,
+      "actualWinRate": 0.4999426605504587,
       "targetWinRate": 0.2
     },
     "159": {
-      "actualWinRate": 0.49450800915331805,
+      "actualWinRate": 0.4977116704805492,
       "targetWinRate": 0.2
     },
     "160": {
-      "actualWinRate": 0.48145816641867917,
+      "actualWinRate": 0.48334668650566553,
       "targetWinRate": 0.2
     },
     "161": {
-      "actualWinRate": 0.4771987900234005,
+      "actualWinRate": 0.477883682438217,
       "targetWinRate": 0.2
     },
     "162": {
-      "actualWinRate": 0.4947689123936537,
+      "actualWinRate": 0.49701080708208784,
       "targetWinRate": 0.2
     },
     "163": {
-      "actualWinRate": 0.46162624821683307,
+      "actualWinRate": 0.4644222539229672,
       "targetWinRate": 0.2
     },
     "164": {
-      "actualWinRate": 0.4847926267281106,
+      "actualWinRate": 0.4880760368663594,
       "targetWinRate": 0.2
     },
     "165": {
-      "actualWinRate": 0.49394493316577176,
+      "actualWinRate": 0.49577287787044444,
       "targetWinRate": 0.2
     },
     "166": {
-      "actualWinRate": 0.5074533097264264,
+      "actualWinRate": 0.5084813524473129,
       "targetWinRate": 0.2
     },
     "167": {
-      "actualWinRate": 0.4753883051621745,
+      "actualWinRate": 0.4781863864778438,
       "targetWinRate": 0.2
     },
     "168": {
-      "actualWinRate": 0.4841425441125591,
+      "actualWinRate": 0.486218429246915,
       "targetWinRate": 0.2
     },
     "169": {
-      "actualWinRate": 0.49061677537475684,
+      "actualWinRate": 0.49130335278636,
       "targetWinRate": 0.2
     },
     "170": {
-      "actualWinRate": 0.48933127395457926,
+      "actualWinRate": 0.4914478576740461,
       "targetWinRate": 0.2
     },
     "171": {
-      "actualWinRate": 0.4786061125392745,
+      "actualWinRate": 0.48660382747786346,
       "targetWinRate": 0.2
     },
     "172": {
-      "actualWinRate": 0.4983317993557294,
+      "actualWinRate": 0.5075356649792913,
       "targetWinRate": 0.2
     },
     "173": {
-      "actualWinRate": 0.5115772581384685,
+      "actualWinRate": 0.5196011004126547,
       "targetWinRate": 0.2
     },
     "174": {
-      "actualWinRate": 0.46368619390202126,
+      "actualWinRate": 0.4752769213200868,
       "targetWinRate": 0.2
     },
     "175": {
-      "actualWinRate": 0.5165782114934657,
+      "actualWinRate": 0.5208583005193175,
       "targetWinRate": 0.2
     },
     "176": {
-      "actualWinRate": 0.49773600045853156,
+      "actualWinRate": 0.5012323035478878,
       "targetWinRate": 0.2
     },
     "177": {
-      "actualWinRate": 0.4977552991987271,
+      "actualWinRate": 0.4998011024606467,
       "targetWinRate": 0.2
     },
     "178": {
@@ -818,91 +819,91 @@
       "targetWinRate": 0.2
     },
     "179": {
-      "actualWinRate": 0.5330429300166217,
+      "actualWinRate": 0.540780649968476,
       "targetWinRate": 0.2
     },
     "180": {
-      "actualWinRate": 0.5296690647482014,
+      "actualWinRate": 0.5334676258992805,
       "targetWinRate": 0.2
     },
     "181": {
-      "actualWinRate": 0.5289431453461715,
+      "actualWinRate": 0.5319234296194406,
       "targetWinRate": 0.2
     },
     "182": {
-      "actualWinRate": 0.5155502392344498,
+      "actualWinRate": 0.5196514012303486,
       "targetWinRate": 0.2
     },
     "183": {
-      "actualWinRate": 0.5222623345367028,
+      "actualWinRate": 0.5238095238095238,
       "targetWinRate": 0.2
     },
     "184": {
-      "actualWinRate": 0.5252588820870759,
+      "actualWinRate": 0.5324103209565765,
       "targetWinRate": 0.2
     },
     "185": {
-      "actualWinRate": 0.5552825552825553,
+      "actualWinRate": 0.5622535855093994,
       "targetWinRate": 0.2
     },
     "186": {
-      "actualWinRate": 0.5330101569713758,
+      "actualWinRate": 0.5417243767313019,
       "targetWinRate": 0.2
     },
     "187": {
-      "actualWinRate": 0.5207585853408508,
+      "actualWinRate": 0.5235491770601971,
       "targetWinRate": 0.2
     },
     "188": {
-      "actualWinRate": 0.5636082828051711,
+      "actualWinRate": 0.5680700148724402,
       "targetWinRate": 0.2
     },
     "189": {
-      "actualWinRate": 0.5326130452180873,
+      "actualWinRate": 0.5415880637969473,
       "targetWinRate": 0.2
     },
     "190": {
-      "actualWinRate": 0.5451686678101773,
+      "actualWinRate": 0.5528873642081189,
       "targetWinRate": 0.2
     },
     "191": {
-      "actualWinRate": 0.5685064564049823,
+      "actualWinRate": 0.5718774997143183,
       "targetWinRate": 0.2
     },
     "192": {
-      "actualWinRate": 0.557037037037037,
+      "actualWinRate": 0.5615954415954416,
       "targetWinRate": 0.2
     },
     "193": {
-      "actualWinRate": 0.5319784131358365,
+      "actualWinRate": 0.5368010104489609,
       "targetWinRate": 0.2
     },
     "194": {
-      "actualWinRate": 0.5420929302166085,
+      "actualWinRate": 0.5458650054295022,
       "targetWinRate": 0.2
     },
     "195": {
-      "actualWinRate": 0.5560445841669048,
+      "actualWinRate": 0.5650757359245498,
       "targetWinRate": 0.2
     },
     "196": {
-      "actualWinRate": 0.5894066337656375,
+      "actualWinRate": 0.5910134282107196,
       "targetWinRate": 0.2
     },
     "197": {
-      "actualWinRate": 0.5559750586350896,
+      "actualWinRate": 0.5578056175276014,
       "targetWinRate": 0.2
     },
     "198": {
-      "actualWinRate": 0.5732285284938158,
+      "actualWinRate": 0.5771587099757254,
       "targetWinRate": 0.2
     },
     "199": {
-      "actualWinRate": 0.5824821683309558,
+      "actualWinRate": 0.5914407988587732,
       "targetWinRate": 0.2
     },
     "200": {
-      "actualWinRate": 0.5938158419224417,
+      "actualWinRate": 0.5994533340925915,
       "targetWinRate": 0.2
     }
   },
@@ -917,10 +918,26 @@
         "new": 104
       },
       {
+        "classId": 3,
+        "className": "Nameless",
+        "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Entities\\Player\\Classes\\Nameless.mc",
+        "field": "current_health",
+        "old": 100,
+        "new": 104
+      },
+      {
         "classId": 4,
         "className": "Paladin",
         "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Entities\\Player\\Classes\\Paladin.mc",
         "field": "maxHealth",
+        "old": 60,
+        "new": 59
+      },
+      {
+        "classId": 4,
+        "className": "Paladin",
+        "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Entities\\Player\\Classes\\Paladin.mc",
+        "field": "current_health",
         "old": 60,
         "new": 59
       }
@@ -956,7 +973,7 @@
         "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Entities\\Enemies\\Normal\\Chort.mc",
         "field": "maxHealth",
         "old": 150,
-        "new": 153
+        "new": 154
       },
       {
         "enemyId": 10,
@@ -996,7 +1013,7 @@
         "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Entities\\Enemies\\Bosses\\Demon.mc",
         "field": "maxHealth",
         "old": 750,
-        "new": 719
+        "new": 721
       },
       {
         "enemyId": 2,
@@ -1013,6 +1030,22 @@
         "field": "maxHealth",
         "old": 250,
         "new": 256
+      },
+      {
+        "enemyId": 35,
+        "enemyName": "Rokita",
+        "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Entities\\Enemies\\Hard\\Rokita.mc",
+        "field": "damage",
+        "old": 40,
+        "new": 41
+      },
+      {
+        "enemyId": 35,
+        "enemyName": "Rokita",
+        "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Entities\\Enemies\\Hard\\Rokita.mc",
+        "field": "maxHealth",
+        "old": 500,
+        "new": 510
       }
     ],
     "items": [
@@ -1111,14 +1144,6 @@
         "field": "defense",
         "old": 40,
         "new": 41
-      },
-      {
-        "itemId": 23,
-        "itemName": "FireGreatsword",
-        "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Items\\WeaponItems\\2_Fire\\FireGreatsword.mc",
-        "field": "attack",
-        "old": 18,
-        "new": 19
       },
       {
         "itemId": 60,
@@ -1294,6 +1319,16 @@
         "category": "strict-tables",
         "table": "enemy",
         "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+        "enemyId": 1,
+        "maxDepth": 999,
+        "field": "weight",
+        "old": 2,
+        "new": 3
+      },
+      {
+        "category": "strict-tables",
+        "table": "enemy",
+        "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
         "enemyId": 11,
         "maxDepth": 999,
         "field": "weight",
@@ -1309,16 +1344,6 @@
         "field": "weight",
         "old": 7,
         "new": 8
-      },
-      {
-        "category": "strict-tables",
-        "table": "enemy",
-        "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
-        "enemyId": 25,
-        "maxDepth": 999,
-        "field": "weight",
-        "old": 6,
-        "new": 7
       },
       {
         "category": "strict-tables",

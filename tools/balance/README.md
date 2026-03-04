@@ -71,6 +71,34 @@ This repeatedly runs simulation + apply for multiple rounds until no more change
 C:/Users/Timon/AppData/Local/Programs/Python/Python310/python.exe tools/balance/auto_apply_balance.py --workspace . --rounds 3
 ```
 
+## Rates-only auto balance (recommended for your case)
+
+This mode changes only spawn/drop tables (no player/enemy/item stat edits):
+
+- Enemy spawn profile in `source/Engine/Util/EnemySpecificValues.mc`
+  - weight per tier (`:weight`)
+  - depth windows (`:max`, which controls when tiers start/end)
+- Item drop profile in `source/Engine/Util/ItemSpecificValues.mc`
+  - consumable tier weight (`:weight`)
+  - consumable depth windows (`:max`)
+
+Dry run:
+
+```powershell
+C:/Users/Timon/AppData/Local/Programs/Python/Python310/python.exe tools/balance/auto_balance_rates_only.py --workspace . --config tools/balance/balance_rates_config.json
+```
+
+Apply table changes:
+
+```powershell
+C:/Users/Timon/AppData/Local/Programs/Python/Python310/python.exe tools/balance/auto_balance_rates_only.py --workspace . --config tools/balance/balance_rates_config.json --apply
+```
+
+Outputs:
+
+- `tools/balance/balance_rates_report.json`
+- `tools/balance/balance_rates_report.md`
+
 ## Suggested workflow
 
 1. Run dry-run and inspect report.

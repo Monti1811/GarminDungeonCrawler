@@ -6,10 +6,10 @@
     "end": 200,
     "step": 1
   },
-  "maxAdjustmentPercentPerRun": 12,
-  "tolerance": 0.05,
-  "initialAttributePoints": 5,
   "roomsPerDepthForProgression": 4,
+  "initialAttributePoints": 5,
+  "maxRateAdjustmentPercentPerRun": 12,
+  "maxBoundaryShift": 2,
   "variation": {
     "enemyCountMultiplier": 1.0,
     "enemyWeightJitter": 0.15,
