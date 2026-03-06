@@ -2,949 +2,245 @@ import Toybox.Lang;
 
 module Items {
 
-    var items as Dictionary<Number, Symbol> = {
-            // Weapons
-
-            // Steel Weapons
-            0 => :createSteelAxe,
-            1 => :createSteelBow,
-            2 => :createSteelDagger,
-            3 => :createSteelGreatsword,
-            4 => :createSteelKatana,
-            5 => :createSteelLance,
-            6 => :createSteelSpell,
-            7 => :createSteelStaff,
-            8 => :createSteelSword,
-
-            // Bronze Weapons
-            10 => :createBronzeAxe,
-            11 => :createBronzeBow,
-            12 => :createBronzeDagger,
-            13 => :createBronzeGreatsword,
-            14 => :createBronzeKatana,
-            15 => :createBronzeLance,
-            16 => :createBronzeSpell,
-            17 => :createBronzeStaff,
-            18 => :createBronzeSword,
-
-            // Fire Weapons
-            20 => :createFireAxe,
-            21 => :createFireBow,
-            22 => :createFireDagger,
-            23 => :createFireGreatsword,
-            24 => :createFireKatana,
-            25 => :createFireLance,
-            26 => :createFireSpell,
-            27 => :createFireStaff,
-            28 => :createFireSword,
-
-            // Ice Weapons
-            30 => :createIceAxe,
-            31 => :createIceBow,
-            32 => :createIceDagger,
-            33 => :createIceGreatsword,
-            34 => :createIceKatana,
-            35 => :createIceLance,
-            36 => :createIceSpell,
-            37 => :createIceStaff,
-            38 => :createIceSword,
-
-            // Grass Weapons
-            40 => :createGrassAxe,
-            41 => :createGrassBow,
-            42 => :createGrassDagger,
-            43 => :createGrassGreatsword,
-            44 => :createGrassKatana,
-            45 => :createGrassLance,
-            46 => :createGrassSpell,
-            47 => :createGrassStaff,
-            48 => :createGrassSword,
-
-            // Water Weapons
-            50 => :createWaterAxe,
-            51 => :createWaterBow,
-            52 => :createWaterDagger,
-            53 => :createWaterGreatsword,
-            54 => :createWaterKatana,
-            55 => :createWaterLance,
-            56 => :createWaterSpell,
-            57 => :createWaterStaff,
-            58 => :createWaterSword,
-
-            // Gold Weapons
-            60 => :createGoldAxe,
-            61 => :createGoldBow,
-            62 => :createGoldDagger,
-            63 => :createGoldGreatsword,
-            64 => :createGoldKatana,
-            65 => :createGoldLance,
-            66 => :createGoldSpell,
-            67 => :createGoldStaff,
-            68 => :createGoldSword,
-
-             // Demon Weapons
-            70 => :createDemonAxe,
-            71 => :createDemonBow,
-            72 => :createDemonDagger,
-            73 => :createDemonGreatsword,
-            74 => :createDemonKatana,
-            75 => :createDemonLance,
-            76 => :createDemonSpell,
-            77 => :createDemonStaff,
-            78 => :createDemonSword,
-
-            // Blood Weapons
-            80 => :createBloodAxe,
-            81 => :createBloodBow,
-            82 => :createBloodDagger,
-            83 => :createBloodGreatsword,
-            84 => :createBloodKatana,
-            85 => :createBloodLance,
-            86 => :createBloodSpell,
-            87 => :createBloodStaff,
-            88 => :createBloodSword,
-
-            // Arrows
-            200 => :createArrow,
-            201 => :createFireArrow,
-            202 => :createIceArrow,
-            203 => :createGoldArrow,
-
-            // Bolts
-            250 => :createBolt,
-            251 => :createFireBolt,
-            252 => :createIceBolt,
-            253 => :createGoldBolt,
-
-            // Crossbows
-            300 => :createCrossBow,
-            301 => :createOakCrossBow,
-            302 => :createHellCrossBow,
-
-            // Steel Armor
-            1000 => :createSteelHelmet,
-            1001 => :createSteelBreastPlate,
-            1002 => :createSteelGauntlets,
-            1003 => :createSteelShoes,
-            1004 => :createSteelRing1,
-            1005 => :createSteelRing2,
-
-            // Bronze Armor
-            1010 => :createBronzeHelmet,
-            1011 => :createBronzeBreastPlate,
-            1012 => :createBronzeGauntlets,
-            1013 => :createBronzeShoes,
-            1014 => :createBronzeRing1,
-            1015 => :createBronzeRing2,
-            // Fire Armor
-            1020 => :createFireHelmet,
-            1021 => :createFireBreastPlate,
-            1022 => :createFireGauntlets,
-            1023 => :createFireShoes,
-            1024 => :createFireRing1,
-            1025 => :createFireRing2,
-            // Ice Armor
-            1030 => :createIceHelmet,
-            1031 => :createIceBreastPlate,
-            1032 => :createIceGauntlets,
-            1033 => :createIceShoes,
-            1034 => :createIceRing1,
-            1035 => :createIceRing2,
-            // Grass Armor
-            1040 => :createGrassHelmet,
-            1041 => :createGrassBreastPlate,
-            1042 => :createGrassGauntlets,
-            1043 => :createGrassShoes,
-            1044 => :createGrassRing1,
-            1045 => :createGrassRing2,
-            // Water Armor
-            1050 => :createWaterHelmet,
-            1051 => :createWaterBreastPlate,
-            1052 => :createWaterGauntlets,
-            1053 => :createWaterShoes,
-            1054 => :createWaterRing1,
-            1055 => :createWaterRing2,
-            // Gold Armor
-            1060 => :createGoldHelmet,
-            1061 => :createGoldBreastPlate,
-            1062 => :createGoldGauntlets,
-            1063 => :createGoldShoes,
-            1064 => :createGoldRing1,
-            1065 => :createGoldRing2,
-            // Demon Armor
-            1070 => :createDemonHelmet,
-            1071 => :createDemonBreastPlate,
-            1072 => :createDemonGauntlets,
-            1073 => :createDemonShoes,
-            1074 => :createDemonRing1,
-            1075 => :createDemonRing2,
-            // Blood Armor
-            1080 => :createBloodHelmet,
-            1081 => :createBloodBreastPlate,
-            1082 => :createBloodGauntlets,
-            1083 => :createBloodShoes,
-            1084 => :createBloodRing1,
-            1085 => :createBloodRing2,
-
-            // Shields
-            1200 => :createWoodShield,
-            1201 => :createSteelShield,
-            1202 => :createSilverShield,
-            1203 => :createGoldShield,
-
-            // Backpacks
-            1250 => :createGreenBackpack,
-            1251 => :createPurpleBackpack,
-            1252 => :createGoldBackpack,
-
-            // Accessories
-            1300 => :createLifeAmulet,
-            1301 => :createManaCrystal,
-
-
-            // Potions
-            2000 => :createHealthPotion,
-            2001 => :createManaPotion,
-            2002 => :createGreaterHealthPotion,
-            2003 => :createGreaterManaPotion,
-            2004 => :createMaxHealthPotion,
-            2005 => :createMaxManaPotion,
-
-            // Key items
-            3000 => :createKey,
-
-            // Gold
-            5000 => :createGold,
-
-            // Containers
-            6000 => :createTreasureChest,
-        };
+    var item_ids as Array<Number> = [
+        0, 1, 2, 3, 4, 5, 6, 7, 8,
+        10, 11, 12, 13, 14, 15, 16, 17, 18,
+        20, 21, 22, 23, 24, 25, 26, 27, 28,
+        30, 31, 32, 33, 34, 35, 36, 37, 38,
+        40, 41, 42, 43, 44, 45, 46, 47, 48,
+        50, 51, 52, 53, 54, 55, 56, 57, 58,
+        60, 61, 62, 63, 64, 65, 66, 67, 68,
+        70, 71, 72, 73, 74, 75, 76, 77, 78,
+        80, 81, 82, 83, 84, 85, 86, 87, 88,
+        200, 201, 202, 203,
+        250, 251, 252, 253,
+        300, 301, 302,
+        1000, 1001, 1002, 1003, 1004, 1005,
+        1010, 1011, 1012, 1013, 1014, 1015,
+        1020, 1021, 1022, 1023, 1024, 1025,
+        1030, 1031, 1032, 1033, 1034, 1035,
+        1040, 1041, 1042, 1043, 1044, 1045,
+        1050, 1051, 1052, 1053, 1054, 1055,
+        1060, 1061, 1062, 1063, 1064, 1065,
+        1070, 1071, 1072, 1073, 1074, 1075,
+        1080, 1081, 1082, 1083, 1084, 1085,
+        1200, 1201, 1202, 1203,
+        1250, 1251, 1252,
+        1300, 1301,
+        2000, 2001, 2002, 2003, 2004, 2005,
+        3000,
+        5000,
+        6000
+    ];
 
     var weights as Array<Dictionary<Number, Numeric>>?;
     var total_weight as Array<Numeric> = [0, 0, 0, 0, 0];
 
     function init(player_id as Number) as Void {
-        
         var item_specific_values = new ItemSpecificValues(player_id);
         var values = item_specific_values.getDungeonItemWeights();
         weights = values[0];
         total_weight = values[1];
     }
 
-
-// Weapons
-
-    // Steel weapons
-    function createSteelAxe() as Item {
-        return new SteelAxe();
-    }
-
-    function createSteelBow() as Item {
-        return new SteelBow();
-    }
-
-    function createSteelDagger() as Item {
-        return new SteelDagger();
-    }
-    
-    function createSteelGreatsword() as Item {
-        return new SteelGreatsword();
-    }
-
-    function createSteelKatana() as Item {
-        return new SteelKatana();
-    }
-
-    function createSteelLance() as Item {
-        return new SteelLance();
-    }
-
-    function createSteelSpell() as Item {
-        return new SteelSpell();
-    }
-
-    function createSteelStaff() as Item {
-        return new SteelStaff();
-    }
-
-    function createSteelSword() as Item {
-        return new SteelSword();
-    }
-
-     // Bronze Weapons
-    function createBronzeAxe() as Item {
-        return new BronzeAxe();
-    }
-
-    function createBronzeBow() as Item {
-        return new BronzeBow();
-    }
-
-    function createBronzeDagger() as Item {
-        return new BronzeDagger();
-    }
-
-    function createBronzeGreatsword() as Item {
-        return new BronzeGreatsword();
-    }
-
-    function createBronzeKatana() as Item {
-        return new BronzeKatana();
-    }
-
-    function createBronzeLance() as Item {
-        return new BronzeLance();
-    }
-
-    function createBronzeSpell() as Item {
-        return new BronzeSpell();
-    }
-
-    function createBronzeStaff() as Item {
-        return new BronzeStaff();
-    }
-
-    function createBronzeSword() as Item {
-        return new BronzeSword();
-    }
-
-    // Fire Weapons
-    function createFireAxe() as Item {
-        return new FireAxe();
-    }
-
-    function createFireBow() as Item {
-        return new FireBow();
-    }
-
-    function createFireDagger() as Item {
-        return new FireDagger();
-    }
-
-    function createFireGreatsword() as Item {
-        return new FireGreatsword();
-    }
-
-    function createFireKatana() as Item {
-        return new FireKatana();
-    }
-
-    function createFireLance() as Item {
-        return new FireLance();
-    }
-
-    function createFireSpell() as Item {
-        return new FireSpell();
-    }
-
-    function createFireStaff() as Item {
-        return new FireStaff();
-    }
-
-    function createFireSword() as Item {
-        return new FireSword();
-    }
-
-    // Ice Weapons
-    function createIceAxe() as Item {
-        return new IceAxe();
-    }
-
-    function createIceBow() as Item {
-        return new IceBow();
-    }
-
-    function createIceDagger() as Item {
-        return new IceDagger();
-    }
-
-    function createIceGreatsword() as Item {
-        return new IceGreatsword();
-    }
-
-    function createIceKatana() as Item {
-        return new IceKatana();
-    }
-
-    function createIceLance() as Item {
-        return new IceLance();
-    }
-
-    function createIceSpell() as Item {
-        return new IceSpell();
-    }
-
-    function createIceStaff() as Item {
-        return new IceStaff();
-    }
-
-    function createIceSword() as Item {
-        return new IceSword();
-    }
-
-    // Grass Weapons
-    function createGrassAxe() as Item {
-        return new GrassAxe();
-    }
-
-    function createGrassBow() as Item {
-        return new GrassBow();
-    }
-
-    function createGrassDagger() as Item {
-        return new GrassDagger();
-    }
-
-    function createGrassGreatsword() as Item {
-        return new GrassGreatsword();
-    }
-
-    function createGrassKatana() as Item {
-        return new GrassKatana();
-    }
-
-    function createGrassLance() as Item {
-        return new GrassLance();
-    }
-
-    function createGrassSpell() as Item {
-        return new GrassSpell();
-    }
-
-    function createGrassStaff() as Item {
-        return new GrassStaff();
-    }
-
-    function createGrassSword() as Item {
-        return new GrassSword();
-    }
-
-    // Water Weapons
-    function createWaterAxe() as Item {
-        return new WaterAxe();
-    }
-
-    function createWaterBow() as Item {
-        return new WaterBow();
-    }
-
-    function createWaterDagger() as Item {
-        return new WaterDagger();
-    }
-
-    function createWaterGreatsword() as Item {
-        return new WaterGreatsword();
-    }
-
-    function createWaterKatana() as Item {
-        return new WaterKatana();
-    }
-
-    function createWaterLance() as Item {
-        return new WaterLance();
-    }
-
-    function createWaterSpell() as Item {
-        return new WaterSpell();
-    }
-
-    function createWaterStaff() as Item {
-        return new WaterStaff();
-    }
-
-    function createWaterSword() as Item {
-        return new WaterSword();
-    }
-
-    // Gold Weapons
-    function createGoldAxe() as Item {
-        return new GoldAxe();
-    }
-
-    function createGoldBow() as Item {
-        return new GoldBow();
-    }
-
-    function createGoldDagger() as Item {
-        return new GoldDagger();
-    }
-
-    function createGoldGreatsword() as Item {
-        return new GoldGreatsword();
-    }
-
-    function createGoldKatana() as Item {
-        return new GoldKatana();
-    }
-
-    function createGoldLance() as Item {
-        return new GoldLance();
-    }
-
-    function createGoldSpell() as Item {
-        return new GoldSpell();
-    }
-
-    function createGoldStaff() as Item {
-        return new GoldStaff();
-    }
-
-    function createGoldSword() as Item {
-        return new GoldSword();
-    }
-    // Demon Weapons
-    function createDemonAxe() as WeaponItem {
-        return new DemonAxe();
-    }
-
-    function createDemonBow() as WeaponItem {
-        return new DemonBow();
-    }
-
-    function createDemonDagger() as WeaponItem {
-        return new DemonDagger();
-    }
-
-    function createDemonGreatsword() as WeaponItem {
-        return new DemonGreatsword();
-    }
-
-    function createDemonKatana() as WeaponItem {
-        return new DemonKatana();
-    }
-
-    function createDemonLance() as WeaponItem {
-        return new DemonLance();
-    }
-
-    function createDemonSpell() as WeaponItem {
-        return new DemonSpell();
-    }
-
-    function createDemonStaff() as WeaponItem {
-        return new DemonStaff();
-    }
-
-    function createDemonSword() as WeaponItem {
-        return new DemonSword();
-    }
-
-    // Blood Weapons
-    function createBloodAxe() as WeaponItem {
-        return new BloodAxe();
-    }
-
-    function createBloodBow() as WeaponItem {
-        return new BloodBow();
-    }
-
-    function createBloodDagger() as WeaponItem {
-        return new BloodDagger();
-    }
-
-    function createBloodGreatsword() as WeaponItem {
-        return new BloodGreatsword();
-    }
-
-    function createBloodKatana() as WeaponItem {
-        return new BloodKatana();
-    }
-
-    function createBloodLance() as WeaponItem {
-        return new BloodLance();
-    }
-
-    function createBloodSpell() as WeaponItem {
-        return new BloodSpell();
-    }
-
-    function createBloodStaff() as WeaponItem {
-        return new BloodStaff();
-    }
-
-    function createBloodSword() as WeaponItem {
-        return new BloodSword();
-    }
-
-    // Scale ammo stack sizes with dungeon depth so deeper floors drop more
-    function scaledAmmoAmount(baseMin as Number, baseMax as Number) as Number {
-        var depth = $.Game.depth;
-        var bonus = depth / 3;
-        var minAmount = baseMin + bonus;
-        var maxAmount = baseMax + bonus + 2;
-        if (maxAmount < minAmount) {
-            maxAmount = minAmount;
+    function createItemFromId(id as Number) as Item? {
+        if (id < 1000) {
+            switch (id) {
+                case 0: return new SteelAxe();
+                case 1: return new SteelBow();
+                case 2: return new SteelDagger();
+                case 3: return new SteelGreatsword();
+                case 4: return new SteelKatana();
+                case 5: return new SteelLance();
+                case 6: return new SteelSpell();
+                case 7: return new SteelStaff();
+                case 8: return new SteelSword();
+                case 10: return new BronzeAxe();
+                case 11: return new BronzeBow();
+                case 12: return new BronzeDagger();
+                case 13: return new BronzeGreatsword();
+                case 14: return new BronzeKatana();
+                case 15: return new BronzeLance();
+                case 16: return new BronzeSpell();
+                case 17: return new BronzeStaff();
+                case 18: return new BronzeSword();
+                case 20: return new FireAxe();
+                case 21: return new FireBow();
+                case 22: return new FireDagger();
+                case 23: return new FireGreatsword();
+                case 24: return new FireKatana();
+                case 25: return new FireLance();
+                case 26: return new FireSpell();
+                case 27: return new FireStaff();
+                case 28: return new FireSword();
+                case 30: return new IceAxe();
+                case 31: return new IceBow();
+                case 32: return new IceDagger();
+                case 33: return new IceGreatsword();
+                case 34: return new IceKatana();
+                case 35: return new IceLance();
+                case 36: return new IceSpell();
+                case 37: return new IceStaff();
+                case 38: return new IceSword();
+                case 40: return new GrassAxe();
+                case 41: return new GrassBow();
+                case 42: return new GrassDagger();
+                case 43: return new GrassGreatsword();
+                case 44: return new GrassKatana();
+                case 45: return new GrassLance();
+                case 46: return new GrassSpell();
+                case 47: return new GrassStaff();
+                case 48: return new GrassSword();
+                case 50: return new WaterAxe();
+                case 51: return new WaterBow();
+                case 52: return new WaterDagger();
+                case 53: return new WaterGreatsword();
+                case 54: return new WaterKatana();
+                case 55: return new WaterLance();
+                case 56: return new WaterSpell();
+                case 57: return new WaterStaff();
+                case 58: return new WaterSword();
+                case 60: return new GoldAxe();
+                case 61: return new GoldBow();
+                case 62: return new GoldDagger();
+                case 63: return new GoldGreatsword();
+                case 64: return new GoldKatana();
+                case 65: return new GoldLance();
+                case 66: return new GoldSpell();
+                case 67: return new GoldStaff();
+                case 68: return new GoldSword();
+                case 70: return new DemonAxe();
+                case 71: return new DemonBow();
+                case 72: return new DemonDagger();
+                case 73: return new DemonGreatsword();
+                case 74: return new DemonKatana();
+                case 75: return new DemonLance();
+                case 76: return new DemonSpell();
+                case 77: return new DemonStaff();
+                case 78: return new DemonSword();
+                case 80: return new BloodAxe();
+                case 81: return new BloodBow();
+                case 82: return new BloodDagger();
+                case 83: return new BloodGreatsword();
+                case 84: return new BloodKatana();
+                case 85: return new BloodLance();
+                case 86: return new BloodSpell();
+                case 87: return new BloodStaff();
+                case 88: return new BloodSword();
+                case 200: return new Arrow();
+                case 201: return new FireArrow();
+                case 202: return new IceArrow();
+                case 203: return new GoldArrow();
+                case 250: return new Bolt();
+                case 251: return new FireBolt();
+                case 252: return new IceBolt();
+                case 253: return new GoldBolt();
+                case 300: return new CrossBow();
+                case 301: return new OakCrossBow();
+                case 302: return new HellCrossBow();
+                default: return null;
+            }
         }
-        if (maxAmount > 30) {
-            maxAmount = 30;
+
+        if (id < 2000) {
+            switch (id) {
+                case 1000: return new SteelHelmet();
+                case 1001: return new SteelBreastPlate();
+                case 1002: return new SteelGauntlets();
+                case 1003: return new SteelShoes();
+                case 1004: return new SteelRing1();
+                case 1005: return new SteelRing2();
+                case 1010: return new BronzeHelmet();
+                case 1011: return new BronzeBreastPlate();
+                case 1012: return new BronzeGauntlets();
+                case 1013: return new BronzeShoes();
+                case 1014: return new BronzeRing1();
+                case 1015: return new BronzeRing2();
+                case 1020: return new FireHelmet();
+                case 1021: return new FireBreastPlate();
+                case 1022: return new FireGauntlets();
+                case 1023: return new FireShoes();
+                case 1024: return new FireRing1();
+                case 1025: return new FireRing2();
+                case 1030: return new IceHelmet();
+                case 1031: return new IceBreastPlate();
+                case 1032: return new IceGauntlets();
+                case 1033: return new IceShoes();
+                case 1034: return new IceRing1();
+                case 1035: return new IceRing2();
+                case 1040: return new GrassHelmet();
+                case 1041: return new GrassBreastPlate();
+                case 1042: return new GrassGauntlets();
+                case 1043: return new GrassShoes();
+                case 1044: return new GrassRing1();
+                case 1045: return new GrassRing2();
+                case 1050: return new WaterHelmet();
+                case 1051: return new WaterBreastPlate();
+                case 1052: return new WaterGauntlets();
+                case 1053: return new WaterShoes();
+                case 1054: return new WaterRing1();
+                case 1055: return new WaterRing2();
+                case 1060: return new GoldHelmet();
+                case 1061: return new GoldBreastPlate();
+                case 1062: return new GoldGauntlets();
+                case 1063: return new GoldShoes();
+                case 1064: return new GoldRing1();
+                case 1065: return new GoldRing2();
+                case 1070: return new DemonHelmet();
+                case 1071: return new DemonBreastPlate();
+                case 1072: return new DemonGauntlets();
+                case 1073: return new DemonShoes();
+                case 1074: return new DemonRing1();
+                case 1075: return new DemonRing2();
+                case 1080: return new BloodHelmet();
+                case 1081: return new BloodBreastPlate();
+                case 1082: return new BloodGauntlets();
+                case 1083: return new BloodShoes();
+                case 1084: return new BloodRing1();
+                case 1085: return new BloodRing2();
+                case 1200: return new WoodShield();
+                case 1201: return new SteelShield();
+                case 1202: return new SilverShield();
+                case 1203: return new GoldShield();
+                case 1250: return new GreenBackpack();
+                case 1251: return new PurpleBackpack();
+                case 1252: return new GoldBackpack();
+                case 1300: return new LifeAmulet();
+                case 1301: return new ManaCrystal();
+                default: return null;
+            }
         }
-        return MathUtil.random(minAmount, maxAmount);
-    }
 
-    function createArrow() as Item {
-        var arrow = new Arrow();
-        arrow.setAmount(scaledAmmoAmount(5, 13));
-        return arrow;
-    }
-
-    function createFireArrow() as Item {
-        var arrow = new FireArrow();
-        arrow.setAmount(scaledAmmoAmount(2, 4));
-        return arrow;
-    }
-
-    function createIceArrow() as Item {
-        var arrow = new IceArrow();
-        arrow.setAmount(scaledAmmoAmount(2, 4));
-        return arrow;
-    }
-
-    function createGoldArrow() as Item {
-        var arrow = new GoldArrow();
-        arrow.setAmount(scaledAmmoAmount(1, 3));
-        return arrow;
-    }
-
-    function createBolt() as Item {
-        var bolt = new Bolt();
-        bolt.setAmount(scaledAmmoAmount(5, 13));
-        return bolt;
-    }
-
-    function createFireBolt() as Item {
-        var bolt = new FireBolt();
-        bolt.setAmount(scaledAmmoAmount(2, 4));
-        return bolt;
-    }
-
-    function createIceBolt() as Item {
-        var bolt = new IceBolt();
-        bolt.setAmount(scaledAmmoAmount(2, 4));
-        return bolt;
-    }
-
-    function createGoldBolt() as Item {
-        var bolt = new GoldBolt();
-        bolt.setAmount(scaledAmmoAmount(1, 3));
-        return bolt;
-    }
-
-    function createCrossBow() as Item {
-        return new CrossBow();
-    }
-
-    function createOakCrossBow() as Item {
-        return new OakCrossBow();
-    }
-
-    function createHellCrossBow() as Item {
-        return new HellCrossBow();
-    }
-
-   
-
-// Armors
-
-    // Steel Armors
-    function createSteelHelmet() as Item {
-        return new SteelHelmet();
-    }
-
-    function createSteelBreastPlate() as Item {
-        return new SteelBreastPlate();
-    }
-
-    function createSteelGauntlets() as Item {
-        return new SteelGauntlets();
-    }
-
-    function createSteelShoes() as Item {
-        return new SteelShoes();
-    }
-
-    function createSteelRing1() as Item {
-        return new SteelRing1();
-    }
-
-    function createSteelRing2() as Item {
-        return new SteelRing2();
-    }
-    
-
-    // Bronze Armor
-    function createBronzeHelmet() as Item {
-        return new BronzeHelmet();
-    }
-
-    function createBronzeBreastPlate() as Item {
-        return new BronzeBreastPlate();
-    }
-
-    function createBronzeGauntlets() as Item {
-        return new BronzeGauntlets();
-    }
-
-    function createBronzeShoes() as Item {
-        return new BronzeShoes();
-    }
-
-    function createBronzeRing1() as Item {
-        return new BronzeRing1();
-    }
-
-    function createBronzeRing2() as Item {
-        return new BronzeRing2();
-    }
-
-    // Fire Armor
-    function createFireHelmet() as Item {
-        return new FireHelmet();
-    }
-
-    function createFireBreastPlate() as Item {
-        return new FireBreastPlate();
-    }
-
-    function createFireGauntlets() as Item {
-        return new FireGauntlets();
-    }
-
-    function createFireShoes() as Item {
-        return new FireShoes();
-    }
-
-    function createFireRing1() as Item {
-        return new FireRing1();
-    }
-
-    function createFireRing2() as Item {
-        return new FireRing2();
-    }
-
-    // Ice Armor
-    function createIceHelmet() as Item {
-        return new IceHelmet();
-    }
-
-    function createIceBreastPlate() as Item {
-        return new IceBreastPlate();
-    }
-
-    function createIceGauntlets() as Item {
-        return new IceGauntlets();
-    }
-
-    function createIceShoes() as Item {
-        return new IceShoes();
-    }
-
-    function createIceRing1() as Item {
-        return new IceRing1();
-    }
-
-    function createIceRing2() as Item {
-        return new IceRing2();
-    }
-
-    // Grass Armor
-    function createGrassHelmet() as Item {
-        return new GrassHelmet();
-    }
-
-    function createGrassBreastPlate() as Item {
-        return new GrassBreastPlate();
-    }
-
-    function createGrassGauntlets() as Item {
-        return new GrassGauntlets();
-    }
-
-    function createGrassShoes() as Item {
-        return new GrassShoes();
-    }
-
-    function createGrassRing1() as Item {
-        return new GrassRing1();
-    }
-
-    function createGrassRing2() as Item {
-        return new GrassRing2();
-    }
-
-    // Water Armor
-    function createWaterHelmet() as Item {
-        return new WaterHelmet();
-    }
-
-    function createWaterBreastPlate() as Item {
-        return new WaterBreastPlate();
-    }
-
-    function createWaterGauntlets() as Item {
-        return new WaterGauntlets();
-    }
-
-    function createWaterShoes() as Item {
-        return new WaterShoes();
-    }
-
-    function createWaterRing1() as Item {
-        return new WaterRing1();
-    }
-
-    function createWaterRing2() as Item {
-        return new WaterRing2();
-    }
-
-    // Gold Armor
-    function createGoldHelmet() as Item {
-        return new GoldHelmet();
-    }
-
-    function createGoldBreastPlate() as Item {
-        return new GoldBreastPlate();
-    }
-
-    function createGoldGauntlets() as Item {
-        return new GoldGauntlets();
-    }
-
-    function createGoldShoes() as Item {
-        return new GoldShoes();
-    }
-
-    function createGoldRing1() as Item {
-        return new GoldRing1();
-    }
-
-    function createGoldRing2() as Item {
-        return new GoldRing2();
-    }
-
-    // Demon Armor
-    function createDemonHelmet() as Item {
-        return new DemonHelmet();
-    }
-
-    function createDemonBreastPlate() as Item {
-        return new DemonBreastPlate();
-    }
-
-    function createDemonGauntlets() as Item {
-        return new DemonGauntlets();
-    }
-
-    function createDemonShoes() as Item {
-        return new DemonShoes();
-    }
-
-    function createDemonRing1() as Item {
-        return new DemonRing1();
-    }
-
-    function createDemonRing2() as Item {
-        return new DemonRing2();
-    }
-
-    // Blood Armor
-    function createBloodHelmet() as Item {
-        return new BloodHelmet();
-    }
-
-    function createBloodBreastPlate() as Item {
-        return new BloodBreastPlate();
-    }
-
-    function createBloodGauntlets() as Item {
-        return new BloodGauntlets();
-    }
-
-    function createBloodShoes() as Item {
-        return new BloodShoes();
-    }
-
-    function createBloodRing1() as Item {
-        return new BloodRing1();
-    }
-
-    function createBloodRing2() as Item {
-        return new BloodRing2();
-    }
-
-    // Shields
-    function createWoodShield() as Item {
-        return new WoodShield();
-    }
-
-    function createSteelShield() as Item {
-        return new SteelShield();
-    }
-
-    function createSilverShield() as Item {
-        return new SilverShield();
-    }
-
-    function createGoldShield() as Item {
-        return new GoldShield();
-    }
-
-    // Backpacks
-    function createGreenBackpack() as Item {
-        return new GreenBackpack();
-    }
-
-    function createPurpleBackpack() as Item {
-        return new PurpleBackpack();
-    }
-
-    function createGoldBackpack() as Item {
-        return new GoldBackpack();
-    }
-
-    // Accessories
-    function createLifeAmulet() as Item {
-        return new LifeAmulet();
-    }
-
-    function createManaCrystal() as Item {
-        return new ManaCrystal();
-    }
-
-    // Consumables
-    function createHealthPotion() as Item {
-        return new HealthPotion();
-    }
-
-    function createGreaterHealthPotion() as Item {
-        return new GreaterHealthPotion();
-    }
-
-    function createMaxHealthPotion() as Item {
-        return new MaxHealthPotion();
-    }
-
-    function createManaPotion() as Item {
-        return new ManaPotion();
-    }
-
-    function createGreaterManaPotion() as Item {
-        return new GreaterManaPotion();
-    }
-
-    function createMaxManaPotion() as Item {
-        return new MaxManaPotion();
-    }
-
-    function createKey() as Item {
-        return new Key();
-    }
-
-    function createGold() as Item {
-        return new Gold();
-    }
-
-    function createTreasureChest() as Item {
-        return new TreasureChest();
+        if (id < 3000) {
+            switch (id) {
+                case 2000: return new HealthPotion();
+                case 2001: return new ManaPotion();
+                case 2002: return new GreaterHealthPotion();
+                case 2003: return new GreaterManaPotion();
+                case 2004: return new MaxHealthPotion();
+                case 2005: return new MaxManaPotion();
+                default: return null;
+            }
+        }
+
+        if (id < 4000) {
+            switch (id) {
+                case 3000: return new Key();
+                default: return null;
+            }
+        }
+
+        if (id < 6000) {
+            switch (id) {
+                case 5000: return new Gold();
+                default: return null;
+            }
+        }
+
+        switch (id) {
+            case 6000: return new TreasureChest();
+            default: return null;
+        }
     }
 
     function createTreasureChestWithLoot(loot as Item?) as TreasureChest {
@@ -953,20 +249,16 @@ module Items {
         return chest;
     }
 
-    function createItemFromId(id as Number) as Item? {
-        var symbol = items[id] as Symbol;
-        var method = new Lang.Method(self, symbol);
-        return method.invoke() as Item;
-    }
-
     function createRandomItem() as Item {
-        var item_keys = items.keys();
-        // Remove gold/treasurechests from random items
-        item_keys.remove(5000);
-        item_keys.remove(6000);
-        var rand = MathUtil.random(0, item_keys.size() - 1);
-        var method = new Lang.Method(self, items[item_keys[rand]]);
-        return method.invoke() as Item;
+		var rand = 9999;
+		while (rand > 4000) {
+			rand = MathUtil.random(0, item_ids.size() - 1);
+		}
+        var item = createItemFromId(item_ids[rand]);
+        if (item != null) {
+            return item;
+        }
+        return new SteelSword();
     }
 
     function createRandomWeightedItem(type as Number) as Item? {
@@ -976,13 +268,11 @@ module Items {
         var weight_keys = weights[type].keys();
         for (var i = 0; i < weight_keys.size(); i++) {
             current_weight += weights[type][weight_keys[i]];
-            var symbol = items[weight_keys[i]];
-            if (rand < current_weight && symbol != null && self has symbol) {
-                var method = new Lang.Method(self, items[weight_keys[i]]);
-                //Toybox.System.println("Item: " + items[weight_keys[i]] + " Rand: " + rand + " Current Weight: " + current_weight + " Total Weight: " + total_weight[type]);
-                return method.invoke() as Item;
+            if (rand < current_weight) {
+                return createItemFromId(weight_keys[i] as Number);
             }
         }
+
         Toybox.System.println("Error: No item found for type " + type);
         Toybox.System.println("Rand: " + rand + " Current Weight: " + current_weight + " Total Weight: " + total_weight[type]);
         return null;
