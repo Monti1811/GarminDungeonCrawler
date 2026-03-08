@@ -1,0 +1,20 @@
+{
+  "servers": {
+    "dungeoncrawler-monkeyc": {
+      "type": "stdio",
+      "command": "python",
+      "args": [
+        "tools/mcp_monkeyc/server.py"
+      ],
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "MONKEYC_WORKSPACE": "${workspaceFolder}",
+        "MONKEYC_DEVELOPER_KEY_PATH": "F:/Code/Garmin/developer_key",
+        "OPENAI_API_KEY": "${env:OPENAI_API_KEY}",
+        "IMAGEROUTER_API_KEY": "${env:IMAGEROUTER_API_KEY}",
+        "GEMINI_API_KEY": "${env:GEMINI_API_KEY}",
+        "GOOGLE_API_KEY": "${env:GOOGLE_API_KEY}"
+      }
+    }
+  }
+}
