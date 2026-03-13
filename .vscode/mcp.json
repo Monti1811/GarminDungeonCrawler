@@ -10,6 +10,9 @@
       "env": {
         "MONKEYC_WORKSPACE": "${workspaceFolder}",
         "MONKEYC_DEVELOPER_KEY_PATH": "F:/Code/Garmin/developer_key",
+        "OPENROUTER_API_KEY": "${env:OPENROUTER_API_KEY}",
+        "OPENROUTER_SITE_URL": "${env:OPENROUTER_SITE_URL}",
+        "OPENROUTER_APP_NAME": "${env:OPENROUTER_APP_NAME}",
         "OPENAI_API_KEY": "${env:OPENAI_API_KEY}",
         "IMAGEROUTER_API_KEY": "${env:IMAGEROUTER_API_KEY}",
         "GEMINI_API_KEY": "${env:GEMINI_API_KEY}",

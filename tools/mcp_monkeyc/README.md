@@ -38,6 +38,8 @@ Es wurde eine Workspace-Konfiguration angelegt:
 Passe dort bei Bedarf an:
 
 - `MONKEYC_DEVELOPER_KEY_PATH` auf deinen Key
+- `OPENROUTER_API_KEY` für OpenRouter-Bildgenerierung setzen
+- Optional für OpenRouter-Ranking/Header: `OPENROUTER_SITE_URL`, `OPENROUTER_APP_NAME`
 - `OPENAI_API_KEY` in deiner Umgebung setzen
 - `IMAGEROUTER_API_KEY` für ImageRouter-Bildgenerierung setzen
 - `GEMINI_API_KEY` (oder `GOOGLE_API_KEY`) für Gemini-Bildgenerierung setzen
@@ -54,7 +56,10 @@ Passe dort bei Bedarf an:
   - `build_for_products(products=["venu2s","venu3","venu3s"], release=false)`
 
 - Ein neues KI-Icon erzeugen und registrieren
-  - `generate_image_and_embed(bitmap_id="orc_icon", prompt="orc head", provider="openai", final_size="16x16")`
+  - `generate_image_and_embed(bitmap_id="orc_icon", prompt="orc head", provider="openrouter", model="openrouter/hunter-alpha", final_size="16x16")`
+
+- OpenRouter als Default (provider weglassen)
+  - `generate_image_and_embed(bitmap_id="orc_icon2", prompt="orc head", model="openrouter/hunter-alpha", final_size="16x16")`
 
 - Ein neues KI-Icon über Gemini-Key erzeugen und registrieren
   - `generate_image_and_embed(bitmap_id="slime_icon", prompt="slime", provider="gemini", final_size="16x16")`
@@ -113,6 +118,7 @@ Passe dort bei Bedarf an:
   - `<bitmap_id>_raw.png` (Originalausgabe)
   - `<bitmap_id>.png` (auf Tile-Größe skaliert)
 - Für Image Generation werden Provider unterstützt:
+  - OpenRouter via `OPENROUTER_API_KEY` (wird standardmäßig zuerst verwendet)
   - OpenAI via `OPENAI_API_KEY`
   - ImageRouter via `IMAGEROUTER_API_KEY`
   - Gemini via `GEMINI_API_KEY` (oder `GOOGLE_API_KEY`)

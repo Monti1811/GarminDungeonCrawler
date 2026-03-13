@@ -12,7 +12,7 @@ from pathlib import Path
 from typing import Any
 
 from mcp.server.fastmcp import FastMCP
-from PIL import Image
+from PIL import Image, ImageDraw
 
 
 mcp = FastMCP("dungeoncrawler-monkeyc")
@@ -341,6 +341,201 @@ def _extract_gemini_image_bytes(response: Any) -> bytes | None:
     return None
 
 
+def _extract_svg_markup_from_text(text: str) -> str | None:
+    fenced = re.search(r"```svg\s*(.*?)```", text, flags=re.IGNORECASE | re.DOTALL)
+    if fenced:
+        candidate = fenced.group(1).strip()
+        if "<svg" in candidate and "</svg>" in candidate:
+            return candidate
+
+    start = text.find("<svg")
+    end = text.rfind("</svg>")
+    if start >= 0 and end > start:
+        return text[start : end + len("</svg>")]
+    return None
+
+
+def _parse_svg_style_class_fills(svg_markup: str) -> dict[str, str]:
+    class_fills: dict[str, str] = {}
+    for style_match in re.finditer(r"<style[^>]*>(.*?)</style>", svg_markup, flags=re.IGNORECASE | re.DOTALL):
+        style_block = style_match.group(1)
+        for rule_match in re.finditer(r"\.([A-Za-z0-9_-]+)\s*\{([^}]*)\}", style_block):
+            class_name = rule_match.group(1)
+            rule_body = rule_match.group(2)
+            fill_match = re.search(r"fill\s*:\s*([^;]+)", rule_body)
+            if fill_match:
+                class_fills[class_name] = fill_match.group(1).strip()
+    return class_fills
+
+
+def _svg_color_to_rgba(fill_value: str | None) -> tuple[int, int, int, int] | None:
+    if not fill_value:
+        return None
+
+    value = fill_value.strip().strip('"').strip("'").lower()
+    if value in {"none", "transparent"}:
+        return None
+
+    if value.startswith("#"):
+        hex_part = value[1:]
+        if len(hex_part) == 3:
+            r = int(hex_part[0] * 2, 16)
+            g = int(hex_part[1] * 2, 16)
+            b = int(hex_part[2] * 2, 16)
+            return (r, g, b, 255)
+        if len(hex_part) == 6:
+            r = int(hex_part[0:2], 16)
+            g = int(hex_part[2:4], 16)
+            b = int(hex_part[4:6], 16)
+            return (r, g, b, 255)
+    return None
+
+
+def _svg_markup_to_png_bytes(svg_markup: str) -> bytes:
+    root = ET.fromstring(svg_markup)
+    class_fills = _parse_svg_style_class_fills(svg_markup)
+
+    view_box = root.attrib.get("viewBox")
+    width = 64
+    height = 64
+    if view_box:
+        parts = re.split(r"[\s,]+", view_box.strip())
+        if len(parts) == 4:
+            width = max(1, int(float(parts[2])))
+            height = max(1, int(float(parts[3])))
+    else:
+        raw_w = root.attrib.get("width")
+        raw_h = root.attrib.get("height")
+        if raw_w and raw_h:
+            width = max(1, int(float(re.sub(r"[^0-9.]+", "", raw_w) or "64")))
+            height = max(1, int(float(re.sub(r"[^0-9.]+", "", raw_h) or "64")))
+
+    image = Image.new("RGBA", (width, height), (0, 0, 0, 0))
+    draw = ImageDraw.Draw(image)
+
+    for elem in root.iter():
+        tag = elem.tag.split("}")[-1]
+        if tag != "rect":
+            continue
+
+        raw_fill = elem.attrib.get("fill")
+        if not raw_fill:
+            style_attr = elem.attrib.get("style", "")
+            fill_match = re.search(r"fill\s*:\s*([^;]+)", style_attr)
+            if fill_match:
+                raw_fill = fill_match.group(1).strip()
+
+        if not raw_fill:
+            class_attr = elem.attrib.get("class", "")
+            for class_name in class_attr.split():
+                if class_name in class_fills:
+                    raw_fill = class_fills[class_name]
+                    break
+
+        fill = _svg_color_to_rgba(raw_fill)
+        if fill is None:
+            continue
+
+        x = float(elem.attrib.get("x", "0"))
+        y = float(elem.attrib.get("y", "0"))
+        w = float(elem.attrib.get("width", "0"))
+        h = float(elem.attrib.get("height", "0"))
+        if w <= 0 or h <= 0:
+            continue
+
+        x1 = int(round(x))
+        y1 = int(round(y))
+        x2 = int(round(x + w - 1))
+        y2 = int(round(y + h - 1))
+        draw.rectangle([x1, y1, x2, y2], fill=fill)
+
+    from io import BytesIO
+
+    buffer = BytesIO()
+    image.save(buffer, format="PNG")
+    return buffer.getvalue()
+
+
+def _extract_openrouter_image_bytes_from_completion(completion: Any) -> tuple[bytes | None, str | None]:
+    try:
+        payload = completion.model_dump()
+    except Exception:
+        payload = {}
+
+    choices = payload.get("choices") or []
+    if not choices:
+        return None, "OpenRouter returned no choices."
+
+    message = (choices[0] or {}).get("message") or {}
+    content = message.get("content")
+
+    if isinstance(content, list):
+        text_parts: list[str] = []
+        for part in content:
+            if not isinstance(part, dict):
+                continue
+            if part.get("type") == "image_url":
+                image_url = (part.get("image_url") or {}).get("url")
+                if isinstance(image_url, str) and image_url.startswith("data:image"):
+                    marker = "base64,"
+                    idx = image_url.find(marker)
+                    if idx >= 0:
+                        try:
+                            return base64.b64decode(image_url[idx + len(marker) :]), None
+                        except Exception as err:
+                            return None, f"Failed to decode OpenRouter data URL: {err}"
+                elif isinstance(image_url, str) and image_url.startswith("http"):
+                    try:
+                        with urllib.request.urlopen(image_url, timeout=60) as response:
+                            return response.read(), None
+                    except Exception as err:
+                        return None, f"Failed to download OpenRouter image URL: {err}"
+
+            if part.get("type") == "text" and isinstance(part.get("text"), str):
+                text_parts.append(part.get("text"))
+
+        if text_parts:
+            content = "\n".join(text_parts)
+
+    if isinstance(content, str):
+        data_url_match = re.search(r"data:image/[^;]+;base64,([A-Za-z0-9+/=]+)", content)
+        if data_url_match:
+            try:
+                return base64.b64decode(data_url_match.group(1)), None
+            except Exception as err:
+                return None, f"Failed to decode image base64 in OpenRouter text response: {err}"
+
+        md_url_match = re.search(r"!\[[^\]]*\]\((https?://[^\)]+)\)", content)
+        if md_url_match:
+            image_url = md_url_match.group(1)
+            try:
+                with urllib.request.urlopen(image_url, timeout=60) as response:
+                    return response.read(), None
+            except Exception as err:
+                return None, f"Failed to download markdown image URL from OpenRouter response: {err}"
+
+        plain_url_match = re.search(r"https?://\S+", content)
+        if plain_url_match and any(ext in plain_url_match.group(0).lower() for ext in [".png", ".jpg", ".jpeg", ".webp"]):
+            image_url = plain_url_match.group(0).rstrip(".,)")
+            try:
+                with urllib.request.urlopen(image_url, timeout=60) as response:
+                    return response.read(), None
+            except Exception as err:
+                return None, f"Failed to download plain image URL from OpenRouter response: {err}"
+
+        svg_markup = _extract_svg_markup_from_text(content)
+        if svg_markup:
+            try:
+                return _svg_markup_to_png_bytes(svg_markup), None
+            except Exception as err:
+                return None, f"OpenRouter returned SVG but conversion to PNG failed: {err}"
+
+        preview = content[:240].replace("\n", " ")
+        return None, f"OpenRouter model returned text instead of image data. Preview: {preview}"
+
+    return None, "OpenRouter response did not contain supported image content."
+
+
 @mcp.tool()
 def build_for_device(
     product: str = "venu2s",
@@ -463,7 +658,7 @@ def register_drawable(
 def generate_image_and_embed(
     bitmap_id: str,
     prompt: str,
-    provider: str = "openai",
+    provider: str = "openrouter",
     model: str | None = None,
     final_size: str = "16x16",
     provider_size: str = "1024x1024",
@@ -489,7 +684,60 @@ def generate_image_and_embed(
         style_suffix=style_suffix,
     )
 
-    if provider_name == "openai":
+    if provider_name == "openrouter":
+        api_key = os.environ.get("OPENROUTER_API_KEY")
+        if not api_key:
+            return {
+                "ok": False,
+                "message": "OPENROUTER_API_KEY is not set. Add it to your MCP server env.",
+            }
+
+        try:
+            from openai import OpenAI
+        except Exception:
+            return {
+                "ok": False,
+                "message": "openai package missing. Install dependencies from tools/mcp_monkeyc/requirements.txt.",
+            }
+
+        client = OpenAI(
+            api_key=api_key,
+            base_url="https://openrouter.ai/api/v1",
+        )
+        extra_headers: dict[str, str] = {}
+        site_url = os.environ.get("OPENROUTER_SITE_URL")
+        app_name = os.environ.get("OPENROUTER_APP_NAME")
+        if site_url:
+            extra_headers["HTTP-Referer"] = site_url
+        if app_name:
+            extra_headers["X-Title"] = app_name
+
+        try:
+            completion = client.chat.completions.create(
+                model=model or "openrouter/hunter-alpha",
+                messages=[
+                    {
+                        "role": "user",
+                        "content": final_prompt,
+                    }
+                ],
+                extra_headers=extra_headers or None,
+            )
+        except Exception as err:
+            return {
+                "ok": False,
+                "message": f"OpenRouter image generation failed: {err}",
+            }
+
+        image_bytes, extraction_error = _extract_openrouter_image_bytes_from_completion(completion)
+        if not image_bytes:
+            return {
+                "ok": False,
+                "message": extraction_error
+                or "OpenRouter did not return image bytes. Try a model that supports image output.",
+            }
+
+    elif provider_name == "openai":
         api_key = os.environ.get("OPENAI_API_KEY")
         if not api_key:
             return {
@@ -619,7 +867,7 @@ def generate_image_and_embed(
     else:
         return {
             "ok": False,
-            "message": "Unsupported provider. Use 'openai', 'gemini', or 'imagerouter'.",
+            "message": "Unsupported provider. Use 'openrouter', 'openai', 'gemini', or 'imagerouter'.",
         }
 
     raw_path = _abs_from_workspace(output_folder) / f"{bitmap_id}_raw.png"
