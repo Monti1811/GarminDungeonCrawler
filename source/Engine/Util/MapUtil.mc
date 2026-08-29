@@ -352,10 +352,22 @@ module MapUtil {
 	function getRandomPos(map as Map, left as Number, right as Number, top as Number, bottom as Number) as Point2D {
 		var x = 0;
 		var y = 0;
+		var max_tries = 50;
+		var tries = 0;
 		do {
 			x = MathUtil.random(left + 1, right - 1);
 			y = MathUtil.random(top + 1, bottom - 1);
-		} while (x == Constants.ROOM_CENTER_INDEX || y == Constants.ROOM_CENTER_INDEX || map.getContent([x,y]) != null);
+			tries += 1;
+			// Avoid tunnel tiles (narrow passages with 2 or fewer passable neighbors)
+			if (tries < max_tries && isNarrowPassage(map, [x, y])) {
+				continue;
+			}
+			// Also avoid the center index for tunnel entrances
+			if (x == Constants.ROOM_CENTER_INDEX || y == Constants.ROOM_CENTER_INDEX) {
+				continue;
+			}
+			break;
+		} while (true);
 		return [x, y];
 	}
 

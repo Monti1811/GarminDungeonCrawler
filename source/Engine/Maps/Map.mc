@@ -1,5 +1,6 @@
 import Toybox.Lang;
 import Toybox.Graphics;
+import Toybox.Math;
 import Toybox.WatchUi;
 import Toybox.System;
 import Toybox.Application;
@@ -323,6 +324,259 @@ class Map {
 		}*/
 
 		return map;
+	}
+
+	static function createRoomShape(width as Number, height as Number, left as Number, right as Number, top as Number, bottom as Number, shape as RoomShape) as Map {
+		var map = new Map(width, height, true);
+		var room_width = right - left;
+		var room_height = bottom - top;
+
+		// Step 1: Create base rectangle (all walls)
+		for (var i = left; i <= right; i++) {
+			map.setType([i, top], WALL);
+		}
+		for (var i = left; i <= right; i++) {
+			map.setType([i, bottom], WALL);
+		}
+		for (var j = top; j <= bottom; j++) {
+			map.setType([left, j], WALL);
+		}
+		for (var j = top; j <= bottom; j++) {
+			map.setType([right, j], WALL);
+		}
+
+		// Step 2: Fill interior based on shape
+		switch (shape) {
+			case ROOMSHAPE_RECTANGLE:
+				// Default rectangle - fill everything
+				for (var i = left + 1; i < right; i++) {
+					for (var j = top + 1; j < bottom; j++) {
+						map.setType([i, j], PASSABLE);
+					}
+				}
+				break;
+
+			case ROOMSHAPE_L_SHAPE:
+				// L-shape: Two overlapping rectangles
+				// Main horizontal part (top half)
+				var h_height = $.MathUtil.max(2, room_height / 2);
+				for (var i = left + 1; i < right; i++) {
+					for (var j = top + 1; j < top + h_height; j++) {
+						map.setType([i, j], PASSABLE);
+					}
+				}
+				// Vertical part (right side, extending down)
+				var v_width = $.MathUtil.max(2, room_width / 3);
+				for (var i = right - v_width; i < right; i++) {
+					for (var j = top + h_height; j < bottom; j++) {
+						map.setType([i, j], PASSABLE);
+					}
+				}
+				break;
+
+			case ROOMSHAPE_T_SHAPE:
+				// T-shape: Wide top, narrow vertical stem
+				var stem_width = $.MathUtil.max(2, room_width / 3);
+				var stem_start = left + (room_width - stem_width) / 2;
+				// Top horizontal bar
+				var bar_height = $.MathUtil.max(2, room_height / 3);
+				for (var i = left + 1; i < right; i++) {
+					for (var j = top + 1; j < top + bar_height; j++) {
+						map.setType([i, j], PASSABLE);
+					}
+				}
+				// Vertical stem
+				for (var i = stem_start; i < stem_start + stem_width; i++) {
+					for (var j = top + bar_height; j < bottom; j++) {
+						map.setType([i, j], PASSABLE);
+					}
+				}
+				break;
+
+			case ROOMSHAPE_PLUS:
+				// Plus/Cross shape
+				var arm_width = $.MathUtil.max(2, room_width / 3);
+				var arm_height = $.MathUtil.max(2, room_height / 3);
+				var cx = left + room_width / 2;
+				var cy = top + room_height / 2;
+				// Horizontal arm
+				for (var i = left + 1; i < right; i++) {
+					for (var j = cy - arm_height / 2; j <= cy + arm_height / 2; j++) {
+						if (j > top && j < bottom) {
+							map.setType([i, j], PASSABLE);
+						}
+					}
+				}
+				// Vertical arm
+				for (var j = top + 1; j < bottom; j++) {
+					for (var i = cx - arm_width / 2; i <= cx + arm_width / 2; i++) {
+						if (i > left && i < right) {
+							map.setType([i, j], PASSABLE);
+						}
+					}
+				}
+				break;
+
+			case ROOMSHAPE_ROUNDED:
+				// Rounded rectangle: Fill rectangle, then cut corners
+				var corner_radius = $.MathUtil.min(room_width, room_height) / 4;
+				for (var i = left + 1; i < right; i++) {
+					for (var j = top + 1; j < bottom; j++) {
+						// Check distance to each corner
+						var dx_left = i - (left + corner_radius);
+						var dx_right = (right - corner_radius) - i;
+						var dy_top = j - (top + corner_radius);
+						var dy_bottom = (bottom - corner_radius) - j;
+						var cut_corner = false;
+						// Top-left corner
+						if (dx_left < 0 && dy_top < 0) {
+							if (Math.sqrt(dx_left * dx_left + dy_top * dy_top) > corner_radius) {
+								cut_corner = true;
+							}
+						}
+						// Top-right corner
+						if (dx_right < 0 && dy_top < 0) {
+							if (Math.sqrt(dx_right * dx_right + dy_top * dy_top) > corner_radius) {
+								cut_corner = true;
+							}
+						}
+						// Bottom-left corner
+						if (dx_left < 0 && dy_bottom < 0) {
+							if (Math.sqrt(dx_left * dx_left + dy_bottom * dy_bottom) > corner_radius) {
+								cut_corner = true;
+							}
+						}
+						// Bottom-right corner
+						if (dx_right < 0 && dy_bottom < 0) {
+							if (Math.sqrt(dx_right * dx_right + dy_bottom * dy_bottom) > corner_radius) {
+								cut_corner = true;
+							}
+						}
+						if (!cut_corner) {
+							map.setType([i, j], PASSABLE);
+						}
+					}
+				}
+				break;
+		}
+
+		return map;
+	}
+
+	static function addIslands(map as Map, left as Number, right as Number, top as Number, bottom as Number, room_shape as RoomShape) as Void {
+		var room_width = right - left;
+		var room_height = bottom - top;
+		
+		// Number of islands depends on room size and shape
+		var max_islands = 0;
+		var room_area = room_width * room_height;
+		
+		// Calculate max islands based on room size
+		if (room_area > 100) {
+			max_islands = 4;
+		} else if (room_area > 50) {
+			max_islands = 3;
+		} else if (room_area > 25) {
+			max_islands = 2;
+		} else {
+			max_islands = 1;
+		}
+		
+		// Reduce islands for non-rectangular shapes (they have less open space)
+		if (room_shape == ROOMSHAPE_L_SHAPE || room_shape == ROOMSHAPE_T_SHAPE) {
+			max_islands = $.MathUtil.max(1, max_islands - 1);
+		} else if (room_shape == ROOMSHAPE_PLUS) {
+			max_islands = $.MathUtil.max(1, max_islands - 2);
+		}
+		
+		var num_islands = $.MathUtil.random(1, max_islands + 1);
+		
+		for (var island = 0; island < num_islands; island++) {
+			// Choose island size: 1x1, 2x1, 1x2, or 2x2
+			var island_type = $.MathUtil.random(0, 3);
+			var island_width = (island_type == 0 || island_type == 2) ? 1 : 2;
+			var island_height = (island_type == 0 || island_type == 1) ? 1 : 2;
+			
+			// Try to place the island
+			var placed = false;
+			var tries = 0;
+			while (!placed && tries < 20) {
+				tries += 1;
+				var ix = $.MathUtil.random(left + 2, right - island_width - 1);
+				var iy = $.MathUtil.random(top + 2, bottom - island_height - 1);
+				
+				// Check if position is valid (not too close to center/spawn)
+				var center_x = (left + right) / 2;
+				var center_y = (top + bottom) / 2;
+				var dist_to_center = $.MathUtil.abs(ix - center_x) + $.MathUtil.abs(iy - center_y);
+				
+				// Don't place too close to center (spawn point)
+				if (dist_to_center < 3) {
+					continue;
+				}
+				
+				// Check if all tiles for the island are PASSABLE
+				var valid = true;
+				for (var dx = 0; dx < island_width && valid; dx++) {
+					for (var dy = 0; dy < island_height && valid; dy++) {
+						var check_x = ix + dx;
+						var check_y = iy + dy;
+						if (check_x <= left || check_x >= right || check_y <= top || check_y >= bottom) {
+							valid = false;
+						} else if (map.getType([check_x, check_y]) != PASSABLE) {
+							valid = false;
+						}
+					}
+				}
+				
+				if (!valid) {
+					continue;
+				}
+				
+				// Check if island blocks passage (ensure there's still a path around it)
+				// Simple check: make sure there's passable tiles on at least 3 sides
+				var passable_sides = 0;
+				// Check left
+				if (ix > left + 1 && map.getType([ix - 1, iy]) == PASSABLE) {
+					passable_sides += 1;
+				}
+				// Check right
+				if (ix + island_width < right - 1 && map.getType([ix + island_width, iy]) == PASSABLE) {
+					passable_sides += 1;
+				}
+				// Check top
+				if (iy > top + 1 && map.getType([ix, iy - 1]) == PASSABLE) {
+					passable_sides += 1;
+				}
+				// Check bottom
+				if (iy + island_height < bottom - 1 && map.getType([ix, iy + island_height]) == PASSABLE) {
+					passable_sides += 1;
+				}
+				
+				if (passable_sides < 3) {
+					continue;
+				}
+				
+				// Place the island
+				for (var dx = 0; dx < island_width; dx++) {
+					for (var dy = 0; dy < island_height; dy++) {
+						map.setType([ix + dx, iy + dy], WALL);
+					}
+				}
+				placed = true;
+			}
+		}
+	}
+
+	static function chooseRandomRoomShape() as RoomShape {
+		var chances = {
+			ROOMSHAPE_RECTANGLE => 40,  // 40% chance
+			ROOMSHAPE_L_SHAPE => 25,    // 25% chance
+			ROOMSHAPE_T_SHAPE => 20,    // 20% chance
+			ROOMSHAPE_PLUS => 10,       // 10% chance
+			ROOMSHAPE_ROUNDED => 5      // 5% chance
+		};
+		return $.MathUtil.weighted_random(chances) as RoomShape;
 	}
 
 }

@@ -118,7 +118,14 @@ module Main {
 		var right = middle_of_screen[0] + Math.floor(room_size_x/2);
 		var top = middle_of_screen[1] - Math.floor(room_size_y/2);
 		var bottom = middle_of_screen[1] + Math.floor(room_size_y/2);
-		var map = Map.createRandomMap(screen_size_x, screen_size_y, left, right, top, bottom);
+		
+		// Choose random room shape
+		var room_shape = Map.chooseRandomRoomShape();
+		var map = Map.createRoomShape(screen_size_x, screen_size_y, left, right, top, bottom, room_shape);
+		
+		// Add interior wall islands for tactical cover
+		Map.addIslands(map, left, right, top, bottom, room_shape);
+		
 		var enemies = createRandomEnemies(map, left, right, top, bottom);
 		var items = createRandomItems(map, left, right, top, bottom, enemies.size());
 		var room = new Room({
