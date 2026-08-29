@@ -7,8 +7,8 @@ class Bat extends Enemy {
 		id = 1;
 		name = "Bat";
 		current_health = 25;
-		maxHealth = 25;
-		armor = 5;
+		maxHealth = 22;
+		armor = 4;
         kill_experience = 20;
 	}
 

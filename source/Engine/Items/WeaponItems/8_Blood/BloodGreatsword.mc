@@ -15,7 +15,7 @@ class BloodGreatsword extends WeaponItem {
             :dexterity => 8
         };
 
-        attack = 56;
+        attack = 70;
         range = 2;
         weapon_type = TWOHAND;
         cooldown = 1;

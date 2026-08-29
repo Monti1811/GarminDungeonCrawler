@@ -16,7 +16,7 @@ class IceKatana extends WeaponItem {
             :dexterity => 3
         };
 
-        attack = 14;
+        attack = 9;
         range = 1;
             element = ELEMENT_ICE;
     }

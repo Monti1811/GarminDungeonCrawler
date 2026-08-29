@@ -7,8 +7,8 @@ class Goblin extends Enemy {
         id = 25;
         name = "Goblin";
         current_health = 35;
-        maxHealth = 35;
-        damage = 10;
+        maxHealth = 32;
+        damage = 8;
         armor = 2;
         kill_experience = 15;
         energy_per_turn = 100; 

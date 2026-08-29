@@ -14,7 +14,7 @@ class GoldSpell extends Spell {
             :wisdom => 6
         };
 
-        attack = 16;
+        attack = 12;
         range = 3;
         cooldown = 1;
         attack_type = INTELLIGENCE;

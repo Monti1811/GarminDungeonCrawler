@@ -10,7 +10,7 @@ class WaterBreastPlate extends ArmorItem {
 		value = 100;
 		weight = 8;
 		slot = CHEST;
-		defense = 10;
+		defense = 8;
 		attribute_bonus = {
 			:constitution => 4,
 			:intelligence => 4

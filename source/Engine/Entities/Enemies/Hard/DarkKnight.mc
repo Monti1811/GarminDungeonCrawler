@@ -9,10 +9,10 @@ class DarkKnight extends Enemy {
 		Enemy.initialize();
 		id = 11;
 		name = "Dark Knight";
-		damage = 50;
+		damage = 36;
 		current_health = 200;
 		maxHealth = current_health;
-		armor = 30;
+		armor = 22;
         kill_experience = 400;
 		energy_per_turn = 75;
 	}

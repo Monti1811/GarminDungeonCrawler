@@ -6,11 +6,11 @@ class ElementalGooSmall extends Enemy {
 		Enemy.initialize();
 		id = 16;
 		name = "Small Goo Elemental";
-		damage = 15;
+		damage = 13;
 		current_health = 50;
 		maxHealth = current_health;
 		energy_per_turn = 50;
-		armor = 5;
+		armor = 4;
         kill_experience = 15;
 	}
 

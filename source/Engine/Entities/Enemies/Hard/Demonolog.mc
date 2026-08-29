@@ -11,7 +11,7 @@ class Demonolog extends Enemy {
 		Enemy.initialize();
 		id = 27;
 		name = "Demonolog";
-		damage = 20;
+		damage = 19;
 		current_health = 200;
 		maxHealth = current_health;
 		energy_per_turn = 67; 

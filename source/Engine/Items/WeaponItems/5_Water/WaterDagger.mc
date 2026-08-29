@@ -16,7 +16,7 @@ class WaterDagger extends WeaponItem {
             :intelligence => 2
         };
 
-        attack = 10;
+        attack = 8;
         attack_type = DEXTERITY;
     }
 

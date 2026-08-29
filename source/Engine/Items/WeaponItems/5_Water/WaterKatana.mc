@@ -16,7 +16,7 @@ class WaterKatana extends WeaponItem {
             :dexterity => 3
         };
 
-        attack = 14;
+        attack = 10;
         range = 1;
     }
 

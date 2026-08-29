@@ -6,7 +6,7 @@ class Rokita extends Enemy {
         Enemy.initialize();
         id = 35;
         name = "Rokita";
-        damage = 40;
+        damage = 34;
 		current_health = 500;
 		maxHealth = current_health;
 		armor = 0;

@@ -15,7 +15,7 @@ class GoldLance extends WeaponItem {
             :luck => 5
         };
 
-        attack = 16;
+        attack = 12;
         range = 2;
         range_type = LINEAR;
         attack_type = DEXTERITY;

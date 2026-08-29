@@ -16,7 +16,7 @@ class GoldAxe extends WeaponItem {
             :luck => -1
         };
 
-        attack = 14;
+        attack = 10;
     }
 
     function onEquipItem(player as Player) as Void {

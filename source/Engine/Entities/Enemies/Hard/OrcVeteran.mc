@@ -6,7 +6,7 @@ class OrcVeteran extends Enemy {
         Enemy.initialize();
         id = 34;
         name = "Veteran Orc";
-        damage = 100;
+        damage = 63;
 		current_health = 75;
 		maxHealth = current_health;
 		armor = 0;

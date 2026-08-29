@@ -16,7 +16,7 @@ class BloodAxe extends WeaponItem {
             :luck => 2
         };
 
-        attack = 40;
+        attack = 49;
     }
 
     function onEquipItem(player as Player) as Void {

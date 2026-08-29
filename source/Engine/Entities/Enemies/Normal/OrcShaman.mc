@@ -18,7 +18,7 @@ class OrcShaman extends Enemy {
         Enemy.initialize();
         id = 33;
         name = "Shaman Orc";
-        damage = 15;
+        damage = 14;
 		current_health = 100;
 		maxHealth = current_health;
 		energy_per_turn = 100;

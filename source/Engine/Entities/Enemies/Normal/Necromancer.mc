@@ -11,9 +11,9 @@ class Necromancer extends Enemy {
 		Enemy.initialize();
 		id = 6;
 		name = "Necromancer";
-		damage = 20;
+		damage = 19;
 		current_health = 50;
-		maxHealth = 50;
+		maxHealth = 46;
 		energy_per_turn = 67; 
         armor = 0;
         kill_experience = 125;

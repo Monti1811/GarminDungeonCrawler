@@ -262,11 +262,11 @@ class ItemSpecificValues {
     private function buildConsumableWeights(depth as Number) as Dictionary<Number, Numeric> {
         return {
             2000 => tieredWeight(depth, [ { :max => 8, :weight => 8 }, { :max => 18, :weight => 6 }, { :max => 30, :weight => 4 }, { :max => 999, :weight => 3 } ]),
-            2001 => tieredWeight(depth, [ { :max => 8, :weight => 5 }, { :max => 18, :weight => 7 }, { :max => 30, :weight => 6 }, { :max => 999, :weight => 5 } ]),
-            2002 => tieredWeight(depth, [ { :max => 9, :weight => 0 }, { :max => 18, :weight => 6 }, { :max => 30, :weight => 7 }, { :max => 999, :weight => 6 } ]),
-            2003 => tieredWeight(depth, [ { :max => 9, :weight => 0 }, { :max => 18, :weight => 5 }, { :max => 30, :weight => 6 }, { :max => 999, :weight => 6 } ]),
-            2004 => tieredWeight(depth, [ { :max => 39, :weight => 0 }, { :max => 60, :weight => 5 }, { :max => 999, :weight => 6 } ]),
-            2005 => tieredWeight(depth, [ { :max => 39, :weight => 0 }, { :max => 60, :weight => 5 }, { :max => 999, :weight => 6 } ]),
+            2001 => tieredWeight(depth, [ { :max => 8, :weight => 5 }, { :max => 18, :weight => 7 }, { :max => 30, :weight => 6 }, { :max => 999, :weight => 7 } ]),
+            2002 => tieredWeight(depth, [ { :max => 9, :weight => 0 }, { :max => 18, :weight => 6 }, { :max => 30, :weight => 6 }, { :max => 999, :weight => 8 } ]),
+            2003 => tieredWeight(depth, [ { :max => 9, :weight => 0 }, { :max => 18, :weight => 5 }, { :max => 30, :weight => 6 }, { :max => 999, :weight => 8 } ]),
+            2004 => tieredWeight(depth, [ { :max => 39, :weight => 0 }, { :max => 60, :weight => 6 }, { :max => 999, :weight => 8 } ]),
+            2005 => tieredWeight(depth, [ { :max => 39, :weight => 0 }, { :max => 60, :weight => 6 }, { :max => 999, :weight => 8 } ]),
             3000 => tieredWeight(depth, [ { :max => 8, :weight => 7 }, { :max => 20, :weight => 6 }, { :max => 999, :weight => 5 } ]),
             5000 => 8 + Math.log(depth + 1, 2)
         } as Dictionary<Number, Numeric>;

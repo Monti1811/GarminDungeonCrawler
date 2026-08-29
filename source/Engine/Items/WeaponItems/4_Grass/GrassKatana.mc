@@ -17,7 +17,7 @@ class GrassKatana extends WeaponItem {
             :luck => 1
         };
 
-        attack = 14;
+        attack = 8;
         range = 1;
     }
 

@@ -10,7 +10,7 @@ class BloodShoes extends ArmorItem {
 		value = 1200;
 		weight = 3;
 		slot = FEET;
-		defense = 15;
+		defense = 18;
 		attribute_bonus = {
 			:dexterity => 10,
 			:strength => 7

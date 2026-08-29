@@ -16,7 +16,7 @@ class GrassGreatsword extends WeaponItem {
             :luck => 2
         };
 
-        attack = 18;
+        attack = 12;
         range = 2;
         weapon_type = TWOHAND;
         cooldown = 1;

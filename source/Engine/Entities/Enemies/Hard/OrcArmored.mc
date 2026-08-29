@@ -6,10 +6,10 @@ class OrcArmored extends Enemy {
         Enemy.initialize();
         id = 31;
         name = "Armored Orc";
-        damage = 50;
+        damage = 31;
 		current_health = 175;
 		maxHealth = current_health;
-		armor = 50;
+		armor = 31;
         kill_experience = 300;
 		energy_per_turn = 50;
     }

@@ -16,7 +16,7 @@ class GrassLance extends WeaponItem {
             :luck => 5
         };
 
-        attack = 14;
+        attack = 8;
         range = 2;
         range_type = LINEAR;
         attack_type = DEXTERITY;

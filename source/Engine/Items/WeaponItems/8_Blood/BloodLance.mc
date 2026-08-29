@@ -15,7 +15,7 @@ class BloodLance extends WeaponItem {
             :luck => 10
         };
 
-        attack = 40;
+        attack = 49;
         range = 2;
         range_type = LINEAR;
         attack_type = DEXTERITY;

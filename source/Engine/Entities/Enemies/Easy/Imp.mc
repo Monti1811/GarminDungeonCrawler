@@ -6,9 +6,9 @@ class Imp extends Enemy {
 		Enemy.initialize();
 		id = 4;
 		name = "Imp";
-		damage = 12;
+		damage = 10;
 		current_health = 25;
-		maxHealth = 25;
+		maxHealth = 22;
 		energy_per_turn = 100;
 		armor = 0;
         kill_experience = 15;

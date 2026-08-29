@@ -10,7 +10,7 @@ class IceBreastPlate extends ArmorItem {
 		value = 100;
 		weight = 10;
 		slot = CHEST;
-		defense = 10;
+		defense = 9;
 		attribute_bonus = {
 			:constitution => 4,
 			:wisdom => 4,

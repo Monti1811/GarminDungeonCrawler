@@ -15,7 +15,7 @@ class WaterSpell extends Spell {
             :intelligence => 2
         };
 
-        attack = 14;
+        attack = 10;
         range = 3;
         cooldown = 1;
         attack_type = INTELLIGENCE;

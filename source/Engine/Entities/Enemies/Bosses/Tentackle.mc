@@ -8,8 +8,8 @@ class Tentackle extends Enemy {
         name = "Tentackle";
         current_health = 750;
         maxHealth = current_health;
-        damage = 100;
-        armor = 10;
+        damage = 46;
+        armor = 5;
         kill_experience = 500;
         energy_per_turn = 200; 
     }

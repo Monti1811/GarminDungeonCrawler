@@ -10,7 +10,7 @@ class GoldBreastPlate extends ArmorItem {
 		value = 500;
 		weight = 15;
 		slot = CHEST;
-		defense = 20;
+		defense = 16;
 		attribute_bonus = {
 			:constitution => 10,
 			:strength => 3,

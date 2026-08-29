@@ -10,7 +10,7 @@ class BloodHelmet extends ArmorItem {
 		value = 3000;
 		weight = 3;
 		slot = HEAD;
-		defense = 25;
+		defense = 31;
 		attribute_bonus = {
 			:constitution => 10,
 			:strength => 5,
