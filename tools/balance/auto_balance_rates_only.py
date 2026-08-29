@@ -288,6 +288,7 @@ def main() -> None:
     item_weight_jitter = float(variation.get("itemWeightJitter", 0.0))
     enemy_budget_scale_by_depth = variation.get("enemyBudgetScaleByDepth", []) if isinstance(variation.get("enemyBudgetScaleByDepth", []), list) else []
     item_drop_scale_by_depth = variation.get("itemDropScaleByDepth", []) if isinstance(variation.get("itemDropScaleByDepth", []), list) else []
+    enemy_depth_scaling = config.get("enemyDepthScaling", {}) if isinstance(config.get("enemyDepthScaling", {}), dict) else {}
 
     depths = core.resolve_depths(config)
     players = core.parse_player_classes(workspace)
@@ -315,6 +316,7 @@ def main() -> None:
         item_drop_scale_by_depth=item_drop_scale_by_depth,
         rooms_per_depth_for_progression=int(config.get("roomsPerDepthForProgression", 4)),
         initial_attribute_points=int(config.get("initialAttributePoints", 5)),
+        enemy_depth_scaling=enemy_depth_scaling,
     )
 
     depth_pressure = build_depth_pressure(depth_win, depth_target)

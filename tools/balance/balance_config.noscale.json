@@ -1,12 +1,12 @@
 {
   "strictRealism": true,
-  "roundsPerDepth": 300,
+  "roundsPerDepth": 100,
   "depthRange": {
     "start": 1,
     "end": 200,
-    "step": 1
+    "step": 10
   },
-  "maxAdjustmentPercentPerRun": 75,
+  "maxAdjustmentPercentPerRun": 50,
   "tolerance": 0.05,
   "initialAttributePoints": 5,
   "roomsPerDepthForProgression": 3,
@@ -34,11 +34,11 @@
     ]
   },
   "enemyDepthScaling": {
-    "enabled": true,
-    "damageScale": 0.002,
-    "healthScale": 0.003,
-    "armorScale": 0.001,
-    "xpScale": 0.003
+    "enabled": false,
+    "damageScale": 0.005,
+    "healthScale": 0.008,
+    "armorScale": 0.004,
+    "xpScale": 0.005
   },
   "targetWinRateByDepth": [
     { "maxDepth": 1, "target": 1.0 },

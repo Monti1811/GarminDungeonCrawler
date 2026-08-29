@@ -379,16 +379,28 @@ def clamp(v: float, mn: float, mx: float) -> float:
     return max(mn, min(mx, v))
 
 
+def attribute_point_cost_for_level(level: int) -> int:
+    """Match Game's getAttributePointCostForLevel: cost = 1 + floor(level/10), clamped 1-10."""
+    return max(1, min(10, 1 + level // 10))
+
+
 def distribute_attribute_points(base_attributes: Dict[str, int], points: int) -> Dict[str, int]:
     if points <= 0:
         return dict(base_attributes)
     out = dict(base_attributes)
-    priority = sorted(ATTRIBUTE_KEYS, key=lambda key: base_attributes.get(key, 0), reverse=True)
-    if not priority:
-        return out
-    for idx in range(points):
-        attr = priority[idx % len(priority)]
-        out[attr] = out.get(attr, 0) + 1
+    remaining = points
+    while remaining > 0:
+        best_attr = None
+        best_cost = remaining + 1
+        for key in ATTRIBUTE_KEYS:
+            cost = attribute_point_cost_for_level(out.get(key, 0))
+            if cost <= remaining and cost < best_cost:
+                best_cost = cost
+                best_attr = key
+        if best_attr is None:
+            break
+        out[best_attr] = out.get(best_attr, 0) + 1
+        remaining -= best_cost
     return out
 
 
@@ -398,6 +410,7 @@ def expected_enemy_profile_for_depth(
     enemies: Dict[int, Enemy],
     enemy_weights: List[Dict[str, object]],
     class_multipliers: Dict[int, Dict[int, float]],
+    enemy_depth_scaling: Optional[Dict[str, object]] = None,
 ) -> Tuple[float, float]:
     multipliers = class_multipliers.get(class_id, {})
     total_weight = 0.0
@@ -413,7 +426,7 @@ def expected_enemy_profile_for_depth(
         final_weight = base_weight * multipliers.get(enemy_id, 1.0)
         if final_weight <= 0:
             continue
-        enemy = enemies[enemy_id]
+        enemy = scale_enemy_for_depth(enemies[enemy_id], depth, enemy_depth_scaling or {})
         total_weight += final_weight
         weighted_xp += final_weight * enemy.kill_experience
         weighted_cost += final_weight * int(entry["cost"])
@@ -434,6 +447,7 @@ def projected_player_for_depth(
     enemy_budget_scale_by_depth: List[Dict[str, float]],
     rooms_per_depth_for_progression: int,
     initial_attribute_points: int,
+    enemy_depth_scaling: Optional[Dict[str, object]] = None,
 ) -> Tuple[int, int, int, Dict[str, int]]:
     cumulative_experience = 0.0
     for explored_depth in range(1, depth):
@@ -443,6 +457,7 @@ def projected_player_for_depth(
             enemies=enemies,
             enemy_weights=enemy_weights,
             class_multipliers=class_multipliers,
+            enemy_depth_scaling=enemy_depth_scaling,
         )
         if avg_xp <= 0:
             continue
@@ -452,7 +467,8 @@ def projected_player_for_depth(
             base_budget = 10 + explored_depth * 3.5
             budget = base_budget * max(0.2, enemy_count_multiplier) * max(0.2, budget_scale)
             enemies_per_room = clamp(budget / max(1.0, avg_cost), 1.0, 15.0)
-        cumulative_experience += avg_xp * enemies_per_room * max(1, rooms_per_depth_for_progression)
+        xp_diminishing = 1.0 / (1.0 + explored_depth * 0.012)
+        cumulative_experience += avg_xp * enemies_per_room * max(1, rooms_per_depth_for_progression) * xp_diminishing
 
     level = 1
     levels_gained = 0
@@ -465,7 +481,7 @@ def projected_player_for_depth(
 
     max_health = player.max_health + levels_gained * player.level_health_gain
     max_mana = player.max_mana + levels_gained * player.level_mana_gain
-    attributes = distribute_attribute_points(player.attributes, max(0, initial_attribute_points) + levels_gained * 3)
+    attributes = distribute_attribute_points(player.attributes, max(0, initial_attribute_points) + levels_gained * 5)
     return level, max_health, max_mana, attributes
 
 
@@ -563,6 +579,23 @@ def weighted_pick(weight_map: Dict[int, float]) -> Optional[int]:
     if total <= 0:
         return None
     return random.choices(keys, weights=weights, k=1)[0]
+
+
+def scale_enemy_for_depth(enemy: Enemy, depth: int, scaling: Dict[str, object]) -> Enemy:
+    if not scaling.get("enabled", False):
+        return enemy
+    f = depth - 1
+    if f <= 0:
+        return enemy
+    return Enemy(
+        id=enemy.id,
+        name=enemy.name,
+        file=enemy.file,
+        damage=int(enemy.damage * (1.0 + f * float(scaling.get("damageScale", 0.015)))),
+        armor=int(enemy.armor * (1.0 + f * float(scaling.get("armorScale", 0.01)))),
+        max_health=int(enemy.max_health * (1.0 + f * float(scaling.get("healthScale", 0.02)))),
+        kill_experience=int(enemy.kill_experience * (1.0 + f * float(scaling.get("xpScale", 0.01)))),
+    )
 
 
 def strict_room_enemy_ids(
@@ -752,7 +785,7 @@ def simulate_room(
                 continue
             available_weapons.append(weapon)
 
-        should_heal = player_hp <= player.max_health * 0.45 and len(health_potions) > 0
+        should_heal = player_hp <= player.max_health * (0.55 if len(room_enemies) > 3 else 0.45) and len(health_potions) > 0
         min_mana_cost = min((w.mana_loss for w in available_weapons if w.mana_loss > 0), default=0.0)
         should_mana = min_mana_cost > 0 and player_mana < min_mana_cost and len(mana_potions) > 0
 
@@ -817,6 +850,7 @@ def simulate(
     item_drop_scale_by_depth: List[Dict[str, float]],
     rooms_per_depth_for_progression: int,
     initial_attribute_points: int,
+    enemy_depth_scaling: Optional[Dict[str, object]] = None,
 ) -> Tuple[List[EncounterOutcome], Dict[int, float], Dict[int, float], Dict[int, float], Dict[int, float]]:
     outcomes: List[EncounterOutcome] = []
 
@@ -839,6 +873,7 @@ def simulate(
                 enemy_budget_scale_by_depth=enemy_budget_scale_by_depth,
                 rooms_per_depth_for_progression=rooms_per_depth_for_progression,
                 initial_attribute_points=initial_attribute_points,
+                enemy_depth_scaling=enemy_depth_scaling,
             )
             progressed_player = PlayerClass(
                 id=player.id,
@@ -874,14 +909,18 @@ def simulate(
                     if not room_enemy_ids:
                         continue
                     room_enemies = [
-                        Enemy(
-                            id=enemies[eid].id,
-                            name=enemies[eid].name,
-                            file=enemies[eid].file,
-                            damage=enemies[eid].damage,
-                            armor=enemies[eid].armor,
-                            max_health=enemies[eid].max_health,
-                            kill_experience=enemies[eid].kill_experience,
+                        scale_enemy_for_depth(
+                            Enemy(
+                                id=enemies[eid].id,
+                                name=enemies[eid].name,
+                                file=enemies[eid].file,
+                                damage=enemies[eid].damage,
+                                armor=enemies[eid].armor,
+                                max_health=enemies[eid].max_health,
+                                kill_experience=enemies[eid].kill_experience,
+                            ),
+                            depth,
+                            enemy_depth_scaling or {},
                         )
                         for eid in room_enemy_ids
                         if eid in enemies
@@ -922,7 +961,7 @@ def simulate(
                         continue
 
                     enemy_id = random.choices(weighted_enemy_ids, weights=weighted_values, k=1)[0]
-                    enemy = enemies[enemy_id]
+                    enemy = scale_enemy_for_depth(enemies[enemy_id], depth, enemy_depth_scaling or {})
                     win = simulate_duel(progressed_player, enemy, attrs, weapons, p_defense, depth)
                     outcomes.append(EncounterOutcome(class_id=class_id, depth=depth, enemy_id=enemy_id, win=win))
 
@@ -1136,8 +1175,8 @@ def tune(
         delta = class_target[class_id] - class_win[class_id]
         if abs(delta) <= tol:
             continue
-        hp_factor = clamp(1.0 + delta * 0.25, 1 - max_adj, 1 + max_adj)
-        att_factor = clamp(1.0 + delta * 0.18, 1 - max_adj, 1 + max_adj)
+        hp_factor = clamp(1.0 + delta * 0.50, 1 - max_adj, 1 + max_adj)
+        att_factor = clamp(1.0 + delta * 0.40, 1 - max_adj, 1 + max_adj)
 
         new_hp = bounded_int(player.max_health * hp_factor, 1)
         if new_hp != player.max_health:
@@ -1159,7 +1198,7 @@ def tune(
             })
 
         if player.max_mana > 0:
-            mana_factor = clamp(1.0 + delta * 0.20, 1 - max_adj, 1 + max_adj)
+            mana_factor = clamp(1.0 + delta * 0.45, 1 - max_adj, 1 + max_adj)
             new_max_mana = bounded_int(player.max_mana * mana_factor, 1)
             if new_max_mana != player.max_mana:
                 adjustments["players"].append({
@@ -1208,7 +1247,7 @@ def tune(
         if abs(delta) <= tol:
             continue
 
-        factor = clamp(1.0 - delta * 0.35, 1 - max_adj, 1 + max_adj)
+        factor = clamp(1.0 - delta * 0.60, 1 - max_adj, 1 + max_adj)
         new_damage = bounded_int(enemy.damage * factor, 1)
         new_hp = bounded_int(enemy.max_health * factor, 1)
         new_armor = bounded_int(enemy.armor * factor, 0)
@@ -1240,7 +1279,7 @@ def tune(
         delta = tier_delta[tier]
         if abs(delta) <= tol:
             continue
-        factor = clamp(1.0 + delta * 0.25, 1 - max_adj, 1 + max_adj)
+        factor = clamp(1.0 + delta * 0.50, 1 - max_adj, 1 + max_adj)
 
         if item.kind == "weapon" and item.attack > 0:
             new_attack = bounded_int(item.attack * factor, 1)
@@ -1436,6 +1475,7 @@ def main() -> None:
     item_drop_scale_by_depth = variation.get("itemDropScaleByDepth", []) if isinstance(variation.get("itemDropScaleByDepth", []), list) else []
     rooms_per_depth_for_progression = int(config.get("roomsPerDepthForProgression", 4))
     initial_attribute_points = int(config.get("initialAttributePoints", 5))
+    enemy_depth_scaling = config.get("enemyDepthScaling", {}) if isinstance(config.get("enemyDepthScaling", {}), dict) else {}
     depths = resolve_depths(config)
 
     players = parse_player_classes(workspace)
@@ -1463,6 +1503,7 @@ def main() -> None:
         item_drop_scale_by_depth=item_drop_scale_by_depth,
         rooms_per_depth_for_progression=rooms_per_depth_for_progression,
         initial_attribute_points=initial_attribute_points,
+        enemy_depth_scaling=enemy_depth_scaling,
     )
 
     adjustments = tune(

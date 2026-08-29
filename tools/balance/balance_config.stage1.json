@@ -1,12 +1,12 @@
 {
   "strictRealism": true,
-  "roundsPerDepth": 300,
+  "roundsPerDepth": 50,
   "depthRange": {
     "start": 1,
-    "end": 200,
-    "step": 1
+    "end": 100,
+    "step": 5
   },
-  "maxAdjustmentPercentPerRun": 75,
+  "maxAdjustmentPercentPerRun": 50,
   "tolerance": 0.05,
   "initialAttributePoints": 5,
   "roomsPerDepthForProgression": 3,
@@ -15,16 +15,10 @@
     "enemyWeightJitter": 0.15,
     "itemWeightJitter": 0.2,
     "enemyBudgetScaleByDepth": [
-      { "maxDepth": 20, "value": 0.45 },
-      { "maxDepth": 35, "value": 0.50 },
-      { "maxDepth": 55, "value": 0.55 },
-      { "maxDepth": 75, "value": 0.58 },
-      { "maxDepth": 90, "value": 0.62 },
-      { "maxDepth": 105, "value": 0.66 },
-      { "maxDepth": 125, "value": 0.72 },
-      { "maxDepth": 150, "value": 0.82 },
-      { "maxDepth": 175, "value": 0.95 },
-      { "maxDepth": 200, "value": 1.1 }
+      { "maxDepth": 20, "value": 0.7 },
+      { "maxDepth": 60, "value": 0.9 },
+      { "maxDepth": 120, "value": 1.1 },
+      { "maxDepth": 200, "value": 1.25 }
     ],
     "itemDropScaleByDepth": [
       { "maxDepth": 20, "value": 1.35 },
@@ -35,10 +29,10 @@
   },
   "enemyDepthScaling": {
     "enabled": true,
-    "damageScale": 0.002,
-    "healthScale": 0.003,
-    "armorScale": 0.001,
-    "xpScale": 0.003
+    "damageScale": 0.003,
+    "healthScale": 0.005,
+    "armorScale": 0.002,
+    "xpScale": 0.004
   },
   "targetWinRateByDepth": [
     { "maxDepth": 1, "target": 1.0 },

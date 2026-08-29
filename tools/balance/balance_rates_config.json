@@ -6,10 +6,10 @@
     "end": 200,
     "step": 1
   },
-  "roomsPerDepthForProgression": 4,
+  "roomsPerDepthForProgression": 3,
   "initialAttributePoints": 5,
-  "maxRateAdjustmentPercentPerRun": 12,
-  "maxBoundaryShift": 2,
+  "maxRateAdjustmentPercentPerRun": 30,
+  "maxBoundaryShift": 3,
   "variation": {
     "enemyCountMultiplier": 1.0,
     "enemyWeightJitter": 0.15,
@@ -26,6 +26,13 @@
       { "maxDepth": 160, "value": 0.95 },
       { "maxDepth": 200, "value": 0.85 }
     ]
+  },
+  "enemyDepthScaling": {
+    "enabled": true,
+    "damageScale": 0.015,
+    "healthScale": 0.02,
+    "armorScale": 0.01,
+    "xpScale": 0.01
   },
   "targetWinRateByDepth": [
     { "maxDepth": 1, "target": 1.0 },
