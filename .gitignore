@@ -7,3 +7,4 @@
 todo.txt
 /release/
 log.zip
+**/__pycache__/
