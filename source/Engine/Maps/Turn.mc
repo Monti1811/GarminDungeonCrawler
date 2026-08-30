@@ -13,12 +13,15 @@ class Turn {
     private var _combat_timer as Timer.Timer?;
 
     private var _enemy_queue as Array<Enemy>?;
+    private var _enemy_queue_index as Number = 0;
     private var _enemy_target_pos as Point2D?;
     private var _enemy_iteration as Number = 0;
     private var _is_processing_turn as Boolean = false;
+    private var _turn_counter as Number = 0;
 
     private const ENEMY_ACTION_DELAY_MS as Number = 50;
     private const MAX_ENEMY_ITERATIONS as Number = 5;
+    private const AUTOSAVE_INTERVAL as Number = 3;
 
     private var MIN_ENERGY = $.Constants.MIN_ENERGY_PER_TURN;
 
@@ -100,6 +103,7 @@ class Turn {
         $.Game.getCurrentRoom().updatePlayerPos(new_pos);
         _player_pos = new_pos;
         _player.setPos(new_pos);
+        _view.setForegroundDirty();
     }
 
     function loadRoom(room as Room) as Void {
@@ -301,17 +305,18 @@ class Turn {
             return;
         }
 
-        if (_enemy_queue.size() == 0) {
+        if (_enemy_queue.size() == 0 || _enemy_queue_index >= _enemy_queue.size()) {
             _enemy_iteration += 1;
             _enemy_queue = buildEnemyQueue(room);
+            _enemy_queue_index = 0;
             if (_enemy_queue.size() == 0) {
                 finishTurn(room);
                 return;
             }
         }
 
-        var enemy = _enemy_queue[0];
-        _enemy_queue.remove(enemy);
+        var enemy = _enemy_queue[_enemy_queue_index];
+        _enemy_queue_index++;
         processEnemyAction(room, enemy, _enemy_target_pos);
         WatchUi.requestUpdate();
 
@@ -328,6 +333,7 @@ class Turn {
 
         if (enemy.doAction(map) || enemy.attackNearbyPlayer(map, target_pos)) {
             enemy.doTurnEnergyDelta(-MIN_ENERGY, 0, 2 * MIN_ENERGY);
+            _view.setForegroundDirty();
             return;
         }
 
@@ -339,9 +345,11 @@ class Turn {
             if (MapUtil.isPosPlayer(map, next_pos)) {
                 Battle.attackPlayer(enemy, _player);
                 enemy.doTurnEnergyDelta(-MIN_ENERGY, 0, 2 * MIN_ENERGY);
+                _view.setForegroundDirty();
             } else {
                 room.moveEnemy(enemy);
                 enemy.doTurnEnergyDelta(-MIN_ENERGY, 0, 2 * MIN_ENERGY);
+                _view.setForegroundDirty();
             }
         }
     }
@@ -352,12 +360,15 @@ class Turn {
         _player.onTurnDone();
         room.onTurnDone();
 
-        if (_autosave) {
+        _turn_counter++;
+        if (_autosave && _turn_counter >= AUTOSAVE_INTERVAL) {
             $.SaveData.saveGame();
+            _turn_counter = 0;
         }
 
         _is_processing_turn = false;
         _enemy_queue = null;
+        _enemy_queue_index = 0;
         _enemy_target_pos = null;
         WatchUi.requestUpdate();
     }

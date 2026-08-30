@@ -378,20 +378,26 @@ class Player extends Entity {
 
 	function getDefense(enemy as Enemy?) as Number {
 		var base_defense = attributes[:constitution];
-		var armors = [
-			equipped[HEAD] as ArmorItem?,
-			equipped[CHEST] as ArmorItem?,
-			equipped[BACK] as ArmorItem?,
-			equipped[LEGS] as ArmorItem?,
-			equipped[FEET] as ArmorItem?,
-			equipped[ACCESSORY] as ArmorItem?,
-			getArmorItem(LEFT_HAND),
-			getArmorItem(RIGHT_HAND),
-		];
-
-		var armors_size = armors.size();
+		var armors_size = 8;
 		for (var i = 0; i < armors_size; i++) {
-			var armor = armors[i];
+			var armor = null as ArmorItem?;
+			if (i == 0) {
+				armor = equipped[HEAD] as ArmorItem?;
+			} else if (i == 1) {
+				armor = equipped[CHEST] as ArmorItem?;
+			} else if (i == 2) {
+				armor = equipped[BACK] as ArmorItem?;
+			} else if (i == 3) {
+				armor = equipped[LEGS] as ArmorItem?;
+			} else if (i == 4) {
+				armor = equipped[FEET] as ArmorItem?;
+			} else if (i == 5) {
+				armor = equipped[ACCESSORY] as ArmorItem?;
+			} else if (i == 6) {
+				armor = getArmorItem(LEFT_HAND);
+			} else if (i == 7) {
+				armor = getArmorItem(RIGHT_HAND);
+			}
 			if (armor != null) {
 				base_defense += armor.getDefense(enemy, armors_size);
 			}
@@ -617,7 +623,12 @@ class Player extends Entity {
 	}
 
 	function freeMemory() as Void {
-		
+		inventory = new Inventory(0);
+		equipped = {};
+		attributes = {};
+		added_attributes = {};
+		elemental_effects = {};
+		_sprite_ref = null;
 	}
 
 }

@@ -12,6 +12,8 @@ class DCMapDrawable extends WatchUi.Drawable {
 
 	private var size as Point2D;
 
+	private var _flag_bitmaps as Dictionary<ResourceId, BitmapReference>? = null;
+
 	function initialize() {
 		Drawable.initialize({});
 		var dungeon_map = $.Game.map;
@@ -24,6 +26,12 @@ class DCMapDrawable extends WatchUi.Drawable {
 			center_x - (current_room_pos[0] * size_room + middle_of_room), 
 			center_y - (current_room_pos[1] * size_room + middle_of_room)
 		];
+		// Cache flag bitmaps
+		_flag_bitmaps = {
+			$.Rez.Drawables.Stairs => WatchUi.loadResource($.Rez.Drawables.Stairs),
+			$.Rez.Drawables.Merchant => WatchUi.loadResource($.Rez.Drawables.Merchant),
+			$.Rez.Drawables.Sage => WatchUi.loadResource($.Rez.Drawables.Sage)
+		};
 	}
 
 	function drawRoom(dc as Dc, pos as Point2D) {
@@ -84,13 +92,16 @@ class DCMapDrawable extends WatchUi.Drawable {
 		}
 
 	function drawFlag(dc as Dc, pos as Point2D, rez_id as ResourceId) {
-		dc.drawScaledBitmap(
-			pos[0] - size_tile/2, 
-			pos[1] - size_tile/2,
-			size_tile * 2, 
-			size_tile * 2,
-			WatchUi.loadResource(rez_id)
-		);
+		var bitmap = _flag_bitmaps[rez_id] as BitmapReference?;
+		if (bitmap != null) {
+			dc.drawScaledBitmap(
+				pos[0] - size_tile/2, 
+				pos[1] - size_tile/2,
+				size_tile * 2, 
+				size_tile * 2,
+				bitmap
+			);
+		}
 	}
 
 	// Draw the player
