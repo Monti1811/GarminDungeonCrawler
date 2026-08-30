@@ -130,6 +130,60 @@ module Pathfinder {
         return current;  // Start = Ziel → direkt dort
     }
 
+    // Gibt den kompletten Pfad als Array zurück (Start → Ende)
+    function findFullPathToPos(map as Map, start_pos as Point2D, end_pos as Point2D) as Array<Number>? {
+        var start_num = toIntPoint2D(start_pos);
+        var end_num = toIntPoint2D(end_pos);
+        
+        var open_queue = [] as Array;
+        var closed_dict = {} as Dictionary<Number, Boolean>;
+        var g_score = {} as Dictionary<Number, Number>;
+        var came_from = {} as Dictionary<Number, Number>;
+        
+        g_score[start_num] = 0;
+        pq_enqueue(open_queue, manhattanHeuristic(start_num, end_num), start_num);
+        
+        while (open_queue.size() > 0) {
+            var current = pq_dequeue(open_queue);
+            
+            if (current == end_num) {
+                // Pfad rekonstruieren
+                var path = [] as Array<Number>;
+                var c = current;
+                path.add(c);
+                while (came_from[c] != null) {
+                    c = came_from[c];
+                    path.add(c);
+                }
+                // Pfad umkehren (Start → Ende)
+                var reversed = [] as Array<Number>;
+                for (var i = path.size() - 1; i >= 0; i--) {
+                    reversed.add(path[i]);
+                }
+                return reversed;
+            }
+            
+            closed_dict[current] = true;
+            
+            var neighbors = getNeighbors(map, current);
+            for (var i = 0; i < neighbors.size(); i++) {
+                var neighbor = neighbors[i] as Number;
+                if (closed_dict[neighbor] != null) {
+                    continue;
+                }
+                
+                var tentative_g = g_score[current] + 1;
+                var hasKey = g_score[neighbor] != null;
+                if (!hasKey || tentative_g < g_score[neighbor]) {
+                    came_from[neighbor] = current;
+                    g_score[neighbor] = tentative_g;
+                    pq_enqueue(open_queue, tentative_g + manhattanHeuristic(neighbor, end_num), neighbor);
+                }
+            }
+        }
+        return null;
+    }
+
     function getNeighbors(map as Map, pos_num as Number) as Array<Number> {
         var neighbors = [] as Array<Number>;
         var pos = fromIntPoint2D(pos_num);
@@ -335,22 +389,15 @@ module Pathfinder {
             return null;
         }
 
-        var path_step = findPathToPos(map, pos, player_pos);
-        if (path_step == null || path_step == pos) {
+        // EINMAL A* ausführen
+        var path = findFullPathToPos(map, pos, player_pos);
+        if (path == null || path.size() < 2) {
             return null;
         }
 
-        var current = path_step;
-        var step = 1;
-        while (step < max_steps) {
-            var next = findPathToPos(map, current, player_pos);
-            if (next == null || next == current || !MapUtil.canMoveToPlayer(map, next)) {
-                break;
-            }
-            current = next;
-            step += 1;
-        }
-        return current;
+        // Die ersten max_steps Schritte nehmen
+        var step = max_steps < path.size() ? max_steps : path.size() - 1;
+        return fromIntPoint2D(path[step]);
     }
 
     function keepDistanceToPlayer(map as Map, pos as Point2D, min_distance as Number, max_distance as Number) as Point2D? {
