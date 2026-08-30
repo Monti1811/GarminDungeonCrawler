@@ -4,10 +4,9 @@ module Enemies {
 
     var enemy_ids as Array<Number> = [
         0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
-        10, 11, 12, 13, 14, 15, 16, 17,
-        18, 19, 20, 21, 22, 23, 24, 25,
-        26, 27, 28, 29, 30, 31, 32, 33,
-        34, 35
+        10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
+        20, 21, 22, 23, 24, 25, 26, 27, 28, 29,
+        30, 31, 32, 33, 34, 35, 36, 37
     ];
 
     var dungeon_enemies as Array<Dictionary<Symbol, Numeric>> = [
@@ -16,7 +15,9 @@ module Enemies {
         { :id => 2, :cost => 25, :weight => 4 },
         { :id => 3, :cost => 5, :weight => 8 },
         { :id => 4, :cost => 5, :weight => 8 },
-    ];
+        { :id => 36, :cost => 9, :weight => 5 },
+            { :id => 37, :cost => 10, :weight => 6 },
+];
 
     var total_weight as Numeric = 0;
 
@@ -69,6 +70,8 @@ module Enemies {
             case 33: return new OrcShaman();
             case 34: return new OrcVeteran();
             case 35: return new Rokita();
+            case 36: return new ShadowStalker();
+            case 37: return new GloomLurker();
             default: return new Frog();
         }
     }
