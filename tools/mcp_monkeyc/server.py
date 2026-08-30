@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import base64
+import json
 import os
 import re
 import shutil
@@ -11,8 +12,11 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 from typing import Any
 
+from dotenv import load_dotenv
 from mcp.server.fastmcp import FastMCP
 from PIL import Image, ImageDraw
+
+load_dotenv()
 
 
 mcp = FastMCP("dungeoncrawler-monkeyc")
@@ -580,6 +584,50 @@ def _extract_openrouter_image_bytes_from_completion(completion: Any) -> tuple[by
         return None, f"OpenRouter model returned text instead of image data. Preview: {preview}"
 
     return None, "OpenRouter response did not contain supported image content."
+
+
+def _cloudflare_image(prompt: str) -> tuple[bytes, str]:
+    """Call Cloudflare Workers AI image generation and return (image_bytes, mime_type)."""
+    account_id = os.environ.get("CF_ACCOUNT_ID", "")
+    api_token = os.environ.get("CF_API_TOKEN", "")
+    model = os.environ.get("CF_IMAGE_MODEL", "@cf/black-forest-labs/flux-1-schnell")
+
+    if not account_id or not api_token:
+        raise ValueError("CF_ACCOUNT_ID and CF_API_TOKEN must be set.")
+
+    url = f"https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/run/{model}"
+    headers = {"Authorization": f"Bearer {api_token}"}
+
+    body = json.dumps({"prompt": prompt}).encode("utf-8")
+    req = urllib.request.Request(url, data=body, headers=headers, method="POST")
+    req.add_header("Content-Type", "application/json")
+
+    with urllib.request.urlopen(req, timeout=120) as resp:
+        data = json.loads(resp.read().decode("utf-8"))
+
+    if not data.get("success"):
+        errors = data.get("errors") or data.get("messages") or []
+        raise RuntimeError(f"Cloudflare Workers AI error: {errors}")
+
+    image_value = data.get("result", {}).get("image")
+    if isinstance(image_value, list):
+        image_value = next((v for v in image_value if v), None)
+    if not image_value:
+        raise RuntimeError("Cloudflare Workers AI returned no image data.")
+
+    mime_type = "image/png"
+    if isinstance(image_value, str) and image_value.startswith("data:"):
+        header, _, b64_part = image_value.partition(",")
+        mime_match = re.match(r"data:([^;]+)", header)
+        if mime_match:
+            mime_type = mime_match.group(1)
+            if mime_type == "image/jpg":
+                mime_type = "image/jpeg"
+        image_bytes = base64.b64decode(b64_part)
+    else:
+        image_bytes = base64.b64decode(image_value)
+
+    return image_bytes, mime_type
 
 
 def _to_pascal_case(name: str) -> str:
@@ -1583,7 +1631,7 @@ def register_drawable(
     return _register_drawable_internal(bitmap_id, normalized_filename, drawables_xml_path)
 
 
-@mcp.tool(description="Generate an image via OpenRouter, resize it, and register it as drawable.")
+@mcp.tool(description="Generate an image via Cloudflare Workers AI (with OpenRouter fallback), resize it, and register it as drawable.")
 def generate_image_and_embed(
     bitmap_id: str,
     prompt: str,
@@ -1595,7 +1643,7 @@ def generate_image_and_embed(
     output_folder: str = "resources/drawables/generated",
     drawables_xml_path: str = "resources/drawables/drawables.xml",
 ) -> dict[str, Any]:
-    """Generate an image via OpenRouter (with up to 3 retries), resize it to the requested final size, and register it in drawables.xml."""
+    """Generate an image via Cloudflare Workers AI (falling back to OpenRouter), resize it, and register it in drawables.xml."""
     size_tuple = _decode_final_size(final_size)
     if not size_tuple:
         return {
@@ -1604,7 +1652,7 @@ def generate_image_and_embed(
         }
 
     image_bytes: bytes | None = None
-    provider_name = "openrouter"
+    provider_name = ""
     final_prompt = _build_generation_prompt(
         base_prompt=prompt,
         enforce_style_policy=enforce_style_policy,
@@ -1612,62 +1660,79 @@ def generate_image_and_embed(
         style_suffix=style_suffix,
     )
 
-    api_key = os.environ.get("OPENROUTER_API_KEY")
-    if not api_key:
-        return {
-            "ok": False,
-            "message": "OPENROUTER_API_KEY is not set. Add it to your MCP server env.",
-        }
-
-    try:
-        from openai import OpenAI
-    except Exception:
-        return {
-            "ok": False,
-            "message": "openai package missing. Install dependencies from tools/mcp_monkeyc/requirements.txt.",
-        }
-
-    client = OpenAI(
-        api_key=api_key,
-        base_url="https://openrouter.ai/api/v1",
-    )
-    extra_headers: dict[str, str] = {}
-    site_url = os.environ.get("OPENROUTER_SITE_URL")
-    app_name = os.environ.get("OPENROUTER_APP_NAME")
-    if site_url:
-        extra_headers["HTTP-Referer"] = site_url
-    if app_name:
-        extra_headers["X-Title"] = app_name
-
-    max_attempts = 3
-    last_error = ""
     attempts_used = 0
-    for attempt in range(1, max_attempts + 1):
-        attempts_used = attempt
-        try:
-            completion = client.chat.completions.create(
-                model=model or "openrouter/hunter-alpha",
-                messages=[
-                    {
-                        "role": "user",
-                        "content": final_prompt,
-                    }
-                ],
-                extra_headers=extra_headers or None,
-            )
-        except Exception as err:
-            last_error = f"OpenRouter image generation failed: {err}"
-            continue
+    cf_account_id = os.environ.get("CF_ACCOUNT_ID", "")
+    cf_api_token = os.environ.get("CF_API_TOKEN", "")
 
-        image_bytes, extraction_error = _extract_openrouter_image_bytes_from_completion(completion)
-        if image_bytes:
-            break
-        last_error = extraction_error or "OpenRouter did not return image bytes."
+    if cf_account_id and cf_api_token:
+        try:
+            image_bytes, _ = _cloudflare_image(final_prompt)
+            provider_name = "cloudflare"
+        except Exception as exc:
+            import logging
+            logging.warning("Cloudflare Workers AI failed, trying OpenRouter: %s", exc)
+
+    if not image_bytes:
+        openrouter_key = os.environ.get("OPENROUTER_API_KEY")
+        if openrouter_key:
+            try:
+                from openai import OpenAI
+            except Exception:
+                if not provider_name:
+                    return {
+                        "ok": False,
+                        "message": "Cloudflare not configured and openai package missing. Install dependencies from tools/mcp_monkeyc/requirements.txt.",
+                    }
+            else:
+                client = OpenAI(
+                    api_key=openrouter_key,
+                    base_url="https://openrouter.ai/api/v1",
+                )
+                extra_headers: dict[str, str] = {}
+                site_url = os.environ.get("OPENROUTER_SITE_URL")
+                app_name = os.environ.get("OPENROUTER_APP_NAME")
+                if site_url:
+                    extra_headers["HTTP-Referer"] = site_url
+                if app_name:
+                    extra_headers["X-Title"] = app_name
+
+                max_attempts = 3
+                last_error = ""
+                attempts_used = 0
+                for attempt in range(1, max_attempts + 1):
+                    attempts_used = attempt
+                    try:
+                        completion = client.chat.completions.create(
+                            model=model or "openrouter/hunter-alpha",
+                            messages=[
+                                {
+                                    "role": "user",
+                                    "content": final_prompt,
+                                }
+                            ],
+                            extra_headers=extra_headers or None,
+                        )
+                    except Exception as err:
+                        last_error = f"OpenRouter image generation failed: {err}"
+                        continue
+
+                    img_bytes, extraction_error = _extract_openrouter_image_bytes_from_completion(completion)
+                    if img_bytes:
+                        image_bytes = img_bytes
+                        provider_name = "openrouter"
+                        break
+                    last_error = extraction_error or "OpenRouter did not return image bytes."
+
+                if not image_bytes and not provider_name:
+                    return {
+                        "ok": False,
+                        "message": f"OpenRouter did not return image data after {max_attempts} attempts. Last error: {last_error}",
+                    }
 
     if not image_bytes:
         return {
             "ok": False,
-            "message": f"OpenRouter did not return image data after {max_attempts} attempts. Last error: {last_error}",
+            "message": "No image provider available. Set CF_ACCOUNT_ID+CF_API_TOKEN or OPENROUTER_API_KEY.",
         }
 
     raw_path = _abs_from_workspace(output_folder) / f"{bitmap_id}_raw.png"
@@ -1697,7 +1762,7 @@ def generate_image_and_embed(
         "effective_prompt": final_prompt,
         "style_policy_enforced": enforce_style_policy,
         "style_preset": style_preset,
-        "attempts": attempts_used,
+        "attempts": attempts_used if provider_name == "openrouter" else 1,
         "final_size": final_size,
         "raw_image": str(raw_path),
         "final_image": str(final_path),

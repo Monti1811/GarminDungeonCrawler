@@ -9,3 +9,4 @@ todo.txt
 log.zip
 
 **.pyc
+.env
