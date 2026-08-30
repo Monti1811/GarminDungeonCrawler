@@ -71,7 +71,7 @@ class Map {
 			for (var j = 0; j < _height; j++) {
 				var tile = _tiles[i][j];
 				if (tile != null) {
-					new_map.setTile(i, j, tile);
+					new_map.setTile(i, j, tile.deepcopy());
 				}
 			}
 		}
