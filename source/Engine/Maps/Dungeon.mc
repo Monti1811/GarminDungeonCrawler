@@ -21,6 +21,7 @@ class Dungeon {
 	private var _size as Point2D;
 	private var _connections as Dictionary<String, Dictionary<WalkDirection, Boolean>> = {};
 	private var _style as DungeonStyle = DUNGEONSTYLE_NORMAL;
+	private var _room_positions as Dictionary<String, Array<Number>>? = null;
 
 
 	function initialize(size_x as Number, size_y as Number) {
@@ -262,14 +263,19 @@ class Dungeon {
 	}
 
 	function getRoomPosition(room_name as String) as Point2D? {
+		if (_room_positions != null) {
+			return _room_positions[room_name];
+		}
+		// Build cache on first call
+		_room_positions = {};
 		for (var i = 0; i < _size[0]; i++) {
 			for (var j = 0; j < _size[1]; j++) {
-				if (_rooms[i][j] == room_name) {
-					return [i, j];
+				if (_rooms[i][j] != null) {
+					_room_positions[_rooms[i][j]] = [i, j];
 				}
 			}
 		}
-		return null;
+		return _room_positions[room_name];
 	}
 
 	function getRoomInDirection(direction as WalkDirection) as String? {
@@ -342,5 +348,6 @@ class Dungeon {
 			_current_room.freeMemory();
 			_current_room = null;
 		}
+		_room_positions = null;
 	}
 }
