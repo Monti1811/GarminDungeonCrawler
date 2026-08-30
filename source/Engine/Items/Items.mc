@@ -250,11 +250,8 @@ module Items {
     }
 
     function createRandomItem() as Item {
-		var rand = 9999;
-		while (rand > 4000) {
-			rand = MathUtil.random(0, item_ids.size() - 1);
-		}
-        var item = createItemFromId(item_ids[rand]);
+		var index = MathUtil.random(0, item_ids.size() - 1);
+        var item = createItemFromId(item_ids[index]);
         if (item != null) {
             return item;
         }
