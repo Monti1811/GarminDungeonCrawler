@@ -7,3 +7,6 @@
 todo.txt
 /release/
 log.zip
+
+**.pyc
+.env

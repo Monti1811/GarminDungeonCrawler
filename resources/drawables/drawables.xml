@@ -318,5 +318,6 @@
     <bitmap id="monster_elemental_gold_short" filename="monsters/monster_elemental_gold_short.png" packingFormat="png" />
     <bitmap id="monster_zombie_tall" filename="monsters/monster_zombie_tall.png" packingFormat="png" />
     <bitmap id="monster_zombie_short" filename="monsters/monster_zombie_short.png" packingFormat="png" />
-
+    <bitmap id="monster_shadow_stalker" filename="generated/monster_shadow_stalker.png" packingFormat="png" />
+    <bitmap id="monster_gloom_lurker" filename="generated/monster_gloom_lurker.png" packingFormat="png" />
 </drawables>
