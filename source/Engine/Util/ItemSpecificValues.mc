@@ -161,7 +161,8 @@ class ItemSpecificValues {
             // Crossbows
             300 => crossbow_weight,
             301 => oak_crossbow_weight,
-            302 => hell_crossbow_weight
+            302 => hell_crossbow_weight,
+            303 => tieredWeight(depth, [ { :max => 8, :weight => 6 }, { :max => 18, :weight => 7 }, { :max => 999, :weight => 5 } ])
         } as Dictionary<Number, Numeric>;
     }
 

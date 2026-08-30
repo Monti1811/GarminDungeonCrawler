@@ -145,13 +145,13 @@ class DCConfirmSetAttributes extends WatchUi.ConfirmationDelegate {
     public function onResponse(value as Confirm) as Boolean {
         WatchUi.popView(WatchUi.SLIDE_DOWN);
         if (value == WatchUi.CONFIRM_YES) {
-            _player.setAttribute(:strength, _changed_attributes[:strength]);
-            _player.setAttribute(:constitution, _changed_attributes[:constitution]);
-            _player.setAttribute(:dexterity, _changed_attributes[:dexterity]);
-            _player.setAttribute(:intelligence, _changed_attributes[:intelligence]);
-            _player.setAttribute(:wisdom, _changed_attributes[:wisdom]);
-            _player.setAttribute(:charisma, _changed_attributes[:charisma]);
-            _player.setAttribute(:luck, _changed_attributes[:luck]);
+            _player.setAttribute(:strength, _changed_attributes[:strength] - _player.added_attributes[:strength]);
+            _player.setAttribute(:constitution, _changed_attributes[:constitution] - _player.added_attributes[:constitution]);
+            _player.setAttribute(:dexterity, _changed_attributes[:dexterity] - _player.added_attributes[:dexterity]);
+            _player.setAttribute(:intelligence, _changed_attributes[:intelligence] - _player.added_attributes[:intelligence]);
+            _player.setAttribute(:wisdom, _changed_attributes[:wisdom] - _player.added_attributes[:wisdom]);
+            _player.setAttribute(:charisma, _changed_attributes[:charisma] - _player.added_attributes[:charisma]);
+            _player.setAttribute(:luck, _changed_attributes[:luck] - _player.added_attributes[:luck]);
             _player.setAttributePoints(_changed_attributes[:available] - _changed_attributes[:total_used]);
             WatchUi.requestUpdate();
         } else {

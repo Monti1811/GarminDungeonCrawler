@@ -12,6 +12,7 @@ class DCGameView extends WatchUi.View {
     private var _foreground_layer as WatchUi.Layer?;
     private var _overlay_layer as WatchUi.Layer?;
     private var _background_dirty as Boolean = true;
+    private var _foreground_dirty as Boolean = true;
     private var _overlay_dirty as Boolean = true;
     private var _last_health_percent as Float?;
     private var _last_second_bar as Symbol?;
@@ -161,7 +162,13 @@ class DCGameView extends WatchUi.View {
 
     function onShow() as Void {
         _background_dirty = true;
+        _foreground_dirty = true;
         _overlay_dirty = true;
+    }
+
+    function setForegroundDirty() as Void {
+        _foreground_dirty = true;
+        WatchUi.requestUpdate();
     }
 
     // Update the view
@@ -179,11 +186,14 @@ class DCGameView extends WatchUi.View {
             _background_dirty = false;
         }
 
-        var fg_dc = _foreground_layer.getDc();
-        fg_dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-        fg_dc.clear();
-        _room_drawable.drawForeground(fg_dc, $.Game.getCurrentRoom());
-        drawPlayer(fg_dc);
+        if (_foreground_dirty) {
+            var fg_dc = _foreground_layer.getDc();
+            fg_dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+            fg_dc.clear();
+            _room_drawable.drawForeground(fg_dc, $.Game.getCurrentRoom());
+            drawPlayer(fg_dc);
+            _foreground_dirty = false;
+        }
 
         if (addPlayerDamage()) {
             _overlay_dirty = true;
@@ -193,9 +203,10 @@ class DCGameView extends WatchUi.View {
         var second_bar = player.second_bar as Symbol?;
         var second_bar_percent = null as Numeric?;
         if (second_bar != null) {
-            var method = new Lang.Method(self, bar_to_fn[second_bar]);
-            var bar_values = method.invoke(player) as [Numeric, Numeric];
-            second_bar_percent = bar_values[1];
+            if (second_bar == :mana) {
+                var bar_values = drawManaBar(player);
+                second_bar_percent = bar_values[1];
+            }
         }
 
         if (_last_health_percent == null ||
@@ -256,10 +267,6 @@ class DCGameView extends WatchUi.View {
         dc.drawLine(line2_x1, line2_y1, line2_x2, line2_y2);
     }
 
-    private const bar_to_fn as Dictionary<Symbol, Symbol> = {
-        :mana=>:drawManaBar
-    };
-
     function drawSecondBar(dc as Dc, player as Player) as Void {
         if (player.second_bar == null) {
             return;
@@ -279,8 +286,10 @@ class DCGameView extends WatchUi.View {
         var line2_x2 = (Constants.SCREEN_WIDTH * 149 / 360).toNumber();
         var line2_y2 = (Constants.SCREEN_HEIGHT * 355 / 360).toNumber();
 
-        var method = new Lang.Method(self, bar_to_fn[player.second_bar]);
-        var bar_values = method.invoke(player) as [Numeric, Numeric];
+        var bar_values = [0, 0] as [Numeric, Numeric];
+        if (player.second_bar == :mana) {
+            bar_values = drawManaBar(player);
+        }
         // Draw second bar
         dc.setColor(bar_values[0], Graphics.COLOR_BLACK);
         dc.setPenWidth(5);

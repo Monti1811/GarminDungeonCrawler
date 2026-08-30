@@ -50,9 +50,9 @@ module MapUtil {
 
 	function findNearestEmptyTileAround(map as Map, pos as Point2D) as Point2D? {
 		var queue = [] as Array<Point2D>;
-		var visited = {};
+		var visited = {} as Dictionary<Number, Boolean>;
 		queue.add(pos);
-		visited[pos[0] + "," + pos[1]] = true;
+		visited[(pos[0] << 8) + pos[1]] = true;
 		var directions = [
 			[0, -1],
 			[0, 1],
@@ -64,7 +64,7 @@ module MapUtil {
 			queue.remove(current);
 			for (var i = 0; i < directions.size(); i++) {
 				var candidate = [current[0] + directions[i][0], current[1] + directions[i][1]];
-				var key = candidate[0] + "," + candidate[1];
+				var key = (candidate[0] << 8) + candidate[1];
 				if (visited[key]) {
 					continue;
 				}

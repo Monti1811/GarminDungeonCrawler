@@ -19,6 +19,14 @@ class Tile {
 		self.y = y;
 	}
 
+	function deepcopy() as Tile {
+		var new_tile = new Tile(x, y);
+		new_tile.type = type;
+		new_tile.content = content;
+		new_tile.player = player;
+		return new_tile;
+	}
+
 	function save() as Dictionary {
 		var save_data = {};
 		save_data["type"] = type;
