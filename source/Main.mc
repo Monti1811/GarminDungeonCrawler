@@ -87,11 +87,11 @@ module Main {
 		return dungeon;
 	}
 
-	function createRoomForDungeon(dungeon as Dungeon, i as Number, j as Number) as Void {
-		var room = createRandomRoom();
+	function createRoomForDungeon(dungeon as Dungeon, i as Number, j as Number) as Room {
+		var room_shape = Map.chooseRandomRoomShape();
+		var room = createRandomRoom(room_shape);
 		var connections = dungeon.getConnections();
-		var room_name = $.SimUtil.getRoomName(i, j);
-		var room_connections = connections[room_name];
+		var room_connections = connections[$.SimUtil.getRoomName(i, j)];
 		if (room_connections != null) {
 			var connections_keys = room_connections.keys();
 			for (var k = 0; k < connections_keys.size(); k++) {
@@ -99,11 +99,22 @@ module Main {
 				room.addConnection(direction);
 			}
 		}
-		dungeon.addRoom(room, [i, j]);
-		$.Game.addRoomToMap([i, j], room_name, room_connections, room.getSize());
+		return room;
 	}
 
-	function createRandomRoom() as Room {
+	function cleanupRoomForDungeon(room as Room) as Void {
+		Map.addWallsAroundPassable(room.getMap());
+	}
+
+	function saveRoomForDungeon(dungeon as Dungeon, room as Room, i as Number, j as Number) as Void {
+		var room_name = $.SimUtil.getRoomName(i, j);
+		var room_connections = dungeon.getConnections()[room_name];
+		dungeon.addRoom(room, [i, j]);
+		$.Game.addRoomToMap([i, j], room_name, room_connections, room.getSize(), room.getShape());
+		room.freeMemory();
+	}
+
+	function createRandomRoom(room_shape as RoomShape?) as Room {
 		var tile_width = getApp().tile_width;
 		var tile_height = getApp().tile_height;
 		var screen_size_x = Math.ceil(Constants.SCREEN_WIDTH/tile_width).toNumber();
@@ -119,12 +130,23 @@ module Main {
 		var top = middle_of_screen[1] - Math.floor(room_size_y/2);
 		var bottom = middle_of_screen[1] + Math.floor(room_size_y/2);
 		
-		// Choose random room shape
-		var room_shape = Map.chooseRandomRoomShape();
+		// Use provided shape or choose random
+		if (room_shape == null) {
+			room_shape = Map.chooseRandomRoomShape();
+		}
 		var map = Map.createRoomShape(screen_size_x, screen_size_y, left, right, top, bottom, room_shape);
 		
 		// Add interior wall islands for tactical cover
 		Map.addIslands(map, left, right, top, bottom, room_shape);
+
+		// Find valid spawn position (center might be blocked by island)
+		var start_pos = middle_of_screen as Point2D;
+		if (map.getType(start_pos) != PASSABLE || map.getContent(start_pos) != null) {
+			var nearest = Map.findNearestPassable(map, start_pos, left + 1, right - 1, top + 1, bottom - 1);
+			if (nearest != null) {
+				start_pos = nearest;
+			}
+		}
 		
 		var enemies = createRandomEnemies(map, left, right, top, bottom);
 		var items = createRandomItems(map, left, right, top, bottom, enemies.size());
@@ -133,10 +155,15 @@ module Main {
 			:size_y => room_size_y,
 			:tile_width => tile_width,
 			:tile_height => tile_height,
-			:start_pos => middle_of_screen,
+			:start_pos => start_pos,
 			:map => map,
 			:items => items,
-			:enemies => enemies
+			:enemies => enemies,
+			:left => left,
+			:right => right,
+			:top => top,
+			:bottom => bottom,
+			:shape => room_shape
 		});
 		
 		return room;

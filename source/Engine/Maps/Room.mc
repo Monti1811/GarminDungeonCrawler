@@ -34,6 +34,13 @@ class Room {
 
     private var _player_pos as Point2D;
 
+    private var _left as Number;
+    private var _right as Number;
+    private var _top as Number;
+    private var _bottom as Number;
+
+    private var _shape as RoomShape?;
+
     function initialize(options as Dictionary?) {
         _size_x = options[:size_x];
         _size_y = options[:size_y];
@@ -42,6 +49,11 @@ class Room {
         _start_pos = options[:start_pos] as Point2D;
         _player_pos = _start_pos;
         _map = options[:map];
+        _left = options[:left] as Number;
+        _right = options[:right] as Number;
+        _top = options[:top] as Number;
+        _bottom = options[:bottom] as Number;
+        _shape = options[:shape] as RoomShape?;
 
         System.println("Map size: " + _map.getXSize() + " " + _map.getYSize());
         System.println("Room size: " + _size_x + " " + _size_y);
@@ -103,6 +115,12 @@ class Room {
     function getSize() as Point2D {
         return [_size_x, _size_y];
     }
+
+    function getLeft() as Number { return _left; }
+    function getRight() as Number { return _right; }
+    function getTop() as Number { return _top; }
+    function getBottom() as Number { return _bottom; }
+    function getShape() as RoomShape? { return _shape; }
 
     function removeItem(item as Item) as Void {
         var item_pos = item.getPos();
@@ -238,7 +256,7 @@ class Room {
             dx = -1;
         }
         while (x >= 0 && x < screen_size_x && y >= 0 && y < screen_size_y) {
-            if (_map.getType([x, y]) == WALL) {
+            if (_map.getTile(x, y).type == WALL) {
                 return [x, y];
             }
             x += dx;
@@ -248,253 +266,23 @@ class Room {
     }
 
     function addConnection(direction as WalkDirection) as Void {
-        // TODO: check if size_y is correct for up/down or not because of the way the map is drawn
         var tile_width = getApp().tile_width;
 		var tile_height = getApp().tile_height;
-        var index = Constants.ROOM_CENTER_INDEX;
         var screen_size_x = Math.ceil(Constants.SCREEN_WIDTH/tile_width).toNumber();
 		var screen_size_y = Math.ceil(Constants.SCREEN_HEIGHT/tile_height).toNumber();
-        var index_edge = [0, 0];
-        if (direction == UP) {
-            index_edge = [index, 0];
-        } else if (direction == DOWN) {
-            index_edge = [index, screen_size_y - 1];
-        } else if (direction == LEFT) {
-            index_edge = [0, index];
-        } else if (direction == RIGHT) {
-            index_edge = [screen_size_x - 1, index];
-        }
-        var pos_room_edge = findNearestPointFromEdge(direction, index_edge as Point2D, screen_size_x, screen_size_y);
-        
-        // Choose random tunnel shape
-        var tunnel_shape = chooseRandomTunnelShape();
-        createTunnelWithShape(direction, pos_room_edge, index_edge as Point2D, screen_size_x, screen_size_y, tunnel_shape);
-    }
 
-    function chooseRandomTunnelShape() as TunnelShape {
-        var chances = {
-            TUNNEL_STRAIGHT => 50,   // 50% straight (most common)
-            TUNNEL_L_SHAPED => 35,   // 35% L-shaped
-            TUNNEL_ZIGZAG => 15      // 15% zigzag (rare)
-        };
-        return $.MathUtil.weighted_random(chances) as TunnelShape;
-    }
+        // Use room center as target for the tunnel
+        var room_center_x = (_left + _right) / 2;
+        var room_center_y = (_top + _bottom) / 2;
 
-    function createTunnelWithShape(direction as WalkDirection, start_pos as Point2D, end_pos as Point2D, screen_size_x as Number, screen_size_y as Number, shape as TunnelShape) as Void {
-        if (shape == TUNNEL_STRAIGHT) {
-            createTunnel(direction, start_pos, end_pos, screen_size_x, screen_size_y);
-            return;
-        }
+        // Edge position (at screen border), aligned to room center
+        var edge_pos = [0, 0] as Point2D;
+        if (direction == UP) { edge_pos = [room_center_x, 0]; }
+        else if (direction == DOWN) { edge_pos = [room_center_x, screen_size_y - 1]; }
+        else if (direction == LEFT) { edge_pos = [0, room_center_y]; }
+        else if (direction == RIGHT) { edge_pos = [screen_size_x - 1, room_center_y]; }
 
-        // Calculate the perpendicular axis for bending
-        var is_vertical = (direction == UP || direction == DOWN);
-        
-        if (shape == TUNNEL_L_SHAPED) {
-            // L-shaped: Go partially in one direction, then turn 90 degrees
-            createTunnelLShaped(direction, start_pos, end_pos, screen_size_x, screen_size_y, is_vertical);
-        } else if (shape == TUNNEL_ZIGZAG) {
-            // Zigzag: Multiple turns
-            createTunnelZigZag(direction, start_pos, end_pos, screen_size_x, screen_size_y, is_vertical);
-        }
-    }
-
-    function createTunnelLShaped(direction as WalkDirection, start_pos as Point2D, end_pos as Point2D, screen_size_x as Number, screen_size_y as Number, is_vertical as Boolean) as Void {
-        var x = start_pos[0];
-        var y = start_pos[1];
-        
-        // Determine bend point (random offset from center)
-        var bend_offset = $.MathUtil.random(1, 3);
-        
-        if (is_vertical) {
-            // Vertical tunnel with horizontal bend
-            var bend_y = (start_pos[1] + end_pos[1]) / 2;
-            var bend_x = start_pos[0] + ($.MathUtil.random(0, 1) == 0 ? -bend_offset : bend_offset);
-            bend_x = $.MathUtil.clamp(bend_x, 1, screen_size_x - 2);
-            
-            // First segment: horizontal to bend point
-            var dx = (bend_x > x) ? 1 : -1;
-            while (x != bend_x) {
-                addTunnelTile(x, y, false, screen_size_x, screen_size_y);
-                x += dx;
-            }
-            addTunnelTile(x, y, false, screen_size_x, screen_size_y);
-            
-            // Second segment: vertical from bend to end
-            var dy = (end_pos[1] > y) ? 1 : -1;
-            while (y != end_pos[1]) {
-                addTunnelTile(x, y, true, screen_size_x, screen_size_y);
-                y += dy;
-            }
-            addTunnelTile(x, y, true, screen_size_x, screen_size_y);
-        } else {
-            // Horizontal tunnel with vertical bend
-            var bend_x = (start_pos[0] + end_pos[0]) / 2;
-            var bend_y = start_pos[1] + ($.MathUtil.random(0, 1) == 0 ? -bend_offset : bend_offset);
-            bend_y = $.MathUtil.clamp(bend_y, 1, screen_size_y - 2);
-            
-            // First segment: vertical to bend point
-            var dy = (bend_y > y) ? 1 : -1;
-            while (y != bend_y) {
-                addTunnelTile(x, y, true, screen_size_x, screen_size_y);
-                y += dy;
-            }
-            addTunnelTile(x, y, true, screen_size_x, screen_size_y);
-            
-            // Second segment: horizontal from bend to end
-            var dx = (end_pos[0] > x) ? 1 : -1;
-            while (x != end_pos[0]) {
-                addTunnelTile(x, y, false, screen_size_x, screen_size_y);
-                x += dx;
-            }
-            addTunnelTile(x, y, false, screen_size_x, screen_size_y);
-        }
-    }
-
-    function createTunnelZigZag(direction as WalkDirection, start_pos as Point2D, end_pos as Point2D, screen_size_x as Number, screen_size_y as Number, is_vertical as Boolean) as Void {
-        var x = start_pos[0];
-        var y = start_pos[1];
-        var num_bends = $.MathUtil.random(2, 3);
-        
-        if (is_vertical) {
-            // Vertical tunnel with horizontal zigzags
-            var total_dy = end_pos[1] - start_pos[1];
-            var segment_length = $.MathUtil.max(1, $.MathUtil.abs(total_dy) / (num_bends + 1));
-            
-            // First segment: go partway vertically
-            var dy = (total_dy > 0) ? 1 : -1;
-            for (var i = 0; i < segment_length; i++) {
-                if (y == end_pos[1]) { break; }
-                addTunnelTile(x, y, true, screen_size_x, screen_size_y);
-                y += dy;
-            }
-            addTunnelTile(x, y, true, screen_size_x, screen_size_y);
-            
-            // Alternating horizontal and vertical segments
-            for (var bend = 0; bend < num_bends; bend++) {
-                // Horizontal segment
-                var h_offset = $.MathUtil.random(1, 3);
-                var h_dir = ($.MathUtil.random(0, 1) == 0) ? -1 : 1;
-                var target_x = $.MathUtil.clamp(x + h_dir * h_offset, 1, screen_size_x - 2);
-                
-                var h_dx = (target_x > x) ? 1 : -1;
-                while (x != target_x) {
-                    addTunnelTile(x, y, false, screen_size_x, screen_size_y);
-                    x += h_dx;
-                }
-                addTunnelTile(x, y, false, screen_size_x, screen_size_y);
-                
-                // Vertical segment
-                for (var i = 0; i < segment_length; i++) {
-                    if (y == end_pos[1]) { break; }
-                    addTunnelTile(x, y, true, screen_size_x, screen_size_y);
-                    y += dy;
-                }
-                addTunnelTile(x, y, true, screen_size_x, screen_size_y);
-            }
-            
-            // Final vertical segment to end
-            while (y != end_pos[1]) {
-                addTunnelTile(x, y, true, screen_size_x, screen_size_y);
-                y += dy;
-            }
-            addTunnelTile(x, y, true, screen_size_x, screen_size_y);
-        } else {
-            // Horizontal tunnel with vertical zigzags
-            var total_dx = end_pos[0] - start_pos[0];
-            var segment_length = $.MathUtil.max(1, $.MathUtil.abs(total_dx) / (num_bends + 1));
-            
-            // First segment: go partway horizontally
-            var dx = (total_dx > 0) ? 1 : -1;
-            for (var i = 0; i < segment_length; i++) {
-                if (x == end_pos[0]) { break; }
-                addTunnelTile(x, y, false, screen_size_x, screen_size_y);
-                x += dx;
-            }
-            addTunnelTile(x, y, false, screen_size_x, screen_size_y);
-            
-            // Alternating vertical and horizontal segments
-            for (var bend = 0; bend < num_bends; bend++) {
-                // Vertical segment
-                var v_offset = $.MathUtil.random(1, 3);
-                var v_dir = ($.MathUtil.random(0, 1) == 0) ? -1 : 1;
-                var target_y = $.MathUtil.clamp(y + v_dir * v_offset, 1, screen_size_y - 2);
-                
-                var v_dy = (target_y > y) ? 1 : -1;
-                while (y != target_y) {
-                    addTunnelTile(x, y, true, screen_size_x, screen_size_y);
-                    y += v_dy;
-                }
-                addTunnelTile(x, y, true, screen_size_x, screen_size_y);
-                
-                // Horizontal segment
-                for (var i = 0; i < segment_length; i++) {
-                    if (x == end_pos[0]) { break; }
-                    addTunnelTile(x, y, false, screen_size_x, screen_size_y);
-                    x += dx;
-                }
-                addTunnelTile(x, y, false, screen_size_x, screen_size_y);
-            }
-            
-            // Final horizontal segment to end
-            while (x != end_pos[0]) {
-                addTunnelTile(x, y, false, screen_size_x, screen_size_y);
-                x += dx;
-            }
-            addTunnelTile(x, y, false, screen_size_x, screen_size_y);
-        }
-    }
-
-    function createTunnel(direction as WalkDirection, start_pos as Point2D, end_pos as Point2D, screen_size_x as Number, screen_size_y as Number) as Void {
-        var x = start_pos[0];
-        var y = start_pos[1];
-        var dx = 0, dy = 0;
-
-        if (direction == UP) {dy = -1;}
-        else if (direction == DOWN) {dy = 1;}
-        else if (direction == LEFT) {dx = -1;}
-        else if (direction == RIGHT) {dx = 1;}
-
-        var left_right = (direction == UP || direction == DOWN);
-
-        addTunnelTile(x, y, left_right, screen_size_x, screen_size_y);
-        do {
-            x += dx;
-            y += dy;
-            addTunnelTile(x, y, left_right, screen_size_x, screen_size_y);
-        } while (x != end_pos[0] || y != end_pos[1]);
-    }
-
-    function removeFromArray(array as Array<Point2D>, pos as Array<Number>) as Boolean {
-        for (var i = 0; i < array.size(); i++) {
-            if (array[i][0] == pos[0] && array[i][1] == pos[1]) {
-                array.remove(array[i]);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    function addTunnelTile(x as Number, y as Number, left_right as Boolean, screen_size_x as Number, screen_size_y as Number) as Void {
-        if (_map.getType([x, y]) != PASSABLE) {
-            _map.setType([x, y], PASSABLE);
-        }
-        
-
-        if (left_right) {
-            if (x > 0) { 
-                _map.setType([x - 1, y], WALL);
-            }
-            if (x < screen_size_x - 1) {
-                _map.setType([x + 1, y], WALL);
-            }
-        } else {
-            if (y > 0) {
-                _map.setType([x, y - 1], WALL);
-            }
-            if (y < screen_size_y - 1) {
-                _map.setType([x, y + 1], WALL);
-            }
-        }
+        Map.digConnectionTunnel(_map, edge_pos, direction, screen_size_x, screen_size_y, [room_center_x, room_center_y]);
     }
 
     function createStairs(room_pos as Point2D) as Void {
@@ -504,35 +292,41 @@ class Room {
 
     function addStairs(pos as Point2D?, reload as Boolean?) as Void {
         if (pos == null) {
-            pos = MapUtil.getRandomPosFromRoom(self);
+            var map_data = getMapData();
+            var coords = MapUtil.getCoordOfRoom(map_data[:size_x], map_data[:size_y]);
+            pos = MapUtil.getOpenPos(_map, coords[0], coords[1], coords[2], coords[3]);
         }
         System.println("Stairs pos: " + pos);
         _map.setType(pos, STAIRS);
         _stairs = pos;
+        Map.addWallsAround(_map, pos[0], pos[1]);
         if (reload) {
             _map.mapToString();
         }
     }
 
     function addMerchant(room_pos as Point2D) as Void {
-        var pos = MapUtil.getRandomPosFromRoom(self);
-        if (pos[0] == Constants.ROOM_CENTER_INDEX || pos[1] == Constants.ROOM_CENTER_INDEX) {
-            System.println("WTF????");
-        }
+        var map_data = getMapData();
+        var coords = MapUtil.getCoordOfRoom(map_data[:size_x], map_data[:size_y]);
+        var pos = MapUtil.getOpenPos(_map, coords[0], coords[1], coords[2], coords[3]);
         var merchant = new Merchant();
         merchant.setPos(pos);
         $.Game.setRoomWithFlag(room_pos, HAS_MERCHANT, pos);
         _map.setContent(pos, merchant);
         addNPC(merchant);
+        Map.addWallsAround(_map, pos[0], pos[1]);
     }
 
     function addQuestGiver(room_pos as Point2D) as Void {
-        var pos = MapUtil.getRandomPosFromRoom(self);
+        var map_data = getMapData();
+        var coords = MapUtil.getCoordOfRoom(map_data[:size_x], map_data[:size_y]);
+        var pos = MapUtil.getOpenPos(_map, coords[0], coords[1], coords[2], coords[3]);
         var npc = new QuestGiver();
         npc.setPos(pos);
         $.Game.setRoomWithFlag(room_pos, HAS_QUEST_GIVER, pos);
         _map.setContent(pos, npc);
         addNPC(npc);
+        Map.addWallsAround(_map, pos[0], pos[1]);
     }
 
     function freeMemory() as Void {
@@ -574,7 +368,12 @@ class Room {
             "map" => _map.save(),
             "items" => items,
             "enemies" => enemies,
-            "npcs" => npcs
+            "npcs" => npcs,
+            "left" => _left,
+            "right" => _right,
+            "top" => _top,
+            "bottom" => _bottom,
+            "shape" => _shape
         };
     }
 
@@ -587,7 +386,12 @@ class Room {
             :start_pos => data["start_pos"],
             :map => Map.load(data["map"]),
             :items => {},
-            :enemies => {}
+            :enemies => {},
+            :left => data["left"],
+            :right => data["right"],
+            :top => data["top"],
+            :bottom => data["bottom"],
+            :shape => data["shape"]
         });
         room.onLoad(data);
         return room;

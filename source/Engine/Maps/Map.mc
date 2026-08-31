@@ -331,24 +331,9 @@ class Map {
 		var room_width = right - left;
 		var room_height = bottom - top;
 
-		// Step 1: Create base rectangle (all walls)
-		for (var i = left; i <= right; i++) {
-			map.setType([i, top], WALL);
-		}
-		for (var i = left; i <= right; i++) {
-			map.setType([i, bottom], WALL);
-		}
-		for (var j = top; j <= bottom; j++) {
-			map.setType([left, j], WALL);
-		}
-		for (var j = top; j <= bottom; j++) {
-			map.setType([right, j], WALL);
-		}
-
-		// Step 2: Fill interior based on shape
+		// Fill interior based on shape (only PASSABLE, walls are added later by addWallsAroundPassable)
 		switch (shape) {
 			case ROOMSHAPE_RECTANGLE:
-				// Default rectangle - fill everything
 				for (var i = left + 1; i < right; i++) {
 					for (var j = top + 1; j < bottom; j++) {
 						map.setType([i, j], PASSABLE);
@@ -366,9 +351,10 @@ class Map {
 					}
 				}
 				// Vertical part (right side, extending down)
+				// Overlap by 1 row to ensure connectivity
 				var v_width = $.MathUtil.max(2, room_width / 3);
 				for (var i = right - v_width; i < right; i++) {
-					for (var j = top + h_height; j < bottom; j++) {
+					for (var j = top + h_height - 1; j < bottom; j++) {
 						map.setType([i, j], PASSABLE);
 					}
 				}
@@ -386,8 +372,9 @@ class Map {
 					}
 				}
 				// Vertical stem
+				// Overlap by 1 row to ensure connectivity
 				for (var i = stem_start; i < stem_start + stem_width; i++) {
-					for (var j = top + bar_height; j < bottom; j++) {
+					for (var j = top + bar_height - 1; j < bottom; j++) {
 						map.setType([i, j], PASSABLE);
 					}
 				}
@@ -460,7 +447,62 @@ class Map {
 				break;
 		}
 
+		// Safety check: ensure the shape is connected
+		if (!isRoomConnected(map, left, right, top, bottom)) {
+			// Fall back to rectangle if shape is disconnected
+			System.println("WARNING: Room shape " + shape + " is disconnected, falling back to RECTANGLE");
+			for (var i = left + 1; i < right; i++) {
+				for (var j = top + 1; j < bottom; j++) {
+					map.setType([i, j], PASSABLE);
+				}
+			}
+		}
+
 		return map;
+	}
+
+	static function addWallsAroundPassable(map as Map) as Void {
+		var width = map.getXSize();
+		var height = map.getYSize();
+		var dirs8 = [[-1,-1],[0,-1],[1,-1],[-1,0],[1,0],[-1,1],[0,1],[1,1]] as Array<Array<Number>>;
+		var toWall = [] as Array<Point2D>;
+		for (var x = 0; x < width; x++) {
+			for (var y = 0; y < height; y++) {
+				if (map.getTile(x, y).type != EMPTY) { continue; }
+				for (var d = 0; d < dirs8.size(); d++) {
+					var nx = x + dirs8[d][0];
+					var ny = y + dirs8[d][1];
+					if (nx >= 0 && nx < width && ny >= 0 && ny < height) {
+						if (map.getTile(nx, ny).type == PASSABLE) {
+							toWall.add([x, y]);
+							break;
+						}
+					}
+				}
+			}
+		}
+		for (var i = 0; i < toWall.size(); i++) {
+			map.setType(toWall[i], WALL);
+		}
+	}
+
+	static function addWallsAround(map as Map, x as Number, y as Number) as Void {
+		var sx = map.getXSize();
+		var sy = map.getYSize();
+		var dirs = [[-1,-1],[0,-1],[1,-1],[-1,0],[1,0],[-1,1],[0,1],[1,1]] as Array<Array<Number>>;
+		for (var d = 0; d < dirs.size(); d++) {
+			var cx = x + dirs[d][0];
+			var cy = y + dirs[d][1];
+			if (cx < 0 || cx >= sx || cy < 0 || cy >= sy) { continue; }
+			if (map.getTile(cx, cy).type != PASSABLE) { continue; }
+			for (var d2 = 0; d2 < dirs.size(); d2++) {
+				var nx = cx + dirs[d2][0];
+				var ny = cy + dirs[d2][1];
+				if (nx >= 0 && nx < sx && ny >= 0 && ny < sy && map.getTile(nx, ny).type == EMPTY) {
+					map.setType([nx, ny], WALL);
+				}
+			}
+		}
 	}
 
 	static function addIslands(map as Map, left as Number, right as Number, top as Number, bottom as Number, room_shape as RoomShape) as Void {
@@ -474,36 +516,54 @@ class Map {
 		// Calculate max islands based on room size
 		if (room_area > 100) {
 			max_islands = 4;
-		} else if (room_area > 50) {
+		} else if (room_area > 64) {
 			max_islands = 3;
-		} else if (room_area > 25) {
+		} else if (room_area > 36) {
 			max_islands = 2;
-		} else {
+		} else if (room_area > 20) {
 			max_islands = 1;
+		} else {
+			max_islands = 0;
 		}
 		
 		// Reduce islands for non-rectangular shapes (they have less open space)
 		if (room_shape == ROOMSHAPE_L_SHAPE || room_shape == ROOMSHAPE_T_SHAPE) {
-			max_islands = $.MathUtil.max(1, max_islands - 1);
+			max_islands = $.MathUtil.max(0, max_islands - 1);
 		} else if (room_shape == ROOMSHAPE_PLUS) {
-			max_islands = $.MathUtil.max(1, max_islands - 2);
+			max_islands = $.MathUtil.max(0, max_islands - 2);
 		}
 		
-		var num_islands = $.MathUtil.random(1, max_islands + 1);
+		var num_islands = (max_islands > 0) ? $.MathUtil.random(0, max_islands + 1) : 0;
 		
+		// Skip islands if room is too small
+		if (room_width < 5 || room_height < 5) {
+			return;
+		}
+
 		for (var island = 0; island < num_islands; island++) {
-			// Choose island size: 1x1, 2x1, 1x2, or 2x2
-			var island_type = $.MathUtil.random(0, 3);
-			var island_width = (island_type == 0 || island_type == 2) ? 1 : 2;
-			var island_height = (island_type == 0 || island_type == 1) ? 1 : 2;
+			// Choose island size based on room dimensions
+			var max_island_w = $.MathUtil.min(4, (room_width - 4) / 2);
+			var max_island_h = $.MathUtil.min(4, (room_height - 4) / 2);
+			if (max_island_w < 1 || max_island_h < 1) {
+				continue;
+			}
+			var island_width = $.MathUtil.random(1, max_island_w + 1);
+			var island_height = $.MathUtil.random(1, max_island_h + 1);
 			
 			// Try to place the island
 			var placed = false;
 			var tries = 0;
+			var ix_min = left + 3;
+			var ix_max = right - island_width - 2;
+			var iy_min = top + 3;
+			var iy_max = bottom - island_height - 2;
+			if (ix_max < ix_min || iy_max < iy_min) {
+				continue;
+			}
 			while (!placed && tries < 20) {
 				tries += 1;
-				var ix = $.MathUtil.random(left + 2, right - island_width - 1);
-				var iy = $.MathUtil.random(top + 2, bottom - island_height - 1);
+				var ix = $.MathUtil.random(ix_min, ix_max);
+				var iy = $.MathUtil.random(iy_min, iy_max);
 				
 				// Check if position is valid (not too close to center/spawn)
 				var center_x = (left + right) / 2;
@@ -521,9 +581,9 @@ class Map {
 					for (var dy = 0; dy < island_height && valid; dy++) {
 						var check_x = ix + dx;
 						var check_y = iy + dy;
-						if (check_x <= left || check_x >= right || check_y <= top || check_y >= bottom) {
+						if (check_x <= left + 2 || check_x >= right - 2 || check_y <= top + 2 || check_y >= bottom - 2) {
 							valid = false;
-						} else if (map.getType([check_x, check_y]) != PASSABLE) {
+						} else if (map.getTile(check_x, check_y).type != PASSABLE) {
 							valid = false;
 						}
 					}
@@ -533,37 +593,62 @@ class Map {
 					continue;
 				}
 				
-				// Check if island blocks passage (ensure there's still a path around it)
-				// Simple check: make sure there's passable tiles on at least 3 sides
-				var passable_sides = 0;
-				// Check left
-				if (ix > left + 1 && map.getType([ix - 1, iy]) == PASSABLE) {
-					passable_sides += 1;
-				}
-				// Check right
-				if (ix + island_width < right - 1 && map.getType([ix + island_width, iy]) == PASSABLE) {
-					passable_sides += 1;
-				}
-				// Check top
-				if (iy > top + 1 && map.getType([ix, iy - 1]) == PASSABLE) {
-					passable_sides += 1;
-				}
-				// Check bottom
-				if (iy + island_height < bottom - 1 && map.getType([ix, iy + island_height]) == PASSABLE) {
-					passable_sides += 1;
-				}
-				
-				if (passable_sides < 3) {
-					continue;
-				}
-				
 				// Place the island
 				for (var dx = 0; dx < island_width; dx++) {
 					for (var dy = 0; dy < island_height; dy++) {
 						map.setType([ix + dx, iy + dy], WALL);
 					}
 				}
-				placed = true;
+
+				// Quick local check: each island tile must have at least 2 passable neighbors
+				// and no neighbor should be a tunnel tile (narrow passage)
+				var island_valid = true;
+				for (var dx = 0; dx < island_width && island_valid; dx++) {
+					for (var dy = 0; dy < island_height && island_valid; dy++) {
+						var ax = ix + dx;
+						var ay = iy + dy;
+						var passable_neighbors = 0;
+						// Inline neighbor check + narrow passage check (no array alloc)
+						var nb_dirs = [[0,1],[0,-1],[1,0],[-1,0]] as Array<Array<Number>>;
+						for (var d = 0; d < nb_dirs.size(); d++) {
+							var nx = ax + nb_dirs[d][0];
+							var ny = ay + nb_dirs[d][1];
+							if (nx > left && nx < right && ny > top && ny < bottom) {
+								if (map.getTile(nx, ny).type == PASSABLE) {
+									passable_neighbors += 1;
+									// Check if this neighbor is a narrow passage (inlined)
+									var narrow_count = 0;
+									for (var d2 = 0; d2 < nb_dirs.size(); d2++) {
+										var nnx = nx + nb_dirs[d2][0];
+										var nny = ny + nb_dirs[d2][1];
+										if (nnx >= 0 && nnx < map.getXSize() && nny >= 0 && nny < map.getYSize()) {
+											if (map.getTile(nnx, nny).type == PASSABLE) {
+												narrow_count += 1;
+											}
+										}
+									}
+									if (narrow_count <= 2) {
+										island_valid = false;
+									}
+								}
+							}
+						}
+						if (passable_neighbors < 2) {
+							island_valid = false;
+						}
+					}
+				}
+
+				if (!island_valid) {
+					// Remove the island - too close to bottleneck
+					for (var dx = 0; dx < island_width; dx++) {
+						for (var dy = 0; dy < island_height; dy++) {
+							map.setType([ix + dx, iy + dy], PASSABLE);
+						}
+					}
+				} else {
+					placed = true;
+				}
 			}
 		}
 	}
@@ -577,6 +662,182 @@ class Map {
 			ROOMSHAPE_ROUNDED => 5      // 5% chance
 		};
 		return $.MathUtil.weighted_random(chances) as RoomShape;
+	}
+
+	static function isRoomConnected(map as Map, left as Number, right as Number, top as Number, bottom as Number) as Boolean {
+		// Find first passable tile by scanning
+		var start = null as Point2D?;
+		var total_passable = 0;
+		for (var i = left + 1; i < right; i++) {
+			for (var j = top + 1; j < bottom; j++) {
+				if (map.getTile(i, j).type == PASSABLE) {
+					total_passable += 1;
+					if (start == null) {
+						start = [i, j];
+					}
+				}
+			}
+		}
+
+		if (start == null || total_passable == 0) {
+			return true;
+		}
+
+		var visited = {} as Dictionary<Number, Boolean>;
+		var queue = [start] as Array<Point2D>;
+		visited[(start[0] << 8) + start[1]] = true;
+		var reachable = 0;
+		var queue_idx = 0;
+		var dirs = [[0,1],[0,-1],[1,0],[-1,0]] as Array<Array<Number>>;
+
+		while (queue_idx < queue.size()) {
+			var current = queue[queue_idx];
+			queue_idx++;
+			reachable += 1;
+			for (var d = 0; d < dirs.size(); d++) {
+				var nx = current[0] + dirs[d][0];
+				var ny = current[1] + dirs[d][1];
+				if (nx > left && nx < right && ny > top && ny < bottom) {
+					var key = (nx << 8) + ny;
+					if (visited[key] == null && map.getTile(nx, ny).type == PASSABLE) {
+						visited[key] = true;
+						queue.add([nx, ny]);
+					}
+				}
+			}
+		}
+
+		return reachable >= total_passable;
+	}
+
+	static function findNearestPassable(map as Map, pos as Point2D, left as Number, right as Number, top as Number, bottom as Number) as Point2D? {
+		var queue = [pos] as Array<Point2D>;
+		var visited = {} as Dictionary<Number, Boolean>;
+		visited[(pos[0] << 8) + pos[1]] = true;
+		var queue_idx = 0;
+		var dirs = [[0,1],[0,-1],[1,0],[-1,0]] as Array<Array<Number>>;
+
+		while (queue_idx < queue.size()) {
+			var current = queue[queue_idx];
+			queue_idx++;
+			if (current[0] >= left && current[0] <= right && current[1] >= top && current[1] <= bottom) {
+				if (map.getType(current) == PASSABLE && map.getContent(current) == null) {
+					return current;
+				}
+			}
+			for (var d = 0; d < dirs.size(); d++) {
+				var nx = current[0] + dirs[d][0];
+				var ny = current[1] + dirs[d][1];
+				var key = (nx << 8) + ny;
+				if (visited[key] == null) {
+					visited[key] = true;
+					if (nx >= left && nx <= right && ny >= top && ny <= bottom) {
+						queue.add([nx, ny]);
+					}
+				}
+			}
+		}
+		return null;
+	}
+
+	static function digConnectionTunnel(map as Map, edge_pos as Point2D, direction as WalkDirection, screen_size_x as Number, screen_size_y as Number, target as Point2D) as Array<Point2D> {
+		var tunnel_tiles = [] as Array<Point2D>;
+
+		// Determine main direction (toward room)
+		var main_dx = 0, main_dy = 0;
+		if (direction == LEFT) { main_dx = 1; }
+		else if (direction == RIGHT) { main_dx = -1; }
+		else if (direction == UP) { main_dy = 1; }
+		else if (direction == DOWN) { main_dy = -1; }
+
+		var is_horizontal = (direction == LEFT || direction == RIGHT);
+
+		var x = edge_pos[0];
+		var y = edge_pos[1];
+
+		// Set edge position to PASSABLE so player can reach screen border
+		if (x >= 0 && x < screen_size_x && y >= 0 && y < screen_size_y) {
+			if (map.getTile(x, y).type != PASSABLE) {
+				map.setType([x, y], PASSABLE);
+			}
+			tunnel_tiles.add([x, y]);
+		}
+
+		// Phase 1: Dig 2 straight tiles from edge
+		for (var i = 0; i < 2; i++) {
+			x += main_dx;
+			y += main_dy;
+			if (x < 0 || x >= screen_size_x || y < 0 || y >= screen_size_y) { break; }
+			if (map.getTile(x, y).type == PASSABLE) { break; }
+			map.setType([x, y], PASSABLE);
+			tunnel_tiles.add([x, y]);
+		}
+
+		// Phase 2: Optional curve at tile 2 (50% chance)
+		if ($.MathUtil.random(0, 100) < 50) {
+			var perp_dir = ($.MathUtil.random(0, 1) == 0) ? -1 : 1;
+			var curve_length = $.MathUtil.random(1, 3);
+			for (var i = 0; i < curve_length; i++) {
+				if (is_horizontal) {
+					y += perp_dir;
+				} else {
+					x += perp_dir;
+				}
+				if (x < 0 || x >= screen_size_x || y < 0 || y >= screen_size_y) { break; }
+				if (map.getTile(x, y).type == PASSABLE) { break; }
+				map.setType([x, y], PASSABLE);
+				tunnel_tiles.add([x, y]);
+			}
+		}
+
+		// Phase 3: Continue toward room with random straight/steer chunks
+		var max_steps = (screen_size_x + screen_size_y) * 2;
+		var straight_left = 0;
+		var steer_left = 0;
+		for (var step = 0; step < max_steps; step++) {
+			// Pick new chunk sizes when both are exhausted
+			if (straight_left <= 0 && steer_left <= 0) {
+				straight_left = $.MathUtil.random(1, 3);
+				steer_left = $.MathUtil.random(1, 2);
+			}
+
+			var newX = x;
+			var newY = y;
+			var moving_main = false;
+
+			if (straight_left > 0) {
+				// Main direction
+				newX += main_dx;
+				newY += main_dy;
+				straight_left -= 1;
+				moving_main = true;
+			} else {
+				// Steer: move on perpendicular axis toward target
+				if (is_horizontal) {
+					if (newY < target[1]) { newY += 1; }
+					else if (newY > target[1]) { newY -= 1; }
+				} else {
+					if (newX < target[0]) { newX += 1; }
+					else if (newX > target[0]) { newX -= 1; }
+				}
+				steer_left -= 1;
+			}
+
+			if (newX < 0 || newX >= screen_size_x || newY < 0 || newY >= screen_size_y) { break; }
+
+			// Only break on PASSABLE when moving in main direction (reached room or another tunnel)
+			if (moving_main && map.getTile(newX, newY).type == PASSABLE) { break; }
+
+			if (map.getTile(newX, newY).type != PASSABLE) {
+				map.setType([newX, newY], PASSABLE);
+				tunnel_tiles.add([newX, newY]);
+			}
+
+			x = newX;
+			y = newY;
+		}
+
+		return tunnel_tiles;
 	}
 
 }
