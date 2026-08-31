@@ -352,10 +352,22 @@ module MapUtil {
 	function getRandomPos(map as Map, left as Number, right as Number, top as Number, bottom as Number) as Point2D {
 		var x = 0;
 		var y = 0;
+		var max_tries = 50;
+		var tries = 0;
 		do {
-			x = MathUtil.random(left + 1, right - 1);
-			y = MathUtil.random(top + 1, bottom - 1);
-		} while (x == Constants.ROOM_CENTER_INDEX || y == Constants.ROOM_CENTER_INDEX || map.getContent([x,y]) != null);
+			x = MathUtil.random(left + 2, right - 2);
+			y = MathUtil.random(top + 2, bottom - 2);
+			tries += 1;
+			// Must be a walkable tile
+			if (map.getType([x, y]) != PASSABLE) {
+				continue;
+			}
+			// Avoid tunnel tiles (narrow passages with 2 or fewer passable neighbors)
+			if (tries < max_tries && isNarrowPassage(map, [x, y])) {
+				continue;
+			}
+			break;
+		} while (true);
 		return [x, y];
 	}
 
@@ -416,6 +428,75 @@ module MapUtil {
 		var top = middle_of_screen[1] - Math.floor(room_size_y/2);
 		var bottom = middle_of_screen[1] + Math.floor(room_size_y/2);
 		return [left, right, top, bottom];
+	}
+
+	function hasAllOpenNeighbors(map as Map, x as Number, y as Number) as Boolean {
+		var dirs = [[-1,-1],[0,-1],[1,-1],[-1,0],[1,0],[-1,1],[0,1],[1,1]] as Array<Array<Number>>;
+		for (var d = 0; d < dirs.size(); d++) {
+			var nx = x + dirs[d][0];
+			var ny = y + dirs[d][1];
+			if (!map.isInBound([nx, ny]) || map.getTile(nx, ny).type != PASSABLE) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	function getOpenPos(map as Map, left as Number, right as Number, top as Number, bottom as Number) as Point2D {
+		var center_x = (left + right) / 2;
+		var center_y = (top + bottom) / 2;
+		// Try to find a spot where all 8 neighbors are PASSABLE, away from center
+		var x_min = left + 3;
+		var x_max = right - 3;
+		var y_min = top + 3;
+		var y_max = bottom - 3;
+		if (x_max > x_min && y_max > y_min) {
+			for (var attempt = 0; attempt < 10; attempt++) {
+				var x = MathUtil.random(x_min, x_max);
+				var y = MathUtil.random(y_min, y_max);
+				if (map.getTile(x, y).type == PASSABLE && hasAllOpenNeighbors(map, x, y)) {
+					// Avoid center (player spawn) — at least 3 tiles away
+					var dx = x - center_x;
+					var dy = y - center_y;
+					if (dx < 0) { dx = -dx; }
+					if (dy < 0) { dy = -dy; }
+					if (dx + dy >= 3) {
+						return [x, y];
+					}
+				}
+			}
+		}
+		// Fallback: pick any passable spot away from center, clear walls around it
+		for (var attempt = 0; attempt < 20; attempt++) {
+			var pos = getRandomPos(map, left, right, top, bottom);
+			var dx2 = pos[0] - center_x;
+			var dy2 = pos[1] - center_y;
+			if (dx2 < 0) { dx2 = -dx2; }
+			if (dy2 < 0) { dy2 = -dy2; }
+			if (dx2 + dy2 >= 3) {
+				clearAround(map, pos[0], pos[1]);
+				return pos;
+			}
+		}
+		// Last resort: any passable spot
+		var pos = getRandomPos(map, left, right, top, bottom);
+		clearAround(map, pos[0], pos[1]);
+		return pos;
+	}
+
+	function clearAround(map as Map, x as Number, y as Number) as Void {
+		var dirs = [[-1,-1],[0,-1],[1,-1],[-1,0],[1,0],[-1,1],[0,1],[1,1]] as Array<Array<Number>>;
+		var sx = map.getXSize();
+		var sy = map.getYSize();
+		for (var d = 0; d < dirs.size(); d++) {
+			var nx = x + dirs[d][0];
+			var ny = y + dirs[d][1];
+			if (nx >= 0 && nx < sx && ny >= 0 && ny < sy) {
+				if (map.getTile(nx, ny).type == WALL) {
+					map.setType([nx, ny], PASSABLE);
+				}
+			}
+		}
 	}
 
 	function calcDistance(pos1 as Point2D, pos2 as Point2D) as Numeric {

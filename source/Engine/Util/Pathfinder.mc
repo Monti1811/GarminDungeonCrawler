@@ -76,7 +76,13 @@ module Pathfinder {
         }
         pq_enqueue(open_queue, min_h, start_num);
 
+        var max_iterations = 200;
+        var iterations = 0;
         while (open_queue.size() > 0) {
+            iterations += 1;
+            if (iterations > max_iterations) {
+                return null;
+            }
             var current = pq_dequeue(open_queue);
             
             if (target_dict.hasKey(current)) {
@@ -143,7 +149,13 @@ module Pathfinder {
         g_score[start_num] = 0;
         pq_enqueue(open_queue, manhattanHeuristic(start_num, end_num), start_num);
         
+        var max_iterations = 200;
+        var iterations = 0;
         while (open_queue.size() > 0) {
+            iterations += 1;
+            if (iterations > max_iterations) {
+                return null;
+            }
             var current = pq_dequeue(open_queue);
             
             if (current == end_num) {

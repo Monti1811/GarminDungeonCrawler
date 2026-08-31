@@ -118,6 +118,7 @@ class Turn {
         _player.setPos(_player_pos);
         room.updatePlayerPos(_player_pos);
         _view.setPlayerSpritePos(_player_pos);
+        _view.setForegroundDirty();
         var room_pos = $.Game.getCurrentRoomPosition();
         $.Game.setRoomAsVisited(room_pos);
     }

@@ -7,3 +7,32 @@
 ```
 
 Working directory: `F:/Code/Garmin/DungeonCrawler`
+
+## Unit Tests
+
+Tests ausführen mit `run_tests.bat` (verhindert PowerShell-Hängen):
+
+```bash
+run_tests.bat                      # alle Tests
+run_tests.bat debugPrintRoomMap    # einzelner Test
+```
+
+Das Script:
+1. Kompiliert mit `-t` (Test-Modus)
+2. Startet Simulator mit `venu2s` (NICHT `venu2s_sim`)
+3. Führt `monkeydo.bat` mit `/t` aus
+4. Beendet Simulator
+
+Wichtig: Simulator-Device muss `venu2s` sein, `venu2s_sim` funktioniert nicht mit `monkeydo`.
+
+Manuell (ohne Script):
+```bash
+# Kompilieren
+& "java.exe" "-Xms1g" "-Dfile.encoding=UTF-8" "-Dapple.awt.UIElement=true" "-jar" "...\monkeybrains.jar" "-o" "bin\DungeonCrawler.prg" "-f" "monkey.jungle" "-y" "f:\Code\Garmin\developer_key" "-d" "venu2s" "-w" "-t"
+
+# Simulator starten
+Start-Process "...\simulator.exe" -ArgumentList "-d", "venu2s"
+
+# Tests ausführen (einzelner Test mit Funktionsname)
+& "...\monkeydo.bat" "bin\DungeonCrawler.prg" "venu2s" "/t" "testFunctionName"
+```
