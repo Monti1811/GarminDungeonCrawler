@@ -213,7 +213,20 @@ class Dungeon {
 	}
 
 	function loadRoom(room_name as String) as Room {
-		var room = Storage.getValue(room_name) as Dictionary;
+		var room = Storage.getValue(room_name) as Dictionary?;
+		if (room == null) {
+			// Room not in Storage — create an empty fallback room
+			System.println("WARNING: Room '" + room_name + "' not found in Storage, creating fallback");
+			room = {
+				"size_x" => 10, "size_y" => 10,
+				"tile_width" => getApp().tile_width, "tile_height" => getApp().tile_height,
+				"start_pos" => [5, 5],
+				"map" => (new Map(22, 22, true)).save(),
+				"items" => [], "enemies" => [], "npcs" => [],
+				"left" => 6, "right" => 15, "top" => 6, "bottom" => 15,
+				"shape" => null
+			} as Dictionary;
+		}
 		return Room.load(room);
 	}
 

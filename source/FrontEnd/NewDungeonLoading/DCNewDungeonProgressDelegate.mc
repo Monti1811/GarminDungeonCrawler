@@ -13,6 +13,11 @@ class DCNewDungeonProgressDelegate extends WatchUi.BehaviorDelegate {
     private var _size_dungeon as Point2D?;
     private var _room_counter as Number = 0;
 
+    private var _pending_room as Room?;
+    private var _pending_i as Number = 0;
+    private var _pending_j as Number = 0;
+    private var _room_phase as Number = 0;
+
     function initialize(progressBar as WatchUi.ProgressBar) {
         BehaviorDelegate.initialize();
         _timer = new Timer.Timer();
@@ -34,11 +39,24 @@ class DCNewDungeonProgressDelegate extends WatchUi.BehaviorDelegate {
                 _progress = 2;
                 break;
             case 2:
-                if (_room_counter < _dungeon.getSize()[0] * _dungeon.getSize()[1]) {
-                    Main.createRoomForDungeon(_dungeon, _room_counter % _size_dungeon[0], Math.floor(_room_counter / _size_dungeon[0]));
+                var total = _size_dungeon[0] * _size_dungeon[1];
+
+                if (_room_phase == 1) {
+                    Main.cleanupRoomForDungeon(_pending_room);
+                    _room_phase = 2;
+                } else if (_room_phase == 2) {
+                    Main.saveRoomForDungeon(_dungeon, _pending_room, _pending_i, _pending_j);
+                    _pending_room.freeMemory();
+                    _pending_room = null;
+                    _room_phase = 0;
+                } else if (_room_counter < total) {
+                    _pending_i = _room_counter % _size_dungeon[0];
+                    _pending_j = Math.floor(_room_counter / _size_dungeon[0]);
+                    _pending_room = Main.createRoomForDungeon(_dungeon, _pending_i, _pending_j);
                     _room_counter += 1;
-                    _progress_bar.setProgress(10.0 + _room_counter * 80 / (_size_dungeon[0] * _size_dungeon[1]));
-                    _progress_bar.setDisplayString("Creating room " + _room_counter + " of " + (_size_dungeon[0] * _size_dungeon[1]));
+                    _room_phase = 1;
+                    _progress_bar.setProgress(10.0 + _room_counter * 80 / total);
+                    _progress_bar.setDisplayString("Creating room " + _room_counter + " of " + total);
                 } else {
                     _time_inbetween = 500;
                     _progress = 3;
