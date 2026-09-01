@@ -11,10 +11,15 @@ if %ERRORLEVEL% neq 0 (
 
 echo Starting simulator...
 taskkill /IM simulator.exe /F >nul 2>&1
-timeout /t 2 /nobreak >nul
+ping -n 3 127.0.0.1 >nul
 start "" "%SDK%\bin\simulator.exe" -d %DEVICE%
-timeout /t 10 /nobreak >nul
+ping -n 11 127.0.0.1 >nul
 
 echo Running tests...
 "%SDK%\bin\monkeydo.bat" "bin\DungeonCrawler.prg" %DEVICE% /t %*
+set TESTRESULT=%ERRORLEVEL%
+
+echo Cleaning up...
 taskkill /IM simulator.exe /F >nul 2>&1
+ping -n 2 127.0.0.1 >nul
+exit /b %TESTRESULT%
