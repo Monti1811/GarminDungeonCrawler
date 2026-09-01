@@ -1,7 +1,7 @@
-import Toybox.ActivityMonitor;
-import Toybox.Math;
 import Toybox.Lang;
+import Toybox.Math;
 import Toybox.WatchUi;
+import Toybox.ActivityMonitor;
 
 module StepGate {
 
@@ -15,23 +15,25 @@ module StepGate {
         refreshBaseline();
     }
 
+    function getSteps() as Number? {
+        return Sensor.getSteps();
+    }
+
     function refreshBaseline() as Void {
-        var info = ActivityMonitor.getInfo();
-        _lastStepReading = info.steps;
+        _lastStepReading = getSteps();
         _bankedSteps = 0;
-        _lastSyncSuccess = info.steps != null;
+        _lastSyncSuccess = _lastStepReading != null;
     }
 
     function syncSteps() as Boolean {
         if (_stepsPerTurn <= 0) {
             return true;
         }
-        var info = ActivityMonitor.getInfo();
-        _lastSyncSuccess = info.steps != null;
-        if (info.steps == null) {
+        var current = getSteps();
+        _lastSyncSuccess = current != null;
+        if (current == null) {
             return false;
         }
-        var current = info.steps;
         var delta = current - _lastStepReading;
         if (delta < 0) {
             // Steps counter likely rolled over (e.g. new day). Preserve existing banked steps and
@@ -95,5 +97,20 @@ module StepGate {
 
     function resetForSession() as Void {
         init();
+    }
+
+    function save() as Dictionary {
+        return {
+            "lastStepReading" => _lastStepReading,
+            "bankedSteps" => _bankedSteps,
+        };
+    }
+
+    function load(data as Dictionary?) as Void {
+        if (data == null) {
+            return;
+        }
+        _lastStepReading = data["lastStepReading"] as Number;
+        _bankedSteps = data["bankedSteps"] as Number;
     }
 }

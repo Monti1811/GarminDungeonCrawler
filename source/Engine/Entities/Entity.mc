@@ -72,7 +72,7 @@ class Entity {
 			return;
 		}
 		var resistance = getElementalResistance(element);
-		var adjusted_power = MathUtil.floor(power * (1.0 - resistance), 0);
+		var adjusted_power = MathUtil.ceil(power * (1.0 - resistance), 0).toNumber();
 		if (adjusted_power <= 0 || duration <= 0) {
 			return;
 		}

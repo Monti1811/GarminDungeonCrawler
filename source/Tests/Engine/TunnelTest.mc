@@ -4,7 +4,7 @@ import Toybox.System;
 
 (:test)
 function tunnelLeftReachesPassable(logger as Test.Logger) as Boolean {
-    var map = createTunnelTestMap(22, 22, 8, 14, 8, 14);
+    var map = TunnelTestHelpers.createTunnelTestMap(22, 22, 8, 14, 8, 14);
     var tunnel = Map.digConnectionTunnel(map, [0, 11], LEFT, 22, 22, [11, 11]);
 
     Test.assertMessage(tunnel.size() >= 2, "Tunnel from LEFT has at least 2 tiles, got " + tunnel.size().toString());
@@ -26,7 +26,7 @@ function tunnelLeftReachesPassable(logger as Test.Logger) as Boolean {
 
 (:test)
 function tunnelRightReachesPassable(logger as Test.Logger) as Boolean {
-    var map = createTunnelTestMap(22, 22, 8, 14, 8, 14);
+    var map = TunnelTestHelpers.createTunnelTestMap(22, 22, 8, 14, 8, 14);
     var tunnel = Map.digConnectionTunnel(map, [21, 11], RIGHT, 22, 22, [11, 11]);
 
     Test.assertMessage(tunnel.size() >= 2, "Tunnel from RIGHT has at least 2 tiles");
@@ -48,7 +48,7 @@ function tunnelRightReachesPassable(logger as Test.Logger) as Boolean {
 
 (:test)
 function tunnelUpReachesPassable(logger as Test.Logger) as Boolean {
-    var map = createTunnelTestMap(22, 22, 8, 14, 8, 14);
+    var map = TunnelTestHelpers.createTunnelTestMap(22, 22, 8, 14, 8, 14);
     var tunnel = Map.digConnectionTunnel(map, [11, 0], UP, 22, 22, [11, 11]);
 
     Test.assertMessage(tunnel.size() >= 2, "Tunnel from UP has at least 2 tiles");
@@ -70,7 +70,7 @@ function tunnelUpReachesPassable(logger as Test.Logger) as Boolean {
 
 (:test)
 function tunnelDownReachesPassable(logger as Test.Logger) as Boolean {
-    var map = createTunnelTestMap(22, 22, 8, 14, 8, 14);
+    var map = TunnelTestHelpers.createTunnelTestMap(22, 22, 8, 14, 8, 14);
     var tunnel = Map.digConnectionTunnel(map, [11, 21], DOWN, 22, 22, [11, 11]);
 
     Test.assertMessage(tunnel.size() >= 2, "Tunnel from DOWN has at least 2 tiles");
@@ -97,7 +97,7 @@ function allTunnelTilesArePassable(logger as Test.Logger) as Boolean {
 
     for (var i = 0; i < 4; i++) {
         for (var iter = 0; iter < 10; iter++) {
-            var map = createTunnelTestMap(22, 22, 8, 14, 8, 14);
+            var map = TunnelTestHelpers.createTunnelTestMap(22, 22, 8, 14, 8, 14);
             var tunnel = Map.digConnectionTunnel(map, edges[i] as Point2D, dirs4[i], 22, 22, [11, 11]);
 
             for (var t = 0; t < tunnel.size(); t++) {
@@ -115,7 +115,7 @@ function allTunnelTilesArePassable(logger as Test.Logger) as Boolean {
 (:test)
 function tunnelNeverGoesOutOfBounds(logger as Test.Logger) as Boolean {
     for (var iter = 0; iter < 20; iter++) {
-        var map = createTunnelTestMap(22, 22, 8, 14, 8, 14);
+        var map = TunnelTestHelpers.createTunnelTestMap(22, 22, 8, 14, 8, 14);
         var tunnel = Map.digConnectionTunnel(map, [0, 11], LEFT, 22, 22, [11, 11]);
 
         for (var t = 0; t < tunnel.size(); t++) {
@@ -132,7 +132,7 @@ function tunnelNeverGoesOutOfBounds(logger as Test.Logger) as Boolean {
 (:test)
 function tunnelFirstTwoTilesAreStraight(logger as Test.Logger) as Boolean {
     for (var iter = 0; iter < 20; iter++) {
-        var map = createTunnelTestMap(22, 22, 8, 14, 8, 14);
+        var map = TunnelTestHelpers.createTunnelTestMap(22, 22, 8, 14, 8, 14);
         var tunnel = Map.digConnectionTunnel(map, [0, 11], LEFT, 22, 22, [11, 11]);
 
         if (tunnel.size() >= 3) {
@@ -160,7 +160,7 @@ function tunnelFirstTwoTilesAreStraight(logger as Test.Logger) as Boolean {
 function tunnelCurveShiftsPerpendicular(logger as Test.Logger) as Boolean {
     var found_curve = false;
     for (var iter = 0; iter < 30; iter++) {
-        var map = createTunnelTestMap(22, 22, 8, 14, 8, 14);
+        var map = TunnelTestHelpers.createTunnelTestMap(22, 22, 8, 14, 8, 14);
         var tunnel = Map.digConnectionTunnel(map, [0, 11], LEFT, 22, 22, [11, 11]);
 
         // Check if any tunnel tile has y != 11 (perpendicular shift)
@@ -179,7 +179,7 @@ function tunnelCurveShiftsPerpendicular(logger as Test.Logger) as Boolean {
 (:test)
 function tunnelConnectsToRoomNotJustWall(logger as Test.Logger) as Boolean {
     for (var iter = 0; iter < 20; iter++) {
-        var map = createTunnelTestMap(22, 22, 8, 14, 8, 14);
+        var map = TunnelTestHelpers.createTunnelTestMap(22, 22, 8, 14, 8, 14);
         var tunnel = Map.digConnectionTunnel(map, [0, 11], LEFT, 22, 22, [11, 11]);
 
         var last = tunnel[tunnel.size() - 1];
@@ -201,7 +201,10 @@ function tunnelConnectsToRoomNotJustWall(logger as Test.Logger) as Boolean {
     return true;
 }
 
-function createTunnelTestMap(width as Number, height as Number, rl as Number, rr as Number, rt as Number, rb as Number) as Map {
+(:test)
+module TunnelTestHelpers {
+
+    function createTunnelTestMap(width as Number, height as Number, rl as Number, rr as Number, rt as Number, rb as Number) as Map {
     var map = new Map(width, height, true);
     for (var i = rl; i <= rr; i++) {
         map.setType([i, rt], WALL);
@@ -217,6 +220,7 @@ function createTunnelTestMap(width as Number, height as Number, rl as Number, rr
         }
     }
     return map;
+    }
 }
 
 (:test)
@@ -226,7 +230,7 @@ function allPassableTilesConnected(logger as Test.Logger) as Boolean {
 
     for (var dirIdx = 0; dirIdx < 4; dirIdx++) {
         for (var iter = 0; iter < 10; iter++) {
-            var map = createTunnelTestMap(22, 22, 8, 14, 8, 14);
+            var map = TunnelTestHelpers.createTunnelTestMap(22, 22, 8, 14, 8, 14);
             Map.digConnectionTunnel(map, edges[dirIdx] as Point2D, dirs4[dirIdx], 22, 22, [11, 11]);
 
             // Find first PASSABLE tile
@@ -292,7 +296,7 @@ function allPassableTilesConnected(logger as Test.Logger) as Boolean {
 (:test)
 function tunnelReachesScreenEdgeLeft(logger as Test.Logger) as Boolean {
     for (var iter = 0; iter < 10; iter++) {
-        var map = createTunnelTestMap(22, 22, 8, 14, 8, 14);
+        var map = TunnelTestHelpers.createTunnelTestMap(22, 22, 8, 14, 8, 14);
         Map.digConnectionTunnel(map, [0, 11], LEFT, 22, 22, [11, 11]);
 
         var foundEdge = false;
@@ -310,7 +314,7 @@ function tunnelReachesScreenEdgeLeft(logger as Test.Logger) as Boolean {
 (:test)
 function tunnelReachesScreenEdgeRight(logger as Test.Logger) as Boolean {
     for (var iter = 0; iter < 10; iter++) {
-        var map = createTunnelTestMap(22, 22, 8, 14, 8, 14);
+        var map = TunnelTestHelpers.createTunnelTestMap(22, 22, 8, 14, 8, 14);
         Map.digConnectionTunnel(map, [21, 11], RIGHT, 22, 22, [11, 11]);
 
         var foundEdge = false;
@@ -328,7 +332,7 @@ function tunnelReachesScreenEdgeRight(logger as Test.Logger) as Boolean {
 (:test)
 function tunnelReachesScreenEdgeUp(logger as Test.Logger) as Boolean {
     for (var iter = 0; iter < 10; iter++) {
-        var map = createTunnelTestMap(22, 22, 8, 14, 8, 14);
+        var map = TunnelTestHelpers.createTunnelTestMap(22, 22, 8, 14, 8, 14);
         Map.digConnectionTunnel(map, [11, 0], UP, 22, 22, [11, 11]);
 
         var foundEdge = false;
@@ -346,7 +350,7 @@ function tunnelReachesScreenEdgeUp(logger as Test.Logger) as Boolean {
 (:test)
 function tunnelReachesScreenEdgeDown(logger as Test.Logger) as Boolean {
     for (var iter = 0; iter < 10; iter++) {
-        var map = createTunnelTestMap(22, 22, 8, 14, 8, 14);
+        var map = TunnelTestHelpers.createTunnelTestMap(22, 22, 8, 14, 8, 14);
         Map.digConnectionTunnel(map, [11, 21], DOWN, 22, 22, [11, 11]);
 
         var foundEdge = false;
@@ -368,7 +372,7 @@ function noDiagonalDigging(logger as Test.Logger) as Boolean {
 
     for (var dirIdx = 0; dirIdx < 4; dirIdx++) {
         for (var iter = 0; iter < 10; iter++) {
-            var map = createTunnelTestMap(22, 22, 8, 14, 8, 14);
+            var map = TunnelTestHelpers.createTunnelTestMap(22, 22, 8, 14, 8, 14);
             var tunnel = Map.digConnectionTunnel(map, edges[dirIdx] as Point2D, dirs4[dirIdx], 22, 22, [11, 11]);
 
             // Each consecutive pair should differ in at most one axis
@@ -393,7 +397,7 @@ function noDiagonalDigging(logger as Test.Logger) as Boolean {
 
 (:test)
 function debugPrintRoomMap(logger as Test.Logger) as Boolean {
-    var map = createTunnelTestMap(22, 22, 8, 14, 8, 14);
+    var map = TunnelTestHelpers.createTunnelTestMap(22, 22, 8, 14, 8, 14);
     System.println("=== BEFORE TUNNEL ===");
     printMap(map);
 
@@ -443,7 +447,7 @@ function printMap(map as Map) as Void {
 
 (:test)
 function addWallsAroundPassableCoversAllEmptyNeighbors(logger as Test.Logger) as Boolean {
-    var map = createTunnelTestMap(22, 22, 8, 14, 8, 14);
+    var map = TunnelTestHelpers.createTunnelTestMap(22, 22, 8, 14, 8, 14);
     Map.digConnectionTunnel(map, [0, 11], LEFT, 22, 22, [11, 11]);
     Map.digConnectionTunnel(map, [21, 11], RIGHT, 22, 22, [11, 11]);
     Map.addWallsAroundPassable(map);
