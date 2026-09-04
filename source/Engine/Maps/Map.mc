@@ -167,35 +167,30 @@ class Map {
 		switch (dungeonStyle) {
 			case DUNGEONSTYLE_NORMAL:
 				return {
-					WALL => 33,
 					PASSABLE => 32,
 					STAIRS => 34,
 					EMPTY => 36
 				} as Dictionary<TileType, Number>;
 			case DUNGEONSTYLE_FIRE:
 				return {
-					WALL => 33,
 					PASSABLE => 40,
 					STAIRS => 34,
 					EMPTY => 36
 				} as Dictionary<TileType, Number>;
 			case DUNGEONSTYLE_BOSS:
 				return {
-					WALL => 41,
 					PASSABLE => 37,
 					STAIRS => 34,
 					EMPTY => 36
 				} as Dictionary<TileType, Number>;
 			case DUNGEONSTYLE_ICE:
 				return {
-					WALL => 33,
 					PASSABLE => 38,
 					STAIRS => 34,
 					EMPTY => 35
 				} as Dictionary<TileType, Number>;
 			default:
 				return {
-					WALL => 33,
 					PASSABLE => 32,
 					STAIRS => 34,
 					EMPTY => 36
@@ -203,10 +198,237 @@ class Map {
 		}
 	}
 
+	// Calculate wall variant based on neighboring tiles
+	// Returns char ID for wall glyph or 0 if not a wall
+	// New char IDs:
+	//   42-44: horizontal walls (top, bottom, mid)
+	//   45-47: vertical walls (left, right, mid)
+	//   50-53: outer corners (TL, TR, BL, BR)
+	//   54-57: inner corners (TL, TR, BL, BR)
+	//   58-61: T-junctions (top, bottom, left, right)
+	//   62: cross
+	function getWallVariant(x as Number, y as Number) as Number {
+		var tile = getTile(x, y);
+		if (tile.type != WALL) {
+			return 0;
+		}
+		
+		// Check which neighbors are walls and which are passable
+		var topWall = false;
+		var rightWall = false;
+		var bottomWall = false;
+		var leftWall = false;
+		var topPassable = false;
+		var rightPassable = false;
+		var bottomPassable = false;
+		var leftPassable = false;
+		
+		if (y > 0) {
+			var top = getTile(x, y - 1);
+			topWall = (top.type == WALL);
+			topPassable = (top.type == PASSABLE);
+		} else {
+			topWall = true; // Treat out-of-bounds as wall
+			topPassable = false;
+		}
+		if (x < _width - 1) {
+			var right = getTile(x + 1, y);
+			rightWall = (right.type == WALL);
+			rightPassable = (right.type == PASSABLE);
+		} else {
+			rightWall = true; // Treat out-of-bounds as wall
+			rightPassable = false;
+		}
+		if (y < _height - 1) {
+			var bottom = getTile(x, y + 1);
+			bottomWall = (bottom.type == WALL);
+			bottomPassable = (bottom.type == PASSABLE);
+		} else {
+			bottomWall = true; // Treat out-of-bounds as wall
+			bottomPassable = false;
+		}
+		if (x > 0) {
+			var left = getTile(x - 1, y);
+			leftWall = (left.type == WALL);
+			leftPassable = (left.type == PASSABLE);
+		} else {
+			leftWall = true; // Treat out-of-bounds as wall
+			leftPassable = false;
+		}
+		
+		// Count wall neighbors
+		var wallCount = 0;
+		if (topWall) { wallCount++; }
+		if (rightWall) { wallCount++; }
+		if (bottomWall) { wallCount++; }
+		if (leftWall) { wallCount++; }
+
+		var passableCount = 0;
+		if (topPassable) { passableCount++; }
+		if (rightPassable) { passableCount++; }
+		if (bottomPassable) { passableCount++; }
+		if (leftPassable) { passableCount++; }
+		
+		// Isolated wall (0 neighbors) - not connected to any other wall
+		if (wallCount == 0) {
+			return CROSS;
+		}
+
+		// 3 walls - use straight wall tiles, ignore opposite side
+		if (wallCount == 3) {
+			if (!topWall) {
+				if (topPassable) {
+					return WALL_H_TOP;
+				}
+				var tile_BL = getTile(x - 1, y + 1);
+				if (tile_BL.type == WALL) {
+					return INNER_TL;
+				}
+				var tile_BR = getTile(x + 1, y + 1);
+				if (tile_BR.type == WALL) {
+					return INNER_TR;
+				}
+				return WALL_H_BOTTOM;
+			}
+			if (!bottomWall) {
+				if (bottomPassable) {
+					return WALL_H_BOTTOM;
+				}
+				var tile_TL = getTile(x - 1, y - 1);
+				if (tile_TL.type == WALL) {
+					return INNER_BL;
+				}
+				var tile_TR = getTile(x + 1, y - 1);
+				if (tile_TR.type == WALL) {
+					return INNER_BR;
+				}
+				return WALL_H_TOP;
+			}
+			if (!leftWall) {
+				if (leftPassable) {
+					return WALL_V_LEFT;
+				}
+				var tile_TR = getTile(x + 1, y - 1);
+				if (tile_TR.type == WALL) {
+					return INNER_TL;
+				}
+				var tile_BR = getTile(x + 1, y + 1);
+				if (tile_BR.type == WALL) {
+					return INNER_BL;
+				}
+				return WALL_V_RIGHT;
+			}
+			if (!rightWall) {
+				if (rightPassable) {
+					return WALL_V_RIGHT;
+				}
+				var tile_TL = getTile(x - 1, y - 1);
+				if (tile_TL.type == WALL) {
+					return INNER_TR;
+				}
+				var tile_BL = getTile(x - 1, y + 1);
+				if (tile_BL.type == WALL) {
+					return INNER_BR;
+				}
+				return WALL_V_LEFT;
+			}
+		}
+		
+		// Corners (2 neighbors)
+		if (wallCount == 2) {
+			// Wall pair determines the glyph based on where walls ARE:
+			// topWall+rightWall → walls at top+right → TR glyph
+			// topWall+leftWall → walls at top+left → TL glyph
+			// bottomWall+rightWall → walls at bottom+right → BR glyph
+			// bottomWall+leftWall → walls at bottom+left → BL glyph
+			// Diagonal check: empty diagonal → inner, wall diagonal → outer
+			if (topWall && rightWall) {
+				var diagWall = false;
+				if (y < _height - 1 && x > 0) {
+					var diag = getTile(x - 1, y + 1);
+					diagWall = (diag.type == PASSABLE);
+				}
+				if (diagWall) { return OUTER_BL; }
+				else { return INNER_BL; }
+			}
+			if (topWall && leftWall) {
+				var diagWall = false;
+				if (y < _height - 1 && x < _width - 1) {
+					var diag = getTile(x + 1, y + 1);
+					diagWall = (diag.type == PASSABLE);
+				}
+				if (diagWall) { return OUTER_BR; }
+				else { return INNER_BR; }
+			}
+			if (bottomWall && rightWall) {
+				var diagWall = false;
+				if (y > 0 && x > 0) {
+					var diag = getTile(x - 1, y - 1);
+					diagWall = (diag.type == PASSABLE);
+				}
+				if (diagWall) { return OUTER_TL; }
+				else { return INNER_TL; }
+			}
+			if (bottomWall && leftWall) {
+				var diagWall = false;
+				if (y > 0 && x < _width - 1) {
+					var diag = getTile(x + 1, y - 1);
+					diagWall = (diag.type == PASSABLE);
+				}
+				if (diagWall) { return OUTER_TR; }
+				else { return INNER_TR; }
+			}
+			
+			// Straight walls (opposite neighbors)
+			if (topWall && bottomWall) {
+				// Vertical wall - check passable sides
+				if (leftPassable && !rightPassable) { return WALL_V_LEFT; }
+				if (rightPassable && !leftPassable) { return WALL_V_RIGHT; }
+				return WALL_V_MID;
+			}
+			if (leftWall && rightWall) {
+				// Horizontal wall - check passable sides
+				if (topPassable && !bottomPassable) { return WALL_H_TOP; }
+				if (bottomPassable && !topPassable) { return WALL_H_BOTTOM; }
+				return WALL_H_MID;
+			}
+		}
+		
+		// Single wall (1 neighbor) - T-junctions
+		if (wallCount == 1) {
+			if (topWall) { return T_UP; }
+			if (bottomWall) { return T_DOWN; }
+			if (leftWall) { return T_RIGHT; }
+			if (rightWall) { return T_LEFT; }
+		}
+
+		// Fully surrounded (4 walls) - plain wall, no special variant needed
+		if (wallCount == 4) {
+			return 0;
+		}
+
+		// Fallback: straight wall based on dominant axis
+		if (topWall && bottomWall) {
+			return WALL_V_MID;
+		}
+		if (leftWall && rightWall) {
+			return WALL_H_MID;
+		}
+		
+		return 0;
+	}
+
 	// The tiles are created from a font, so we need to map the tile types to characters
-	function getMapChar(tile as Tile?, translation as Dictionary<TileType, Number>) as Number {
+	function getMapChar(tile as Tile?, translation as Dictionary<TileType, Number>, x as Number, y as Number) as Number {
 		if (tile == null) {
 			return translation[EMPTY];
+		}
+		if (tile.type == WALL) {
+			var wallVariant = getWallVariant(x, y);
+			if (wallVariant > 0) {
+				return wallVariant;
+			}
+			return 35; // Plain wall fallback
 		}
 		return translation[tile.type];
     }
@@ -217,7 +439,7 @@ class Map {
 		for (var j = 0; j < self._height; j++) {
 			var row = "";
 			for (var i = 0; i < self._width; i++) {
-				row += getMapChar(_tiles[i][j], translation).toChar();
+				row += getMapChar(_tiles[i][j], translation, i, j).toChar();
 			}
 			map_string.add(row);
 		}
@@ -575,7 +797,7 @@ class Map {
 					continue;
 				}
 				
-				// Check if all tiles for the island are PASSABLE
+				// Check if all tiles for the island are PASSABLE and all 8 neighbors are PASSABLE
 				var valid = true;
 				for (var dx = 0; dx < island_width && valid; dx++) {
 					for (var dy = 0; dy < island_height && valid; dy++) {
@@ -585,6 +807,15 @@ class Map {
 							valid = false;
 						} else if (map.getTile(check_x, check_y).type != PASSABLE) {
 							valid = false;
+						} else {
+							for (var nx = -1; nx <= 1 && valid; nx++) {
+								for (var ny = -1; ny <= 1 && valid; ny++) {
+									if (nx == 0 && ny == 0) { continue; }
+									if (map.getTile(check_x + nx, check_y + ny).type != PASSABLE) { 
+										valid = false;
+									}
+								}
+							}
 						}
 					}
 				}
@@ -601,38 +832,16 @@ class Map {
 				}
 
 				// Quick local check: each island tile must have at least 2 passable neighbors
-				// and no neighbor should be a tunnel tile (narrow passage)
 				var island_valid = true;
 				for (var dx = 0; dx < island_width && island_valid; dx++) {
 					for (var dy = 0; dy < island_height && island_valid; dy++) {
 						var ax = ix + dx;
 						var ay = iy + dy;
 						var passable_neighbors = 0;
-						// Inline neighbor check + narrow passage check (no array alloc)
-						var nb_dirs = [[0,1],[0,-1],[1,0],[-1,0]] as Array<Array<Number>>;
-						for (var d = 0; d < nb_dirs.size(); d++) {
-							var nx = ax + nb_dirs[d][0];
-							var ny = ay + nb_dirs[d][1];
-							if (nx > left && nx < right && ny > top && ny < bottom) {
-								if (map.getTile(nx, ny).type == PASSABLE) {
-									passable_neighbors += 1;
-									// Check if this neighbor is a narrow passage (inlined)
-									var narrow_count = 0;
-									for (var d2 = 0; d2 < nb_dirs.size(); d2++) {
-										var nnx = nx + nb_dirs[d2][0];
-										var nny = ny + nb_dirs[d2][1];
-										if (nnx >= 0 && nnx < map.getXSize() && nny >= 0 && nny < map.getYSize()) {
-											if (map.getTile(nnx, nny).type == PASSABLE) {
-												narrow_count += 1;
-											}
-										}
-									}
-									if (narrow_count <= 2) {
-										island_valid = false;
-									}
-								}
-							}
-						}
+						var nx = ax - 1; if (nx > left && nx < right && map.getTile(nx, ay).type == PASSABLE) { passable_neighbors += 1; }
+						nx = ax + 1; if (nx > left && nx < right && map.getTile(nx, ay).type == PASSABLE) { passable_neighbors += 1; }
+						var ny = ay - 1; if (ny > top && ny < bottom && map.getTile(ax, ny).type == PASSABLE) { passable_neighbors += 1; }
+						ny = ay + 1; if (ny > top && ny < bottom && map.getTile(ax, ny).type == PASSABLE) { passable_neighbors += 1; }
 						if (passable_neighbors < 2) {
 							island_valid = false;
 						}
@@ -660,7 +869,7 @@ class Map {
 			ROOMSHAPE_T_SHAPE => 20,    // 20% chance
 			ROOMSHAPE_PLUS => 10,       // 10% chance
 			ROOMSHAPE_ROUNDED => 5      // 5% chance
-		};
+		} as Dictionary;
 		return $.MathUtil.weighted_random(chances) as RoomShape;
 	}
 
@@ -835,6 +1044,21 @@ class Map {
 
 			x = newX;
 			y = newY;
+		}
+
+		// Phase 4: Always dig straight to target to ensure connectivity
+		while (x != target[0] || y != target[1]) {
+			if (is_horizontal) {
+				if (x < target[0]) { x += 1; }
+				else if (x > target[0]) { x -= 1; }
+			} else {
+				if (y < target[1]) { y += 1; }
+				else if (y > target[1]) { y -= 1; }
+			}
+			if (x < 0 || x >= screen_size_x || y < 0 || y >= screen_size_y) { break; }
+			if (map.getTile(x, y).type == PASSABLE) { break; }
+			map.setType([x, y], PASSABLE);
+			tunnel_tiles.add([x, y]);
 		}
 
 		return tunnel_tiles;

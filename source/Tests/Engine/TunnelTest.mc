@@ -628,7 +628,6 @@ function stressTestAllShapesMaxSize(logger as Test.Logger) as Boolean {
             var bottom = top + room_h;
 
             var map = Map.createRoomShape(screen, screen, left, right, top, bottom, shapes[s]);
-            Map.addIslands(map, left, right, top, bottom, shapes[s]);
             Map.addWallsAroundPassable(map);
 
             // Verify connectivity
@@ -700,7 +699,6 @@ function stressTestMaxRoomFullPipeline(logger as Test.Logger) as Boolean {
         var bottom = top + room_h;
 
         var map = Map.createRoomShape(screen, screen, left, right, top, bottom, shape);
-        Map.addIslands(map, left, right, top, bottom, shape);
         Map.addWallsAroundPassable(map);
 
         var center = [11, 11] as Point2D;
@@ -778,7 +776,6 @@ function stressTestRandomRoomSizes(logger as Test.Logger) as Boolean {
         var bottom = top_val + room_h;
 
         var map = Map.createRoomShape(screen, screen, left, right, top_val, bottom, shape);
-        Map.addIslands(map, left, right, top_val, bottom, shape);
         Map.addWallsAroundPassable(map);
 
         // Verify connectivity

@@ -3,7 +3,7 @@ import Toybox.Lang;
 
 module Sensor {
 
-    (:debug) var _mock as Mock.MockInstance? = null;
+    (:debug) var _mock as Object? = null;
     
 	(:debug)
     function setMock(_mockInstance as Object?) as Void {
@@ -17,9 +17,15 @@ module Sensor {
 	(:debug)
     function getSteps() as Number? {
         if (_mock != null) {
-            return _mock.invoke(:getSteps) as Number?;
+			if (_mock has :invoke) {
+				return _mock.invoke(:getSteps) as Number?;
+			}
         }
-    	return null;
+    	var info = ActivityMonitor.getInfo();
+        if (info == null) {
+            return null;
+        }
+        return info.steps;
     }
 
 	(:release)

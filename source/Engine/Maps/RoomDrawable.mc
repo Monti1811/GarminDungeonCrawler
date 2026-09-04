@@ -48,6 +48,41 @@ class RoomDrawable extends WatchUi.Drawable {
         _font = null;
     }
 
+    // Map a character code to a foreground color based on dungeon style
+    function getCharColor(charId as Number) as Number {
+        var dungeonStyle = $.Game.getDungeon().getStyle();
+        
+        // Wall variants (42-62) are always wall color
+        if (charId >= WALL_H_TOP && charId <= CROSS) {
+            switch (dungeonStyle) {
+                case DUNGEONSTYLE_FIRE: return 0x8B0000;
+                case DUNGEONSTYLE_ICE: return 0x00CED1;
+                case DUNGEONSTYLE_BOSS: return 0x800080;
+                default: return 0x444444;
+            }
+        }
+        
+        // Check specific chars
+        if (charId == 33 || charId == 41) { // WALL
+            switch (dungeonStyle) {
+                case DUNGEONSTYLE_FIRE: return 0x8B0000;
+                case DUNGEONSTYLE_ICE: return 0x00CED1;
+                case DUNGEONSTYLE_BOSS: return 0x800080;
+                default: return 0x444444;
+            }
+        }
+        if (charId == 34) { return 0xFFFF00; } // STAIRS
+        if (charId == 32 || charId == 37 || charId == 38 || charId == 40) { // PASSABLE
+            switch (dungeonStyle) {
+                case DUNGEONSTYLE_FIRE: return 0xCC6600;
+                case DUNGEONSTYLE_ICE: return 0x66FFFF;
+                case DUNGEONSTYLE_BOSS: return 0xCC66CC;
+                default: return 0x666666;
+            }
+        }
+        return 0x000000; // EMPTY
+    }
+
     function printRoom() as Void {
         System.println("Printing room");
         for (var i = 0; i < _map_string.size(); i++) {
@@ -141,9 +176,13 @@ class RoomDrawable extends WatchUi.Drawable {
     function draw(dc as Dc) as Void {
         dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_BLACK);
         dc.clear();
-        dc.setColor(_color[0], _color[1]);
         for (var i = 0; i < _map_string.size(); i++) {
-            dc.drawText(0, i * 16, _font, _map_string[i], Graphics.TEXT_JUSTIFY_LEFT);
+            var row = _map_string[i];
+            var chars = row.toUtf8Array();
+            for (var j = 0; j < chars.size(); j++) {
+                dc.setColor(getCharColor(chars[j]), Graphics.COLOR_BLACK);
+                dc.drawText(j * 16, i * 16, _font, row.substring(j, j + 1), Graphics.TEXT_JUSTIFY_LEFT);
+            }
         }
     }
 

@@ -7,6 +7,28 @@ enum TileType {
 	STAIRS
 }
 
+enum WallVariant {
+	WALL_H_TOP = 42,
+	WALL_H_BOTTOM = 43,
+	WALL_H_MID = 44,
+	WALL_V_LEFT = 45,
+	WALL_V_RIGHT = 46,
+	WALL_V_MID = 47,
+	OUTER_TL = 50,
+	OUTER_TR = 51,
+	OUTER_BL = 52,
+	OUTER_BR = 53,
+	INNER_TL = 54,
+	INNER_TR = 55,
+	INNER_BL = 56,
+	INNER_BR = 57,
+	T_DOWN = 58,
+	T_UP = 59,
+	T_LEFT = 60,
+	T_RIGHT = 61,
+	CROSS = 62
+}
+
 class Tile {
 	public var type as TileType = EMPTY;
 	public var x as Number = 0;
