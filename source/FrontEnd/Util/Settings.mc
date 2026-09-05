@@ -39,7 +39,7 @@ module Settings {
             case -1:
                 return "Off";
             case 0:
-                return "Every turn";
+                return "Every 3 turns";
             default:
                 return "Every " + val + " minutes";
         }

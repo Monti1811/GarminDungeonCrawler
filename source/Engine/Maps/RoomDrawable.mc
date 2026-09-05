@@ -57,6 +57,7 @@ class RoomDrawable extends WatchUi.Drawable {
 
     function updateToNewRoom(options as Dictionary) as Void {
         _map_string = options[:map_string] as Array<String>;
+        printRoom();
     }
 
     function drawItem(dc as Dc, item as Item) as Void {

@@ -62,7 +62,9 @@ class EnemySpecificValues {
 			{:id => 34, :cost => 50, :weight => tieredWeight(depth, [ {:max => 11, :weight => 0}, {:max => 17, :weight => 4}, {:max => 24, :weight => 7}, {:max => 999, :weight => 6} ])}, // OrcVeteran
 			{:id => 28, :cost => 40, :weight => tieredWeight(depth, [ {:max => 15, :weight => 0}, {:max => 20, :weight => 4}, {:max => 26, :weight => 6}, {:max => 999, :weight => 6} ])}, // Chort
 			{:id => 29, :cost => 50, :weight => tieredWeight(depth, [ {:max => 17, :weight => 0}, {:max => 22, :weight => 3}, {:max => 999, :weight => 5} ])}, // Bies
-			{:id => 35, :cost => 50, :weight => tieredWeight(depth, [ {:max => 19, :weight => 0}, {:max => 24, :weight => 4}, {:max => 999, :weight => 6} ])} // Rokita
+			{:id => 35, :cost => 50, :weight => tieredWeight(depth, [ {:max => 19, :weight => 0}, {:max => 24, :weight => 4}, {:max => 999, :weight => 6} ])}, // Rokita
+			{:id => 36, :cost => 9, :weight => tieredWeight(depth, [ {:max => 6, :weight => 0}, {:max => 12, :weight => 4}, {:max => 20, :weight => 5}, {:max => 999, :weight => 5} ])}, // Shadow Stalker
+			{:id => 37, :cost => 10, :weight => tieredWeight(depth, [ {:max => 6, :weight => 0}, {:max => 12, :weight => 5}, {:max => 20, :weight => 6}, {:max => 999, :weight => 6} ])} // Gloom Lurker
 		] as Array<Dictionary<Symbol, Number>>;
 
 		return enemy_weights;

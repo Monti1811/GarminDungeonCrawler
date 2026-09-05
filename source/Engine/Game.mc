@@ -30,14 +30,14 @@ module Game {
 	var time_played as Number = 0;
 	var time_started as Time.Moment?;
 	var turns as Turn?;
-	// Room name, connections, size, visited
+	// Room name, connections, size, visited, flags, room_shape
 	var map as Array<Array<[
 		String, 							// Room name
 		Dictionary<WalkDirection, Boolean>, // Connections
 		Point2D, 							// Size of room
 		Boolean, 							// Visited
-		Array<Point2D?>]>> = []; 			// Special flags 
-		// [0] = Has stairs
+		Array<Point2D?>,					// Special flags 
+		RoomShape?]>> = []; 				// [0] = Has stairs
 		// [1] = Has merchant
 		// [2] = Has boss
 		// [3] = Has quest giver
@@ -98,8 +98,8 @@ module Game {
 		}
 	}
 
-	function addRoomToMap(pos as Point2D, room_name as String, connections as Dictionary<WalkDirection, Boolean>, size as Point2D) as Void {
-		map[pos[0]][pos[1]] = [room_name, connections, size, false, createEmptyFlags()];
+	function addRoomToMap(pos as Point2D, room_name as String, connections as Dictionary<WalkDirection, Boolean>, size as Point2D, room_shape as RoomShape?) as Void {
+		map[pos[0]][pos[1]] = [room_name, connections, size, false, createEmptyFlags(), room_shape];
 	}
 
 	function setRoomAsVisited(pos as Point2D) as Void {
@@ -164,6 +164,10 @@ module Game {
 					}
 				}
 				room[4] = flags;
+				// Backward compatibility: add room_shape if missing
+				if (room.size() < 6) {
+					room.add(null);
+				}
 			}
 		}
 	}

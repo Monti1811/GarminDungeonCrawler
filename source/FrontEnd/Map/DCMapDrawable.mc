@@ -12,6 +12,8 @@ class DCMapDrawable extends WatchUi.Drawable {
 
 	private var size as Point2D;
 
+	private var _flag_bitmaps as Dictionary<ResourceId, BitmapReference>? = null;
+
 	function initialize() {
 		Drawable.initialize({});
 		var dungeon_map = $.Game.map;
@@ -24,6 +26,12 @@ class DCMapDrawable extends WatchUi.Drawable {
 			center_x - (current_room_pos[0] * size_room + middle_of_room), 
 			center_y - (current_room_pos[1] * size_room + middle_of_room)
 		];
+		// Cache flag bitmaps
+		_flag_bitmaps = {
+			$.Rez.Drawables.Stairs => WatchUi.loadResource($.Rez.Drawables.Stairs),
+			$.Rez.Drawables.Merchant => WatchUi.loadResource($.Rez.Drawables.Merchant),
+			$.Rez.Drawables.Sage => WatchUi.loadResource($.Rez.Drawables.Sage)
+		};
 	}
 
 	function drawRoom(dc as Dc, pos as Point2D) {
@@ -32,7 +40,8 @@ class DCMapDrawable extends WatchUi.Drawable {
 			Dictionary<WalkDirection, Boolean>, // Connections
 			Point2D, 							// Size of room
 			Boolean, 							// Visited
-			Array<Point2D?>						// Special flags
+			Array<Point2D?>,					// Special flags
+			RoomShape?							// Room shape
 		]?;
 		// Check if room data exists and if the room has been visited
 		if (room_data == null || room_data[3] == false) {
@@ -43,14 +52,18 @@ class DCMapDrawable extends WatchUi.Drawable {
 		var room_connections = room_data[1];
 		var room_size = room_data[2];
 		var flags = room_data[4];
+		var room_shape = room_data[5] as RoomShape?;
 		var entire_room_x = locX + pos[0] * size_room;
 		var entire_room_y = locY + pos[1] * size_room;
 		var room_x = entire_room_x + middle_of_room - room_size[0] * size_tile / 2;
 		var room_y = entire_room_y + middle_of_room - room_size[1] * size_tile / 2;
+		
+		// Draw room outline
 		dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
-		dc.drawRectangle(room_x - 1, room_y - 1, room_size[0] * size_tile + 2, room_size[1] * size_tile + 2);
+		drawRoomShape(dc, room_shape, room_x - 1, room_y - 1, room_size[0] * size_tile + 2, room_size[1] * size_tile + 2, room_size[0], room_size[1], true);
+		// Draw room fill
 		dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
-		dc.fillRectangle(room_x, room_y, room_size[0] * size_tile, room_size[1] * size_tile);
+		drawRoomShape(dc, room_shape, room_x, room_y, room_size[0] * size_tile, room_size[1] * size_tile, room_size[0], room_size[1], false);
 
 		// Draw the connections
 		var middle_x = entire_room_x + middle_of_room;
@@ -77,6 +90,64 @@ class DCMapDrawable extends WatchUi.Drawable {
 
 	}
 
+	function drawRoomShape(dc as Dc, shape as RoomShape?, x as Number, y as Number, w as Number, h as Number, room_tiles_x as Number, room_tiles_y as Number, outline as Boolean) as Void {
+		if (shape == null || shape == ROOMSHAPE_RECTANGLE) {
+			if (outline) {
+				dc.drawRectangle(x, y, w, h);
+			} else {
+				dc.fillRectangle(x, y, w, h);
+			}
+			return;
+		}
+
+		var ts = size_tile; // tile size in pixels on map
+
+		if (shape == ROOMSHAPE_L_SHAPE) {
+			// L-shape: top bar full width (top half), vertical part right side (bottom half)
+			var h_h = (room_tiles_y / 2) * ts;
+			var v_w = ((room_tiles_x / 3) > 1 ? room_tiles_x / 3 : 2) * ts;
+			if (outline) {
+				dc.drawRectangle(x, y, w, h_h);
+				dc.drawRectangle(x + w - v_w, y + h_h, v_w, h - h_h);
+			} else {
+				dc.fillRectangle(x, y, w, h_h);
+				dc.fillRectangle(x + w - v_w, y + h_h, v_w, h - h_h);
+			}
+		} else if (shape == ROOMSHAPE_T_SHAPE) {
+			// T-shape: wide top bar, narrow stem centered
+			var bar_h = ((room_tiles_y / 3) > 2 ? room_tiles_y / 3 : 2) * ts;
+			var stem_w = ((room_tiles_x / 3) > 2 ? room_tiles_x / 3 : 2) * ts;
+			var stem_x = x + (w - stem_w) / 2;
+			if (outline) {
+				dc.drawRectangle(x, y, w, bar_h);
+				dc.drawRectangle(stem_x, y + bar_h, stem_w, h - bar_h);
+			} else {
+				dc.fillRectangle(x, y, w, bar_h);
+				dc.fillRectangle(stem_x, y + bar_h, stem_w, h - bar_h);
+			}
+		} else if (shape == ROOMSHAPE_PLUS) {
+			// Plus/Cross: horizontal arm centered, vertical arm centered
+			var arm_w = ((room_tiles_x / 3) > 2 ? room_tiles_x / 3 : 2) * ts;
+			var arm_h = ((room_tiles_y / 3) > 2 ? room_tiles_y / 3 : 2) * ts;
+			var cx = x + w / 2;
+			var cy = y + h / 2;
+			if (outline) {
+				dc.drawRectangle(x, cy - arm_h / 2, w, arm_h);
+				dc.drawRectangle(cx - arm_w / 2, y, arm_w, h);
+			} else {
+				dc.fillRectangle(x, cy - arm_h / 2, w, arm_h);
+				dc.fillRectangle(cx - arm_w / 2, y, arm_w, h);
+			}
+		} else {
+			// Rounded and fallback: draw rectangle
+			if (outline) {
+				dc.drawRectangle(x, y, w, h);
+			} else {
+				dc.fillRectangle(x, y, w, h);
+			}
+		}
+	}
+
 	function drawConnection(dc as Dc, room_connections as Dictionary<WalkDirection, Boolean>, direction as WalkDirection, x1 as Number, y1 as Number, x2 as Number, y2 as Number) {
 			if (room_connections[direction] == true) {
 				dc.drawLine(x1, y1, x2, y2);
@@ -84,13 +155,16 @@ class DCMapDrawable extends WatchUi.Drawable {
 		}
 
 	function drawFlag(dc as Dc, pos as Point2D, rez_id as ResourceId) {
-		dc.drawScaledBitmap(
-			pos[0] - size_tile/2, 
-			pos[1] - size_tile/2,
-			size_tile * 2, 
-			size_tile * 2,
-			WatchUi.loadResource(rez_id)
-		);
+		var bitmap = _flag_bitmaps[rez_id] as BitmapReference?;
+		if (bitmap != null) {
+			dc.drawScaledBitmap(
+				pos[0] - size_tile/2, 
+				pos[1] - size_tile/2,
+				size_tile * 2, 
+				size_tile * 2,
+				bitmap
+			);
+		}
 	}
 
 	// Draw the player

@@ -13,6 +13,7 @@ class Item {
 	var pos as Point2D = [0, 0];
 	var equipped as Boolean = false;
 	var in_inventory as Boolean = false;
+	var _sprite_ref as Toybox.Graphics.BitmapReference? = null;
 
 	function initialize();
 	function onEquipItem(player as Player) as Void {
@@ -66,7 +67,14 @@ class Item {
 	}
 
 	function getSpriteRef() as Toybox.Graphics.BitmapReference {
-		return $.Toybox.WatchUi.loadResource(getSprite());
+		if (_sprite_ref == null) {
+			_sprite_ref = $.Toybox.WatchUi.loadResource(getSprite());
+		}
+		return _sprite_ref;
+	}
+
+	function freeSpriteCache() as Void {
+		_sprite_ref = null;
 	}
 
 	function canBePickedUp(player as Player) as Boolean {

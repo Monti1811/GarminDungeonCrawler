@@ -9,6 +9,7 @@ class Entity {
 	var energy_per_turn as Number = 100;
 	var guid as Number = 0;
 	var elemental_effects as Dictionary<ElementType, Dictionary<Symbol, Number>> = {};
+	var _sprite_ref as Toybox.Graphics.BitmapReference? = null;
 
 	function initialize() {
 	}
@@ -30,7 +31,14 @@ class Entity {
 	}
 
 	function getSpriteRef() as Toybox.Graphics.BitmapReference {
-		return $.Toybox.WatchUi.loadResource(getSprite());
+		if (_sprite_ref == null) {
+			_sprite_ref = $.Toybox.WatchUi.loadResource(getSprite());
+		}
+		return _sprite_ref;
+	}
+
+	function freeSpriteCache() as Void {
+		_sprite_ref = null;
 	}
 
 	function getSpriteOffset() as Point2D {
@@ -64,7 +72,7 @@ class Entity {
 			return;
 		}
 		var resistance = getElementalResistance(element);
-		var adjusted_power = MathUtil.floor(power * (1.0 - resistance), 0);
+		var adjusted_power = MathUtil.ceil(power * (1.0 - resistance), 0).toNumber();
 		if (adjusted_power <= 0 || duration <= 0) {
 			return;
 		}

@@ -14,6 +14,7 @@ module Constants {
 	public const SCREEN_HEIGHT = Toybox.System.getDeviceSettings().screenHeight;
 	public const TILE_SIZE = 16;
 	public const ROOM_CENTER_INDEX = Math.floor((SCREEN_WIDTH / 2) / TILE_SIZE).toNumber();
+	public const ROOM_CENTER_INDEX_Y = Math.floor((SCREEN_HEIGHT / 2) / TILE_SIZE).toNumber();
 	public const COORDINATES_NEWGAME = [
 		(SCREEN_WIDTH/2).toNumber(), 
 		(SCREEN_HEIGHT * 75/360).toNumber()

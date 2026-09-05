@@ -34,6 +34,13 @@ class Room {
 
     private var _player_pos as Point2D;
 
+    private var _left as Number;
+    private var _right as Number;
+    private var _top as Number;
+    private var _bottom as Number;
+
+    private var _shape as RoomShape?;
+
     function initialize(options as Dictionary?) {
         _size_x = options[:size_x];
         _size_y = options[:size_y];
@@ -42,6 +49,11 @@ class Room {
         _start_pos = options[:start_pos] as Point2D;
         _player_pos = _start_pos;
         _map = options[:map];
+        _left = options[:left] as Number;
+        _right = options[:right] as Number;
+        _top = options[:top] as Number;
+        _bottom = options[:bottom] as Number;
+        _shape = options[:shape] as RoomShape?;
 
         System.println("Map size: " + _map.getXSize() + " " + _map.getYSize());
         System.println("Room size: " + _size_x + " " + _size_y);
@@ -103,6 +115,12 @@ class Room {
     function getSize() as Point2D {
         return [_size_x, _size_y];
     }
+
+    function getLeft() as Number { return _left; }
+    function getRight() as Number { return _right; }
+    function getTop() as Number { return _top; }
+    function getBottom() as Number { return _bottom; }
+    function getShape() as RoomShape? { return _shape; }
 
     function removeItem(item as Item) as Void {
         var item_pos = item.getPos();
@@ -224,28 +242,6 @@ class Room {
         _map.setContent(npc_pos, npc);
     }
 
-    function addConnection(direction as WalkDirection) as Void {
-        // TODO: check if size_y is correct for up/down or not because of the way the map is drawn
-        var tile_width = getApp().tile_width;
-		var tile_height = getApp().tile_height;
-        var index = Constants.ROOM_CENTER_INDEX;
-        var screen_size_x = Math.ceil(Constants.SCREEN_WIDTH/tile_width).toNumber();
-		var screen_size_y = Math.ceil(Constants.SCREEN_HEIGHT/tile_height).toNumber();
-        var index_edge = [0, 0];
-        if (direction == UP) {
-            index_edge = [index, 0];
-        } else if (direction == DOWN) {
-            index_edge = [index, screen_size_y - 1];
-        } else if (direction == LEFT) {
-            index_edge = [0, index];
-        } else if (direction == RIGHT) {
-            index_edge = [screen_size_x - 1, index];
-        }
-        var pos_room_edge = findNearestPointFromEdge(direction, index_edge as Point2D, screen_size_x, screen_size_y);
-        createTunnel(direction, pos_room_edge, index_edge as Point2D, screen_size_x, screen_size_y);
-        
-    }
-
     function findNearestPointFromEdge(direction as WalkDirection, pos as Point2D, screen_size_x as Number, screen_size_y as Number) as Point2D? {
         var x = pos[0];
         var y = pos[1];
@@ -260,7 +256,7 @@ class Room {
             dx = -1;
         }
         while (x >= 0 && x < screen_size_x && y >= 0 && y < screen_size_y) {
-            if (_map.getType([x, y]) == WALL) {
+            if (_map.getTile(x, y).type == WALL) {
                 return [x, y];
             }
             x += dx;
@@ -269,57 +265,24 @@ class Room {
         return null;
     }
 
-    function createTunnel(direction as WalkDirection, start_pos as Point2D, end_pos as Point2D, screen_size_x as Number, screen_size_y as Number) as Void {
-        var x = start_pos[0];
-        var y = start_pos[1];
-        var dx = 0, dy = 0;
+    function addConnection(direction as WalkDirection) as Void {
+        var tile_width = getApp().tile_width;
+		var tile_height = getApp().tile_height;
+        var screen_size_x = Math.ceil(Constants.SCREEN_WIDTH/tile_width).toNumber();
+		var screen_size_y = Math.ceil(Constants.SCREEN_HEIGHT/tile_height).toNumber();
 
-        if (direction == UP) {dy = -1;}
-        else if (direction == DOWN) {dy = 1;}
-        else if (direction == LEFT) {dx = -1;}
-        else if (direction == RIGHT) {dx = 1;}
+        // Use room center as target for the tunnel
+        var room_center_x = (_left + _right) / 2;
+        var room_center_y = (_top + _bottom) / 2;
 
-        var left_right = (direction == UP || direction == DOWN);
+        // Edge position (at screen border), aligned to room center
+        var edge_pos = [0, 0] as Point2D;
+        if (direction == UP) { edge_pos = [room_center_x, 0]; }
+        else if (direction == DOWN) { edge_pos = [room_center_x, screen_size_y - 1]; }
+        else if (direction == LEFT) { edge_pos = [0, room_center_y]; }
+        else if (direction == RIGHT) { edge_pos = [screen_size_x - 1, room_center_y]; }
 
-        addTunnelTile(x, y, left_right, screen_size_x, screen_size_y);
-        do {
-            x += dx;
-            y += dy;
-            addTunnelTile(x, y, left_right, screen_size_x, screen_size_y);
-        } while (x != end_pos[0] || y != end_pos[1]);
-    }
-
-    function removeFromArray(array as Array<Point2D>, pos as Array<Number>) as Boolean {
-        for (var i = 0; i < array.size(); i++) {
-            if (array[i][0] == pos[0] && array[i][1] == pos[1]) {
-                array.remove(array[i]);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    function addTunnelTile(x as Number, y as Number, left_right as Boolean, screen_size_x as Number, screen_size_y as Number) as Void {
-        if (_map.getType([x, y]) != PASSABLE) {
-            _map.setType([x, y], PASSABLE);
-        }
-        
-
-        if (left_right) {
-            if (x > 0) { 
-                _map.setType([x - 1, y], WALL);
-            }
-            if (x < screen_size_x - 1) {
-                _map.setType([x + 1, y], WALL);
-            }
-        } else {
-            if (y > 0) {
-                _map.setType([x, y - 1], WALL);
-            }
-            if (y < screen_size_y - 1) {
-                _map.setType([x, y + 1], WALL);
-            }
-        }
+        Map.digConnectionTunnel(_map, edge_pos, direction, screen_size_x, screen_size_y, [room_center_x, room_center_y]);
     }
 
     function createStairs(room_pos as Point2D) as Void {
@@ -329,35 +292,41 @@ class Room {
 
     function addStairs(pos as Point2D?, reload as Boolean?) as Void {
         if (pos == null) {
-            pos = MapUtil.getRandomPosFromRoom(self);
+            var map_data = getMapData();
+            var coords = MapUtil.getCoordOfRoom(map_data[:size_x], map_data[:size_y]);
+            pos = MapUtil.getOpenPos(_map, coords[0], coords[1], coords[2], coords[3]);
         }
         System.println("Stairs pos: " + pos);
         _map.setType(pos, STAIRS);
         _stairs = pos;
+        Map.addWallsAround(_map, pos[0], pos[1]);
         if (reload) {
             _map.mapToString();
         }
     }
 
     function addMerchant(room_pos as Point2D) as Void {
-        var pos = MapUtil.getRandomPosFromRoom(self);
-        if (pos[0] == Constants.ROOM_CENTER_INDEX || pos[1] == Constants.ROOM_CENTER_INDEX) {
-            System.println("WTF????");
-        }
+        var map_data = getMapData();
+        var coords = MapUtil.getCoordOfRoom(map_data[:size_x], map_data[:size_y]);
+        var pos = MapUtil.getOpenPos(_map, coords[0], coords[1], coords[2], coords[3]);
         var merchant = new Merchant();
         merchant.setPos(pos);
         $.Game.setRoomWithFlag(room_pos, HAS_MERCHANT, pos);
         _map.setContent(pos, merchant);
         addNPC(merchant);
+        Map.addWallsAround(_map, pos[0], pos[1]);
     }
 
     function addQuestGiver(room_pos as Point2D) as Void {
-        var pos = MapUtil.getRandomPosFromRoom(self);
+        var map_data = getMapData();
+        var coords = MapUtil.getCoordOfRoom(map_data[:size_x], map_data[:size_y]);
+        var pos = MapUtil.getOpenPos(_map, coords[0], coords[1], coords[2], coords[3]);
         var npc = new QuestGiver();
         npc.setPos(pos);
         $.Game.setRoomWithFlag(room_pos, HAS_QUEST_GIVER, pos);
         _map.setContent(pos, npc);
         addNPC(npc);
+        Map.addWallsAround(_map, pos[0], pos[1]);
     }
 
     function freeMemory() as Void {
@@ -399,7 +368,12 @@ class Room {
             "map" => _map.save(),
             "items" => items,
             "enemies" => enemies,
-            "npcs" => npcs
+            "npcs" => npcs,
+            "left" => _left,
+            "right" => _right,
+            "top" => _top,
+            "bottom" => _bottom,
+            "shape" => _shape
         };
     }
 
@@ -412,7 +386,12 @@ class Room {
             :start_pos => data["start_pos"],
             :map => Map.load(data["map"]),
             :items => {},
-            :enemies => {}
+            :enemies => {},
+            :left => data["left"],
+            :right => data["right"],
+            :top => data["top"],
+            :bottom => data["bottom"],
+            :shape => data["shape"]
         });
         room.onLoad(data);
         return room;
