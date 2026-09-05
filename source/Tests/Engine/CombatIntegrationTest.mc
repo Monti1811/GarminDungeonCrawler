@@ -476,9 +476,13 @@ function enemyLevelScalesStats(logger as Test.Logger) as Boolean {
 
     enemy.setLevel(3);
 
-    Test.assertEqual(enemy.maxHealth, 300);
-    Test.assertEqual(enemy.damage, 15);
-    Test.assertEqual(enemy.armor, 15);
+    // depth_factor = (3-1) = 2.0; scale constants are small (0.001-0.005)
+    // maxHealth = 100 * (1.0 + 2.0 * 0.005) = 101
+    // damage = 10 * (1.0 + 2.0 * 0.001) = 10
+    // armor = 10 * (1.0 + 2.0 * 0.001) = 10
+    Test.assertEqual(enemy.maxHealth, 101);
+    Test.assertEqual(enemy.damage, 10);
+    Test.assertEqual(enemy.armor, 10);
     return true;
 }
 
@@ -489,7 +493,9 @@ function enemyLevelScalingIncreasesKillExperience(logger as Test.Logger) as Bool
 
     enemy.setLevel(5);
 
-    Test.assertEqual(enemy.kill_experience, 100);
+    // depth_factor = (5-1) = 4.0; ENEMY_XP_SCALE = 0.003
+    // kill_experience = 20 * (1.0 + 4.0 * 0.003) = 20
+    Test.assertEqual(enemy.kill_experience, 20);
     return true;
 }
 
@@ -593,7 +599,7 @@ function playerLevelsUpWhenExperienceReachesThreshold(logger as Test.Logger) as 
     player.onGainExperience(100);
 
     Test.assertEqual(player.level, 2);
-    Test.assertEqual(player.attribute_points, 8);
+    Test.assertEqual(player.attribute_points, 10);
     return true;
 }
 
