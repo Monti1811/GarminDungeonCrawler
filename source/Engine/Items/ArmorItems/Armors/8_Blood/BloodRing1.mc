@@ -10,7 +10,7 @@ class BloodRing1 extends ArmorItem {
 		slot = ACCESSORY;
 		value = 2500;
 		weight = 0.1;
-		defense = 7;
+		defense = 12;
 		attribute_bonus = {
 			:constitution => 5,
 			:strength => 10,

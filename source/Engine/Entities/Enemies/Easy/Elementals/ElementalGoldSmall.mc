@@ -6,11 +6,11 @@ class ElementalGoldSmall extends Enemy {
 		Enemy.initialize();
 		id = 15;
 		name = "Small Gold Elemental";
-		damage = 15;
+		damage = 9;
 		current_health = 50;
 		maxHealth = current_health;
 		energy_per_turn = 50;
-		armor = 5;
+		armor = 4;
         kill_experience = 15;
 	}
 

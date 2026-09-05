@@ -1,6 +1,9 @@
 # By default, exclude the new, experimental logic
 
 project.manifest = manifest.xml
+base.sourcePath = "source"
+
+
 
 venu2.excludeAnnotations = venu2s;venu2plus;venu3;venu3s;venu441mm;venu445mm
 venu2s.excludeAnnotations = venu2;venu2plus;venu3;venu3s;venu441mm;venu445mm

@@ -184,7 +184,7 @@ class Player extends Entity {
 		level++;
 		experience -= next_level_experience;
 		next_level_experience = level * 100;
-		attribute_points += 3;
+		attribute_points += 5;
 	}
 
 	function getLevel() as Number {

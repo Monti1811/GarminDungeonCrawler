@@ -15,7 +15,7 @@ class DemonLance extends WeaponItem {
             :luck => 6
         };
 
-        attack = 20;
+        attack = 13;
         range = 2;
         range_type = LINEAR;
         attack_type = DEXTERITY;

@@ -10,7 +10,7 @@ class GoldRing1 extends ArmorItem {
 		slot = ACCESSORY;
 		value = 28;
 		weight = 0.1;
-		defense = 9;
+		defense = 7;
 		attribute_bonus = {
 			:constitution => 8,
 			:wisdom => 8,

@@ -7,8 +7,8 @@ class Demon extends Enemy {
         id = 2;
 		name = "Demon";
         attack_cooldown = 0;
-        damage = 125;
-        armor = 50;
+        damage = 21;
+        armor = 11;
         current_health = 750;
         maxHealth = current_health;
 		kill_experience = 1000;

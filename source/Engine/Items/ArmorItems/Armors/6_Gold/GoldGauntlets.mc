@@ -10,7 +10,7 @@ class GoldGauntlets extends ArmorItem {
 		value = 28;
 		weight = 2;
 		slot = EITHER_HAND;
-		defense = 9;
+		defense = 7;
 		attribute_bonus = {
 			:charisma => 8
 		};

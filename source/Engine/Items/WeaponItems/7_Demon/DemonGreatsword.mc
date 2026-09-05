@@ -15,7 +15,7 @@ class DemonGreatsword extends WeaponItem {
             :dexterity => -2
         };
 
-        attack = 24;
+        attack = 17;
         range = 2;
         weapon_type = TWOHAND;
         cooldown = 1;

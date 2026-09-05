@@ -26,11 +26,16 @@ class Enemy extends Entity {
 
 	function setLevel(level as Number) as Void {
 		self.level = level;
-		self.maxHealth = self.maxHealth + 100 * (level - 1);
+		if (level <= 1) {
+			self.current_health = self.maxHealth;
+			return;
+		}
+		var depth_factor = (level - 1).toFloat();
+		self.maxHealth = (self.maxHealth * (1.0 + depth_factor * $.Constants.ENEMY_HEALTH_SCALE)).toNumber();
+		self.damage = (self.damage * (1.0 + depth_factor * $.Constants.ENEMY_DAMAGE_SCALE)).toNumber();
+		self.armor = (self.armor * (1.0 + depth_factor * $.Constants.ENEMY_ARMOR_SCALE)).toNumber();
+		self.kill_experience = (self.kill_experience * (1.0 + depth_factor * $.Constants.ENEMY_XP_SCALE)).toNumber();
 		self.current_health = self.maxHealth;
-		self.damage = self.damage * level/2;
-		self.armor = self.armor * level/2;
-		self.kill_experience = self.kill_experience * level;
 	}
 
 	function hashCode() {

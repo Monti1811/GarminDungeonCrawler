@@ -17,7 +17,7 @@ class GrassSword extends WeaponItem {
             :luck => 1,
         };
 
-        attack = 14;
+        attack = 6;
         range = 1;
     }
 

@@ -1,0 +1,949 @@
+{
+  "config": {
+    "strictRealism": true,
+    "roundsPerDepth": 30,
+    "depthRange": {
+      "start": 1,
+      "end": 100,
+      "step": 10
+    },
+    "maxAdjustmentPercentPerRun": 30,
+    "tolerance": 0.05,
+    "initialAttributePoints": 5,
+    "roomsPerDepthForProgression": 3,
+    "variation": {
+      "enemyCountMultiplier": 1.0,
+      "enemyWeightJitter": 0.15,
+      "itemWeightJitter": 0.2,
+      "enemyBudgetScaleByDepth": [
+        {
+          "maxDepth": 20,
+          "value": 0.7
+        },
+        {
+          "maxDepth": 60,
+          "value": 0.9
+        },
+        {
+          "maxDepth": 120,
+          "value": 1.1
+        },
+        {
+          "maxDepth": 200,
+          "value": 1.25
+        }
+      ],
+      "itemDropScaleByDepth": [
+        {
+          "maxDepth": 20,
+          "value": 1.35
+        },
+        {
+          "maxDepth": 80,
+          "value": 1.1
+        },
+        {
+          "maxDepth": 160,
+          "value": 0.95
+        },
+        {
+          "maxDepth": 200,
+          "value": 0.85
+        }
+      ]
+    },
+    "enemyDepthScaling": {
+      "enabled": true,
+      "damageScale": 0.015,
+      "healthScale": 0.02,
+      "armorScale": 0.01,
+      "xpScale": 0.01
+    },
+    "targetWinRateByDepth": [
+      {
+        "maxDepth": 1,
+        "target": 1.0
+      },
+      {
+        "maxDepth": 10,
+        "target": 0.95
+      },
+      {
+        "maxDepth": 25,
+        "target": 0.85
+      },
+      {
+        "maxDepth": 50,
+        "target": 0.72
+      },
+      {
+        "maxDepth": 100,
+        "target": 0.5
+      }
+    ]
+  },
+  "depthResults": {
+    "1": {
+      "actualWinRate": 1.0,
+      "targetWinRate": 1.0
+    },
+    "11": {
+      "actualWinRate": 0.8489208633093526,
+      "targetWinRate": 0.85
+    },
+    "21": {
+      "actualWinRate": 0.3701657458563536,
+      "targetWinRate": 0.85
+    },
+    "31": {
+      "actualWinRate": 0.15977175463623394,
+      "targetWinRate": 0.72
+    },
+    "41": {
+      "actualWinRate": 0.08986175115207373,
+      "targetWinRate": 0.72
+    },
+    "51": {
+      "actualWinRate": 0.04454976303317536,
+      "targetWinRate": 0.5
+    },
+    "61": {
+      "actualWinRate": 0.030869212022745736,
+      "targetWinRate": 0.5
+    },
+    "71": {
+      "actualWinRate": 0.0,
+      "targetWinRate": 0.5
+    },
+    "81": {
+      "actualWinRate": 0.0050729232720355105,
+      "targetWinRate": 0.5
+    },
+    "91": {
+      "actualWinRate": 0.012266355140186916,
+      "targetWinRate": 0.5
+    }
+  },
+  "rateAdjustments": [
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 3,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 4,
+      "new": 3,
+      "weight": 0
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 3,
+      "tierIndex": 3,
+      "field": "weight",
+      "maxDepth": 999,
+      "old": 5,
+      "new": 4
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 5,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 5,
+      "new": 4,
+      "weight": 0
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 5,
+      "tierIndex": 3,
+      "field": "weight",
+      "maxDepth": 999,
+      "old": 6,
+      "new": 5
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 25,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 3,
+      "new": 2,
+      "weight": 0
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 25,
+      "tierIndex": 3,
+      "field": "weight",
+      "maxDepth": 999,
+      "old": 6,
+      "new": 5
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 9,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 5,
+      "new": 4,
+      "weight": 0
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 9,
+      "tierIndex": 3,
+      "field": "weight",
+      "maxDepth": 999,
+      "old": 6,
+      "new": 5
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 10,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 7,
+      "new": 6,
+      "weight": 0
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 10,
+      "tierIndex": 3,
+      "field": "weight",
+      "maxDepth": 999,
+      "old": 5,
+      "new": 4
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 6,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 7,
+      "new": 6,
+      "weight": 0
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 6,
+      "tierIndex": 3,
+      "field": "weight",
+      "maxDepth": 999,
+      "old": 6,
+      "new": 5
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 11,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 11,
+      "new": 10,
+      "weight": 0
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 11,
+      "tierIndex": 2,
+      "field": "weight",
+      "maxDepth": 22,
+      "old": 6,
+      "new": 5
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 11,
+      "tierIndex": 3,
+      "field": "weight",
+      "maxDepth": 999,
+      "old": 5,
+      "new": 4
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 12,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 4,
+      "new": 3,
+      "weight": 0
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 13,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 4,
+      "new": 3,
+      "weight": 0
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 14,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 4,
+      "new": 3,
+      "weight": 0
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 15,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 4,
+      "new": 3,
+      "weight": 0
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 16,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 4,
+      "new": 3,
+      "weight": 0
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 30,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 4,
+      "new": 3,
+      "weight": 0
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 17,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 4,
+      "new": 3,
+      "weight": 0
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 18,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 11,
+      "new": 10,
+      "weight": 0
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 18,
+      "tierIndex": 2,
+      "field": "weight",
+      "maxDepth": 22,
+      "old": 7,
+      "new": 6
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 18,
+      "tierIndex": 3,
+      "field": "weight",
+      "maxDepth": 999,
+      "old": 6,
+      "new": 5
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 19,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 11,
+      "new": 10,
+      "weight": 0
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 19,
+      "tierIndex": 2,
+      "field": "weight",
+      "maxDepth": 22,
+      "old": 7,
+      "new": 6
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 19,
+      "tierIndex": 3,
+      "field": "weight",
+      "maxDepth": 999,
+      "old": 6,
+      "new": 5
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 20,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 11,
+      "new": 10,
+      "weight": 0
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 20,
+      "tierIndex": 2,
+      "field": "weight",
+      "maxDepth": 22,
+      "old": 7,
+      "new": 6
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 20,
+      "tierIndex": 3,
+      "field": "weight",
+      "maxDepth": 999,
+      "old": 6,
+      "new": 5
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 21,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 11,
+      "new": 10,
+      "weight": 0
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 21,
+      "tierIndex": 2,
+      "field": "weight",
+      "maxDepth": 22,
+      "old": 7,
+      "new": 6
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 21,
+      "tierIndex": 3,
+      "field": "weight",
+      "maxDepth": 999,
+      "old": 6,
+      "new": 5
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 22,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 11,
+      "new": 10,
+      "weight": 0
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 22,
+      "tierIndex": 2,
+      "field": "weight",
+      "maxDepth": 22,
+      "old": 7,
+      "new": 6
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 22,
+      "tierIndex": 3,
+      "field": "weight",
+      "maxDepth": 999,
+      "old": 6,
+      "new": 5
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 23,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 11,
+      "new": 10,
+      "weight": 0
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 23,
+      "tierIndex": 2,
+      "field": "weight",
+      "maxDepth": 22,
+      "old": 7,
+      "new": 6
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 23,
+      "tierIndex": 3,
+      "field": "weight",
+      "maxDepth": 999,
+      "old": 6,
+      "new": 5
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 24,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 11,
+      "new": 10,
+      "weight": 0
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 24,
+      "tierIndex": 2,
+      "field": "weight",
+      "maxDepth": 22,
+      "old": 7,
+      "new": 6
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 24,
+      "tierIndex": 3,
+      "field": "weight",
+      "maxDepth": 999,
+      "old": 6,
+      "new": 5
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 26,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 6,
+      "new": 5,
+      "weight": 0
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 2,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 9,
+      "new": 8,
+      "weight": 0
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 2,
+      "tierIndex": 3,
+      "field": "weight",
+      "maxDepth": 999,
+      "old": 5,
+      "new": 4
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 27,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 13,
+      "new": 12,
+      "weight": 0
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 27,
+      "tierIndex": 2,
+      "field": "weight",
+      "maxDepth": 24,
+      "old": 6,
+      "new": 5
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 27,
+      "tierIndex": 3,
+      "field": "weight",
+      "maxDepth": 999,
+      "old": 6,
+      "new": 5
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 33,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 7,
+      "new": 6,
+      "weight": 0
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 33,
+      "tierIndex": 3,
+      "field": "weight",
+      "maxDepth": 999,
+      "old": 6,
+      "new": 5
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 32,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 5,
+      "new": 4,
+      "weight": 0
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 32,
+      "tierIndex": 3,
+      "field": "weight",
+      "maxDepth": 999,
+      "old": 5,
+      "new": 4
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 31,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 9,
+      "new": 8,
+      "weight": 0
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 31,
+      "tierIndex": 2,
+      "field": "weight",
+      "maxDepth": 22,
+      "old": 7,
+      "new": 6
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 31,
+      "tierIndex": 3,
+      "field": "weight",
+      "maxDepth": 999,
+      "old": 7,
+      "new": 6
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 34,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 11,
+      "new": 10,
+      "weight": 0
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 34,
+      "tierIndex": 2,
+      "field": "weight",
+      "maxDepth": 24,
+      "old": 6,
+      "new": 5
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 34,
+      "tierIndex": 3,
+      "field": "weight",
+      "maxDepth": 999,
+      "old": 7,
+      "new": 6
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 28,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 15,
+      "new": 14,
+      "weight": 0
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 28,
+      "tierIndex": 2,
+      "field": "weight",
+      "maxDepth": 26,
+      "old": 5,
+      "new": 4
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 28,
+      "tierIndex": 3,
+      "field": "weight",
+      "maxDepth": 999,
+      "old": 6,
+      "new": 5
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 29,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 17,
+      "new": 16,
+      "weight": 0
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 29,
+      "tierIndex": 2,
+      "field": "weight",
+      "maxDepth": 999,
+      "old": 5,
+      "new": 4
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 35,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 19,
+      "new": 18,
+      "weight": 0
+    },
+    {
+      "table": "enemy",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\EnemySpecificValues.mc",
+      "enemyId": 35,
+      "tierIndex": 2,
+      "field": "weight",
+      "maxDepth": 999,
+      "old": 7,
+      "new": 6
+    },
+    {
+      "table": "item-consumable",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\ItemSpecificValues.mc",
+      "itemId": 2000,
+      "tierIndex": 2,
+      "field": "weight",
+      "maxDepth": 30,
+      "old": 6,
+      "new": 7
+    },
+    {
+      "table": "item-consumable",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\ItemSpecificValues.mc",
+      "itemId": 2001,
+      "tierIndex": 2,
+      "field": "weight",
+      "maxDepth": 30,
+      "old": 8,
+      "new": 9
+    },
+    {
+      "table": "item-consumable",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\ItemSpecificValues.mc",
+      "itemId": 2001,
+      "tierIndex": 3,
+      "field": "weight",
+      "maxDepth": 999,
+      "old": 6,
+      "new": 7
+    },
+    {
+      "table": "item-consumable",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\ItemSpecificValues.mc",
+      "itemId": 2002,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 9,
+      "new": 10,
+      "weight": 0
+    },
+    {
+      "table": "item-consumable",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\ItemSpecificValues.mc",
+      "itemId": 2002,
+      "tierIndex": 2,
+      "field": "weight",
+      "maxDepth": 30,
+      "old": 11,
+      "new": 12
+    },
+    {
+      "table": "item-consumable",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\ItemSpecificValues.mc",
+      "itemId": 2002,
+      "tierIndex": 3,
+      "field": "weight",
+      "maxDepth": 999,
+      "old": 7,
+      "new": 8
+    },
+    {
+      "table": "item-consumable",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\ItemSpecificValues.mc",
+      "itemId": 2003,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 9,
+      "new": 10,
+      "weight": 0
+    },
+    {
+      "table": "item-consumable",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\ItemSpecificValues.mc",
+      "itemId": 2003,
+      "tierIndex": 2,
+      "field": "weight",
+      "maxDepth": 30,
+      "old": 8,
+      "new": 9
+    },
+    {
+      "table": "item-consumable",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\ItemSpecificValues.mc",
+      "itemId": 2003,
+      "tierIndex": 3,
+      "field": "weight",
+      "maxDepth": 999,
+      "old": 7,
+      "new": 8
+    },
+    {
+      "table": "item-consumable",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\ItemSpecificValues.mc",
+      "itemId": 2004,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 39,
+      "new": 40,
+      "weight": 0
+    },
+    {
+      "table": "item-consumable",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\ItemSpecificValues.mc",
+      "itemId": 2004,
+      "tierIndex": 1,
+      "field": "weight",
+      "maxDepth": 60,
+      "old": 7,
+      "new": 8
+    },
+    {
+      "table": "item-consumable",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\ItemSpecificValues.mc",
+      "itemId": 2004,
+      "tierIndex": 2,
+      "field": "weight",
+      "maxDepth": 999,
+      "old": 7,
+      "new": 8
+    },
+    {
+      "table": "item-consumable",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\ItemSpecificValues.mc",
+      "itemId": 2005,
+      "tierIndex": 0,
+      "field": "maxDepth",
+      "old": 39,
+      "new": 40,
+      "weight": 0
+    },
+    {
+      "table": "item-consumable",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\ItemSpecificValues.mc",
+      "itemId": 2005,
+      "tierIndex": 1,
+      "field": "weight",
+      "maxDepth": 60,
+      "old": 7,
+      "new": 8
+    },
+    {
+      "table": "item-consumable",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\ItemSpecificValues.mc",
+      "itemId": 2005,
+      "tierIndex": 2,
+      "field": "weight",
+      "maxDepth": 999,
+      "old": 7,
+      "new": 8
+    },
+    {
+      "table": "item-consumable",
+      "file": "F:\\Code\\Garmin\\DungeonCrawler\\source\\Engine\\Util\\ItemSpecificValues.mc",
+      "itemId": 3000,
+      "tierIndex": 2,
+      "field": "weight",
+      "maxDepth": 999,
+      "old": 5,
+      "new": 6
+    }
+  ]
+}

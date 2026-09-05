@@ -6,9 +6,9 @@ class Skeleton extends Enemy {
 		Enemy.initialize();
 		id = 5;
 		name = "Skeleton";
-		damage = 20;
+		damage = 14;
 		current_health = 50;
-		maxHealth = 50;
+		maxHealth = 35;
 		energy_per_turn = 100;
 		armor = 2;
         kill_experience = 30;

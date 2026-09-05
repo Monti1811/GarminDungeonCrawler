@@ -6,11 +6,11 @@ class Chort extends Enemy {
 		Enemy.initialize();
 		id = 28;
 		name = "Chort";
-		damage = 25;
+		damage = 18;
 		current_health = 150;
 		maxHealth = current_health;
 		energy_per_turn = 100;
-		armor = 10;
+		armor = 8;
         kill_experience = 175;
 	}
 
