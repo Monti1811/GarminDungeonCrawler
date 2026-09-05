@@ -16,7 +16,7 @@ class GrassDagger extends WeaponItem {
             :luck => 5
         };
 
-        attack = 7;
+        attack = 6;
         attack_type = DEXTERITY;
     }
 

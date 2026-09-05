@@ -6,9 +6,9 @@ class Zombie extends Enemy {
 		Enemy.initialize();
 		id = 8;
 		name = "Zombie";
-		damage = 12;
+		damage = 9;
 		current_health = 125;
-		maxHealth = 109;
+		maxHealth = 87;
 		energy_per_turn = 100;
 		armor = 0;
         kill_experience = 125;

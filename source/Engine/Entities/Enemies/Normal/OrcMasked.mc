@@ -6,9 +6,9 @@ class OrcMasked extends Enemy {
         Enemy.initialize();
         id = 32;
         name = "Masked Orc";
-        damage = 19;
+        damage = 14;
 		current_health = 125;
-		maxHealth = 113;
+		maxHealth = 88;
 		energy_per_turn = 100;
 		armor = 2;
         kill_experience = 125;

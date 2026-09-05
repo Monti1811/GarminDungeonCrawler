@@ -14,8 +14,8 @@ class Nameless extends Player {
 		self.second_bar = :mana;
 
 		// Set health
-		self.current_health = 735;
-		self.maxHealth = 735;
+		self.current_health = 150;
+		self.maxHealth = 150;
 
 		// Give starting items
 		self.equipItem(new SteelDagger(), RIGHT_HAND, null);
@@ -62,7 +62,7 @@ class Nameless extends Player {
 	function onLevelUp() as Void {
 		Player.onLevelUp();
 		// Increase max health and mana
-		maxHealth += 8;
+		maxHealth += 12;
 		maxMana += 4;
 	}
 

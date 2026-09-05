@@ -67,8 +67,8 @@ module Constants {
 	public const MANA_LOSS_MULTIPLIER = 0.5;
 
 	// Enemy depth scaling (multiplicative, applied via setLevel)
-	public const ENEMY_DAMAGE_SCALE = 0.002;
-	public const ENEMY_HEALTH_SCALE = 0.003;
+	public const ENEMY_DAMAGE_SCALE = 0.001;
+	public const ENEMY_HEALTH_SCALE = 0.005;
 	public const ENEMY_ARMOR_SCALE = 0.001;
 	public const ENEMY_XP_SCALE = 0.003;
 

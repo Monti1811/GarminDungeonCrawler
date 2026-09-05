@@ -16,7 +16,7 @@ class IceDagger extends WeaponItem {
             :wisdom => 2
         };
 
-        attack = 9;
+        attack = 8;
         attack_type = DEXTERITY;
         element = ELEMENT_ICE;
     }

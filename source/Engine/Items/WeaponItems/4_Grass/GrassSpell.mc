@@ -16,7 +16,7 @@ class GrassSpell extends Spell {
             :luck => 2
         };
 
-        attack = 8;
+        attack = 6;
         range = 3;
         cooldown = 1;
         attack_type = INTELLIGENCE;

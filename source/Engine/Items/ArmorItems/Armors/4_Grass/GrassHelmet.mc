@@ -10,7 +10,7 @@ class GrassHelmet extends ArmorItem {
 		value = 70;
 		weight = 3;
 		slot = HEAD;
-		defense = 7;
+		defense = 6;
 		attribute_bonus = {
 			:constitution => 2,
 			:charisma => 2,

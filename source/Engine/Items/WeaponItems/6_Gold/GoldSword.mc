@@ -15,7 +15,7 @@ class GoldSword extends WeaponItem {
             :constitution => 4
         };
 
-        attack = 12;
+        attack = 9;
         range = 1;
     }
 

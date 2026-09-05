@@ -379,6 +379,14 @@ def clamp(v: float, mn: float, mx: float) -> float:
     return max(mn, min(mx, v))
 
 
+def calc_damage(base_damage: float, defense: float) -> int:
+    if base_damage <= 0:
+        return 1
+    reduction = defense / (defense + base_damage)
+    reduction = clamp(reduction, 0.0, 0.90)
+    return max(1, int(round(base_damage * (1.0 - reduction))))
+
+
 def attribute_point_cost_for_level(level: int) -> int:
     """Match Game's getAttributePointCostForLevel: cost = 1 + floor(level/10), clamped 1-10."""
     return max(1, min(10, 1 + level // 10))
@@ -584,7 +592,10 @@ def weighted_pick(weight_map: Dict[int, float]) -> Optional[int]:
 def scale_enemy_for_depth(enemy: Enemy, depth: int, scaling: Dict[str, object]) -> Enemy:
     if not scaling.get("enabled", False):
         return enemy
-    f = depth - 1
+    start_depth = int(scaling.get("startDepth", 1))
+    if depth < start_depth:
+        return enemy
+    f = depth - start_depth
     if f <= 0:
         return enemy
     return Enemy(
@@ -691,7 +702,7 @@ def simulate_duel(player: PlayerClass, enemy: Enemy, attrs: Dict[str, int], weap
     resources = estimate_encounter_resources(depth, player)
     health_potions = resources["health"]
     mana_potions = resources["mana"]
-    enemy_damage = max(1, int(math.ceil(enemy.damage - p_defense)))
+    enemy_damage = calc_damage(enemy.damage, p_defense)
 
     max_turns = 60
     for _ in range(max_turns):
@@ -737,7 +748,7 @@ def simulate_duel(player: PlayerClass, enemy: Enemy, attrs: Dict[str, int], weap
 
                 player_damage = sum(weapon_attacks) if weapon_attacks else 1.0
 
-            dealt = max(1, int(math.ceil(player_damage - enemy.armor)))
+            dealt = calc_damage(player_damage, enemy.armor)
             enemy_hp -= dealt
 
         if enemy_hp <= 0:
@@ -819,14 +830,14 @@ def simulate_room(
                     attacks.append(compute_weapon_attack_value(weapon, attrs, weapon_count, attack_value))
                 total_damage = sum(attacks) if attacks else 1.0
 
-            dealt = max(1, int(math.ceil(total_damage - focused_enemy.armor)))
+            dealt = calc_damage(total_damage, focused_enemy.armor)
             focused_enemy.max_health -= dealt
             if focused_enemy.max_health <= 0:
                 room_enemies.pop(0)
 
         incoming = 0
         for enemy in room_enemies:
-            incoming += max(1, int(math.ceil(enemy.damage - p_defense)))
+            incoming += calc_damage(enemy.damage, p_defense)
         player_hp -= incoming
 
     return player_hp > 0 and len(room_enemies) == 0
@@ -1166,6 +1177,16 @@ def tune(
     tol = float(config.get("tolerance", 0.05))
     max_adj = float(config.get("maxAdjustmentPercentPerRun", 12)) / 100.0
 
+    # Hard bounds for all adjustable stats
+    PLAYER_HP_MIN, PLAYER_HP_MAX = 20, 150
+    PLAYER_LHP_MIN, PLAYER_LHP_MAX = 3, 20
+    PLAYER_LMP_MIN, PLAYER_LMP_MAX = 1, 8
+    ENEMY_DMG_MIN, ENEMY_DMG_MAX = 1, 80
+    ENEMY_HP_MIN, ENEMY_HP_MAX = 10, 400
+    ENEMY_ARM_MIN, ENEMY_ARM_MAX = 0, 40
+    ITEM_ATK_MIN, ITEM_ATK_MAX = 1, 100
+    ITEM_DEF_MIN, ITEM_DEF_MAX = 0, 70
+
     adjustments: Dict[str, List[Dict[str, object]]] = {"players": [], "enemies": [], "items": [], "strictTables": []}
 
     # Player adjustments
@@ -1176,9 +1197,8 @@ def tune(
         if abs(delta) <= tol:
             continue
         hp_factor = clamp(1.0 + delta * 0.50, 1 - max_adj, 1 + max_adj)
-        att_factor = clamp(1.0 + delta * 0.40, 1 - max_adj, 1 + max_adj)
 
-        new_hp = bounded_int(player.max_health * hp_factor, 1)
+        new_hp = clamp(bounded_int(player.max_health * hp_factor, 1), PLAYER_HP_MIN, PLAYER_HP_MAX)
         if new_hp != player.max_health:
             adjustments["players"].append({
                 "classId": class_id,
@@ -1197,47 +1217,41 @@ def tune(
                 "new": new_hp,
             })
 
-        if player.max_mana > 0:
-            mana_factor = clamp(1.0 + delta * 0.45, 1 - max_adj, 1 + max_adj)
-            new_max_mana = bounded_int(player.max_mana * mana_factor, 1)
-            if new_max_mana != player.max_mana:
+        if player.level_health_gain > 0:
+            lh_factor = clamp(1.0 + delta * 0.40, 1 - max_adj, 1 + max_adj)
+            new_lh = clamp(bounded_int(player.level_health_gain * lh_factor, 1), PLAYER_LHP_MIN, PLAYER_LHP_MAX)
+            if new_lh != player.level_health_gain:
                 adjustments["players"].append({
                     "classId": class_id,
                     "className": player.class_name,
                     "file": str(player.file),
-                    "field": "maxMana",
-                    "old": player.max_mana,
-                    "new": new_max_mana,
-                })
-                adjustments["players"].append({
-                    "classId": class_id,
-                    "className": player.class_name,
-                    "file": str(player.file),
-                    "field": "current_mana",
-                    "old": player.current_mana,
-                    "new": new_max_mana,
+                    "field": "level_health_gain",
+                    "old": player.level_health_gain,
+                    "new": new_lh,
                 })
 
-        for att, old in player.attributes.items():
-            if att == "luck":
-                continue
-            new_val = bounded_int(old * att_factor, 0)
-            if new_val != old:
+        if player.level_mana_gain > 0:
+            lm_factor = clamp(1.0 + delta * 0.35, 1 - max_adj, 1 + max_adj)
+            new_lm = clamp(bounded_int(player.level_mana_gain * lm_factor, 1), PLAYER_LMP_MIN, PLAYER_LMP_MAX)
+            if new_lm != player.level_mana_gain:
                 adjustments["players"].append({
                     "classId": class_id,
                     "className": player.class_name,
                     "file": str(player.file),
-                    "field": f":{att}",
-                    "old": old,
-                    "new": new_val,
+                    "field": "level_mana_gain",
+                    "old": player.level_mana_gain,
+                    "new": new_lm,
                 })
 
-    # Enemy adjustments
-    by_enemy: Dict[int, List[EncounterOutcome]] = {}
+    # Enemy adjustments (depth-segmented, independent stat scaling)
+    DEPTH_SEGMENTS = [(1, 25), (26, 100), (101, 150), (151, 200)]
+    by_enemy_seg: Dict[Tuple[int, int], List[EncounterOutcome]] = {}
     for row in outcomes:
-        by_enemy.setdefault(row.enemy_id, []).append(row)
+        seg = next((s for s in DEPTH_SEGMENTS if s[0] <= row.depth <= s[1]), DEPTH_SEGMENTS[-1])
+        by_enemy_seg.setdefault((row.enemy_id, seg[0]), []).append(row)
 
-    for enemy_id, rows in by_enemy.items():
+    enemy_adj_accum: Dict[int, Dict[str, float]] = {}
+    for (enemy_id, _seg_start), rows in by_enemy_seg.items():
         if enemy_id not in enemies or not rows:
             continue
         enemy = enemies[enemy_id]
@@ -1247,11 +1261,21 @@ def tune(
         if abs(delta) <= tol:
             continue
 
-        factor = clamp(1.0 - delta * 0.60, 1 - max_adj, 1 + max_adj)
-        new_damage = bounded_int(enemy.damage * factor, 1)
-        new_hp = bounded_int(enemy.max_health * factor, 1)
-        new_armor = bounded_int(enemy.armor * factor, 0)
+        seg_weight = len(rows) / max(1, len([r for r in outcomes if r.enemy_id == enemy_id]))
+        dmg_factor = clamp(1.0 - delta * 0.50 * seg_weight, 1 - max_adj, 1 + max_adj)
+        hp_factor = clamp(1.0 - delta * 0.40 * seg_weight, 1 - max_adj, 1 + max_adj)
+        arm_factor = clamp(1.0 - delta * 0.30 * seg_weight, 1 - max_adj, 1 + max_adj)
 
+        accum = enemy_adj_accum.setdefault(enemy_id, {"dmg": 1.0, "hp": 1.0, "arm": 1.0})
+        accum["dmg"] *= dmg_factor
+        accum["hp"] *= hp_factor
+        accum["arm"] *= arm_factor
+
+    for enemy_id, factors in enemy_adj_accum.items():
+        enemy = enemies[enemy_id]
+        new_damage = clamp(bounded_int(enemy.damage * factors["dmg"], 1), ENEMY_DMG_MIN, ENEMY_DMG_MAX)
+        new_hp = clamp(bounded_int(enemy.max_health * factors["hp"], 1), ENEMY_HP_MIN, ENEMY_HP_MAX)
+        new_armor = clamp(bounded_int(enemy.armor * factors["arm"], 0), ENEMY_ARM_MIN, ENEMY_ARM_MAX)
         if new_damage != enemy.damage:
             adjustments["enemies"].append({"enemyId": enemy_id, "enemyName": enemy.name, "file": str(enemy.file), "field": "damage", "old": enemy.damage, "new": new_damage})
         if new_hp != enemy.max_health:
@@ -1282,11 +1306,11 @@ def tune(
         factor = clamp(1.0 + delta * 0.50, 1 - max_adj, 1 + max_adj)
 
         if item.kind == "weapon" and item.attack > 0:
-            new_attack = bounded_int(item.attack * factor, 1)
+            new_attack = clamp(bounded_int(item.attack * factor, 1), ITEM_ATK_MIN, ITEM_ATK_MAX)
             if new_attack != item.attack:
                 adjustments["items"].append({"itemId": item_id, "itemName": item.class_name, "file": str(item.file), "field": "attack", "old": item.attack, "new": new_attack})
         if item.kind == "armor" and item.defense > 0:
-            new_defense = bounded_int(item.defense * factor, 0)
+            new_defense = clamp(bounded_int(item.defense * factor, 0), ITEM_DEF_MIN, ITEM_DEF_MAX)
             if new_defense != item.defense:
                 adjustments["items"].append({"itemId": item_id, "itemName": item.class_name, "file": str(item.file), "field": "defense", "old": item.defense, "new": new_defense})
 
@@ -1316,8 +1340,8 @@ def tune(
     return adjustments
 
 
-def update_initialize_body(text: str, replacement_fn) -> str:
-    marker = "function initialize"
+def update_function_body(text: str, function_name: str, replacement_fn) -> str:
+    marker = f"function {function_name}"
     start = text.find(marker)
     if start < 0:
         return text
@@ -1338,6 +1362,10 @@ def update_initialize_body(text: str, replacement_fn) -> str:
                 return text[: open_brace + 1] + new_body + text[i:]
         i += 1
     return text
+
+
+def update_initialize_body(text: str, replacement_fn) -> str:
+    return update_function_body(text, "initialize", replacement_fn)
 
 
 def apply_adjustments(adjustments: Dict[str, List[Dict[str, object]]]) -> int:
@@ -1361,10 +1389,27 @@ def apply_adjustments(adjustments: Dict[str, List[Dict[str, object]]]) -> int:
                 if field.startswith(":"):
                     out = re.sub(rf"({re.escape(field)}\s*=>\s*){re.escape(old)}(\b)", rf"\g<1>{new}\2", out, count=1)
                 else:
-                    out = re.sub(rf"((?:self\.)?{re.escape(field)}\s*=\s*){re.escape(old)}(\s*;)", rf"\g<1>{new}\2", out, count=1)
+                    pattern = rf"((?:self\.)?{re.escape(field)}\s*=\s*){re.escape(old)}(\s*;)"
+                    if re.search(pattern, out):
+                        out = re.sub(pattern, rf"\g<1>{new}\2", out, count=1)
             return out
 
         updated = update_initialize_body(text, repl)
+
+        level_entries = [e for e in entries if e.get("field") in ("level_health_gain", "level_mana_gain")]
+        if level_entries:
+            def repl_level(body: str) -> str:
+                out = body
+                for change in level_entries:
+                    field = str(change["field"])
+                    old = str(change["old"])
+                    new = str(change["new"])
+                    target = "maxHealth" if field == "level_health_gain" else "maxMana"
+                    pattern = rf"({re.escape(target)}\s*\+=\s*){re.escape(old)}(\s*;)"
+                    if re.search(pattern, out):
+                        out = re.sub(pattern, rf"\g<1>{new}\2", out, count=1)
+                return out
+            updated = update_function_body(updated, "onLevelUp", repl_level)
 
         if any(str(e.get("category", "")) == "strict-tables" for e in entries):
             for change in entries:
@@ -1427,6 +1472,54 @@ def write_report(
         actual = class_win[cid]
         target = class_target[cid]
         lines.append(f"| {cid} | {actual:.3f} | {target:.3f} | {actual - target:+.3f} |")
+
+    lines += [
+        "",
+        "## Summary",
+        "",
+    ]
+
+    # Class summary
+    lines.append("### Classes")
+    lines.append("")
+    for cid in sorted(class_win.keys()):
+        actual = class_win[cid]
+        target = class_target[cid]
+        delta = actual - target
+        status = "ok" if abs(delta) <= 0.05 else ("weak" if delta < 0 else "strong")
+        lines.append(f"- **Class {cid}**: {actual:.1%} (target {target:.1%}, {delta:+.1%}) [{status}]")
+    lines.append("")
+
+    # Depth segments
+    def segment_stats(dwin, dtgt, dmin, dmax):
+        vals = [(dwin[d], dtgt[d]) for d in dwin if dmin <= d <= dmax and d in dtgt]
+        if not vals:
+            return 0.0, 0.0, 0.0
+        avg_actual = sum(a for a, _ in vals) / len(vals)
+        avg_target = sum(t for _, t in vals) / len(vals)
+        return avg_actual, avg_target, avg_actual - avg_target
+
+    segments = [
+        ("Early (1-25)", 1, 25),
+        ("Mid (26-100)", 26, 100),
+        ("Late (101-150)", 101, 150),
+        ("Endgame (151-200)", 151, 200),
+    ]
+    lines.append("### Depth Segments")
+    lines.append("")
+    for name, dmin, dmax in segments:
+        avg_a, avg_t, delta = segment_stats(depth_win, depth_target, dmin, dmax)
+        status = "ok" if abs(delta) <= 0.05 else ("too easy" if delta > 0 else "too hard")
+        lines.append(f"- **{name}**: {avg_a:.1%} (target {avg_t:.1%}, {delta:+.1%}) [{status}]")
+    lines.append("")
+
+    # Changes summary
+    lines.append("### Changes Applied")
+    lines.append("")
+    lines.append(f"- Player updates: {len(adjustments['players'])}")
+    lines.append(f"- Enemy updates: {len(adjustments['enemies'])}")
+    lines.append(f"- Item updates: {len(adjustments['items'])}")
+    lines.append(f"- Strict table updates: {len(adjustments.get('strictTables', []))}")
 
     lines += [
         "",

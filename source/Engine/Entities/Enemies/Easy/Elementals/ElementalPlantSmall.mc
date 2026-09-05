@@ -6,7 +6,7 @@ class ElementalPlantSmall extends Enemy {
 		Enemy.initialize();
 		id = 30;
 		name = "Small Plant Elemental";
-		damage = 13;
+		damage = 9;
 		current_health = 50;
 		maxHealth = current_health;
 		energy_per_turn = 50;

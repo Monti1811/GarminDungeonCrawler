@@ -16,7 +16,7 @@ class WaterLance extends WeaponItem {
             :luck => 3,
         };
 
-        attack = 10;
+        attack = 7;
         range = 2;
         range_type = LINEAR;
         attack_type = DEXTERITY;

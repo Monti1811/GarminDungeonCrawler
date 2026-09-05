@@ -10,7 +10,7 @@ class DemonHelmet extends ArmorItem {
 		value = 1000;
 		weight = 5;
 		slot = HEAD;
-		defense = 14;
+		defense = 11;
 		attribute_bonus = {
 			:charisma => 10,
 			:strength => 5,

@@ -10,8 +10,8 @@ class Paladin extends Player {
 		self.description = "A paladin character";
 
 		// Set health
-		self.current_health = 71;
-		self.maxHealth = 71;
+		self.current_health = 85;
+		self.maxHealth = 85;
 
 		// Give starting items
 		self.equipItem(new SteelDagger(), RIGHT_HAND, null);
@@ -36,7 +36,7 @@ class Paladin extends Player {
 	function onLevelUp() as Void {
 		// Increase max health
 		Player.onLevelUp();
-		maxHealth += 15;
+		maxHealth += 17;
 	}
 
 

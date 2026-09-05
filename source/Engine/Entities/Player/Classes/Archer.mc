@@ -35,7 +35,7 @@ class Archer extends Player {
 	function onLevelUp() as Void {
 		// Increase max health
 		Player.onLevelUp();
-		maxHealth += 8;
+		maxHealth += 11;
 	}
 
 

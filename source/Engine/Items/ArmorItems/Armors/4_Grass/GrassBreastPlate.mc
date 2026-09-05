@@ -10,7 +10,7 @@ class GrassBreastPlate extends ArmorItem {
 		value = 100;
 		weight = 8;
 		slot = CHEST;
-		defense = 7;
+		defense = 6;
 		attribute_bonus = {
 			:constitution => 3,
 			:charisma => 3,

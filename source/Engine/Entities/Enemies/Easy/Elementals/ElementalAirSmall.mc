@@ -6,7 +6,7 @@ class ElementalAirSmall extends Enemy {
 		Enemy.initialize();
 		id = 12;
 		name = "Small Air Elemental";
-		damage = 12;
+		damage = 9;
 		current_health = 50;
 		maxHealth = current_health;
 		energy_per_turn = 50;

@@ -10,7 +10,7 @@ class GrassShoes extends ArmorItem {
 		value = 75;
 		weight = 3;
 		slot = FEET;
-		defense = 7;
+		defense = 6;
 		attribute_bonus = {
 			:dexterity => 3,
 			:charisma => 3,

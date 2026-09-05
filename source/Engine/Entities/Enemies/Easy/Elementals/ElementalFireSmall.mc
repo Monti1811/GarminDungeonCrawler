@@ -6,7 +6,7 @@ class ElementalFireSmall extends Enemy {
 		Enemy.initialize();
 		id = 14;
 		name = "Small Fire Elemental";
-		damage = 12;
+		damage = 9;
 		current_health = 50;
 		maxHealth = current_health;
 		energy_per_turn = 50;

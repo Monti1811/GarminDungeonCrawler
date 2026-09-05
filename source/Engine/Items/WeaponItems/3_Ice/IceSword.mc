@@ -16,7 +16,7 @@ class IceSword extends WeaponItem {
             :constitution => 2
         };
 
-        attack = 9;
+        attack = 8;
         range = 1;
         element = ELEMENT_ICE;
     }

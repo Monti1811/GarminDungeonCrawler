@@ -7,7 +7,7 @@ class Orc extends Enemy {
         id = 3;
         name = "Orc";
         current_health = 50;
-        maxHealth = 44;
+        maxHealth = 34;
         damage = 4;
         armor = 2;
         kill_experience = 10;

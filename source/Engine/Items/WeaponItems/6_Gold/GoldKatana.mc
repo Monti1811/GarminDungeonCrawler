@@ -15,7 +15,7 @@ class GoldKatana extends WeaponItem {
             :dexterity => 5
         };
 
-        attack = 12;
+        attack = 9;
         range = 1;
     }
 

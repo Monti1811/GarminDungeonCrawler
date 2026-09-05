@@ -14,8 +14,8 @@ class Mage extends Player {
 		self.second_bar = :mana;
 
 		// Set health
-		self.current_health = 27;
-		self.maxHealth = 27;
+		self.current_health = 38;
+		self.maxHealth = 38;
 
 		// Give starting items
 		self.equipItem(new SteelStaff(), RIGHT_HAND, null);
@@ -62,7 +62,7 @@ class Mage extends Player {
 	function onLevelUp() as Void {
 		Player.onLevelUp();
 		// Increase max health and mana
-		maxHealth += 6;
+		maxHealth += 8;
 		maxMana += 5;
 	}
 

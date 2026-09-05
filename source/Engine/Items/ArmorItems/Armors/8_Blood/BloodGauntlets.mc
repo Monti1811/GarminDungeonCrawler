@@ -10,7 +10,7 @@ class BloodGauntlets extends ArmorItem {
 		value = 2000;
 		weight = 2;
 		slot = EITHER_HAND;
-		defense = 25;
+		defense = 33;
 		attribute_bonus = {
 			:charisma => 10,
 			:constitution => 5,

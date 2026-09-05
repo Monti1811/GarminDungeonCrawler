@@ -6,11 +6,11 @@ class Bies extends Enemy {
 		Enemy.initialize();
 		id = 29;
 		name = "Bies";
-		damage = 19;
+		damage = 14;
 		current_health = 250;
 		maxHealth = current_health;
 		energy_per_turn = 67;
-		armor = 19;
+		armor = 16;
         kill_experience = 200;
 	}
 

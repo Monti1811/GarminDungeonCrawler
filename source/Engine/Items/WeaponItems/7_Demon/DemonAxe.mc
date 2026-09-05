@@ -16,7 +16,7 @@ class DemonAxe extends WeaponItem {
             :luck => -2
         };
 
-        attack = 16;
+        attack = 13;
     }
 
     function onEquipItem(player as Player) as Void {

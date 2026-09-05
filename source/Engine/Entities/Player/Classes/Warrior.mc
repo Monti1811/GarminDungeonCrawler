@@ -10,8 +10,8 @@ class Warrior extends Player {
 		self.description = "A warrior character";
 
 		// Set health
-		self.current_health = 111;
-		self.maxHealth = 111;
+		self.current_health = 150;
+		self.maxHealth = 150;
 
 		// Give starting items
 		self.equipItem(new SteelAxe(), RIGHT_HAND, null);
@@ -35,7 +35,7 @@ class Warrior extends Player {
 	function onLevelUp() as Void {
 		// Increase max health
 		Player.onLevelUp();
-		maxHealth += 10;
+		maxHealth += 13;
 	}
 
 

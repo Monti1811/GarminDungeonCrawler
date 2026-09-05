@@ -112,3 +112,22 @@ Default profile now targets roughly:
 
 - Depth 1 ≈ 100% win rate
 - Depth 200 ≈ 20% win rate
+
+## Damage formula
+
+```
+damage = max(1, round(baseDamage * (1 - clamp(defense / (defense + baseDamage), 0, 0.90))))
+```
+
+Percentage-based reduction capped at 90%. Replaces old linear `max(1, attack - defense)`.
+
+## Enemy depth scaling
+
+Enemy stats scale with depth in `Enemy.mc:setLevel()` and `Constants.mc`:
+
+```
+depth_factor = level - 1
+damage *= 1 + depth_factor * ENEMY_DAMAGE_SCALE  (0.001)
+health *= 1 + depth_factor * ENEMY_HEALTH_SCALE  (0.005)
+armor  *= 1 + depth_factor * ENEMY_ARMOR_SCALE   (0.001)
+```
