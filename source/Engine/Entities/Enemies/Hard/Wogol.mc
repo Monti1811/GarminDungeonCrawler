@@ -6,10 +6,10 @@ class Wogol extends Enemy {
 		Enemy.initialize();
 		id = 9;
 		name = "Wogol";
-		damage = 60;
+		damage = 26;
 		current_health = 250;
-		maxHealth = 250;
-		armor = 15;
+		maxHealth = 117;
+		armor = 8;
         kill_experience = 250;
 		energy_per_turn = 50;
 	}

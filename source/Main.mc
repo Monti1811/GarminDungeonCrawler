@@ -392,6 +392,7 @@ module Main {
 			// Add chosen enemy to the list and subtract its cost
 			if (chosen_enemy != null) {
 				var enemy = Enemies.createEnemyFromId(chosen_enemy[:id]);
+				enemy.setLevel($.Game.depth);
 				enemy.register();
 				chosen_enemies.add(enemy);
 				remaining_points -= chosen_enemy[:cost];

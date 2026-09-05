@@ -10,7 +10,7 @@ class GoldHelmet extends ArmorItem {
 		value = 35;
 		weight = 3;
 		slot = HEAD;
-		defense = 9;
+		defense = 7;
 		attribute_bonus = {
 			:constitution => 8
 		};

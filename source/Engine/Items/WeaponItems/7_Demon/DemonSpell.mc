@@ -14,7 +14,7 @@ class DemonSpell extends Spell {
             :wisdom => 10
         };
 
-        attack = 18;
+        attack = 11;
         range = 3;
         cooldown = 1;
         attack_type = INTELLIGENCE;

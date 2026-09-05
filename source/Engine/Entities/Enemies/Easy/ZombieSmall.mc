@@ -6,9 +6,9 @@ class ZombieSmall extends Enemy {
 		Enemy.initialize();
 		id = 7;
 		name = "Small Zombie";
-		damage = 5;
+		damage = 4;
 		current_health = 20;
-		maxHealth = 20;
+		maxHealth = 13;
 		energy_per_turn = 100;
 		armor = 0;
         kill_experience = 10;

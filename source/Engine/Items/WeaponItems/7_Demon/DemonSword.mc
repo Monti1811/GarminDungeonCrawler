@@ -15,7 +15,7 @@ class DemonSword extends WeaponItem {
             :constitution => 6
         };
 
-        attack = 20;
+        attack = 13;
         range = 1;
     }
 

@@ -10,3 +10,4 @@ log.zip
 
 **.pyc
 .env
+**/__pycache__/

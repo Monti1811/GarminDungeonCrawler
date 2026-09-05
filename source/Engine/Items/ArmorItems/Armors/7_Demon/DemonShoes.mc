@@ -10,7 +10,7 @@ class DemonShoes extends ArmorItem {
 		value = 1200;
 		weight = 3;
 		slot = FEET;
-		defense = 15;
+		defense = 9;
 		attribute_bonus = {
 			:dexterity => 7,
 			:strength => 7,

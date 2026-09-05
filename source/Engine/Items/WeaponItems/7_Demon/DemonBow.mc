@@ -14,7 +14,7 @@ class DemonBow extends Bow {
             :dexterity => 8
         };
 
-        attack = 9;
+        attack = 7;
         range = 3;
         range_type = LINEAR;
         attack_type = DEXTERITY;

@@ -19,12 +19,12 @@ class Archer extends Player {
 
 		// Set attributes
 		self.attributes = {
-			:strength => 5,
-			:constitution => 8,
+			:strength => 14,
+			:constitution => 18,
 			:intelligence => 4,
 			:wisdom => 4,
-			:dexterity => 12,
-			:charisma => 5,
+			:dexterity => 48,
+			:charisma => 14,
 			:luck => 7
 		};
 
@@ -35,7 +35,7 @@ class Archer extends Player {
 	function onLevelUp() as Void {
 		// Increase max health
 		Player.onLevelUp();
-		maxHealth += 5;
+		maxHealth += 11;
 	}
 
 

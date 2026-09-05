@@ -10,7 +10,7 @@ class DemonGauntlets extends ArmorItem {
 		value = 500;
 		weight = 3;
 		slot = EITHER_HAND;
-		defense = 15;
+		defense = 9;
 		attribute_bonus = {
 			:charisma => 10,
 			:strength => 5,

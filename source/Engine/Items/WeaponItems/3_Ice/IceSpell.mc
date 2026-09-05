@@ -14,7 +14,7 @@ class IceSpell extends Spell {
             :wisdom => 6
         };
 
-        attack = 14;
+        attack = 8;
         range = 3;
         cooldown = 1;
         attack_type = INTELLIGENCE;

@@ -15,7 +15,7 @@ class GoldGreatsword extends WeaponItem {
             :dexterity => -2
         };
 
-        attack = 14;
+        attack = 7;
         range = 2;
         weapon_type = TWOHAND;
         cooldown = 1;
