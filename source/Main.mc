@@ -362,8 +362,9 @@ module Main {
 	function chooseEnemies(allocated_points as Number) as Array<Enemy> {
 		var chosen_enemies = [];
 		var remaining_points = allocated_points;
+		var max_enemies = $.Constants.MAX_ENEMIES_PER_ROOM;
 
-		while (remaining_points > 0) {
+		while (remaining_points > 0 && chosen_enemies.size() < max_enemies) {
 			// Filter enemies by remaining points
 			var available_enemies = filterEnemiesByPoints(Enemies.dungeon_enemies, remaining_points);
 

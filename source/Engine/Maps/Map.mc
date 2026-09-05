@@ -120,6 +120,19 @@ class Map {
 		_tiles[pos[0]][pos[1]] = null;
 	}
 
+	function setTypeXY(x as Number, y as Number, type as TileType) as Void {
+		var tile = _tiles[x][y];
+		if (type != EMPTY) {
+			if (tile == null) {
+				tile = new Tile(x, y);
+				_tiles[x][y] = tile;
+			}
+			tile.type = type;
+			return;
+		}
+		_tiles[x][y] = null;
+	}
+
 	function getType(pos as Point2D) as TileType {
 		return self.getTileFromPos(pos).type;
 	}
@@ -762,6 +775,10 @@ class Map {
 			return;
 		}
 
+		var center_x = (left + right) / 2;
+		var center_y = (top + bottom) / 2;
+		var max_tries = room_area > 50 ? 10 : 5;
+
 		for (var island = 0; island < num_islands; island++) {
 			// Choose island size based on room dimensions
 			var max_island_w = $.MathUtil.min(4, (room_width - 4) / 2);
@@ -782,14 +799,12 @@ class Map {
 			if (ix_max < ix_min || iy_max < iy_min) {
 				continue;
 			}
-			while (!placed && tries < 20) {
+			while (!placed && tries < max_tries) {
 				tries += 1;
 				var ix = $.MathUtil.random(ix_min, ix_max);
 				var iy = $.MathUtil.random(iy_min, iy_max);
 				
 				// Check if position is valid (not too close to center/spawn)
-				var center_x = (left + right) / 2;
-				var center_y = (top + bottom) / 2;
 				var dist_to_center = $.MathUtil.abs(ix - center_x) + $.MathUtil.abs(iy - center_y);
 				
 				// Don't place too close to center (spawn point)
@@ -827,7 +842,7 @@ class Map {
 				// Place the island
 				for (var dx = 0; dx < island_width; dx++) {
 					for (var dy = 0; dy < island_height; dy++) {
-						map.setType([ix + dx, iy + dy], WALL);
+						map.setTypeXY(ix + dx, iy + dy, WALL);
 					}
 				}
 
@@ -852,7 +867,7 @@ class Map {
 					// Remove the island - too close to bottleneck
 					for (var dx = 0; dx < island_width; dx++) {
 						for (var dy = 0; dy < island_height; dy++) {
-							map.setType([ix + dx, iy + dy], PASSABLE);
+							map.setTypeXY(ix + dx, iy + dy, PASSABLE);
 						}
 					}
 				} else {

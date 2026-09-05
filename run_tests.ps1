@@ -32,9 +32,10 @@ if ($testNames.Count -gt 0) {
     Write-Host "Running $($testNames.Count) specific test(s): $($testNames -join ', ')"
     foreach ($test in $testNames) {
         Write-Host "--- Running test: $test ---"
-        $testArgs = @("-classpath", $MONKEYBRAINS, $MONKEYDO_CLASS, "-f", $PRG, "-d", $DEVICE, "-s", $SHELL, "-t", $test)
-        $testProc = Start-Process -FilePath "java.exe" -ArgumentList $testArgs -NoNewWindow -Wait -PassThru
-        if ($testProc.ExitCode -eq 0) {
+        $output = & "java.exe" -classpath $MONKEYBRAINS $MONKEYDO_CLASS -f $PRG -d $DEVICE -s $SHELL -t $test 2>&1
+        $outputStr = $output -join "`n"
+        Write-Host $output
+        if ($outputStr -match "PASSED \(passed=\d+, failed=0") {
             $passed++
             Write-Host "PASS: $test"
         } else {
@@ -47,9 +48,9 @@ if ($testNames.Count -gt 0) {
     Write-Host "Results: $passed passed, $failed failed"
 } else {
     Write-Host "Running all tests..."
-    $testArgs = @("-classpath", $MONKEYBRAINS, $MONKEYDO_CLASS, "-f", $PRG, "-d", $DEVICE, "-s", $SHELL, "-t")
-    $testProc = Start-Process -FilePath "java.exe" -ArgumentList $testArgs -NoNewWindow -Wait -PassThru
-    $totalExitCode = $testProc.ExitCode
+    $output = & "java.exe" -classpath $MONKEYBRAINS $MONKEYDO_CLASS -f $PRG -d $DEVICE -s $SHELL -t 2>&1
+    $totalExitCode = $LASTEXITCODE
+    Write-Host $output
 }
 
 Write-Host "Cleaning up..."
