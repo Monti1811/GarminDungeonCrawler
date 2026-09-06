@@ -700,7 +700,6 @@ class Map {
 		var width = map.getXSize();
 		var height = map.getYSize();
 		var dirs8 = [[-1,-1],[0,-1],[1,-1],[-1,0],[1,0],[-1,1],[0,1],[1,1]] as Array<Array<Number>>;
-		var toWall = [] as Array<Point2D>;
 		for (var x = 0; x < width; x++) {
 			for (var y = 0; y < height; y++) {
 				if (map.getTile(x, y).type != EMPTY) { continue; }
@@ -709,15 +708,12 @@ class Map {
 					var ny = y + dirs8[d][1];
 					if (nx >= 0 && nx < width && ny >= 0 && ny < height) {
 						if (map.getTile(nx, ny).type == PASSABLE) {
-							toWall.add([x, y]);
+							map.setTypeXY(x, y, WALL);
 							break;
 						}
 					}
 				}
 			}
-		}
-		for (var i = 0; i < toWall.size(); i++) {
-			map.setType(toWall[i], WALL);
 		}
 	}
 

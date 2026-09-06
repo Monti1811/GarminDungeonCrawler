@@ -21,11 +21,12 @@ module MathUtil {
 	}
 
 	function random(min as Numeric, max as Numeric) as Number {
-		//Toybox.System.println("Initial Random between " + min + " and " + max);
-		min = min.toNumber();
-		max = self.ceil(max.toNumber(), 0);
-		//Toybox.System.println("Random between " + min + " and " + max);
-		return min + (Math.rand() % (max - min + 1));
+		var minVal = min.toNumber();
+		var maxVal = max.toNumber();
+		if (maxVal <= minVal) {
+			return minVal;
+		}
+		return minVal + (Math.rand() % (maxVal - minVal + 1));
 	}
 
 	function isRandomPercent(chance as Numeric) as Boolean {

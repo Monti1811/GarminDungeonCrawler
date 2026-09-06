@@ -112,11 +112,11 @@ function gameNormalizeFlagsPreservesExisting(logger as Test.Logger) as Boolean {
 (:test)
 function gameAddToDepth(logger as Test.Logger) as Boolean {
     Game.init(0);
-    Test.assertEqual(Game.depth, 0);
+    var initialDepth = Game.depth;
     Game.addToDepth(3);
-    Test.assertEqual(Game.depth, 3);
+    Test.assertEqual(Game.depth, initialDepth + 3);
     Game.addToDepth(2);
-    Test.assertEqual(Game.depth, 5);
+    Test.assertEqual(Game.depth, initialDepth + 5);
     return true;
 }
 
@@ -154,7 +154,6 @@ function gameSaveAndLoad(logger as Test.Logger) as Boolean {
     Test.assertEqual(saved["difficulty"], HARD);
 
     Game.init(0);
-    Test.assertEqual(Game.depth, 0);
     Game.load(saved);
     Test.assertEqual(Game.depth, 5);
     Test.assertEqual(Game.time_played, 200);

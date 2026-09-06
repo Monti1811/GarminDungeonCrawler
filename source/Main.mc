@@ -87,9 +87,76 @@ module Main {
 		return dungeon;
 	}
 
-	function createRoomForDungeon(dungeon as Dungeon, i as Number, j as Number) as Room {
+	function createRoomShapeForDungeon(dungeon as Dungeon, i as Number, j as Number) as Room {
 		var room_shape = Map.chooseRandomRoomShape();
-		var room = createRandomRoom(room_shape);
+		var tile_width = getApp().tile_width;
+		var tile_height = getApp().tile_height;
+		var screen_size_x = Math.ceil(Constants.SCREEN_WIDTH/tile_width).toNumber();
+		var screen_size_y = Math.ceil(Constants.SCREEN_HEIGHT/tile_height).toNumber();
+		var min_room_size = Settings.settings["min_room_size"] as Number;
+		var max_room_size = Settings.settings["max_room_size"] as Number;
+		var room_size_x = MathUtil.random(min_room_size, max_room_size);
+		var room_size_y = MathUtil.random(min_room_size, max_room_size);
+
+		var middle_of_screen = [Math.floor(screen_size_x/2), Math.floor(screen_size_y/2)];
+		var left = middle_of_screen[0] - Math.floor(room_size_x/2);
+		var right = middle_of_screen[0] + Math.floor(room_size_x/2);
+		var top = middle_of_screen[1] - Math.floor(room_size_y/2);
+		var bottom = middle_of_screen[1] + Math.floor(room_size_y/2);
+
+		if (room_shape == null) {
+			room_shape = Map.chooseRandomRoomShape();
+		}
+		var map = Map.createRoomShape(screen_size_x, screen_size_y, left, right, top, bottom, room_shape);
+		Map.addIslands(map, left, right, top, bottom, room_shape);
+
+		var start_pos = middle_of_screen as Point2D;
+		if (map.getType(start_pos) != PASSABLE || map.getContent(start_pos) != null) {
+			var nearest = Map.findNearestPassable(map, start_pos, left + 1, right - 1, top + 1, bottom - 1);
+			if (nearest != null) {
+				start_pos = nearest;
+			}
+		}
+
+		return new Room({
+			:size_x => room_size_x,
+			:size_y => room_size_y,
+			:tile_width => tile_width,
+			:tile_height => tile_height,
+			:start_pos => start_pos,
+			:map => map,
+			:items => {},
+			:enemies => {},
+			:left => left,
+			:right => right,
+			:top => top,
+			:bottom => bottom,
+			:shape => room_shape
+		});
+	}
+
+	function createRoomContentForDungeon(room as Room, dungeon as Dungeon, i as Number, j as Number) as Void {
+		var map = room.getMap();
+		var left = room.getLeft();
+		var right = room.getRight();
+		var top = room.getTop();
+		var bottom = room.getBottom();
+
+		// Create and add enemies
+		var enemies = createRandomEnemies(map, left, right, top, bottom);
+		var enemy_keys = enemies.keys();
+		for (var k = 0; k < enemy_keys.size(); k++) {
+			room.addEnemy(enemies[enemy_keys[k]]);
+		}
+
+		// Create and add items
+		var items = createRandomItems(map, left, right, top, bottom, enemies.size());
+		var item_keys = items.keys();
+		for (var k = 0; k < item_keys.size(); k++) {
+			room.addItem(items[item_keys[k]]);
+		}
+
+		// Add connections (tunnels)
 		var connections = dungeon.getConnections();
 		var room_connections = connections[$.SimUtil.getRoomName(i, j)];
 		if (room_connections != null) {
@@ -99,7 +166,6 @@ module Main {
 				room.addConnection(direction);
 			}
 		}
-		return room;
 	}
 
 	function cleanupRoomForDungeon(room as Room) as Void {
@@ -255,6 +321,9 @@ module Main {
 		var room_size = (right - left - 1) * (bottom - top - 1);
 		var num_items = getItemsNumForRoom(amount_enemies, room_size);
 		var chest_chance = 10; // Percentage chance to wrap loot in a chest
+		// Collect valid positions once: separate pools for normal and non-tunnel
+		var pool_normal = MapUtil.collectPassablePositions(map, left, right, top, bottom);
+		var pool_no_tunnel = MapUtil.collectPassablePositionsNoTunnels(map, left, right, top, bottom);
 		for (var i = 0; i < num_items; i++) {
 			var type = getItemType();
 			var item = createRandomItem(type);
@@ -265,16 +334,48 @@ module Main {
 			// For High Quality items, increase chance to spawn as chest
 			var spawn_as_chest = type == 3 ? MathUtil.isRandomPercent(chest_chance * 4) : MathUtil.isRandomPercent(chest_chance);
 			if (spawn_as_chest) {
-				var chest = Items.createTreasureChestWithLoot(item);
-				var chest_pos = MapUtil.getRandomPosAvoidingTunnels(map, left, right, top, bottom);
-				chest.setPos(chest_pos);
-				map.setContent(chest_pos, chest);
-				items.put(chest_pos, chest);
+				// Prefer non-tunnel position for chests
+				if (pool_no_tunnel.size() >= 2) {
+					var pool_idx = MathUtil.random(0, pool_no_tunnel.size() / 2 - 1) * 2;
+					var chest_pos = [pool_no_tunnel[pool_idx], pool_no_tunnel[pool_idx + 1]] as Point2D;
+					// Remove from both pools
+					MapUtil.removePosFromPool(pool_normal, chest_pos);
+					var last = pool_no_tunnel.size() - 2;
+					pool_no_tunnel[pool_idx] = pool_no_tunnel[last];
+					pool_no_tunnel[pool_idx + 1] = pool_no_tunnel[last + 1];
+					pool_no_tunnel.remove(pool_no_tunnel.size() - 1);
+					pool_no_tunnel.remove(pool_no_tunnel.size() - 1);
+					var chest = Items.createTreasureChestWithLoot(item);
+					chest.setPos(chest_pos);
+					map.setContent(chest_pos, chest);
+					items.put(chest_pos, chest);
+				} else if (pool_normal.size() >= 2) {
+					var pool_idx2 = MathUtil.random(0, pool_normal.size() / 2 - 1) * 2;
+					var chest_pos2 = [pool_normal[pool_idx2], pool_normal[pool_idx2 + 1]] as Point2D;
+					var last2 = pool_normal.size() - 2;
+					pool_normal[pool_idx2] = pool_normal[last2];
+					pool_normal[pool_idx2 + 1] = pool_normal[last2 + 1];
+					pool_normal.remove(pool_normal.size() - 1);
+					pool_normal.remove(pool_normal.size() - 1);
+					var chest2 = Items.createTreasureChestWithLoot(item);
+					chest2.setPos(chest_pos2);
+					map.setContent(chest_pos2, chest2);
+					items.put(chest_pos2, chest2);
+				}
 			} else {
-				var item_pos = MapUtil.getRandomPos(map, left, right, top, bottom);
-				item.setPos(item_pos);
-				map.setContent(item_pos, item);
-				items.put(item_pos, item);
+				if (pool_normal.size() >= 2) {
+					var pool_idx3 = MathUtil.random(0, pool_normal.size() / 2 - 1) * 2;
+					var item_pos = [pool_normal[pool_idx3], pool_normal[pool_idx3 + 1]] as Point2D;
+					var last3 = pool_normal.size() - 2;
+					pool_normal[pool_idx3] = pool_normal[last3];
+					pool_normal[pool_idx3 + 1] = pool_normal[last3 + 1];
+					pool_normal.remove(pool_normal.size() - 1);
+					pool_normal.remove(pool_normal.size() - 1);
+					MapUtil.removePosFromPool(pool_no_tunnel, item_pos);
+					item.setPos(item_pos);
+					map.setContent(item_pos, item);
+					items.put(item_pos, item);
+				}
 			}
 		}
 		return items;
@@ -330,9 +431,19 @@ module Main {
 		}
 		var values = calculateEnemiesForRoom((right - left - 1) * (bottom - top - 1), diff);
 		var possible_enemies = chooseEnemies(values[1]);
+		// Collect all valid positions once, then pick from pool
+		var pool = MapUtil.collectPassablePositions(map, left, right, top, bottom);
 		for (var i = 0; i < possible_enemies.size(); i++) {
+			if (pool.size() == 0) { break; }
 			var enemy = possible_enemies[i];
-			var enemy_pos = MapUtil.getRandomPos(map, left, right, top, bottom);
+			var pool_idx = MathUtil.random(0, pool.size() / 2 - 1) * 2;
+			var enemy_pos = [pool[pool_idx], pool[pool_idx + 1]] as Point2D;
+			// Remove from pool (swap with last)
+			var last = pool.size() - 2;
+			pool[pool_idx] = pool[last];
+			pool[pool_idx + 1] = pool[last + 1];
+			pool.remove(pool.size() - 1);
+			pool.remove(pool.size() - 1);
 			enemy.setPos(enemy_pos);
 			map.setContent(enemy_pos, enemy);
 			enemies.put(enemy_pos, enemy);
@@ -363,40 +474,42 @@ module Main {
 		var chosen_enemies = [];
 		var remaining_points = allocated_points;
 		var max_enemies = $.Constants.MAX_ENEMIES_PER_ROOM;
+		var all_enemies = Enemies.dungeon_enemies;
+		var all_count = all_enemies.size();
 
 		while (remaining_points > 0 && chosen_enemies.size() < max_enemies) {
-			// Filter enemies by remaining points
-			var available_enemies = filterEnemiesByPoints(Enemies.dungeon_enemies, remaining_points);
-
-			// If no enemies fit within the points, stop the loop
-			if (available_enemies.size() == 0) {
-				break;
+			// Inline filter + weight sum to avoid extra function calls
+			var total_weight = 0;
+			for (var i = 0; i < all_count; i++) {
+				var e = all_enemies[i];
+				if (e[:cost] <= remaining_points) {
+					total_weight += e[:weight];
+				}
 			}
+			if (total_weight == 0) { break; }
 
-			// Calculate total weight for available enemies
-			var total_weight = getTotalWeight(available_enemies);
-
-			// Randomly select an enemy based on weights
+			// Weighted random selection in one pass
 			var roll = MathUtil.rand() * total_weight;
-			var accumulated_weight = 0;
-			var chosen_enemy = null as Dictionary<Symbol, Numeric>?;
+			var accumulated = 0;
+			var chosen = null as Dictionary<Symbol, Numeric>?;
 
-			for (var i = 0; i < available_enemies.size(); i++) {
-				var enemy = available_enemies[i] as Dictionary<Symbol, Numeric>;
-				accumulated_weight += enemy[:weight];
-				if (roll <= accumulated_weight) {
-					chosen_enemy = enemy;
-					break;
+			for (var i = 0; i < all_count; i++) {
+				var e = all_enemies[i];
+				if (e[:cost] <= remaining_points) {
+					accumulated += e[:weight];
+					if (roll <= accumulated) {
+						chosen = e;
+						break;
+					}
 				}
 			}
 
-			// Add chosen enemy to the list and subtract its cost
-			if (chosen_enemy != null) {
-				var enemy = Enemies.createEnemyFromId(chosen_enemy[:id]);
+			if (chosen != null) {
+				var enemy = Enemies.createEnemyFromId(chosen[:id]);
 				enemy.setLevel($.Game.depth);
 				enemy.register();
 				chosen_enemies.add(enemy);
-				remaining_points -= chosen_enemy[:cost];
+				remaining_points -= chosen[:cost];
 			}
 		}
 

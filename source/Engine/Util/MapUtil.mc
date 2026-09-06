@@ -349,6 +349,71 @@ module MapUtil {
 		return [screen_size_x, screen_size_y];
 	}
 
+	// Collect all passable positions with no content in the given bounds.
+	// Returns a flat array [x1,y1, x2,y2, ...] to avoid inner array allocations.
+	function collectPassablePositions(map as Map, left as Number, right as Number, top as Number, bottom as Number) as Array<Number> {
+		var result = [] as Array<Number>;
+		var xMin = left + 2;
+		var xMax = right - 2;
+		var yMin = top + 2;
+		var yMax = bottom - 2;
+		for (var x = xMin; x <= xMax; x++) {
+			for (var y = yMin; y <= yMax; y++) {
+				var tile = map.getTile(x, y);
+				if (tile.type == PASSABLE && tile.content == null) {
+					result.add(x);
+					result.add(y);
+				}
+			}
+		}
+		return result;
+	}
+
+	// Collect all passable positions excluding narrow passages (tunnels).
+	// Returns a flat array [x1,y1, x2,y2, ...].
+	function collectPassablePositionsNoTunnels(map as Map, left as Number, right as Number, top as Number, bottom as Number) as Array<Number> {
+		var result = [] as Array<Number>;
+		var xMin = left + 2;
+		var xMax = right - 2;
+		var yMin = top + 2;
+		var yMax = bottom - 2;
+		for (var x = xMin; x <= xMax; x++) {
+			for (var y = yMin; y <= yMax; y++) {
+				var tile = map.getTile(x, y);
+				if (tile.type == PASSABLE && tile.content == null && !isNarrowPassageAt(map, x, y)) {
+					result.add(x);
+					result.add(y);
+				}
+			}
+		}
+		return result;
+	}
+
+	function getRandomPosFromPool(pool as Array<Number>) as Point2D {
+		var count = pool.size() / 2;
+		if (count == 0) {
+			return [0, 0];
+		}
+		var idx = MathUtil.random(0, count - 1) * 2;
+		return [pool[idx], pool[idx + 1]];
+	}
+
+	function removePosFromPool(pool as Array<Number>, pos as Point2D) as Void {
+		var count = pool.size() / 2;
+		for (var i = 0; i < count; i++) {
+			var idx = i * 2;
+			if (pool[idx] == pos[0] && pool[idx + 1] == pos[1]) {
+				// Swap with last and remove
+				var lastIdx = pool.size() - 2;
+				pool[idx] = pool[lastIdx];
+				pool[idx + 1] = pool[lastIdx + 1];
+				pool.remove(pool.size() - 1);
+				pool.remove(pool.size() - 1);
+				return;
+			}
+		}
+	}
+
 	function getRandomPos(map as Map, left as Number, right as Number, top as Number, bottom as Number) as Point2D {
 		var x = 0;
 		var y = 0;
