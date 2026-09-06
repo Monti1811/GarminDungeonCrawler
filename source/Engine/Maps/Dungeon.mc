@@ -9,7 +9,16 @@ enum DungeonStyle {
     DUNGEONSTYLE_NORMAL,
     DUNGEONSTYLE_FIRE,
     DUNGEONSTYLE_ICE,
-    DUNGEONSTYLE_BOSS
+    DUNGEONSTYLE_BOSS,
+    DUNGEONSTYLE_POISON,
+    DUNGEONSTYLE_SHADOW,
+    DUNGEONSTYLE_NATURE,
+    DUNGEONSTYLE_LAVA,
+    DUNGEONSTYLE_SAND,
+    DUNGEONSTYLE_DARK,
+    DUNGEONSTYLE_CRYSTAL,
+    DUNGEONSTYLE_BLOOD,
+    DUNGEONSTYLE_WATER
 }
 
 class Dungeon {
@@ -32,8 +41,15 @@ class Dungeon {
 		}
 		var style_chances = {
 			DUNGEONSTYLE_NORMAL => 50,
-			DUNGEONSTYLE_FIRE => 25,
-			DUNGEONSTYLE_ICE => 25
+			DUNGEONSTYLE_POISON => 5,
+			DUNGEONSTYLE_SHADOW => 5,
+			DUNGEONSTYLE_NATURE => 5,
+			DUNGEONSTYLE_LAVA => 5,
+			DUNGEONSTYLE_SAND => 5,
+			DUNGEONSTYLE_DARK => 5,
+			DUNGEONSTYLE_CRYSTAL => 5,
+			DUNGEONSTYLE_BLOOD => 5,
+			DUNGEONSTYLE_WATER => 5
 		} as Dictionary;
 		_style = $.MathUtil.weighted_random(style_chances);
 		Toybox.System.println("Dungeon style set to " + _style);

@@ -180,31 +180,85 @@ class Map {
 		switch (dungeonStyle) {
 			case DUNGEONSTYLE_NORMAL:
 				return {
-					PASSABLE => 32,
+					PASSABLE => 70,
 					STAIRS => 34,
 					EMPTY => 36
 				} as Dictionary<TileType, Number>;
 			case DUNGEONSTYLE_FIRE:
 				return {
-					PASSABLE => 40,
-					STAIRS => 34,
-					EMPTY => 36
-				} as Dictionary<TileType, Number>;
-			case DUNGEONSTYLE_BOSS:
-				return {
-					PASSABLE => 37,
+					PASSABLE => 71,
 					STAIRS => 34,
 					EMPTY => 36
 				} as Dictionary<TileType, Number>;
 			case DUNGEONSTYLE_ICE:
 				return {
-					PASSABLE => 38,
+					PASSABLE => 72,
 					STAIRS => 34,
 					EMPTY => 35
 				} as Dictionary<TileType, Number>;
+			case DUNGEONSTYLE_BOSS:
+				return {
+					PASSABLE => 73,
+					STAIRS => 34,
+					EMPTY => 36
+				} as Dictionary<TileType, Number>;
+			case DUNGEONSTYLE_POISON:
+				return {
+					PASSABLE => 74,
+					STAIRS => 34,
+					EMPTY => 36
+				} as Dictionary<TileType, Number>;
+			case DUNGEONSTYLE_SHADOW:
+				return {
+					PASSABLE => 75,
+					STAIRS => 34,
+					EMPTY => 36
+				} as Dictionary<TileType, Number>;
+			case DUNGEONSTYLE_NATURE:
+				return {
+					PASSABLE => 76,
+					STAIRS => 34,
+					EMPTY => 36
+				} as Dictionary<TileType, Number>;
+			case DUNGEONSTYLE_LAVA:
+				return {
+					PASSABLE => 77,
+					STAIRS => 34,
+					EMPTY => 36
+				} as Dictionary<TileType, Number>;
+			case DUNGEONSTYLE_SAND:
+				return {
+					PASSABLE => 78,
+					STAIRS => 34,
+					EMPTY => 36
+				} as Dictionary<TileType, Number>;
+			case DUNGEONSTYLE_DARK:
+				return {
+					PASSABLE => 79,
+					STAIRS => 34,
+					EMPTY => 36
+				} as Dictionary<TileType, Number>;
+			case DUNGEONSTYLE_CRYSTAL:
+				return {
+					PASSABLE => 80,
+					STAIRS => 34,
+					EMPTY => 36
+				} as Dictionary<TileType, Number>;
+			case DUNGEONSTYLE_BLOOD:
+				return {
+					PASSABLE => 81,
+					STAIRS => 34,
+					EMPTY => 36
+				} as Dictionary<TileType, Number>;
+			case DUNGEONSTYLE_WATER:
+				return {
+					PASSABLE => 82,
+					STAIRS => 34,
+					EMPTY => 36
+				} as Dictionary<TileType, Number>;
 			default:
 				return {
-					PASSABLE => 32,
+					PASSABLE => 70,
 					STAIRS => 34,
 					EMPTY => 36
 				} as Dictionary<TileType, Number>;

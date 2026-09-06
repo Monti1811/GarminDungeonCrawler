@@ -45,13 +45,13 @@ module Game {
 	function init(player_id as Number) as Void {
 		// Set the seed for random number generation
 		Math.srand(Time.now().value());
+		depth = 0;
 		self.initModules(player_id);
 		Quests.init();
 		player = null;
 		dungeon = null;
 		turns = null;
 		time_played = 0;
-		depth = 0;
 		difficulty = MEDIUM;
 		game_mode = NORMAL;
 		map = [];

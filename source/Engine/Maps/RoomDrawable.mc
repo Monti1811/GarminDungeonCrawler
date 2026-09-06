@@ -38,6 +38,24 @@ class RoomDrawable extends WatchUi.Drawable {
                 return [Graphics.COLOR_BLACK, 0x3fd0d4];
             case DUNGEONSTYLE_BOSS:
                 return [Graphics.COLOR_PURPLE, Graphics.COLOR_BLACK];
+            case DUNGEONSTYLE_POISON:
+                return [0x2E8B57, Graphics.COLOR_BLACK];
+            case DUNGEONSTYLE_SHADOW:
+                return [0x2D2D2D, 0x1A1A1A];
+            case DUNGEONSTYLE_NATURE:
+                return [0x1B3A1B, 0x0D1F0D];
+            case DUNGEONSTYLE_LAVA:
+                return [0x4A0000, 0x1A0000];
+            case DUNGEONSTYLE_SAND:
+                return [0x8B7355, 0x2A2010];
+            case DUNGEONSTYLE_DARK:
+                return [0x1A1A1A, 0x0A0A0A];
+            case DUNGEONSTYLE_CRYSTAL:
+                return [0x1A3A4A, 0x0D1F2A];
+            case DUNGEONSTYLE_BLOOD:
+                return [0x3A0000, 0x1A0000];
+            case DUNGEONSTYLE_WATER:
+                return [0x001A3A, 0x000D1F];
             default:
                 return [Graphics.COLOR_DK_GRAY, Graphics.COLOR_BLACK];
         }
@@ -58,6 +76,15 @@ class RoomDrawable extends WatchUi.Drawable {
                 case DUNGEONSTYLE_FIRE: return 0x8B0000;
                 case DUNGEONSTYLE_ICE: return 0x00CED1;
                 case DUNGEONSTYLE_BOSS: return 0x800080;
+                case DUNGEONSTYLE_POISON: return 0x006400;
+                case DUNGEONSTYLE_SHADOW: return 0x3A3A3A;
+                case DUNGEONSTYLE_NATURE: return 0x2E5A2E;
+                case DUNGEONSTYLE_LAVA: return 0x5A1A00;
+                case DUNGEONSTYLE_SAND: return 0x6B5B3A;
+                case DUNGEONSTYLE_DARK: return 0x1A1A1A;
+                case DUNGEONSTYLE_CRYSTAL: return 0x2A5A6A;
+                case DUNGEONSTYLE_BLOOD: return 0x5A0000;
+                case DUNGEONSTYLE_WATER: return 0x002A5A;
                 default: return 0x444444;
             }
         }
@@ -68,15 +95,49 @@ class RoomDrawable extends WatchUi.Drawable {
                 case DUNGEONSTYLE_FIRE: return 0x8B0000;
                 case DUNGEONSTYLE_ICE: return 0x00CED1;
                 case DUNGEONSTYLE_BOSS: return 0x800080;
+                case DUNGEONSTYLE_POISON: return 0x006400;
+                case DUNGEONSTYLE_SHADOW: return 0x3A3A3A;
+                case DUNGEONSTYLE_NATURE: return 0x2E5A2E;
+                case DUNGEONSTYLE_LAVA: return 0x5A1A00;
+                case DUNGEONSTYLE_SAND: return 0x6B5B3A;
+                case DUNGEONSTYLE_DARK: return 0x1A1A1A;
+                case DUNGEONSTYLE_CRYSTAL: return 0x2A5A6A;
+                case DUNGEONSTYLE_BLOOD: return 0x5A0000;
+                case DUNGEONSTYLE_WATER: return 0x002A5A;
                 default: return 0x444444;
             }
         }
-        if (charId == 34) { return 0xFFFF00; } // STAIRS
-        if (charId == 32 || charId == 37 || charId == 38 || charId == 40) { // PASSABLE
+        if (charId == 34) { // STAIRS
+            switch (dungeonStyle) {
+                case DUNGEONSTYLE_FIRE: return 0xFF4500;
+                case DUNGEONSTYLE_ICE: return 0x00BFFF;
+                case DUNGEONSTYLE_BOSS: return 0xFF69B4;
+                case DUNGEONSTYLE_POISON: return 0xADFF2F;
+                case DUNGEONSTYLE_SHADOW: return 0xDDA0DD;
+                case DUNGEONSTYLE_NATURE: return 0xFFD700;
+                case DUNGEONSTYLE_LAVA: return 0xFFFF00;
+                case DUNGEONSTYLE_SAND: return 0xFFD700;
+                case DUNGEONSTYLE_DARK: return 0xFFFFFF;
+                case DUNGEONSTYLE_CRYSTAL: return 0x00FFFF;
+                case DUNGEONSTYLE_BLOOD: return 0xFF1A1A;
+                case DUNGEONSTYLE_WATER: return 0x00FFFF;
+                default: return 0xFFFF00;
+            }
+        }
+        if (charId >= 70 && charId <= 82) { // PASSABLE
             switch (dungeonStyle) {
                 case DUNGEONSTYLE_FIRE: return 0xCC6600;
                 case DUNGEONSTYLE_ICE: return 0x66FFFF;
                 case DUNGEONSTYLE_BOSS: return 0xCC66CC;
+                case DUNGEONSTYLE_POISON: return 0x9ACD32;
+                case DUNGEONSTYLE_SHADOW: return 0x7B68EE;
+                case DUNGEONSTYLE_NATURE: return 0x4A8B4A;
+                case DUNGEONSTYLE_LAVA: return 0xCC4400;
+                case DUNGEONSTYLE_SAND: return 0xD2B48C;
+                case DUNGEONSTYLE_DARK: return 0x333333;
+                case DUNGEONSTYLE_CRYSTAL: return 0x88CCDD;
+                case DUNGEONSTYLE_BLOOD: return 0x8B0000;
+                case DUNGEONSTYLE_WATER: return 0x4488CC;
                 default: return 0x666666;
             }
         }

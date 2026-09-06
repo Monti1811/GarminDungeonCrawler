@@ -80,7 +80,7 @@ module RoomCreationProfileTest {
 		for (var p = 0; p < points_array.size(); p++) {
 			var pts = points_array[p];
 			var t0 = nowMs();
-			var enemies = Main.chooseEnemies(pts);
+			var enemies = Main.chooseEnemies(15, pts);
 			var t1 = nowMs();
 			logger.debug("chooseEnemies(pts=" + pts + "): " + (t1 - t0) + "ms, " + enemies.size() + " enemies");
 		}
@@ -226,7 +226,8 @@ module RoomCreationProfileTest {
 
 		var room_area = 225; // 15x15 max
 		var diff = 1;
-		var values = Main.calculateEnemiesForRoom(room_area, diff);
+		var room_max = Main.getMaxEnemiesNumForRoom(15, 15);
+		var values = Main.calculateEnemiesForRoom(room_area, diff, room_max);
 		var num_enemies = values[0] as Number;
 		var enemy_points = values[1] as Number;
 
