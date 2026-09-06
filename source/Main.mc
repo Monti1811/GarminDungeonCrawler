@@ -104,9 +104,6 @@ module Main {
 		var top = middle_of_screen[1] - Math.floor(room_size_y/2);
 		var bottom = middle_of_screen[1] + Math.floor(room_size_y/2);
 
-		if (room_shape == null) {
-			room_shape = Map.chooseRandomRoomShape();
-		}
 		var map = Map.createRoomShape(screen_size_x, screen_size_y, left, right, top, bottom, room_shape);
 		Map.addIslands(map, left, right, top, bottom, room_shape);
 
@@ -389,7 +386,7 @@ module Main {
 		return Math.floor(size_x * size_y / 10);
 	}
 
-	function calculateEnemiesForRoom(room_size, difficulty_factor) as Array {
+	function calculateEnemiesForRoom(room_size, difficulty_factor, room_max_enemies as Number) as Array {
 		var depth = $.Game.depth;
 		// Scaling factors
 		var base_enemies = 1;                         // Minimum enemies per room
@@ -410,8 +407,9 @@ module Main {
 			];
 		}
 
-		// Ensure a minimum of 1, maximum of 15 enemies in the room
-		num_enemies = MathUtil.clamp(Math.floor(num_enemies), 1, $.Constants.MAX_ENEMIES_PER_ROOM);
+		// Clamp to room size based max and global max
+		var max = room_max_enemies < $.Constants.MAX_ENEMIES_PER_ROOM ? room_max_enemies : $.Constants.MAX_ENEMIES_PER_ROOM;
+		num_enemies = MathUtil.clamp(Math.floor(num_enemies), 1, max);
 
 		// Determine enemy difficulty points
 		var enemy_points = base_enemy_points + Math.floor(depth * difficulty_factor + depth_sqrt * room_size_scaling);
@@ -429,8 +427,11 @@ module Main {
 		if (MathUtil.isRandomPercent(10)) {
 			diff = 2;
 		}
-		var values = calculateEnemiesForRoom((right - left - 1) * (bottom - top - 1), diff);
-		var possible_enemies = chooseEnemies(values[1]);
+		var size_x = right - left;
+		var size_y = bottom - top;
+		var room_max = getMaxEnemiesNumForRoom(size_x, size_y);
+		var values = calculateEnemiesForRoom((right - left - 1) * (bottom - top - 1), diff, room_max);
+		var possible_enemies = chooseEnemies(values[0], values[1]);
 		// Collect all valid positions once, then pick from pool
 		var pool = MapUtil.collectPassablePositions(map, left, right, top, bottom);
 		for (var i = 0; i < possible_enemies.size(); i++) {
@@ -470,21 +471,38 @@ module Main {
 		return total_weight;
 	}
 
-	function chooseEnemies(allocated_points as Number) as Array<Enemy> {
+	function chooseEnemies(max_enemies as Number, allocated_points as Number) as Array<Enemy> {
 		var chosen_enemies = [];
 		var remaining_points = allocated_points;
-		var max_enemies = $.Constants.MAX_ENEMIES_PER_ROOM;
 		var all_enemies = Enemies.dungeon_enemies;
 		var all_count = all_enemies.size();
 
 		while (remaining_points > 0 && chosen_enemies.size() < max_enemies) {
-			// Inline filter + weight sum to avoid extra function calls
+			// Prefer stronger enemies when many points remain
+			var min_cost = 0;
+			if (remaining_points > 50) {
+				min_cost = 10;
+			} else if (remaining_points > 20) {
+				min_cost = 5;
+			}
+
+			// Inline filter + weight sum
 			var total_weight = 0;
 			for (var i = 0; i < all_count; i++) {
 				var e = all_enemies[i];
-				if (e[:cost] <= remaining_points) {
+				if (e[:cost] <= remaining_points && e[:cost] >= min_cost) {
 					total_weight += e[:weight];
 				}
+			}
+			// Fallback: if no strong enemies fit, allow all
+			if (total_weight == 0) {
+				for (var i = 0; i < all_count; i++) {
+					var e = all_enemies[i];
+					if (e[:cost] <= remaining_points) {
+						total_weight += e[:weight];
+					}
+				}
+				min_cost = 0;
 			}
 			if (total_weight == 0) { break; }
 
@@ -495,7 +513,7 @@ module Main {
 
 			for (var i = 0; i < all_count; i++) {
 				var e = all_enemies[i];
-				if (e[:cost] <= remaining_points) {
+				if (e[:cost] <= remaining_points && e[:cost] >= min_cost) {
 					accumulated += e[:weight];
 					if (roll <= accumulated) {
 						chosen = e;
