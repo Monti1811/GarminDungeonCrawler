@@ -18,10 +18,42 @@ Start-Sleep -Seconds 2
 Start-Process -FilePath "$SDK\bin\simulator.exe" -ArgumentList "-d", $DEVICE -NoNewWindow
 Start-Sleep -Seconds 10
 
-Write-Host "Running tests..."
-$testProc = Start-Process -FilePath "java.exe" -ArgumentList "-classpath", $MONKEYBRAINS, $MONKEYDO_CLASS, "-f", $PRG, "-d", $DEVICE, "-s", $SHELL, "-t" -NoNewWindow -Wait -PassThru
+# Parse comma-separated test names
+$testNames = @()
+if ($args.Count -gt 0) {
+    $testNames = $args[0] -split "," | ForEach-Object { $_.Trim() } | Where-Object { $_ -ne "" }
+}
+
+$totalExitCode = 0
+$passed = 0
+$failed = 0
+
+if ($testNames.Count -gt 0) {
+    Write-Host "Running $($testNames.Count) specific test(s): $($testNames -join ', ')"
+    foreach ($test in $testNames) {
+        Write-Host "--- Running test: $test ---"
+        $output = & "java.exe" -classpath $MONKEYBRAINS $MONKEYDO_CLASS -f $PRG -d $DEVICE -s $SHELL -t $test 2>&1
+        $outputStr = $output -join "`n"
+        Write-Host $output
+        if ($outputStr -match "PASSED \(passed=\d+, failed=0") {
+            $passed++
+            Write-Host "PASS: $test"
+        } else {
+            $failed++
+            $totalExitCode = 1
+            Write-Host "FAIL: $test"
+        }
+    }
+    Write-Host "---"
+    Write-Host "Results: $passed passed, $failed failed"
+} else {
+    Write-Host "Running all tests..."
+    $output = & "java.exe" -classpath $MONKEYBRAINS $MONKEYDO_CLASS -f $PRG -d $DEVICE -s $SHELL -t 2>&1
+    $totalExitCode = $LASTEXITCODE
+    Write-Host $output
+}
 
 Write-Host "Cleaning up..."
 Get-Process -Name "simulator" -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue
 Start-Sleep -Seconds 1
-exit $testProc.ExitCode
+exit $totalExitCode

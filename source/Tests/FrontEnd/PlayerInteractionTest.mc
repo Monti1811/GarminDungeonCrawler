@@ -169,7 +169,7 @@ function playerLevelUpGrantsAttributePoints(logger as Test.Logger) as Boolean {
     var initialPoints = player.getAttributePoints();
     var nextExp = player.getNextLevelExperience();
     player.onGainExperience(nextExp);
-    Test.assertEqual(player.getAttributePoints(), initialPoints + 3);
+    Test.assertEqual(player.getAttributePoints(), initialPoints + 5);
     return true;
 }
 

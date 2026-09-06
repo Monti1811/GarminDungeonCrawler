@@ -108,6 +108,8 @@ TOOL_CATALOG: list[dict[str, Any]] = [
     {"tool": "analyze_drawable_usage", "category": "assets", "use_when": "Find unused/missing drawable ids"},
     {"tool": "split_items_spritesheet", "category": "assets", "use_when": "Slice tiles from items spritesheet"},
     {"tool": "generate_image_and_embed", "category": "assets", "use_when": "Generate + resize + register sprite"},
+    {"tool": "generate_font_tile", "category": "assets", "use_when": "Generate AI font tile for bitmap font"},
+    {"tool": "rebuild_font_atlas", "category": "assets", "use_when": "Rebuild font atlas with BMFont"},
     {"tool": "scaffold_item", "category": "scaffold", "use_when": "Create new item class + registrations"},
     {"tool": "scaffold_enemy", "category": "scaffold", "use_when": "Create new enemy class + registrations"},
     {"tool": "scaffold_player_class", "category": "scaffold", "use_when": "Create new player class + registration"},
@@ -131,6 +133,8 @@ TOOL_KEYWORDS: dict[str, set[str]] = {
     "analyze_drawable_usage": {"analyze", "drawables", "usage", "unused", "missing"},
     "split_items_spritesheet": {"spritesheet", "split", "tiles", "items"},
     "generate_image_and_embed": {"image", "generate", "sprite", "openrouter", "embed"},
+    "generate_font_tile": {"font", "tile", "generate", "dungeon", "bitmap", "ai"},
+    "rebuild_font_atlas": {"font", "atlas", "rebuild", "bmfont", "fnt"},
     "scaffold_item": {"create", "new", "item", "weapon", "armor", "consumable", "scaffold"},
     "scaffold_enemy": {"create", "new", "enemy", "monster", "spawn", "scaffold"},
     "scaffold_player_class": {"create", "new", "player", "class", "hero", "scaffold"},
@@ -1768,6 +1772,228 @@ def generate_image_and_embed(
         "final_image": str(final_path),
         "drawables_xml": register_result.get("xml_path"),
         "already_exists": register_result.get("already_exists", False),
+    }
+
+
+@mcp.tool(description="Generate a font tile image via AI and save to font/tiles/ for bitmap font generation.")
+def generate_font_tile(
+    tile_name: str,
+    prompt: str,
+    char_id: int,
+    reference_image_hex: str | None = None,
+    model: str | None = None,
+    enforce_style_policy: bool = True,
+    style_suffix: str | None = None,
+    output_folder: str = "font/tiles",
+    rebuild_atlas: bool = False,
+) -> dict[str, Any]:
+    """Generate a 16x16 font tile image using AI and save it for bitmap font generation.
+    
+    Args:
+        tile_name: Name for the tile (e.g., 'wall_h', 'floor_stone'). Will be saved as {tile_name}.png
+        prompt: Description of what the tile should look like
+        char_id: The character ID this tile will map to in the font (e.g., 48 for '0')
+        reference_image_hex: Optional hex-encoded PNG/JPEG of a reference tile to match the style.
+                            The AI will use this as visual context for the generation.
+        model: Optional model override for image generation
+        enforce_style_policy: Whether to enforce watch-friendly style constraints
+        style_suffix: Additional style constraints to append
+        output_folder: Where to save the tile (default: font/tiles/)
+        rebuild_atlas: Whether to automatically rebuild the font atlas after generation
+    
+    Returns:
+        Dictionary with generation status, file paths, and any errors.
+    """
+    # Build the prompt with style constraints
+    style_constraints = "pixel art dungeon tile, 16x16, seamless, crisp edges, high contrast"
+    if enforce_style_policy:
+        style_constraints += ", transparent background, no text, no watermark"
+    if style_suffix:
+        style_constraints += f", {style_suffix}"
+    
+    final_prompt = f"{prompt}\n\nStyle: {style_constraints}"
+    
+    # Add reference image context if provided
+    reference_context = ""
+    if reference_image_hex:
+        try:
+            ref_bytes = bytes.fromhex(reference_image_hex)
+            ref_b64 = base64.b64encode(ref_bytes).decode("ascii")
+            reference_context = f"\n\nReference image (base64 PNG): data:image/png;base64,{ref_b64}"
+            final_prompt += "\n\nIMPORTANT: Match the style, colors, and pixel art aesthetic of the provided reference image."
+        except Exception as e:
+            return {"ok": False, "message": f"Failed to decode reference_image_hex: {e}"}
+    
+    # Generate the image using existing infrastructure
+    image_bytes: bytes | None = None
+    provider_name = ""
+    
+    cf_account_id = os.environ.get("CF_ACCOUNT_ID", "")
+    cf_api_token = os.environ.get("CF_API_TOKEN", "")
+    
+    if cf_account_id and cf_api_token:
+        try:
+            image_bytes, _ = _cloudflare_image(final_prompt)
+            provider_name = "cloudflare"
+        except Exception as exc:
+            import logging
+            logging.warning("Cloudflare Workers AI failed for font tile, trying OpenRouter: %s", exc)
+    
+    if not image_bytes:
+        openrouter_key = os.environ.get("OPENROUTER_API_KEY")
+        if openrouter_key:
+            try:
+                from openai import OpenAI
+            except Exception:
+                if not provider_name:
+                    return {
+                        "ok": False,
+                        "message": "Cloudflare not configured and openai package missing.",
+                    }
+            else:
+                client = OpenAI(
+                    api_key=openrouter_key,
+                    base_url="https://openrouter.ai/api/v1",
+                )
+                extra_headers: dict[str, str] = {}
+                site_url = os.environ.get("OPENROUTER_SITE_URL")
+                app_name = os.environ.get("OPENROUTER_APP_NAME")
+                if site_url:
+                    extra_headers["HTTP-Referer"] = site_url
+                if app_name:
+                    extra_headers["X-Title"] = app_name
+
+                max_attempts = 3
+                last_error = ""
+                for attempt in range(1, max_attempts + 1):
+                    try:
+                        messages = [{"role": "user", "content": final_prompt}]
+                        completion = client.chat.completions.create(
+                            model=model or "openrouter/hunter-alpha",
+                            messages=messages,
+                            extra_headers=extra_headers or None,
+                        )
+                    except Exception as err:
+                        last_error = f"OpenRouter image generation failed: {err}"
+                        continue
+
+                    img_bytes, extraction_error = _extract_openrouter_image_bytes_from_completion(completion)
+                    if img_bytes:
+                        image_bytes = img_bytes
+                        provider_name = "openrouter"
+                        break
+                    last_error = extraction_error or "OpenRouter did not return image bytes."
+
+                if not image_bytes and not provider_name:
+                    return {
+                        "ok": False,
+                        "message": f"OpenRouter failed after {max_attempts} attempts. Last error: {last_error}",
+                    }
+    
+    if not image_bytes:
+        return {
+            "ok": False,
+            "message": "No image provider available. Set CF_ACCOUNT_ID+CF_API_TOKEN or OPENROUTER_API_KEY.",
+        }
+    
+    # Save the raw image
+    output_dir = _abs_from_workspace(output_folder)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    
+    raw_path = output_dir / f"{tile_name}_raw.png"
+    final_path = output_dir / f"{tile_name}.png"
+    
+    raw_path.write_bytes(image_bytes)
+    
+    # Resize to 16x16
+    with Image.open(raw_path) as img:
+        img = img.convert("RGBA")
+        img = img.resize((16, 16), Image.Resampling.LANCZOS)
+        img.save(final_path)
+    
+    result = {
+        "ok": True,
+        "tile_name": tile_name,
+        "char_id": char_id,
+        "provider": provider_name,
+        "raw_image": str(raw_path),
+        "final_image": str(final_path),
+        "prompt": prompt,
+    }
+    
+    # Optionally rebuild the font atlas
+    if rebuild_atlas:
+        atlas_result = rebuild_font_atlas()
+        result["atlas_rebuild"] = atlas_result
+    
+    return result
+
+
+@mcp.tool(description="Rebuild the font atlas from dungeon_font.bmfc using BMFont.")
+def rebuild_font_atlas(
+    bmfc_path: str = "font/dungeon_font.bmfc",
+    output_fnt: str = "font/test2.fnt",
+    copy_to_resources: bool = True,
+) -> dict[str, Any]:
+    """Rebuild the font atlas using BMFont and optionally copy to resources/fonts/.
+    
+    Args:
+        bmfc_path: Path to the BMFont configuration file
+        output_fnt: Output path for the .fnt file
+        copy_to_resources: Whether to copy generated files to resources/fonts/
+    
+    Returns:
+        Dictionary with build status and file paths.
+    """
+    bmfc = _abs_from_workspace(bmfc_path)
+    output = _abs_from_workspace(output_fnt)
+    
+    if not bmfc.exists():
+        return {"ok": False, "message": f"BMFont config not found: {bmfc}"}
+    
+    # Find bmfont64.exe
+    bmfont_path = Path("F:/Code/Garmin/bmfont64.exe")
+    if not bmfont_path.exists():
+        return {"ok": False, "message": f"BMFont not found at: {bmfont_path}"}
+    
+    # Run BMFont
+    cmd = [str(bmfont_path), "-c", str(bmfc), "-o", str(output)]
+    result = subprocess.run(cmd, capture_output=True, text=True)
+    
+    if result.returncode != 0:
+        return {
+            "ok": False,
+            "message": f"BMFont failed: {result.stderr}",
+            "command": cmd,
+        }
+    
+    # Copy to resources if requested
+    copied_files = []
+    if copy_to_resources:
+        resources_fonts = _abs_from_workspace("resources/fonts")
+        resources_fonts.mkdir(parents=True, exist_ok=True)
+        
+        fnt_name = output.name
+        png_name = output.stem + "_0.png"
+        
+        src_fnt = output
+        src_png = output.parent / png_name
+        
+        dst_fnt = resources_fonts / fnt_name
+        dst_png = resources_fonts / png_name
+        
+        if src_fnt.exists():
+            shutil.copy2(src_fnt, dst_fnt)
+            copied_files.append(str(dst_fnt))
+        if src_png.exists():
+            shutil.copy2(src_png, dst_png)
+            copied_files.append(str(dst_png))
+    
+    return {
+        "ok": True,
+        "fnt_path": str(output),
+        "atlas_path": str(output.parent / (output.stem + "_0.png")),
+        "copied_to_resources": copied_files,
     }
 
 

@@ -44,20 +44,24 @@ class DCCreateGameProgressDelegate extends WatchUi.BehaviorDelegate {
                 var total = _size_dungeon[0] * _size_dungeon[1];
 
                 if (_room_phase == 1) {
-                    // Phase 1: cleanup orphaned walls
-                    Main.cleanupRoomForDungeon(_pending_room);
+                    // Phase 0b: create enemies + items + connections
+                    Main.createRoomContentForDungeon(_pending_room, _dungeon, _pending_i, _pending_j);
                     _room_phase = 2;
                 } else if (_room_phase == 2) {
+                    // Phase 1: cleanup orphaned walls
+                    Main.cleanupRoomForDungeon(_pending_room);
+                    _room_phase = 3;
+                } else if (_room_phase == 3) {
                     // Phase 2: save to Storage + free memory
                     Main.saveRoomForDungeon(_dungeon, _pending_room, _pending_i, _pending_j);
                     _pending_room.freeMemory();
                     _pending_room = null;
                     _room_phase = 0;
                 } else if (_room_counter < total) {
-                    // Phase 0: create room + connections
+                    // Phase 0a: create room shape + islands
                     _pending_i = _room_counter % _size_dungeon[0];
                     _pending_j = Math.floor(_room_counter / _size_dungeon[0]);
-                    _pending_room = Main.createRoomForDungeon(_dungeon, _pending_i, _pending_j);
+                    _pending_room = Main.createRoomShapeForDungeon(_dungeon, _pending_i, _pending_j);
                     _room_counter += 1;
                     _room_phase = 1;
                     _progress_bar.setProgress(10.0 + _room_counter * 80 / total);
