@@ -1,5 +1,5 @@
 $SDK = "c:\Users\Timon\AppData\Roaming\Garmin\ConnectIQ\Sdks\connectiq-sdk-win-8.4.1-2026-02-03-e9f77eeaa"
-$DEVICE = "venu2s"
+$DEVICE = if ($args.Count -gt 1) { $args[1] } else { "venu2s" }
 $MONKEYBRAINS = "$SDK\bin\monkeybrains.jar"
 $MONKEYDO_CLASS = "com.garmin.monkeybrains.monkeydodeux.MonkeyDoDeux"
 $SHELL = "$SDK\bin\shell.exe"
