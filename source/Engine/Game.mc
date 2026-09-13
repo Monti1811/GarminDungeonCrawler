@@ -167,7 +167,7 @@ module Game {
 				room[4] = flags;
 				// Backward compatibility: add room_shape if missing
 				if (room.size() < 6) {
-					room.add(null);
+					room.add(ROOMSHAPE_RECTANGLE);
 				}
 			}
 		}
