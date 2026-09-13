@@ -753,17 +753,17 @@ class Map {
 	static function addWallsAroundPassable(map as Map) as Void {
 		var width = map.getXSize();
 		var height = map.getYSize();
-		var dirs8 = [[-1,-1],[0,-1],[1,-1],[-1,0],[1,0],[-1,1],[0,1],[1,1]] as Array<Array<Number>>;
+		var dx = [-1, 0, 1, -1, 1, -1, 0, 1] as Array<Number>;
+		var dy = [-1, -1, -1, 0, 0, 1, 1, 1] as Array<Number>;
 		for (var x = 0; x < width; x++) {
 			for (var y = 0; y < height; y++) {
-				if (map.getTile(x, y).type != EMPTY) { continue; }
-				for (var d = 0; d < dirs8.size(); d++) {
-					var nx = x + dirs8[d][0];
-					var ny = y + dirs8[d][1];
+				if (map.getTile(x, y).type != PASSABLE) { continue; }
+				for (var d = 0; d < 8; d++) {
+					var nx = x + dx[d];
+					var ny = y + dy[d];
 					if (nx >= 0 && nx < width && ny >= 0 && ny < height) {
-						if (map.getTile(nx, ny).type == PASSABLE) {
-							map.setTypeXY(x, y, WALL);
-							break;
+						if (map.getTile(nx, ny).type == EMPTY) {
+							map.setTypeXY(nx, ny, WALL);
 						}
 					}
 				}
