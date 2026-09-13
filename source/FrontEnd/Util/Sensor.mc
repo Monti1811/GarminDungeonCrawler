@@ -22,18 +22,12 @@ module Sensor {
 			}
         }
     	var info = ActivityMonitor.getInfo();
-        if (info == null) {
-            return null;
-        }
         return info.steps;
     }
 
 	(:release)
 	function getSteps() as Number? {
         var info = ActivityMonitor.getInfo();
-        if (info == null) {
-            return null;
-        }
         return info.steps;
     }
 }

@@ -36,7 +36,7 @@ function fromIntPoint2DZeroOrigin(logger as Test.Logger) as Boolean {
 function intPointRoundTrip(logger as Test.Logger) as Boolean {
     var testCases = [[0, 0], [1, 0], [0, 1], [5, 10], [255, 255], [100, 50]];
     for (var i = 0; i < testCases.size(); i++) {
-        var original = testCases[i];
+        var original = testCases[i] as Point2D;
         var packed = Pathfinder.toIntPoint2D(original);
         var unpacked = Pathfinder.fromIntPoint2D(packed);
         Test.assertEqual(unpacked[0], original[0]);

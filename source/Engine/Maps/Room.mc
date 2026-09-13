@@ -277,10 +277,10 @@ class Room {
 
         // Edge position (at screen border), aligned to room center
         var edge_pos = [0, 0] as Point2D;
-        if (direction == UP) { edge_pos = [room_center_x, 0]; }
-        else if (direction == DOWN) { edge_pos = [room_center_x, screen_size_y - 1]; }
-        else if (direction == LEFT) { edge_pos = [0, room_center_y]; }
-        else if (direction == RIGHT) { edge_pos = [screen_size_x - 1, room_center_y]; }
+        if (direction == UP) { edge_pos = [room_center_x, 0] as Point2D; }
+        else if (direction == DOWN) { edge_pos = [room_center_x, screen_size_y - 1] as Point2D; }
+        else if (direction == LEFT) { edge_pos = [0, room_center_y] as Point2D; }
+        else if (direction == RIGHT) { edge_pos = [screen_size_x - 1, room_center_y] as Point2D; }
 
         Map.digConnectionTunnel(_map, edge_pos, direction, screen_size_x, screen_size_y, [room_center_x, room_center_y]);
     }
