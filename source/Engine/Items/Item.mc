@@ -13,6 +13,8 @@ class Item {
 	var pos as Point2D = [0, 0];
 	var equipped as Boolean = false;
 	var in_inventory as Boolean = false;
+	var tag as Symbol = :none;
+	var entityType as Symbol = :item;
 	var _sprite_ref as Toybox.Graphics.BitmapReference? = null;
 
 	function initialize();

@@ -41,7 +41,8 @@ module Game {
 				// [1] = Has merchant
 				// [2] = Has boss
 				// [3] = Has quest giver
-		/*[5]*/	RoomShape?]>> = []; 						// Room shape		
+		/*[5]*/	RoomShape? 							// Room shape	
+	]>> = [];
 
 	function init(player_id as Number) as Void {
 		// Set the seed for random number generation

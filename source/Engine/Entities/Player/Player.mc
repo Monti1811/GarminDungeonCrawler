@@ -51,6 +51,7 @@ class Player extends Entity {
 
 	function initialize() {
 		Entity.initialize();
+		entityType = :player;
 	}
 
 	function hashCode() {
@@ -114,7 +115,7 @@ class Player extends Entity {
 
 	function pickupItem(item as Item) as Boolean {
 		if (item.canBePickedUp(me)) {
-			if (item instanceof EquippableItem && 
+			if (item.slot != NONE && 
 					equipped[item.slot] == null &&
 					equipItem(item, item.slot, false)) {
 				item.onPickupItem(me);
@@ -129,7 +130,7 @@ class Player extends Entity {
 
 	function addInventoryItem(item as Item) as Boolean {
 		if (!inventory.wouldBeFull(item)) {
-			if (item.type == WEAPON && item instanceof Ammunition) {
+			if (item.type == WEAPON && item.slot == AMMUNITION) {
 				// If the ammunition is the same as the currently equipped, add to that stack
 				if (isSameAmmunition(item)) {
 					equipped[AMMUNITION].amount += item.amount;
@@ -194,7 +195,7 @@ class Player extends Entity {
 	function onDeath() as Void {
 		// Check if a life amulet was equipped
 		var accessory = equipped[ACCESSORY] as Item?;
-		if (accessory != null && accessory instanceof LifeAmulet) {
+		if (accessory != null && accessory.id == 1300) {
 			var amulet = accessory as LifeAmulet;
 			amulet.onDeath(me);
 			return;		
@@ -627,7 +628,7 @@ class Player extends Entity {
 		equipped = {};
 		attributes = {};
 		added_attributes = {};
-		elemental_effects = {};
+		elemental_effects = null;
 		_sprite_ref = null;
 	}
 

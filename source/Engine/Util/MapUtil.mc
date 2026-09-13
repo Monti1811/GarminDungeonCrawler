@@ -101,13 +101,13 @@ module MapUtil {
 
 	function checkEnemy(map as Map, x as Number, y as Number) {
         if (map.isInBound([x, y])) {
-            var enemy = map.getContent([x, y]) as Enemy?;
-            if (enemy != null && enemy instanceof Enemy) {
-                return enemy;
+            var content = map.getContent([x, y]);
+            if (content != null && content has :entityType && content.entityType == :enemy) {
+                return content;
             }
-        }
-        return null;
-    }
+		}
+		return null;
+	}
 
 	function getEnemyInRangeLinear(map as Map, pos as Point2D, range as Number, direction as WalkDirection) as Enemy? {
 		var x = pos[0];

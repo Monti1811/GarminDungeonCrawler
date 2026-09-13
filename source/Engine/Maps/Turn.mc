@@ -96,7 +96,8 @@ class Turn {
     // Move the player if nothing is in the waym except for items (which can be interacted with)
     function movePlayer(map as Map, new_pos as Point2D, itemInteraction as Boolean) as Void {
         var content = map.getTileFromPos(new_pos).content;
-        if (content != null && !(content instanceof Item && itemInteraction)) {
+        var isItem = content != null && content has :entityType && content.entityType == :item;
+        if (content != null && !(isItem && itemInteraction)) {
             return; // Cannot move if there's content that's not an interactable item
         }
 
@@ -244,7 +245,7 @@ class Turn {
     }
 
     function interactWithItem(map as Map, new_pos as Point2D, map_element as Object?) as Boolean {
-        if (map_element != null && map_element instanceof Item) {
+        if (map_element != null && map_element has :entityType && map_element.entityType == :item) {
             var item = map_element as Item;
             var success = item.canBePickedUp(_player);
             var interaction = item.onInteract(_player, $.Game.getCurrentRoom());
@@ -257,7 +258,7 @@ class Turn {
     }
 
     function checkForNPC(map_element as Object?) as Boolean {
-        if (map_element != null && map_element instanceof NPC) {
+        if (map_element != null && map_element has :entityType && map_element.entityType == :npc) {
             var npc = map_element as NPC;
             npc.onInteract();
             return true;
