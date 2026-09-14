@@ -321,6 +321,8 @@ module Main {
 		// Collect valid positions once: separate pools for normal and non-tunnel
 		var pool_normal = MapUtil.collectPassablePositions(map, left, right, top, bottom);
 		var pool_no_tunnel = MapUtil.collectPassablePositionsNoTunnels(map, left, right, top, bottom);
+		MapUtil.removePosFromPool(pool_normal, [$.Constants.ROOM_CENTER_INDEX, $.Constants.ROOM_CENTER_INDEX_Y] as Point2D);
+		MapUtil.removePosFromPool(pool_no_tunnel, [$.Constants.ROOM_CENTER_INDEX, $.Constants.ROOM_CENTER_INDEX_Y] as Point2D);
 		for (var i = 0; i < num_items; i++) {
 			var type = getItemType();
 			var item = createRandomItem(type);
@@ -434,6 +436,7 @@ module Main {
 		var possible_enemies = chooseEnemies(values[0], values[1]);
 		// Collect all valid positions once, then pick from pool
 		var pool = MapUtil.collectPassablePositions(map, left, right, top, bottom);
+		MapUtil.removePosFromPool(pool, [$.Constants.ROOM_CENTER_INDEX, $.Constants.ROOM_CENTER_INDEX_Y] as Point2D);
 		for (var i = 0; i < possible_enemies.size(); i++) {
 			if (pool.size() == 0) { break; }
 			var enemy = possible_enemies[i];

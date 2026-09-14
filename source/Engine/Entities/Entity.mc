@@ -8,7 +8,8 @@ class Entity {
 	var energy as Number = 100;
 	var energy_per_turn as Number = 100;
 	var guid as Number = 0;
-	var elemental_effects as Dictionary<ElementType, Dictionary<Symbol, Number>> = {};
+	var entityType as Symbol = :none;
+	var elemental_effects as Dictionary<ElementType, Dictionary<Symbol, Number>>? = null;
 	var _sprite_ref as Toybox.Graphics.BitmapReference? = null;
 
 	function initialize() {
@@ -76,7 +77,10 @@ class Entity {
 		if (adjusted_power <= 0 || duration <= 0) {
 			return;
 		}
-		elemental_effects[element] = {
+		if (self.elemental_effects == null) {
+			self.elemental_effects = ({}) as Dictionary<ElementType, Dictionary<Symbol, Number>>;
+		}
+		self.elemental_effects[element] = {
 			:type => element,
 			:power => adjusted_power,
 			:turns => duration
@@ -84,13 +88,14 @@ class Entity {
 	}
 
 	function applyElementalTurnEffects() as Void {
-		if (elemental_effects.size() == 0) {
+		if (self.elemental_effects == null || self.elemental_effects.size() == 0) {
+			self.elemental_effects = null;
 			return;
 		}
-		var keys = elemental_effects.keys();
+		var keys = self.elemental_effects.keys();
 		for (var i = 0; i < keys.size(); i++) {
 			var element = keys[i] as ElementType;
-			var effect = elemental_effects[element];
+			var effect = self.elemental_effects[element];
 			if (effect == null) {
 				continue;
 			}
@@ -106,10 +111,13 @@ class Entity {
 			}
 			effect[:turns] -= 1;
 			if (effect[:turns] <= 0) {
-				elemental_effects.remove(element);
+				self.elemental_effects.remove(element);
 			} else {
-				elemental_effects[element] = effect;
+				self.elemental_effects[element] = effect;
 			}
+		}
+		if (self.elemental_effects.size() == 0) {
+			self.elemental_effects = null;
 		}
 	}
 
@@ -118,17 +126,20 @@ class Entity {
 		if (dmg <= 0) {
 			return;
 		}
-		if (self instanceof Player) {
+		if (self.entityType == :player) {
 			var player = self as Player;
 			player.takeDamage(dmg, null);
-		} else if (self instanceof Enemy) {
+		} else if (self.entityType == :enemy) {
 			var enemy = self as Enemy;
 			enemy.takeDamage(dmg, null);
 		}
 	}
 
 	function getElementalEffect(element as ElementType) as Dictionary<Symbol, Number>? {
-		return elemental_effects[element];
+		if (self.elemental_effects == null) {
+			return null;
+		}
+		return self.elemental_effects[element];
 	}
 
 	function save() as Dictionary {

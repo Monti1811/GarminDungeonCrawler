@@ -251,8 +251,10 @@ module RoomCreationProfileTest {
 			// Simulate picking cheapest enemy
 			var min_cost = 999999;
 			for (var i = 0; i < available.size(); i++) {
-				if (available[i][:cost] < min_cost) {
-					min_cost = available[i][:cost];
+				var enemy = available[i] as Enemy;
+				var enemy_cost = enemy[:cost] as Number;
+				if (enemy_cost < min_cost) {
+					min_cost = enemy_cost;
 				}
 			}
 			remaining_points -= min_cost;

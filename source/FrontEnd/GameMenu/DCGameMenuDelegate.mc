@@ -203,11 +203,11 @@ class DCInventoryDelegate extends WatchUi.Menu2InputDelegate {
         }
         item = item.getId() as Item;
         var menuitems = [] as Array<MenuItem>;
-        if (item instanceof WeaponItem || item instanceof ArmorItem) {
+        if (item.type == WEAPON || item.type == ARMOR) {
             menuitems.add(new WatchUi.MenuItem("Equip", null, :equip, null));
             menuitems.add(new WatchUi.MenuItem("Drop", null, :drop, null));
             menuitems.add(new WatchUi.MenuItem("Info", "More information", :info, null));
-        } else if (item instanceof ConsumableItem) {
+        } else if (item.type == CONSUMABLE) {
             menuitems.add(new WatchUi.MenuItem("Use", null, :use, null));
             menuitems.add(new WatchUi.MenuItem("Drop", null, :drop, null));
             menuitems.add(new WatchUi.MenuItem("Info", "More information", :info, null));

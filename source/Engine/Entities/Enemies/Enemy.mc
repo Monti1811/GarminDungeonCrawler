@@ -22,6 +22,7 @@ class Enemy extends Entity {
 
 	function initialize() {
 		Entity.initialize();
+		entityType = :enemy;
 	}
 
 	function setLevel(level as Number) as Void {
@@ -107,12 +108,12 @@ class Enemy extends Entity {
 		var player = $.Game.getPlayer();
 		if (player.id == 2/*ARCHER*/ && MathUtil.isRandomPercent(25)) {
 			var right_hand_equip = player.getEquip(RIGHT_HAND);
-			if (right_hand_equip instanceof Bow) {
+			if (right_hand_equip != null && right_hand_equip.tag == :bow) {
 				var arrows = new Arrow();
 				arrows.amount = MathUtil.random(2, 5);
 				return arrows;
 			}
-			if (right_hand_equip instanceof CrossBow) {
+			if (right_hand_equip != null && right_hand_equip.tag == :crossbow) {
 				var bolts = new Bolt();
 				bolts.amount = MathUtil.random(2, 5);
 				return bolts;

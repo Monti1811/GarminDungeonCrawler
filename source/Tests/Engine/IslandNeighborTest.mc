@@ -713,7 +713,7 @@ function islandNeighbor_saveLoadCycle(logger as Test.Logger) as Boolean {
                         var ty = (top + bottom) / 2 + dy * sy;
                         if (tx > left && tx < right && ty > top && ty < bottom) {
                             if (map.getTile(tx, ty).type == PASSABLE) {
-                                stairs_pos = [tx, ty];
+                                stairs_pos = [tx, ty] as Point2D;
                                 found = true;
                                 break;
                             }

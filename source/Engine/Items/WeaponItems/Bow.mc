@@ -7,6 +7,7 @@ class Bow extends WeaponItem {
 
 	function initialize() {
 		WeaponItem.initialize();
+		tag = :bow;
 	}
 
 	function onEquipItem(player as Player) as Void {

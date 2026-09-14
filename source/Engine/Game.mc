@@ -32,15 +32,17 @@ module Game {
 	var turns as Turn?;
 	// Room name, connections, size, visited, flags, room_shape
 	var map as Array<Array<[
-		String, 							// Room name
-		Dictionary<WalkDirection, Boolean>, // Connections
-		Point2D, 							// Size of room
-		Boolean, 							// Visited
-		Array<Point2D?>,					// Special flags 
-		RoomShape?]>> = []; 				// [0] = Has stairs
-		// [1] = Has merchant
-		// [2] = Has boss
-		// [3] = Has quest giver
+		/*[0]*/	String, 							// Room name
+		/*[1]*/	Dictionary<WalkDirection, Boolean>, // Connections
+		/*[2]*/	Point2D, 							// Size of room
+		/*[3]*/	Boolean, 							// Visited
+		/*[4]*/	Array<Point2D?>,					// Special flags 
+		 		// [0] = Has stairs
+				// [1] = Has merchant
+				// [2] = Has boss
+				// [3] = Has quest giver
+		/*[5]*/	RoomShape? 							// Room shape	
+	]>> = [];
 
 	function init(player_id as Number) as Void {
 		// Set the seed for random number generation
@@ -166,7 +168,7 @@ module Game {
 				room[4] = flags;
 				// Backward compatibility: add room_shape if missing
 				if (room.size() < 6) {
-					room.add(null);
+					room.add(ROOMSHAPE_RECTANGLE);
 				}
 			}
 		}

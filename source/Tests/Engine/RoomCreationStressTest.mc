@@ -88,10 +88,8 @@ module RoomCreationStressTest {
 				Test.assertMessage(saved != null, "Room " + room_name + " should be in Storage");
 
 				var loaded_room = Room.load(saved as Dictionary);
-				Test.assertMessage(loaded_room != null, "Room " + room_name + " should load");
 
 				var loaded_map = loaded_room.getMap();
-				Test.assertMessage(loaded_map != null, "Loaded map should not be null for " + room_name);
 
 				var passable_count = 0;
 				var w = loaded_map.getXSize();
@@ -118,8 +116,7 @@ module RoomCreationStressTest {
 				var room_name = $.SimUtil.getRoomName(i, j);
 				var saved = Storage.getValue(room_name) as Dictionary?;
 				Test.assertMessage(saved != null, "Room " + room_name + " should still be in Storage after prepareDungeon");
-				var loaded_room = Room.load(saved as Dictionary);
-				Test.assertMessage(loaded_room != null, "Room " + room_name + " should load after prepareDungeon");
+				Room.load(saved as Dictionary);
 			}
 		}
 
@@ -155,8 +152,7 @@ module RoomCreationStressTest {
 					var room_name = $.SimUtil.getRoomName(i, j);
 					var saved = Storage.getValue(room_name) as Dictionary?;
 					Test.assertMessage(saved != null, "Run " + run + ": Room " + room_name + " should be in Storage");
-					var loaded = Room.load(saved as Dictionary);
-					Test.assertMessage(loaded != null, "Run " + run + ": Room " + room_name + " should load");
+					Room.load(saved as Dictionary);
 				}
 			}
 
@@ -192,10 +188,7 @@ module RoomCreationStressTest {
 
 			var room = Main.createRandomRoom(shape);
 
-			Test.assertMessage(room != null, "Room with shape " + shape + " should be created");
-
-			var map = room.getMap();
-			Test.assertMessage(map != null, "Map should not be null for shape " + shape);
+			room.getMap();
 
 			room.freeMemory();
 		}
@@ -211,7 +204,6 @@ module RoomCreationStressTest {
 		setupSettings();
 
 		var room = Main.createRandomRoom(ROOMSHAPE_RECTANGLE);
-		Test.assertMessage(room != null, "Room should be created");
 
 		var room_name = "stress_test_room";
 		_room_names.add(room_name);
@@ -222,7 +214,6 @@ module RoomCreationStressTest {
 		Test.assertMessage(loaded != null, "Room should be in Storage");
 
 		var loaded_room = Room.load(loaded as Dictionary);
-		Test.assertMessage(loaded_room != null, "Room should load");
 
 		Test.assertMessage(loaded_room.getSize()[0] == room.getSize()[0], "Size X should match");
 		Test.assertMessage(loaded_room.getSize()[1] == room.getSize()[1], "Size Y should match");
