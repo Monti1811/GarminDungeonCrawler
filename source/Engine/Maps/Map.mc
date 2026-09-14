@@ -347,56 +347,40 @@ class Map {
 				if (topPassable) {
 					return WALL_H_TOP;
 				}
-				var tile_BL = getTile(x - 1, y + 1);
-				if (tile_BL.type == WALL) {
-					return INNER_TL;
-				}
-				var tile_BR = getTile(x + 1, y + 1);
-				if (tile_BR.type == WALL) {
-					return INNER_TR;
-				}
+				var blWall = y < _height - 1 && x > 0 && getTile(x - 1, y + 1).type == WALL;
+				if (blWall) { return INNER_TL; }
+				var brWall = y < _height - 1 && x < _width - 1 && getTile(x + 1, y + 1).type == WALL;
+				if (brWall) { return INNER_TR; }
 				return WALL_H_BOTTOM;
 			}
 			if (!bottomWall) {
 				if (bottomPassable) {
 					return WALL_H_BOTTOM;
 				}
-				var tile_TL = getTile(x - 1, y - 1);
-				if (tile_TL.type == WALL) {
-					return INNER_BL;
-				}
-				var tile_TR = getTile(x + 1, y - 1);
-				if (tile_TR.type == WALL) {
-					return INNER_BR;
-				}
+				var tlWall = y > 0 && x > 0 && getTile(x - 1, y - 1).type == WALL;
+				if (tlWall) { return INNER_BL; }
+				var trWall = y > 0 && x < _width - 1 && getTile(x + 1, y - 1).type == WALL;
+				if (trWall) { return INNER_BR; }
 				return WALL_H_TOP;
 			}
 			if (!leftWall) {
 				if (leftPassable) {
 					return WALL_V_LEFT;
 				}
-				var tile_TR = getTile(x + 1, y - 1);
-				if (tile_TR.type == WALL) {
-					return INNER_TL;
-				}
-				var tile_BR = getTile(x + 1, y + 1);
-				if (tile_BR.type == WALL) {
-					return INNER_BL;
-				}
+				var trWall2 = y > 0 && x < _width - 1 && getTile(x + 1, y - 1).type == WALL;
+				if (trWall2) { return INNER_TL; }
+				var brWall2 = y < _height - 1 && x < _width - 1 && getTile(x + 1, y + 1).type == WALL;
+				if (brWall2) { return INNER_BL; }
 				return WALL_V_RIGHT;
 			}
 			if (!rightWall) {
 				if (rightPassable) {
 					return WALL_V_RIGHT;
 				}
-				var tile_TL = getTile(x - 1, y - 1);
-				if (tile_TL.type == WALL) {
-					return INNER_TR;
-				}
-				var tile_BL = getTile(x - 1, y + 1);
-				if (tile_BL.type == WALL) {
-					return INNER_BR;
-				}
+				var tlWall2 = y > 0 && x > 0 && getTile(x - 1, y - 1).type == WALL;
+				if (tlWall2) { return INNER_TR; }
+				var blWall2 = y < _height - 1 && x > 0 && getTile(x - 1, y + 1).type == WALL;
+				if (blWall2) { return INNER_BR; }
 				return WALL_V_LEFT;
 			}
 		}
@@ -800,11 +784,11 @@ class Map {
 		
 		// Calculate max islands based on room size
 		if (room_area > 100) {
-			max_islands = 4;
-		} else if (room_area > 64) {
-			max_islands = 3;
-		} else if (room_area > 36) {
 			max_islands = 2;
+		} else if (room_area > 64) {
+			max_islands = 2;
+		} else if (room_area > 36) {
+			max_islands = 1;
 		} else if (room_area > 20) {
 			max_islands = 1;
 		} else {
@@ -827,7 +811,7 @@ class Map {
 
 		var center_x = (left + right) / 2;
 		var center_y = (top + bottom) / 2;
-		var max_tries = room_area > 50 ? 10 : 5;
+		var max_tries = room_area > 50 ? 5 : 3;
 
 		for (var island = 0; island < num_islands; island++) {
 			// Choose island size based on room dimensions
@@ -896,33 +880,7 @@ class Map {
 					}
 				}
 
-				// Quick local check: each island tile must have at least 2 passable neighbors
-				var island_valid = true;
-				for (var dx = 0; dx < island_width && island_valid; dx++) {
-					for (var dy = 0; dy < island_height && island_valid; dy++) {
-						var ax = ix + dx;
-						var ay = iy + dy;
-						var passable_neighbors = 0;
-						var nx = ax - 1; if (nx > left && nx < right && map.getTile(nx, ay).type == PASSABLE) { passable_neighbors += 1; }
-						nx = ax + 1; if (nx > left && nx < right && map.getTile(nx, ay).type == PASSABLE) { passable_neighbors += 1; }
-						var ny = ay - 1; if (ny > top && ny < bottom && map.getTile(ax, ny).type == PASSABLE) { passable_neighbors += 1; }
-						ny = ay + 1; if (ny > top && ny < bottom && map.getTile(ax, ny).type == PASSABLE) { passable_neighbors += 1; }
-						if (passable_neighbors < 2) {
-							island_valid = false;
-						}
-					}
-				}
-
-				if (!island_valid) {
-					// Remove the island - too close to bottleneck
-					for (var dx = 0; dx < island_width; dx++) {
-						for (var dy = 0; dy < island_height; dy++) {
-							map.setTypeXY(ix + dx, iy + dy, PASSABLE);
-						}
-					}
-				} else {
-					placed = true;
-				}
+				placed = true;
 			}
 		}
 	}
