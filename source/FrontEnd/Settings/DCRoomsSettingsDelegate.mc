@@ -40,7 +40,7 @@ class DCRoomsSettingsDelegate extends WatchUi.Menu2InputDelegate {
     function showRoomsSizeSettings(is_max as Boolean) as Void {
         var roomsSizeSettings = new WatchUi.Menu2({:title=>"Rooms size settings"});
         var min = 5;
-        var max = 15;
+        var max = Constants.MAX_ROOM_TILES;
         if (!is_max) {
             max = Storage.getValue("max_room_size");
         } else {
@@ -74,7 +74,7 @@ class DCRoomsAmountSettingsDelegate extends WatchUi.Menu2InputDelegate {
 }
 
 class DCRoomsSizeSettingsDelegate extends WatchUi.Menu2InputDelegate {
-
+ 
     var parent as Menu2;
 
     function initialize(parent as Menu2) {

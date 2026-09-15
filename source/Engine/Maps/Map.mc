@@ -47,6 +47,9 @@ class Map {
 	}
 
 	function getTileFromPos(pos as Point2D) as Tile {
+		if (pos[0] < 0 || pos[0] >= _width || pos[1] < 0 || pos[1] >= _height) {
+			return _null_tile;
+		}
 		return getTile(pos[0], pos[1]);
 	}
 

@@ -124,21 +124,20 @@ class Turn {
         $.Game.setRoomAsVisited(room_pos);
     }
 
-    private function getNewPlayerPosInNextRoom(next_pos as Point2D, direction as WalkDirection) as Point2D {
+    private function getNewPlayerPosInNextRoom(next_pos as Point2D, direction as WalkDirection, room as Room) as Point2D {
         var new_pos = next_pos;
-        var tile_width = getApp().tile_width;
-		var tile_height = getApp().tile_height;
-        var screen_size_x = Math.ceil(Constants.SCREEN_WIDTH/tile_width).toNumber();
-		var screen_size_y = Math.ceil(Constants.SCREEN_HEIGHT/tile_height).toNumber();
+        var map_size = room.getMap().getSize();
+        var map_width = map_size[0];
+        var map_height = map_size[1];
         switch (direction) {
             case UP:
-                new_pos = [next_pos[0], screen_size_y - 1] as Point2D;
+                new_pos = [next_pos[0], map_height - 1] as Point2D;
                 break;
             case DOWN:
                 new_pos = [next_pos[0], 0] as Point2D;
                 break;
             case LEFT:
-                new_pos = [screen_size_x - 1, next_pos[1]] as Point2D;
+                new_pos = [map_width - 1, next_pos[1]] as Point2D;
                 break;
             case RIGHT:
                 new_pos = [0, next_pos[1]] as Point2D;
@@ -182,7 +181,7 @@ class Turn {
                 $.Game.setCurrentRoom(next_room_name);
                 var next_room = $.Game.getCurrentRoom();
                 // Set the player position to the new room
-                new_pos = getNewPlayerPosInNextRoom(new_pos, direction);
+                new_pos = getNewPlayerPosInNextRoom(new_pos, direction, next_room);
                 next_room.setStartPos(new_pos);
                 loadRoom(next_room);
                 WatchUi.requestUpdate();

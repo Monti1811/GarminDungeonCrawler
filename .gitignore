@@ -7,6 +7,7 @@
 todo.txt
 /release/
 log.zip
+.vscode
 
 **.pyc
 .env
