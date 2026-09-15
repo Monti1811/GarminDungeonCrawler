@@ -23,7 +23,13 @@ A turn-based roguelike for Garmin watches. Guide a hero through randomly generat
 
 ## Supported Devices
 
-Venu 2, Venu 2S, Venu 2 Plus, Venu 3, Venu 3S, Venu 4 41mm, Venu 4 45mm
+**Venu Series:** Venu 2, Venu 2S, Venu 2 Plus, Venu 3, Venu 3S, Venu 4 41mm, Venu 4 45mm, Venu Sq2, Venu Sq2m, Venu X1
+
+**fenix Series:** fenix 7, fenix 7S, fenix 7X, fenix 7 Pro, fenix 7S Pro, fenix 7X Pro, fenix 7 Pro (no wifi), fenix 7X Pro (no wifi), fenix 8 43mm, fenix 8 47mm, fenix 8 Pro 47mm, fenix 8 Solar 47mm, fenix 8 Solar 51mm, fenix 9 43mm, fenix 9 47mm, fenix 9 Pro 43mm, fenix 9 Pro 47mm, fenix 9 Pro 51mm, fenix 9 Pro Solar 47mm, fenix 9 Pro Solar 51mm, fenix E
+
+**Forerunner Series:** Forerunner 170, Forerunner 170m, Forerunner 265, Forerunner 265S, Forerunner 570 42mm, Forerunner 570 47mm, Forerunner 70, Forerunner 955, Forerunner 965, Forerunner 970
+
+**Other:** epix 2, epix 2 Pro 42mm, epix 2 Pro 47mm, epix 2 Pro 51mm, MARQ 2, MARQ 2 Aviator, D2 Air X10, D2 Mach 1, D2 Mach 2, D2 Mach 2 Pro, Descent G2, Descent Mk3 43mm, Descent Mk3 51mm, Enduro 3, Approach S50, Approach S70 42mm, Approach S70 47mm, vivoactive 5, vivoactive 6
 
 ## How to Play
 
