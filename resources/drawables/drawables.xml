@@ -12,6 +12,15 @@
         system_icon_destructive__warning
         system_size__toast_icon
     "/>
+    <!-- Item Info Menu Backgrounds -->
+    <bitmap id="itemInfoMenu" filename="menus/iteminfomenu/iteminfomenu.png" packingFormat="png" />
+    <bitmap id="itemInfoMenuConsumable" filename="menus/iteminfomenu/iteminfomenu_consumables.png" packingFormat="png" />
+    <bitmap id="itemInfoMenuEmptyRound" filename="menus/iteminfomenu/iteminfomenu_empty_round.png" packingFormat="png" />
+    <bitmap id="itemInfoMenuWeaponIcon" filename="menus/iteminfomenu/weapon.png" packingFormat="png" />
+    <bitmap id="itemInfoMenuShieldIcon" filename="menus/iteminfomenu/shield.png" packingFormat="png" />
+    <bitmap id="itemInfoMenuDamageIcon" filename="menus/iteminfomenu/damage.png" packingFormat="png" />
+    <bitmap id="characterInfoRound" filename="menus/characterinfo/characterinfo_round.png" packingFormat="png" />
+
     <!-- ActionMenu hint -->
     <bitmap id="actionMenu" personality="
         system_icon_dark__hint_action_menu

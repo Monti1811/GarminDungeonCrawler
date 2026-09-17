@@ -11,6 +11,7 @@ class MaxManaPotion extends ConsumableItem {
 		self.effect_description = "Restores all mana";
 		self.value = 200;
 		self.weight = 1;
+		self.tag = :mana;
 	}
 
 	function onUseItem(player as Player) as Void {

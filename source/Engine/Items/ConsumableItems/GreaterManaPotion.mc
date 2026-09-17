@@ -11,6 +11,7 @@ class GreaterManaPotion extends ConsumableItem {
 		effect_description = "Restores 80 mana";
 		value = 80;
 		weight = 0.5;
+		tag = :mana;
 	}
 
 	function onUseItem(player as Player) as Void {

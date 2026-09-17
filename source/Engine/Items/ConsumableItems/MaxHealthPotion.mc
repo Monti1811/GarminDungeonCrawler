@@ -11,6 +11,7 @@ class MaxHealthPotion extends ConsumableItem {
 		self.effect_description = "Restores all health";
 		self.value = 200;
 		self.weight = 1;
+		self.tag = :health;
 	}
 
 	function onUseItem(player as Player) as Void {
