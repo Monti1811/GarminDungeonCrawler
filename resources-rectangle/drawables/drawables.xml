@@ -1,0 +1,4 @@
+<drawables>
+    <bitmap id="itemInfoMenu" filename="../../resources/drawables/menus/iteminfomenu/iteminfomenu_squared.png" packingFormat="png" />
+    <bitmap id="characterInfoRound" filename="../../resources/drawables/menus/characterinfo/characterinfo_squared.png" packingFormat="png" />
+</drawables>
