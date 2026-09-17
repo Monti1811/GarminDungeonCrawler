@@ -15,8 +15,8 @@ class DCPlayerDetailsAttributesView extends WatchUi.View {
 	private var rectangle_y as Number;
 	private var rectangle_width as Number;
 	private var tableentry_size as Number;
-
-	private var layout_type as Number = 0;
+	private var _rightTopHint as WatchUi.Bitmap?;
+	private var _rightBottomHint as WatchUi.Bitmap?;
 
 	private static var ATTR_COLORS as Array<Number> = [
 		0xFF4444, // STR - Red
@@ -53,28 +53,25 @@ class DCPlayerDetailsAttributesView extends WatchUi.View {
 		value_x = rectangle_x + rectangle_width - 6;
 		
 		if (withHint) {
-			layout_type = 1;
+			_rightTopHint = $.HintHelper.createRightTopHint($.Rez.Drawables.rightTop);
 		}
 		if (creation) {
-			layout_type = 2;
+			_rightTopHint = $.HintHelper.createRightTopHint($.Rez.Drawables.rightTopAccept);
+			_rightBottomHint = $.HintHelper.createRightBottomHint($.Rez.Drawables.rightBottomCancel);
 		}
 	}
-
-	function onLayout(dc as Dc) as Void {
-		if (layout_type == 1) {
-			setLayout($.Rez.Layouts.DCAttributesViewHint(dc));
-		} else if (layout_type == 2) {
-			setLayout($.Rez.Layouts.DCPlayerDetailsEquipmentsViewCreation(dc));
-		}
-	}
-	
 	
 	function onUpdate(dc) {
 		dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_BLACK);
         dc.clear();
 
-		// Draw layout (includes hints)
-		View.onUpdate(dc);
+		// Draw hints
+		if (_rightTopHint != null) {
+			_rightTopHint.draw(dc);
+		}
+		if (_rightBottomHint != null) {
+			_rightBottomHint.draw(dc);
+		}
 
 		drawTable(dc);
 		drawBars(dc);
