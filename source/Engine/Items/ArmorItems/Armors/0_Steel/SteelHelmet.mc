@@ -7,7 +7,7 @@ class SteelHelmet extends ArmorItem {
 		ArmorItem.initialize();
 		id = 1000;
 		name = "Steel Helmet";
-		description = "A simple steel helmet";
+		description = "A closed steel helm offering solid head protection.";
 		value = 7;
 		weight = 3;
 		slot = HEAD;

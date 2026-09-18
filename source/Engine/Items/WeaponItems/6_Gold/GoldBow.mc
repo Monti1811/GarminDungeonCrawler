@@ -6,7 +6,7 @@ class GoldBow extends Bow {
         Bow.initialize();
         id = 61;
         name = "Gold Bow";
-        description = "A powerful gold bow";
+        description = "A bow of refined gold that fires arrows of radiant light.";
         slot = RIGHT_HAND;
         value = 500;
         weight = 1;

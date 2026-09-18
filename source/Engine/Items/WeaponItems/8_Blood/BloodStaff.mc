@@ -6,7 +6,7 @@ class BloodStaff extends Staff {
         Staff.initialize();
         id = 87;
         name = "Blood Staff";
-        description = "A powerful blood staff. If the player has mana available, uses it to perform more powerful attacks.";
+        description = "A staff of fused bone that channels life force into devastating sorcery.";
         slot = RIGHT_HAND;
         value = 5000;
         weight = 1;

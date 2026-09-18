@@ -7,7 +7,7 @@ class HealthPotion extends ConsumableItem {
 		ConsumableItem.initialize();
 		self.id = 2000;
 		self.name = "Health Potion";
-		self.description = "A small health potion";
+		self.description = "A bubbling red potion that mends wounds.";
 		self.effect_description = "Restores 20 health";
 		self.value = 20;
 		self.weight = 0.1;

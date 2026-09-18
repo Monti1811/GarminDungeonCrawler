@@ -7,7 +7,7 @@ class FireLance extends WeaponItem {
         WeaponItem.initialize();
         id = 25;
         name = "Fire Lance";
-        description = "A powerful fire lance";
+        description = "A searing lance tipped with an ever-burning ember.";
         slot = RIGHT_HAND;
         value = 100;
         weight = 3;

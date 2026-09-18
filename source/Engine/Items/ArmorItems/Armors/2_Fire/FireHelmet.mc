@@ -6,7 +6,7 @@ class FireHelmet extends ArmorItem {
 		ArmorItem.initialize();
 		id = 1020;
 		name = "Fire Helmet";
-		description = "A fire helmet, it's a bit hot";
+		description = "A helm crowned with an undying flame.";
 		value = 70;
 		weight = 3;
 		slot = HEAD;

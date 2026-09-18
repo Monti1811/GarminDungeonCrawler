@@ -6,7 +6,7 @@ class BloodGreatsword extends WeaponItem {
         WeaponItem.initialize();
         id = 83;
         name = "Blood Greatsword";
-        description = "A powerful blood greatsword";
+        description = "A massive blade dripping with the essence of the fallen.";
         slot = RIGHT_HAND;
         value = 7500;
         weight = 7;

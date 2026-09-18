@@ -6,7 +6,7 @@ class GrassRing1 extends ArmorItem {
 		ArmorItem.initialize();
 		id = 1044;
 		name = "Grass Ring";
-		description = "A simple grass ring";
+		description = "A delicate ring woven from magic-infused grass blades.";
 		slot = ACCESSORY;
 		value = 50;
 		weight = 0.1;

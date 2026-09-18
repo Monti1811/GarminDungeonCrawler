@@ -7,7 +7,7 @@ class SteelGreatsword extends WeaponItem {
 		WeaponItem.initialize();
 		id = 3;
 		name = "Steel Greatsword";
-		description = "A simple steel greatsword";
+		description = "A heavy two-handed blade of polished steel.";
 		slot = RIGHT_HAND;
 		value = 20;
 		weight = 5;

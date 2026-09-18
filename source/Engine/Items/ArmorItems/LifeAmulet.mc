@@ -6,7 +6,7 @@ class LifeAmulet extends ArmorItem {
 		ArmorItem.initialize();
 		id = 1300;
 		name = "Life Amulet";
-		description = "An amulet that revives the wearer if equipped.";
+		description = "An ancient amulet that revives its wearer once.";
 		value = 100;
 		weight = 0.5;
 		slot = ACCESSORY;

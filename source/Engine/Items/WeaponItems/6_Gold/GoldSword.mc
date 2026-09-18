@@ -6,7 +6,7 @@ class GoldSword extends WeaponItem {
         WeaponItem.initialize();
         id = 68;
         name = "Gold Sword";
-        description = "A powerful gold sword";
+        description = "A radiant golden blade humming with divine power.";
         slot = RIGHT_HAND;
         value = 500;
         weight = 3;

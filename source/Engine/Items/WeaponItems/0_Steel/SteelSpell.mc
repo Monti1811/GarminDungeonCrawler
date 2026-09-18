@@ -7,7 +7,7 @@ class SteelSpell extends Spell {
 		Spell.initialize();
 		id = 6;
 		name = "Steel Spell";
-		description = "A simple steel spell. If the player has mana available, uses it to perform a more powerful AoE attack.";
+		description = "A steel-bound grimoire that unleashes arcane AoE blasts.";
 		slot = RIGHT_HAND;
 		value = 10;
 		weight = 0.5;

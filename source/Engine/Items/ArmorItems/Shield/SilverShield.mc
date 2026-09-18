@@ -6,7 +6,7 @@ class SilverShield extends ArmorItem {
 		ArmorItem.initialize();
 		id = 1202;
 		name = "Silver Shield";
-		description = "A silver shield";
+		description = "A polished silver shield, lighter than steel.";
 		value = 100;
 		weight = 3.5;
 		slot = LEFT_HAND;

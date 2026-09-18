@@ -6,7 +6,7 @@ class IceHelmet extends ArmorItem {
 		ArmorItem.initialize();
 		id = 1030;
 		name = "Ice Helmet";
-		description = "An ice helmet, it's a bit cold";
+		description = "A helm carved from a single shard of eternal frost.";
 		value = 70;
 		weight = 3;
 		slot = HEAD;

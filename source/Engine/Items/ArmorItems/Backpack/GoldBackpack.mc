@@ -8,7 +8,7 @@ class GoldBackpack extends ArmorItem {
 		ArmorItem.initialize();
 		id = 1252;
 		name = "Gold Backpack";
-		description = "The biggest backpack";
+		description = "An enchanted golden pack of immense capacity.";
 		value = 2500;
 		weight = 0.5;
 		slot = BACK;

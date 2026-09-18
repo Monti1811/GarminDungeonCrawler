@@ -7,7 +7,7 @@ class GreaterHealthPotion extends ConsumableItem {
 		ConsumableItem.initialize();
 		self.id = 2002;
 		self.name = "Greater Health Potion";
-		self.description = "A big health potion";
+		self.description = "A large flask of crimson restorative.";
 		self.effect_description = "Restores 80 health";
 		self.value = 80;
 		self.weight = 0.5;

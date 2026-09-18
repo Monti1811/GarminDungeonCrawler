@@ -7,7 +7,7 @@ class GreaterManaPotion extends ConsumableItem {
 		ConsumableItem.initialize();
 		id = 2003;
 		name = "Mana Potion";
-		description = "A greater mana potion";
+		description = "A large flask brimming with raw mana.";
 		effect_description = "Restores 80 mana";
 		value = 80;
 		weight = 0.5;

@@ -7,7 +7,7 @@ class FireDagger extends WeaponItem {
         WeaponItem.initialize();
         id = 22;
         name = "Fire Dagger";
-        description = "A powerful fire dagger";
+        description = "A small blade that burns to the touch, cauterizing as it cuts.";
         slot = EITHER_HAND;
         value = 80;
         weight = 1;

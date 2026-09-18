@@ -7,7 +7,7 @@ class SteelRing2 extends ArmorItem {
 		ArmorItem.initialize();
 		id = 1005;
 		name = "Amethyst Ring";
-		description = "A simple amethyst ring";
+		description = "An amethyst-set ring radiating faint arcane energy.";
 		value = 5;
 		weight = 0.1;
 		slot = ACCESSORY;

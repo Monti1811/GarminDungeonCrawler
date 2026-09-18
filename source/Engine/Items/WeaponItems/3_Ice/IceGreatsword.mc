@@ -6,7 +6,7 @@ class IceGreatsword extends WeaponItem {
         WeaponItem.initialize();
         id = 33;
         name = "Ice Greatsword";
-        description = "A powerful ice greatsword";
+        description = "A colossal blade of enchanted glacial ice.";
         slot = RIGHT_HAND;
         value = 150;
         weight = 6;

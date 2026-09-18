@@ -6,7 +6,7 @@ class WaterKatana extends WeaponItem {
         WeaponItem.initialize();
         id = 54;
         name = "Water Katana";
-        description = "A powerful water katana";
+        description = "A fluid blade that shifts like the ocean's surface.";
         slot = RIGHT_HAND;
         value = 100;
         weight = 4;

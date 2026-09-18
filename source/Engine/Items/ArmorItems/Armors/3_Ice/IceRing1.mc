@@ -6,7 +6,7 @@ class IceRing1 extends ArmorItem {
 		ArmorItem.initialize();
 		id = 1034;
 		name = "Mirror Ring";
-		description = "A mirror ring";
+		description = "A ring of polished ice that reflects the cold of the void.";
 		slot = ACCESSORY;
 		value = 50;
 		weight = 0.1;

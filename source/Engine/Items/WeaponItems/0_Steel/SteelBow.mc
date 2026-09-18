@@ -7,7 +7,7 @@ class SteelBow extends Bow {
 		Bow.initialize();
 		id = 1;
 		name = "Steel Bow";
-		description = "A simple steel bow";
+		description = "A sturdy composite bow with steel-reinforced limbs.";
 		slot = RIGHT_HAND;
 		value = 10;
 		weight = 1;

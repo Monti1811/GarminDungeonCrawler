@@ -7,7 +7,7 @@ class FireBow extends Bow {
         Bow.initialize();
         id = 21;
         name = "Fire Bow";
-        description = "A powerful fire bow";
+        description = "A bowstring that launches arrows cloaked in wildfire.";
         slot = RIGHT_HAND;
         value = 100;
         weight = 2;

@@ -6,7 +6,7 @@ class GoldLance extends WeaponItem {
         WeaponItem.initialize();
         id = 65;
         name = "Gold Lance";
-        description = "A powerful gold lance";
+        description = "A gleaming lance forged from enchanted gold.";
         slot = RIGHT_HAND;
         value = 500;
         weight = 2;

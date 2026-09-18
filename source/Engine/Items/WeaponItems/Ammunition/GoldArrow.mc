@@ -6,7 +6,7 @@ class GoldArrow extends Ammunition {
 		Ammunition.initialize();
 		id = 203;
 		name = "Gold Arrow";
-		description = "A gold arrow";
+		description = "A golden arrow imbued with holy radiance.";
 		type = ARROW;
 		attack = 15;
 		value = 50;

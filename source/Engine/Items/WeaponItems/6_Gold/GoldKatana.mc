@@ -6,7 +6,7 @@ class GoldKatana extends WeaponItem {
         WeaponItem.initialize();
         id = 64;
         name = "Gold Katana";
-        description = "A powerful gold katana";
+        description = "A golden katana that sings with celestial energy.";
         slot = RIGHT_HAND;
         value = 500;
         weight = 4;

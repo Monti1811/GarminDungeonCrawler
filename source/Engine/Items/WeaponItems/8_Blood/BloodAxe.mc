@@ -6,7 +6,7 @@ class BloodAxe extends WeaponItem {
         WeaponItem.initialize();
         id = 80;
         name = "Blood Axe";
-        description = "A powerful blood axe";
+        description = "A crimson-stained axe that craves fresh carnage.";
         value = 5000;
         weight = 2;
         slot = RIGHT_HAND;

@@ -6,7 +6,7 @@ class BronzeAxe extends WeaponItem {
         WeaponItem.initialize();
         id = 10;
         name = "Bronze Axe";
-        description = "A simple bronze axe";
+        description = "A basic axe forged from aged bronze.";
         value = 25;
         weight = 3;
         slot = RIGHT_HAND;

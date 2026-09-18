@@ -6,7 +6,7 @@ class WaterBow extends Bow {
         Bow.initialize();
         id = 51;
         name = "Water Bow";
-        description = "A powerful water bow";
+        description = "A bow that fires bolts of condensed seawater.";
         slot = RIGHT_HAND;
         value = 100;
         weight = 2;

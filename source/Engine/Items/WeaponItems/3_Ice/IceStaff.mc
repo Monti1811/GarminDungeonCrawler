@@ -6,7 +6,7 @@ class IceStaff extends Staff {
         Staff.initialize();
         id = 37;
         name = "Ice Staff";
-        description = "A powerful ice staff. If the player has mana available, uses it to perform more powerful attacks.";
+        description = "A staff of frozen crystal that converts mana into devastating frost magic.";
         slot = RIGHT_HAND;
         value = 100;
         weight = 2;

@@ -6,7 +6,7 @@ class BronzeStaff extends Staff {
         Staff.initialize();
         id = 17;
         name = "Bronze Staff";
-        description = "A simple bronze staff. If the player has mana available, uses it to perform more powerful attacks.";
+        description = "A bronze-capped staff that siphons mana for stronger attacks.";
         slot = RIGHT_HAND;
         value = 25;
         weight = 2;

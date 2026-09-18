@@ -6,7 +6,7 @@ class BronzeHelmet extends ArmorItem {
 		ArmorItem.initialize();
 		id = 1010; // Updated ID
 		name = "Bronze Helmet";
-		description = "A bronze helmet, it's a bit rusty";
+		description = "A dented bronze helm showing signs of age.";
 		value = 15;
 		weight = 3.5;
 		slot = HEAD;

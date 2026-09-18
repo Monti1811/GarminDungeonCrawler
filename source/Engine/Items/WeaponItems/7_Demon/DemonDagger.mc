@@ -6,7 +6,7 @@ class DemonDagger extends WeaponItem {
         WeaponItem.initialize();
         id = 72;
         name = "Demon Dagger";
-        description = "A powerful demon dagger";
+        description = "A jagged blade that whispers promises of ruin.";
         slot = EITHER_HAND;
         value = 1600;
         weight = 0.5;

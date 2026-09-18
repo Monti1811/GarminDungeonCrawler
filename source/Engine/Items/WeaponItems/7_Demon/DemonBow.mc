@@ -6,7 +6,7 @@ class DemonBow extends Bow {
         Bow.initialize();
         id = 71;
         name = "Demon Bow";
-        description = "A powerful demon bow";
+        description = "A bowstring woven from the sinew of fallen demons.";
         slot = RIGHT_HAND;
         value = 2000;
         weight = 1;

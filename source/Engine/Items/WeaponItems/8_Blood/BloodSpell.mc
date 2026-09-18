@@ -6,7 +6,7 @@ class BloodSpell extends Spell {
         Spell.initialize();
         id = 86;
         name = "Blood Spell";
-        description = "A powerful blood spell. If the player has mana available, uses it to perform a more powerful AoE attack.";
+        description = "A bloodsoaked grimoire that unleashes AoE waves of crimson energy.";
         slot = RIGHT_HAND;
         value = 5000;
         weight = 0.5;

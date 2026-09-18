@@ -6,7 +6,7 @@ class GoldGauntlets extends ArmorItem {
 		ArmorItem.initialize();
 		id = 1062;
 		name = "Gold Gauntlets";
-		description = "Simple gold gauntlets";
+		description = "Golden gauntlets that amplify the wearer's strength.";
 		value = 28;
 		weight = 2;
 		slot = EITHER_HAND;

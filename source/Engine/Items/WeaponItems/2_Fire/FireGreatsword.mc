@@ -6,7 +6,7 @@ class FireGreatsword extends WeaponItem {
         WeaponItem.initialize();
         id = 23;
         name = "Fire Greatsword";
-        description = "A powerful fire greatsword";
+        description = "A massive two-handed blade trailing rivers of molten light.";
         slot = RIGHT_HAND;
         value = 150;
         weight = 6;

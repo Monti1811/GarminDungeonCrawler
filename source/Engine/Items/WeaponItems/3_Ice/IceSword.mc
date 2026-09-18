@@ -6,7 +6,7 @@ class IceSword extends WeaponItem {
         WeaponItem.initialize();
         id = 38;
         name = "Ice Sword";
-        description = "A powerful ice sword";
+        description = "A blade of living frost that chills the air around it.";
         slot = RIGHT_HAND;
         value = 100;
         weight = 4;

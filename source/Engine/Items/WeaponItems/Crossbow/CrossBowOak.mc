@@ -7,7 +7,7 @@ class OakCrossBow extends Bow {
 		Bow.initialize();
 		id = 301;
 		name = "Oak Crossbow";
-		description = "An oak crossbow, can attack every 3 turns.";
+		description = "An oak crossbow, reliable but slow to reload.";
 		slot = RIGHT_HAND;
 		value = 14;
 		weight = 4;
