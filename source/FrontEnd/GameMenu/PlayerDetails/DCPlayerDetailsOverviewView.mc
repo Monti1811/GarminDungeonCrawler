@@ -7,15 +7,24 @@ class DCPlayerDetailsOverviewView extends WatchUi.View {
 	private var _player as Player;
 	private var _playerIcon as BitmapReference;
 	private var _bgBitmap as BitmapReference;
+	private var _statsOverlay as BitmapReference?;
 	private var _small_font as FontResource;
 	private var _rightTopHint as WatchUi.Bitmap?;
 	private var _rightBottomHint as WatchUi.Bitmap?;
+
+	private var _hasMana as Boolean;
 
 	function initialize(player as Player, creation as Boolean) {
 		View.initialize();
 		_player = player;
 		_playerIcon = WatchUi.loadResource(_player.getSprite());
-		_bgBitmap = WatchUi.loadResource($.Rez.Drawables.characterInfoRound) as BitmapReference;
+		_bgBitmap = WatchUi.loadResource($.Rez.Drawables.characterInfoRoundNoStats) as BitmapReference;
+		_hasMana = _player.second_bar == :mana;
+		if (_hasMana) {
+			_statsOverlay = WatchUi.loadResource($.Rez.Drawables.characterInfoStatsMana) as BitmapReference;
+		} else {
+			_statsOverlay = WatchUi.loadResource($.Rez.Drawables.characterInfoStatsNoMana) as BitmapReference;
+		}
 		_small_font = WatchUi.loadResource($.Rez.Fonts.small) as FontResource;
 		if (creation) {
 			_rightTopHint = $.HintHelper.createRightTopHint($.Rez.Drawables.rightTopAccept);
@@ -28,6 +37,14 @@ class DCPlayerDetailsOverviewView extends WatchUi.View {
 		dc.clear();
 
 		dc.drawBitmap((dc.getWidth() - _bgBitmap.getWidth()) / 2, (dc.getHeight() - _bgBitmap.getHeight()) / 2, _bgBitmap);
+
+		if (_statsOverlay != null) {
+			dc.drawBitmap(
+				(Constants.SCREEN_WIDTH * 169 / 360).toNumber(),
+				(Constants.SCREEN_HEIGHT * 104 / 360).toNumber(),
+				_statsOverlay
+			);
+		}
 
 		drawPlayerIcon(dc);
 		drawPlayerName(dc);
@@ -78,13 +95,18 @@ class DCPlayerDetailsOverviewView extends WatchUi.View {
 		// DEF
 		dc.drawText(x_val, y_start + row_dist * 4, _small_font, _player.getDefense(null).toString(), Graphics.TEXT_JUSTIFY_RIGHT | Graphics.TEXT_JUSTIFY_VCENTER);
 
+		// MANA
+		if (_hasMana) {
+			dc.drawText(x_val, y_start + row_dist * 5, _small_font, _player.getCurrentMana() + "/" + _player.getMaxMana(), Graphics.TEXT_JUSTIFY_RIGHT | Graphics.TEXT_JUSTIFY_VCENTER);
+		}
+
 		// GOLD
-		dc.drawText(x_val, y_start + row_dist * 5, _small_font, _player.getGold().format("%.0f"), Graphics.TEXT_JUSTIFY_RIGHT | Graphics.TEXT_JUSTIFY_VCENTER);
+		dc.drawText(x_val, y_start + row_dist * (_hasMana ? 6 : 5), _small_font, _player.getGold().format("%.0f"), Graphics.TEXT_JUSTIFY_RIGHT | Graphics.TEXT_JUSTIFY_VCENTER);
 	}
 
 	function drawStatus(dc) {
 		var text_x = (Constants.SCREEN_WIDTH / 2 + (Constants.SCREEN_WIDTH * 15 / 360)).toNumber();
-		var status_y = (Constants.SCREEN_HEIGHT * 272 / 360).toNumber();
+		var status_y = (Constants.SCREEN_HEIGHT * 297 / 360).toNumber();
 
 		var status_text = "Ready for adventure.";
 		if (_player.getHealth() <= 0) {
