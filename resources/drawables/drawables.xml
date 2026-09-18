@@ -20,6 +20,11 @@
     <bitmap id="itemInfoMenuShieldIcon" filename="menus/iteminfomenu/shield.png" packingFormat="png" />
     <bitmap id="itemInfoMenuDamageIcon" filename="menus/iteminfomenu/damage.png" packingFormat="png" />
     <bitmap id="characterInfoRound" filename="menus/characterinfo/characterinfo_round.png" packingFormat="png" />
+    <bitmap id="characterInfoRoundNoStats" filename="menus/characterinfo/characterinfo_round_nostats.png" packingFormat="png" />
+    <bitmap id="characterInfoStatsMana" filename="menus/characterinfo/characterinfo_stats_mana.png" packingFormat="png" />
+    <bitmap id="characterInfoStatsNoMana" filename="menus/characterinfo/characterinfo_stats_no_mana.png" packingFormat="png" />
+    <!-- Enemy Info Menu Backgrounds -->
+    <bitmap id="enemyInfoStatsRound" filename="menus/enemyinfostats/enemyinfostats_round.png" packingFormat="png" />
 
     <!-- ActionMenu hint -->
     <bitmap id="actionMenu" personality="
