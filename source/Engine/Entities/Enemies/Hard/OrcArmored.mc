@@ -6,6 +6,7 @@ class OrcArmored extends Enemy {
         Enemy.initialize();
         id = 31;
         name = "Armored Orc";
+        description = "A heavily armored orc footman.";
         damage = 21;
 		current_health = 175;
 		maxHealth = current_health;

@@ -6,6 +6,7 @@ class Tentackle extends Enemy {
         Enemy.initialize();
         id = 26;
         name = "Tentackle";
+        description = "A massive tentacled horror from the deep.";
         current_health = 750;
         maxHealth = current_health;
         damage = 22;

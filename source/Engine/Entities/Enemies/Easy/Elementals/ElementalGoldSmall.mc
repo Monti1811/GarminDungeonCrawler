@@ -6,6 +6,7 @@ class ElementalGoldSmall extends Enemy {
 		Enemy.initialize();
 		id = 15;
 		name = "Small Gold Elemental";
+		description = "A minor elemental of gleaming gold.";
 		damage = 9;
 		current_health = 50;
 		maxHealth = current_health;

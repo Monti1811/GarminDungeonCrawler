@@ -6,6 +6,7 @@ class ShadowStalker extends Enemy {
         Enemy.initialize();
         id = 36;
         name = "Shadow Stalker";
+        description = "A phantom that strikes from the darkness.";
         current_health = 55;
         maxHealth = 55;
         damage = 8;

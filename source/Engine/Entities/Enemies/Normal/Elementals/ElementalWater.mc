@@ -6,6 +6,7 @@ class ElementalWater extends Elemental {
 		Elemental.initialize();
 		id = 24;
 		name = "Water Elemental";
+		description = "A powerful elemental of surging tides.";
 		children_id = 17;
 	}
 

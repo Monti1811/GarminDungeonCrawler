@@ -6,6 +6,7 @@ class ZombieSmall extends Enemy {
 		Enemy.initialize();
 		id = 7;
 		name = "Small Zombie";
+		description = "A shambling undead corpse.";
 		damage = 4;
 		current_health = 20;
 		maxHealth = 13;

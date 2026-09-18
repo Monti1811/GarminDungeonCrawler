@@ -6,6 +6,7 @@ class Ogre extends Enemy {
         Enemy.initialize();
         id = 10;
         name = "Ogre";
+        description = "A hulking ogre of immense strength.";
         current_health = 1000;
         maxHealth = current_health;
         damage = 27;

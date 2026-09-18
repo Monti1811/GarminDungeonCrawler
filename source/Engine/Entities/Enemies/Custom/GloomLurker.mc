@@ -6,6 +6,7 @@ class GloomLurker extends Enemy {
         Enemy.initialize();
         id = 37;
         name = "Gloom Lurker";
+        description = "A sinister creature that feeds on despair.";
         current_health = 62;
         maxHealth = 62;
         damage = 9;

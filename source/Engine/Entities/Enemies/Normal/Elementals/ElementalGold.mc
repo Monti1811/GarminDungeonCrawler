@@ -6,6 +6,7 @@ class ElementalGold extends Elemental {
 		Elemental.initialize();
 		id = 21;
 		name = "Gold Elemental";
+		description = "A radiant elemental of pure gold.";
 		children_id = 15;
 	}
 

@@ -6,6 +6,7 @@ class Skeleton extends Enemy {
 		Enemy.initialize();
 		id = 5;
 		name = "Skeleton";
+		description = "An animated skeleton wielding a weapon.";
 		damage = 14;
 		current_health = 50;
 		maxHealth = 35;

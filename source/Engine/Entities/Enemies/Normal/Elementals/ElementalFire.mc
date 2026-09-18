@@ -6,6 +6,7 @@ class ElementalFire extends Elemental {
 		Elemental.initialize();
 		id = 20;
 		name = "Fire Elemental";
+		description = "A fierce elemental of blazing fire.";
 		children_id = 14;
 	}
 

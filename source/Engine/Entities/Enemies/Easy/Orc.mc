@@ -6,6 +6,7 @@ class Orc extends Enemy {
         Enemy.initialize();
         id = 3;
         name = "Orc";
+        description = "A brutish orc warrior seeking treasure.";
         current_health = 50;
         maxHealth = 34;
         damage = 4;

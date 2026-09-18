@@ -6,6 +6,7 @@ class ElementalWaterSmall extends Enemy {
 		Enemy.initialize();
 		id = 17;
 		name = "Small Water Elemental";
+		description = "A minor elemental of flowing water.";
 		damage = 9;
 		current_health = 50;
 		maxHealth = current_health;

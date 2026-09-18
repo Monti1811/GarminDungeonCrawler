@@ -6,6 +6,7 @@ class Wogol extends Enemy {
 		Enemy.initialize();
 		id = 9;
 		name = "Wogol";
+		description = "A vicious orc berserker in a blood rage.";
 		damage = 26;
 		current_health = 250;
 		maxHealth = 117;

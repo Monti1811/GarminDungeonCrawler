@@ -6,6 +6,7 @@ class Chort extends Enemy {
 		Enemy.initialize();
 		id = 28;
 		name = "Chort";
+		description = "A lesser demon with a fiery temper.";
 		damage = 18;
 		current_health = 150;
 		maxHealth = current_health;

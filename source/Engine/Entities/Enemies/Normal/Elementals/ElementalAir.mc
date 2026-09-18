@@ -6,6 +6,7 @@ class ElementalAir extends Elemental {
 		Elemental.initialize();
 		id = 18;
 		name = "Air Elemental";
+		description = "A powerful elemental of raging storms.";
 		children_id = 12;
 	}
 

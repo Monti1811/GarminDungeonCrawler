@@ -6,6 +6,7 @@ class ElementalGooSmall extends Enemy {
 		Enemy.initialize();
 		id = 16;
 		name = "Small Goo Elemental";
+		description = "A minor elemental of toxic ooze.";
 		damage = 9;
 		current_health = 50;
 		maxHealth = current_health;

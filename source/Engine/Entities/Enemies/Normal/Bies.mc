@@ -6,6 +6,7 @@ class Bies extends Enemy {
 		Enemy.initialize();
 		id = 29;
 		name = "Bies";
+		description = "A demonic entity born of pure malice.";
 		damage = 14;
 		current_health = 250;
 		maxHealth = current_health;

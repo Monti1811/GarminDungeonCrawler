@@ -6,6 +6,7 @@ class ElementalAirSmall extends Enemy {
 		Enemy.initialize();
 		id = 12;
 		name = "Small Air Elemental";
+		description = "A minor elemental of swirling winds.";
 		damage = 9;
 		current_health = 50;
 		maxHealth = current_health;
