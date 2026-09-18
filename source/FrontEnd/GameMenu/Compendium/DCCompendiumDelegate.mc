@@ -111,9 +111,7 @@ class DCCompendiumEnemyListDelegate extends WatchUi.Menu2InputDelegate {
     }
 
     function showEnemyDetails(enemy as Enemy) as Void {
-        var factory = new DCEnemyInfoFactory(enemy);
-        var viewLoop = new WatchUi.ViewLoop(factory, {:wrap => true});
-        WatchUi.pushView(viewLoop, new DCGameMenuItemInfoDelegate(viewLoop), WatchUi.SLIDE_IMMEDIATE);
+        WatchUi.pushView(new DCEnemyInfoStatsView(enemy), new WatchUi.BehaviorDelegate(), WatchUi.SLIDE_IMMEDIATE);
     }
 }
 
