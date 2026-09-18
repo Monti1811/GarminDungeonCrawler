@@ -21,7 +21,7 @@ class DCGameMenuItemInfoFactory extends WatchUi.ViewLoopFactory {
             /*case 2:
                 return [new $.DCItemInfoOverviewView(_item), new WatchUi.BehaviorDelegate()];*/
         }
-        return [new $.DCItemInfoOverviewView(_item), new WatchUi.BehaviorDelegate()];
+        return [new $.DCItemInfoValuesView(_item), new WatchUi.BehaviorDelegate()];
     }
 
     //! Return the number of view/delegate pairs that are managed by this factory
