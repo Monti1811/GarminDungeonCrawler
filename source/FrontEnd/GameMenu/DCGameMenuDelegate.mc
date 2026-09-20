@@ -96,7 +96,7 @@ class DCGameMenuDelegate extends WatchUi.Menu2InputDelegate {
         var inventory = player.getInventory();
         var weight_items = inventory.getCurrentItemWeight() as Numeric;
         var max_weight_items = inventory.getMaxItemWeight() as Numeric;
-        var inventoryMenu = new WatchUi.Menu2({:title=>"Inventory (" + weight_items.format("%.1f") + "/" + max_weight_items + ")"});
+        var inventoryMenu = new WatchUi.Menu2({:title=>new InventoryTitleDrawable(weight_items, max_weight_items)});
         inventoryMenu.addItem(new WatchUi.MenuItem(
             "Filter/Sort", 
             inventory_filter_str + "/" + inventory_sort + " " + inventory_sort_type, 
