@@ -5,16 +5,18 @@ import Toybox.Graphics;
 class DCPlayerDetailsAttributesView extends WatchUi.View {
 	
 	private var _player as Player;
+	private var _bg as BitmapReference?;
 
-	private var label_x as Number;
-	private var bar_x as Number;
-	private var bar_max_width as Number;
-	private var value_x as Number;
+	private var _title_x as Number;
+	private var _title_y as Number;
+	private var _bar_x as Number;
+	private var _bar_max_width as Number;
+	private var _bar_height as Number;
+	private var _value_x as Number;
+	private var _row_top as Number;
+	private var _row_spacing as Number;
+	private var _row_height as Number;
 
-	private var rectangle_x as Number;
-	private var rectangle_y as Number;
-	private var rectangle_width as Number;
-	private var tableentry_size as Number;
 	private var _rightTopHint as WatchUi.Bitmap?;
 	private var _rightBottomHint as WatchUi.Bitmap?;
 
@@ -28,10 +30,6 @@ class DCPlayerDetailsAttributesView extends WatchUi.View {
 		0xFFFF44  // LCK - Yellow
 	] as Array<Number>;
 
-	private static var ATTR_LABELS as Array<String> = [
-		"STR", "CON", "DEX", "INT", "WIS", "CHA", "LCK"
-	] as Array<String>;
-
 	private static var ATTR_KEYS as Array<Symbol> = [
 		:strength, :constitution, :dexterity, :intelligence, :wisdom, :charisma, :luck
 	] as Array<Symbol>;
@@ -40,17 +38,18 @@ class DCPlayerDetailsAttributesView extends WatchUi.View {
 		View.initialize();
 		_player = player;
 		
-		// Original proportions: rectangle ~58% width, rows ~8% height
-		rectangle_width = (Constants.SCREEN_WIDTH * 210 / 360).toNumber();
-		rectangle_x = (Constants.SCREEN_WIDTH - rectangle_width) / 2;
-		rectangle_y = (Constants.SCREEN_HEIGHT * 75 / 360).toNumber();
-		tableentry_size = (Constants.SCREEN_HEIGHT * 30 / 360).toNumber();
-		
-		// Columns: label (25%), bar (55%), value (20%)
-		label_x = rectangle_x + 6;
-		bar_x = rectangle_x + (rectangle_width * 25 / 100).toNumber();
-		bar_max_width = (rectangle_width * 55 / 100).toNumber();
-		value_x = rectangle_x + rectangle_width - 6;
+		_bg = WatchUi.loadResource($.Rez.Drawables.characterAttributes) as BitmapReference?;
+
+		// Proportional positions based on 360 reference
+		_title_y = (Constants.SCREEN_HEIGHT * 78 / 360).toNumber();
+		_title_x = (Constants.SCREEN_WIDTH / 2).toNumber();
+		_row_top = (Constants.SCREEN_HEIGHT * 98 / 360).toNumber();
+		_row_spacing = (Constants.SCREEN_HEIGHT * 28 / 360).toNumber();
+		_row_height = (Constants.SCREEN_HEIGHT * 15 / 360).toNumber();
+		_bar_x = (Constants.SCREEN_WIDTH * 135 / 360).toNumber();
+		_bar_max_width = (Constants.SCREEN_WIDTH * 115 / 360).toNumber();
+		_bar_height = (_row_height * 10 / 28).toNumber();
+		_value_x = (Constants.SCREEN_WIDTH * 287 / 360).toNumber();
 		
 		if (withHint) {
 			_rightTopHint = $.HintHelper.createRightTopHint($.Rez.Drawables.rightTop);
@@ -63,7 +62,17 @@ class DCPlayerDetailsAttributesView extends WatchUi.View {
 	
 	function onUpdate(dc) {
 		dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_BLACK);
-        dc.clear();
+		dc.clear();
+
+		// Draw background centered
+		if (_bg != null) {
+			var W = dc.getWidth();
+			var H = dc.getHeight();
+			var ref = W < H ? W : H;
+			var bgX = (W - ref) / 2;
+			var bgY = (H - ref) / 2;
+			dc.drawScaledBitmap(bgX, bgY, ref, ref, _bg as BitmapReference);
+		}
 
 		// Draw hints
 		if (_rightTopHint != null) {
@@ -73,20 +82,11 @@ class DCPlayerDetailsAttributesView extends WatchUi.View {
 			_rightBottomHint.draw(dc);
 		}
 
-		drawTable(dc);
-		drawBars(dc);
-	}
-
-	function drawTable(dc as Dc) as Void {
-		var title_x = (Constants.SCREEN_WIDTH / 2).toNumber();
-		var title_y = (Constants.SCREEN_HEIGHT * 50 / 360).toNumber();
+		// Title
 		dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-		dc.drawText(title_x, title_y, Graphics.FONT_TINY, "Attributes (" + _player.getAttributePoints() + ")", Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
-		dc.drawRectangle(rectangle_x, rectangle_y, rectangle_width, rectangle_width);
-		for (var i = 1; i < 7; i += 1) {
-			var y = rectangle_y + i * tableentry_size;
-			dc.drawLine(rectangle_x, y, rectangle_x + rectangle_width, y);
-		}
+		dc.drawText(_title_x, _title_y, Graphics.FONT_XTINY, "Attributes (" + _player.getAttributePoints() + ")", Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
+
+		drawBars(dc);
 	}
 
 	function drawBars(dc as Dc) as Void {
@@ -99,28 +99,25 @@ class DCPlayerDetailsAttributesView extends WatchUi.View {
 			}
 		}
 
+		var half_bar = _bar_height / 2;
+
 		for (var i = 0; i < 7; i++) {
 			var val = _player.getAttribute(ATTR_KEYS[i]) as Number;
-			var row_y = rectangle_y + i * tableentry_size;
-			var center_y = row_y + tableentry_size / 2;
+			var center_y = _row_top + i * _row_spacing + _row_height / 2;
 
-			// Label (white)
-			dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-			dc.drawText(label_x, center_y, Graphics.FONT_XTINY, ATTR_LABELS[i], Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER);
-
-			// Bar fill (bright)
+			// Bar fill
 			if (max_val > 0) {
-				var bar_width = (val * bar_max_width / max_val).toNumber();
+				var bar_width = (val * _bar_max_width / max_val).toNumber();
 				if (bar_width < 2) {
 					bar_width = 2;
 				}
 				dc.setColor(ATTR_COLORS[i], Graphics.COLOR_TRANSPARENT);
-				dc.fillRectangle(bar_x, center_y - 5, bar_width, 10);
+				dc.fillRectangle(_bar_x, center_y - half_bar, bar_width, _bar_height);
 			}
 
-			// Value (white)
+			// Value
 			dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-			dc.drawText(value_x, center_y, Graphics.FONT_XTINY, val, Graphics.TEXT_JUSTIFY_RIGHT | Graphics.TEXT_JUSTIFY_VCENTER);
+			dc.drawText(_value_x, center_y, Graphics.FONT_XTINY, val, Graphics.TEXT_JUSTIFY_RIGHT | Graphics.TEXT_JUSTIFY_VCENTER);
 		}
 	}
 	
