@@ -370,10 +370,12 @@ module Quests {
 
     function getRandomType() as QuestType {
         var roll = MathUtil.random(0, 99);
-        if (roll < 40) {
+        if (roll < 35) {
             return KILL_ENEMIES;
-        } else if (roll < 70) {
+        } else if (roll < 60) {
             return DEAL_DAMAGE;
+        } else if (roll < 70) {
+            return TAKE_DAMAGE;
         } else if (roll < 80) {
             return RUN_MINUTES;
         } else if (roll < 87) {
