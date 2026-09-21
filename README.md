@@ -144,16 +144,22 @@ Up to 3 active quests simultaneously. Rewards scale with dungeon depth.
 6. Visit merchants to buy/sell gear
 7. Press the menu button for inventory, map, player details, and settings
 
-## Controls
+## Movement
 
-| Input            | Action                       |
-| ---------------- | ---------------------------- |
-| Tap upper screen | Move up                      |
-| Tap lower screen | Move down                    |
-| Tap left side    | Move left                    |
-| Tap right side   | Move right                   |
-| Menu button      | Open game menu               |
-| Back button      | Exit game (with save prompt) |
+<p align="center">
+   <img src="media/dungeon_movement.png" alt="Movement controls" width="300" />
+</p>
+
+Movement is tap-based -- the screen is divided into four quadrants:
+
+| Tap Area | Action |
+|----------|--------|
+| Upper screen | Move up |
+| Lower screen | Move down |
+| Left side | Move left |
+| Right side | Move right |
+
+Each tap moves your hero one tile in that direction. If an enemy is adjacent in the direction you tap, you attack instead of moving. Moving into a wall does nothing. After each player move, all enemies take their turn.
 
 ## On-Screen Indicators
 
