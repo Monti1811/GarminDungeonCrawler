@@ -1,6 +1,5 @@
 import Toybox.Test;
 import Toybox.Lang;
-import Toybox.System;
 
 (:test)
 function tunnelLeftReachesPassable(logger as Test.Logger) as Boolean {

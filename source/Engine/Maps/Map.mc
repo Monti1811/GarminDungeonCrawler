@@ -2,7 +2,6 @@ import Toybox.Lang;
 import Toybox.Graphics;
 import Toybox.Math;
 import Toybox.WatchUi;
-import Toybox.System;
 import Toybox.Application;
 import Toybox.Application.Storage;
 

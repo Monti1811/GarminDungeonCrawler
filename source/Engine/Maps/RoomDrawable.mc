@@ -1,7 +1,6 @@
 import Toybox.Lang;
 import Toybox.Graphics;
 import Toybox.WatchUi;
-import Toybox.System;
 
 
 class RoomDrawable extends WatchUi.Drawable {

@@ -1,5 +1,4 @@
 import Toybox.Lang;
-import Toybox.System;
 
 module Log {
 
