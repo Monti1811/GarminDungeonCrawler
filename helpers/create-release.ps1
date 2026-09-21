@@ -14,7 +14,8 @@ param(
     [switch]$CreateTag,
     [switch]$SkipRelease,
     [switch]$DraftRelease,
-    [switch]$PreRelease
+    [switch]$PreRelease,
+    [switch]$BuildIq
 )
 
 $ErrorActionPreference = "Stop"
@@ -112,19 +113,34 @@ try {
     $builtFiles = New-Object System.Collections.Generic.List[string]
 
     foreach ($device in $Devices) {
-        $output = $OutputDir
-
         Write-Host "Building optimized $device..."
-        & node "helpers/optimize-build.mjs" $device $output $keyPath
+        & node "helpers/optimize-build.mjs" $device $OutputDir $keyPath
         if ($LASTEXITCODE -ne 0) {
             throw "Build failed for $device."
         }
 
-        # Find the generated file
-        $builtFile = Get-ChildItem -Path $OutputDir -Filter "DungeonCrawler-$device.*" | Select-Object -First 1
-        if ($builtFile) {
-            $builtFiles.Add($builtFile.FullName)
+        $prgFile = Join-Path $OutputDir "DungeonCrawler-$device.prg"
+        if (Test-Path $prgFile) {
+            $builtFiles.Add($prgFile)
         }
+    }
+
+    if ($BuildIq) {
+        # Build universal .iq file (once, not per-device)
+        # NOTE: This builds for 80 SDK devices and takes 40-60+ minutes
+        Write-Host "Building universal .iq file (this may take 40-60 minutes)..."
+        & node "helpers/optimize-build.mjs" iq $OutputDir $keyPath
+        if ($LASTEXITCODE -ne 0) {
+            throw "Build failed for .iq file."
+        }
+
+        $iqFile = Join-Path $OutputDir "DungeonCrawler.iq"
+        if (Test-Path $iqFile) {
+            $builtFiles.Add($iqFile)
+        }
+    }
+    else {
+        Write-Host "Skipping .iq build (use -BuildIq to include it)"
     }
 
     Write-Host ""
