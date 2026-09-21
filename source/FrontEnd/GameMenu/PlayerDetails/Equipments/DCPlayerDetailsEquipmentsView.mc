@@ -34,8 +34,10 @@ class DCPlayerDetailsEquipmentsView extends WatchUi.View {
 		var x_start = x - size_rectangles/2;
 		var y_start = y - size_rectangles/2;
 		var y_line = y + 1*size_rectangles/5;
+		dc.setColor(0x2596E3, Graphics.COLOR_TRANSPARENT);
 		dc.drawRectangle(x_start, y_start, size_rectangles, size_rectangles);
 		dc.drawLine(x_start, y_line, x_start + size_rectangles, y_line);
+		dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
 		dc.drawText(x, y_line, small_font, name, Graphics.TEXT_JUSTIFY_CENTER);
 		var res = equipped_res[equipslot];
 		if (res != null) {
