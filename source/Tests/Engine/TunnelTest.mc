@@ -398,27 +398,27 @@ function noDiagonalDigging(logger as Test.Logger) as Boolean {
 (:test)
 function debugPrintRoomMap(logger as Test.Logger) as Boolean {
     var map = TunnelTestHelpers.createTunnelTestMap(22, 22, 8, 14, 8, 14);
-    System.println("=== BEFORE TUNNEL ===");
+    DebugLogger.println("=== BEFORE TUNNEL ===");
     printMap(map);
 
     Map.digConnectionTunnel(map, [0, 11], LEFT, 22, 22, [11, 11]);
-    System.println("=== AFTER TUNNEL LEFT ===");
+    DebugLogger.println("=== AFTER TUNNEL LEFT ===");
     printMap(map);
 
     Map.digConnectionTunnel(map, [21, 11], RIGHT, 22, 22, [11, 11]);
-    System.println("=== AFTER TUNNEL RIGHT ===");
+    DebugLogger.println("=== AFTER TUNNEL RIGHT ===");
     printMap(map);
 
     Map.digConnectionTunnel(map, [11, 0], UP, 22, 22, [11, 11]);
-    System.println("=== AFTER TUNNEL UP ===");
+    DebugLogger.println("=== AFTER TUNNEL UP ===");
     printMap(map);
 
     Map.digConnectionTunnel(map, [11, 21], DOWN, 22, 22, [11, 11]);
-    System.println("=== AFTER TUNNEL DOWN ===");
+    DebugLogger.println("=== AFTER TUNNEL DOWN ===");
     printMap(map);
 
     Map.addWallsAroundPassable(map);
-    System.println("=== AFTER ADD WALLS ===");
+    DebugLogger.println("=== AFTER ADD WALLS ===");
     printMap(map);
 
     return true;
@@ -441,7 +441,7 @@ function printMap(map as Map) as Void {
                 line += "$";
             }
         }
-        System.println(line);
+        DebugLogger.println(line);
     }
 }
 

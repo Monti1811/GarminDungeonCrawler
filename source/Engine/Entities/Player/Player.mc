@@ -259,7 +259,7 @@ class Player extends Entity {
 	}
 
 	function onLoseHealth(amount as Number) as Void {
-		Toybox.System.println("Losing health: " + amount);
+		DebugLogger.println("Losing health: " + amount);
 		current_health = MathUtil.ceil(current_health - amount, 0);
 		if (current_health == 0) {
 			onDeath();
@@ -567,7 +567,7 @@ class Player extends Entity {
 	}
 
 	static function load(save_data as Dictionary) as Player {
-		Toybox.System.println("Loading player: " + save_data);
+		DebugLogger.println("Loading player: " + save_data);
 		if (save_data["id"] == null) {
 			save_data["id"] = 0;
 		}

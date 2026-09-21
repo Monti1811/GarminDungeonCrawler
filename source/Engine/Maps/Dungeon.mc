@@ -53,7 +53,7 @@ class Dungeon {
 			DUNGEONSTYLE_WATER => 5
 		} as Dictionary;
 		_style = $.MathUtil.weighted_random(style_chances);
-		Toybox.System.println("Dungeon style set to " + _style);
+		DebugLogger.println("Dungeon style set to " + _style);
 	}
 
 	function setStyle(style as DungeonStyle) {
@@ -136,7 +136,7 @@ class Dungeon {
 			var current_room_pos = $.SimUtil.getPosFromRoomName(current_room) as Point2D;
 			var possible_directions = getPossibleDirections(current_room_pos[0], current_room_pos[1]);
 			if (current_room == null) {
-				Toybox.System.println("Error: current_room is null in connectRoomsRandomly");
+				DebugLogger.println("Error: current_room is null in connectRoomsRandomly");
 				break;
 			}
 			var direction = $.SimUtil.getRandomFromArray(possible_directions);
@@ -233,7 +233,7 @@ class Dungeon {
 		var room = Storage.getValue(room_name) as Dictionary?;
 		if (room == null) {
 			// Room not in Storage — create an empty fallback room
-			System.println("WARNING: Room '" + room_name + "' not found in Storage, creating fallback");
+			DebugLogger.println("WARNING: Room '" + room_name + "' not found in Storage, creating fallback");
 			room = {
 				"size_x" => 10, "size_y" => 10,
 				"tile_width" => getApp().tile_width, "tile_height" => getApp().tile_height,

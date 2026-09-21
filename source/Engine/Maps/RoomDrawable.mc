@@ -145,9 +145,9 @@ class RoomDrawable extends WatchUi.Drawable {
     }
 
     function printRoom() as Void {
-        System.println("Printing room");
+        DebugLogger.println("Printing room");
         for (var i = 0; i < _map_string.size(); i++) {
-            System.println(_map_string[i]);
+            DebugLogger.println(_map_string[i]);
         }
     }
 

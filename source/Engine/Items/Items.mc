@@ -260,8 +260,8 @@ module Items {
             }
         }
 
-        Toybox.System.println("Error: No item found for type " + type);
-        Toybox.System.println("Rand: " + rand + " Current Weight: " + current_weight + " Total Weight: " + total_weight[type]);
+        DebugLogger.println("Error: No item found for type " + type);
+        DebugLogger.println("Rand: " + rand + " Current Weight: " + current_weight + " Total Weight: " + total_weight[type]);
         return null;
     }
 }

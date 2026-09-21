@@ -55,8 +55,8 @@ class Room {
         _bottom = options[:bottom] as Number;
         _shape = options[:shape] as RoomShape?;
 
-        System.println("Map size: " + _map.getXSize() + " " + _map.getYSize());
-        System.println("Room size: " + _size_x + " " + _size_y);
+        DebugLogger.println("Map size: " + _map.getXSize() + " " + _map.getYSize());
+        DebugLogger.println("Room size: " + _size_x + " " + _size_y);
        
         _items = options[:items];
         _enemies = options[:enemies];
@@ -296,7 +296,7 @@ class Room {
             var coords = MapUtil.getCoordOfRoom(map_data[:size_x], map_data[:size_y]);
             pos = MapUtil.getOpenPos(_map, coords[0], coords[1], coords[2], coords[3]);
         }
-        System.println("Stairs pos: " + pos);
+        DebugLogger.println("Stairs pos: " + pos);
         _map.setType(pos, STAIRS);
         _stairs = pos;
         Map.addWallsAround(_map, pos[0], pos[1]);
@@ -356,7 +356,7 @@ class Room {
         var npcs = saveEntityDict(_npcs);
 
         // TODO: player pos is not correctly saved and loaded
-        System.println("Save player pos: " + _player_pos);
+        DebugLogger.println("Save player pos: " + _player_pos);
         return {
             "size_x" => _size_x,
             "size_y" => _size_y,
@@ -399,7 +399,7 @@ class Room {
 
     function onLoad(data as Dictionary) as Void {
         if (data["player_pos"] != null) {
-            System.println("Set Player pos: " + data["player_pos"]);
+            DebugLogger.println("Set Player pos: " + data["player_pos"]);
             updatePlayerPos(data["player_pos"]);
         }
         if (data["stairs"] != null) {

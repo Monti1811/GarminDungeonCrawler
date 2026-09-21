@@ -60,7 +60,7 @@ class Merchant extends NPC {
 	}
 
 	function onInteract() as Void {
-		System.println("Interacting with merchant");
+		DebugLogger.println("Interacting with merchant");
 		var shopMenu = new WatchUi.Menu2({:title=>"Shop"});
 		shopMenu.addItem(new WatchUi.MenuItem("Buy", "Buy an item", :buy, null));
 		shopMenu.addItem(new WatchUi.MenuItem("Sell", "Sell an item", :sell, null));
