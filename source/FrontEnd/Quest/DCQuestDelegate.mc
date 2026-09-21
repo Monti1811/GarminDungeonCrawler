@@ -109,7 +109,8 @@ class DCQuestListDelegate extends WatchUi.Menu2InputDelegate {
     }
 
     function onSelect(item as MenuItem) as Void {
-        // No action on selection; list is informational
+        var quest = item.getId() as Quest;
+        WatchUi.pushView(new DCQuestDetailView(quest, false), new DCQuestDetailDelegate(), WatchUi.SLIDE_LEFT);
     }
 
     function onBack() as Void {
@@ -127,9 +128,7 @@ class DCQuestOfferDelegate extends WatchUi.Menu2InputDelegate {
 
     function onSelect(item as MenuItem) as Void {
         var quest = item.getId() as Quest;
-        var prompt = quest.getTitle() + "\n" + quest.description + "\nReward: " + quest.getRewardLabel();
-        var dialog = new WatchUi.Confirmation(prompt);
-        WatchUi.pushView(dialog, new DCQuestAcceptConfirmDelegate(questGiver, quest), WatchUi.SLIDE_UP);
+        WatchUi.pushView(new DCQuestDetailView(quest, true), new DCQuestOfferDetailDelegate(questGiver, quest), WatchUi.SLIDE_UP);
     }
 
     function onBack() as Void {
@@ -166,5 +165,62 @@ class DCQuestAcceptConfirmDelegate extends WatchUi.ConfirmationDelegate {
 			WatchUi.pushView(new EmptyView(), null, WatchUi.SLIDE_UP);
         }
         return true;
+    }
+}
+
+class DCQuestDetailDelegate extends WatchUi.BehaviorDelegate {
+    function initialize() {
+        BehaviorDelegate.initialize();
+    }
+
+    function onSelect() as Boolean {
+        WatchUi.popView(WatchUi.SLIDE_RIGHT);
+        return true;
+    }
+
+    function onBack() as Boolean {
+        WatchUi.popView(WatchUi.SLIDE_RIGHT);
+        return true;
+    }
+}
+
+class DCQuestOfferDetailDelegate extends WatchUi.BehaviorDelegate {
+    private var questGiver as QuestGiver;
+    private var quest as Quest;
+
+    function initialize(questGiver as QuestGiver, quest as Quest) {
+        BehaviorDelegate.initialize();
+        self.questGiver = questGiver;
+        self.quest = quest;
+    }
+
+    function onKey(keyEvent as KeyEvent) as Boolean {
+        if (keyEvent.getKey() == WatchUi.KEY_ENTER) {
+            acceptQuest();
+            return true;
+        } else if (keyEvent.getKey() == WatchUi.KEY_ESC) {
+            WatchUi.popView(WatchUi.SLIDE_DOWN);
+            return true;
+        }
+        return false;
+    }
+
+    function onBack() as Boolean {
+        WatchUi.popView(WatchUi.SLIDE_DOWN);
+        return true;
+    }
+
+    function acceptQuest() as Void {
+        var accepted = $.Quests.acceptQuest(quest);
+        if (accepted == null) {
+            WatchUi.showToast("Could not accept quest", {});
+            return;
+        }
+        questGiver.quest_requested = true;
+        questGiver.offers = [];
+        $.Log.log("Accepted quest: " + accepted.getTitle());
+        WatchUi.showToast("Accepted: " + accepted.getTitle(), {:icon=>Rez.Drawables.aboutToastIcon});
+        WatchUi.popView(WatchUi.SLIDE_DOWN);
+        WatchUi.popView(WatchUi.SLIDE_DOWN);
     }
 }

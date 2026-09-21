@@ -30,6 +30,9 @@
     <bitmap id="gameMenuLog" filename="menus/gamemenu/log.png" packingFormat="png" />
     <bitmap id="gameMenuSettings" filename="menus/gamemenu/settings.png" packingFormat="png" />
 
+    <!-- Quest backgrounds -->
+    <bitmap id="questBackground" filename="menus/questgiver/quest.png" packingFormat="png" />
+
     <!-- Right top hint -->
     <bitmap id="rightTop" personality="
             system_icon_light__hint_button_right_top

@@ -6,4 +6,5 @@
     <bitmap id="characterInfoRoundNoStats" filename="../../resources/drawables/menus/characterinfo/characterinfo_squared_nostats.png" packingFormat="png" />
     <bitmap id="enemyInfoStatsRound" filename="../../resources/drawables/menus/enemyinfostats/enemyinfostats_squared.png" packingFormat="png" />
     <bitmap id="itemInfoMenuKeyItem" filename="../../resources/drawables/menus/iteminfomenu/iteminfomenu_keyitem_squared.png" packingFormat="png" />
+    <bitmap id="questBackground" filename="../../resources/drawables/menus/questgiver/quest_squared.png" packingFormat="png" />
 </drawables>
