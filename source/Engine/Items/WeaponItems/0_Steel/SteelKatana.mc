@@ -7,7 +7,7 @@ class SteelKatana extends WeaponItem {
 		WeaponItem.initialize();
 		id = 4;
 		name = "Steel Katana";
-		description = "A simple steel katana";
+		description = "A curved steel blade with a keen edge.";
 		slot = RIGHT_HAND;
 		value = 10;
 		weight = 3;

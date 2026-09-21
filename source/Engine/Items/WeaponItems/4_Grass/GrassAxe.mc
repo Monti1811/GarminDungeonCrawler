@@ -6,7 +6,7 @@ class GrassAxe extends WeaponItem {
         WeaponItem.initialize();
         id = 40;
         name = "Grass Axe";
-        description = "A powerful grass axe";
+        description = "An axe woven from living vines, surprisingly sharp.";
         value = 100;
         weight = 3;
         slot = RIGHT_HAND;
@@ -16,7 +16,7 @@ class GrassAxe extends WeaponItem {
             :dexterity => -2,
         };
 
-        attack = 12;
+        attack = 6;
     }
 
     function onEquipItem(player as Player) as Void {

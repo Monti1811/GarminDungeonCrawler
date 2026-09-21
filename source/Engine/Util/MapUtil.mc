@@ -50,9 +50,9 @@ module MapUtil {
 
 	function findNearestEmptyTileAround(map as Map, pos as Point2D) as Point2D? {
 		var queue = [] as Array<Point2D>;
-		var visited = {};
+		var visited = {} as Dictionary<Number, Boolean>;
 		queue.add(pos);
-		visited[pos[0] + "," + pos[1]] = true;
+		visited[(pos[0] << 8) + pos[1]] = true;
 		var directions = [
 			[0, -1],
 			[0, 1],
@@ -64,7 +64,7 @@ module MapUtil {
 			queue.remove(current);
 			for (var i = 0; i < directions.size(); i++) {
 				var candidate = [current[0] + directions[i][0], current[1] + directions[i][1]];
-				var key = candidate[0] + "," + candidate[1];
+				var key = (candidate[0] << 8) + candidate[1];
 				if (visited[key]) {
 					continue;
 				}
@@ -101,13 +101,13 @@ module MapUtil {
 
 	function checkEnemy(map as Map, x as Number, y as Number) {
         if (map.isInBound([x, y])) {
-            var enemy = map.getContent([x, y]) as Enemy?;
-            if (enemy != null && enemy instanceof Enemy) {
-                return enemy;
+            var content = map.getContent([x, y]);
+            if (content != null && content has :entityType && content.entityType == :enemy) {
+                return content;
             }
-        }
-        return null;
-    }
+		}
+		return null;
+	}
 
 	function getEnemyInRangeLinear(map as Map, pos as Point2D, range as Number, direction as WalkDirection) as Enemy? {
 		var x = pos[0];
@@ -349,13 +349,91 @@ module MapUtil {
 		return [screen_size_x, screen_size_y];
 	}
 
+	// Collect all passable positions with no content in the given bounds.
+	// Returns a flat array [x1,y1, x2,y2, ...] to avoid inner array allocations.
+	function collectPassablePositions(map as Map, left as Number, right as Number, top as Number, bottom as Number) as Array<Number> {
+		var result = [] as Array<Number>;
+		var xMin = left + 2;
+		var xMax = right - 2;
+		var yMin = top + 2;
+		var yMax = bottom - 2;
+		for (var x = xMin; x <= xMax; x++) {
+			for (var y = yMin; y <= yMax; y++) {
+				var tile = map.getTile(x, y);
+				if (tile.type == PASSABLE && tile.content == null) {
+					result.add(x);
+					result.add(y);
+				}
+			}
+		}
+		return result;
+	}
+
+	// Collect all passable positions excluding narrow passages (tunnels).
+	// Returns a flat array [x1,y1, x2,y2, ...].
+	function collectPassablePositionsNoTunnels(map as Map, left as Number, right as Number, top as Number, bottom as Number) as Array<Number> {
+		var result = [] as Array<Number>;
+		var xMin = left + 2;
+		var xMax = right - 2;
+		var yMin = top + 2;
+		var yMax = bottom - 2;
+		for (var x = xMin; x <= xMax; x++) {
+			for (var y = yMin; y <= yMax; y++) {
+				var tile = map.getTile(x, y);
+				if (tile.type == PASSABLE && tile.content == null && !isNarrowPassageAt(map, x, y)) {
+					result.add(x);
+					result.add(y);
+				}
+			}
+		}
+		return result;
+	}
+
+	function getRandomPosFromPool(pool as Array<Number>) as Point2D {
+		var count = pool.size() / 2;
+		if (count == 0) {
+			return [0, 0];
+		}
+		var idx = MathUtil.random(0, count - 1) * 2;
+		return [pool[idx], pool[idx + 1]];
+	}
+
+	function removePosFromPool(pool as Array<Number>, pos as Point2D) as Void {
+		var count = pool.size() / 2;
+		for (var i = 0; i < count; i++) {
+			var idx = i * 2;
+			if (pool[idx] == pos[0] && pool[idx + 1] == pos[1]) {
+				// Swap with last and remove
+				var lastIdx = pool.size() - 2;
+				pool[idx] = pool[lastIdx];
+				pool[idx + 1] = pool[lastIdx + 1];
+				pool.remove(pool.size() - 1);
+				pool.remove(pool.size() - 1);
+				return;
+			}
+		}
+	}
+
 	function getRandomPos(map as Map, left as Number, right as Number, top as Number, bottom as Number) as Point2D {
 		var x = 0;
 		var y = 0;
+		var max_tries = 25;
+		var tries = 0;
 		do {
-			x = MathUtil.random(left + 1, right - 1);
-			y = MathUtil.random(top + 1, bottom - 1);
-		} while (x == Constants.ROOM_CENTER_INDEX || y == Constants.ROOM_CENTER_INDEX || map.getContent([x,y]) != null);
+			x = MathUtil.random(left + 2, right - 2);
+			y = MathUtil.random(top + 2, bottom - 2);
+			tries += 1;
+			// Must be a walkable tile with no existing content
+			var tile = map.getTile(x, y);
+			if (tile.type != PASSABLE || tile.content != null) {
+				continue;
+			}
+			// Avoid tunnel tiles (narrow passages with 2 or fewer passable neighbors)
+			if (tries < max_tries && isNarrowPassageAt(map, x, y)) {
+				continue;
+			}
+			break;
+		} while (true);
 		return [x, y];
 	}
 
@@ -375,6 +453,22 @@ module MapUtil {
 		return passable_neighbors <= 2;
 	}
 
+	// Zero-allocation version: uses x,y directly, no Point2D arrays created
+	function isNarrowPassageAt(map as Map, x as Number, y as Number) as Boolean {
+		if (x < 0 || x >= map.getXSize() || y < 0 || y >= map.getYSize()) {
+			return false;
+		}
+		if (map.getTile(x, y).type != PASSABLE) {
+			return false;
+		}
+		var passable_neighbors = 0;
+		if (y + 1 < map.getYSize() && map.getTile(x, y + 1).type == PASSABLE) { passable_neighbors += 1; }
+		if (y - 1 >= 0 && map.getTile(x, y - 1).type == PASSABLE) { passable_neighbors += 1; }
+		if (x + 1 < map.getXSize() && map.getTile(x + 1, y).type == PASSABLE) { passable_neighbors += 1; }
+		if (x - 1 >= 0 && map.getTile(x - 1, y).type == PASSABLE) { passable_neighbors += 1; }
+		return passable_neighbors <= 2;
+	}
+
 	function isNearTunnel(map as Map, pos as Point2D) as Boolean {
 		var checks = getAllDirectionPoints(pos);
 		checks.add(pos);
@@ -386,11 +480,21 @@ module MapUtil {
 		return false;
 	}
 
+	// Zero-allocation version: checks self + 4 cardinal neighbors
+	function isNearTunnelAt(map as Map, x as Number, y as Number) as Boolean {
+		if (isNarrowPassageAt(map, x, y)) { return true; }
+		if (isNarrowPassageAt(map, x, y + 1)) { return true; }
+		if (isNarrowPassageAt(map, x, y - 1)) { return true; }
+		if (isNarrowPassageAt(map, x + 1, y)) { return true; }
+		if (isNarrowPassageAt(map, x - 1, y)) { return true; }
+		return false;
+	}
+
 	function getRandomPosAvoidingTunnels(map as Map, left as Number, right as Number, top as Number, bottom as Number) as Point2D {
 		var tries = 0;
-		while (tries < 50) {
+		while (tries < 15) {
 			var candidate = getRandomPos(map, left, right, top, bottom);
-			if (!isNearTunnel(map, candidate)) {
+			if (!isNearTunnelAt(map, candidate[0], candidate[1])) {
 				return candidate;
 			}
 			tries += 1;
@@ -416,6 +520,76 @@ module MapUtil {
 		var top = middle_of_screen[1] - Math.floor(room_size_y/2);
 		var bottom = middle_of_screen[1] + Math.floor(room_size_y/2);
 		return [left, right, top, bottom];
+	}
+
+	function hasAllOpenNeighbors(map as Map, x as Number, y as Number) as Boolean {
+		var dirs = [[-1,-1],[0,-1],[1,-1],[-1,0],[1,0],[-1,1],[0,1],[1,1]] as Array<Array<Number>>;
+		for (var d = 0; d < dirs.size(); d++) {
+			var nx = x + dirs[d][0];
+			var ny = y + dirs[d][1];
+			if (!map.isInBound([nx, ny]) || map.getTile(nx, ny).type != PASSABLE) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	function getOpenPos(map as Map, left as Number, right as Number, top as Number, bottom as Number) as Point2D {
+		var center_x = (left + right) / 2;
+		var center_y = (top + bottom) / 2;
+		// Try to find a spot where all 8 neighbors are PASSABLE, away from center
+		var x_min = left + 3;
+		var x_max = right - 3;
+		var y_min = top + 3;
+		var y_max = bottom - 3;
+		if (x_max > x_min && y_max > y_min) {
+			for (var attempt = 0; attempt < 10; attempt++) {
+				var x = MathUtil.random(x_min, x_max);
+				var y = MathUtil.random(y_min, y_max);
+				var tile = map.getTile(x, y);
+				if (tile.type == PASSABLE && tile.content == null && hasAllOpenNeighbors(map, x, y)) {
+					// Avoid center (player spawn) — at least 3 tiles away
+					var dx = x - center_x;
+					var dy = y - center_y;
+					if (dx < 0) { dx = -dx; }
+					if (dy < 0) { dy = -dy; }
+					if (dx + dy >= 3) {
+						return [x, y];
+					}
+				}
+			}
+		}
+		// Fallback: pick any passable spot away from center, clear walls around it
+		for (var attempt = 0; attempt < 20; attempt++) {
+			var pos = getRandomPos(map, left, right, top, bottom);
+			var dx2 = pos[0] - center_x;
+			var dy2 = pos[1] - center_y;
+			if (dx2 < 0) { dx2 = -dx2; }
+			if (dy2 < 0) { dy2 = -dy2; }
+			if (dx2 + dy2 >= 3) {
+				clearAround(map, pos[0], pos[1]);
+				return pos;
+			}
+		}
+		// Last resort: any passable spot
+		var pos = getRandomPos(map, left, right, top, bottom);
+		clearAround(map, pos[0], pos[1]);
+		return pos;
+	}
+
+	function clearAround(map as Map, x as Number, y as Number) as Void {
+		var dirs = [[-1,-1],[0,-1],[1,-1],[-1,0],[1,0],[-1,1],[0,1],[1,1]] as Array<Array<Number>>;
+		var sx = map.getXSize();
+		var sy = map.getYSize();
+		for (var d = 0; d < dirs.size(); d++) {
+			var nx = x + dirs[d][0];
+			var ny = y + dirs[d][1];
+			if (nx >= 0 && nx < sx && ny >= 0 && ny < sy) {
+				if (map.getTile(nx, ny).type == WALL) {
+					map.setType([nx, ny], PASSABLE);
+				}
+			}
+		}
 	}
 
 	function calcDistance(pos1 as Point2D, pos2 as Point2D) as Numeric {

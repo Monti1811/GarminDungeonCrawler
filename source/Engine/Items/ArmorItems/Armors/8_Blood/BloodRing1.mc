@@ -6,11 +6,11 @@ class BloodRing1 extends ArmorItem {
 		ArmorItem.initialize();
 		id = 1084; // Updated ID
 		name = "Demon Blood Ring";
-		description = "A demon blood ring";
+		description = "A ring etched with blood runes that pulse with dark vitality.";
 		slot = ACCESSORY;
 		value = 2500;
 		weight = 0.1;
-		defense = 7;
+		defense = 12;
 		attribute_bonus = {
 			:constitution => 5,
 			:strength => 10,

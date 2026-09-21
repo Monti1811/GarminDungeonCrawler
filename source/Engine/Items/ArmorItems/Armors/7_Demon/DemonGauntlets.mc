@@ -6,11 +6,11 @@ class DemonGauntlets extends ArmorItem {
 		ArmorItem.initialize();
 		id = 1072; 
 		name = "Ice Gauntlets";
-		description = "Some demon gauntlets, forged in the fires of hell, and imbued with the power of the underworld.";
+		description = "Gauntlets forged in hellfire that enhance demonic strength.";
 		value = 500;
 		weight = 3;
 		slot = EITHER_HAND;
-		defense = 15;
+		defense = 9;
 		attribute_bonus = {
 			:charisma => 10,
 			:strength => 5,

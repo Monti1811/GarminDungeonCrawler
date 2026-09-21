@@ -6,7 +6,7 @@ class BloodKatana extends WeaponItem {
         WeaponItem.initialize();
         id = 84;
         name = "Blood Katana";
-        description = "A powerful blood katana";
+        description = "A curved blade that leaves wounds weeping endlessly.";
         slot = RIGHT_HAND;
         value = 5000;
         weight = 4;
@@ -15,7 +15,7 @@ class BloodKatana extends WeaponItem {
             :dexterity => 10
         };
 
-        attack = 48;
+        attack = 79;
         range = 1;
     }
 

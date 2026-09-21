@@ -6,9 +6,10 @@ class ZombieSmall extends Enemy {
 		Enemy.initialize();
 		id = 7;
 		name = "Small Zombie";
-		damage = 5;
+		description = "A shambling undead corpse.";
+		damage = 4;
 		current_health = 20;
-		maxHealth = 20;
+		maxHealth = 13;
 		energy_per_turn = 100;
 		armor = 0;
         kill_experience = 10;
@@ -19,7 +20,7 @@ class ZombieSmall extends Enemy {
 	}
 
 	function findNextMove(map) as Point2D {
-        return Enemy.followPlayerSimple(map);
+		return Enemy.followPlayerDirect(map);
     }
 
 	function onLoad(save_data as Dictionary) as Void {

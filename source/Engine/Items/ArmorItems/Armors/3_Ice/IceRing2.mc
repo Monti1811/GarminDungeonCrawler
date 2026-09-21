@@ -6,7 +6,7 @@ class IceRing2 extends ArmorItem {
 		ArmorItem.initialize();
 		id = 1035;
 		name = "Glacierite Ring";
-		description = "An glacierite ring";
+		description = "A ring carved from deep glacier ice, radiating bitter cold.";
 		value = 50;
 		weight = 0.1;
 		slot = ACCESSORY;

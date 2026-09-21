@@ -6,11 +6,11 @@ class DemonShoes extends ArmorItem {
 		ArmorItem.initialize();
 		id = 1073;
 		name = "Demon Shoes";
-		description = "A simple demon shoes";
+		description = "Boots forged in brimstone, silent as a specter's tread.";
 		value = 1200;
 		weight = 3;
 		slot = FEET;
-		defense = 15;
+		defense = 9;
 		attribute_bonus = {
 			:dexterity => 7,
 			:strength => 7,

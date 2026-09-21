@@ -6,7 +6,7 @@ class FireRing2 extends ArmorItem {
 		ArmorItem.initialize();
 		id = 1025;
 		name = "Tourmaline Ring";
-		description = "A tourmaline ring";
+		description = "A ring pulsing with the heat of a dormant volcano.";
 		value = 50;
 		weight = 0.1;
 		slot = ACCESSORY;

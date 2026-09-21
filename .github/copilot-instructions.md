@@ -114,7 +114,7 @@ Common types: `Point2D`, `ResourceId` (for Rez assets), `PropertyKeyType`/`Prope
 
 ### Combat System
 - **Battle module** (`Engine/Battles/Battle.mc`): `attackEnemy()`, `attackPlayer()` functions
-- Damage = `attacker.getAttack() - defender.getDefense()` (clamped to min 1)
+- Damage = `max(1, round(baseDamage * (1 - clamp(defense / (defense + baseDamage), 0, 0.90))))`
 - Deaths trigger XP gain, loot drops, quest tracking
 - Damage text displayed via `DCGameView.addDamageText(damage, pos)`
 - **Elemental System** (`Engine/Util/ElementUtil.mc`):

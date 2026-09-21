@@ -7,7 +7,7 @@ class SteelLance extends WeaponItem {
 		WeaponItem.initialize();
 		id = 5;
 		name = "Steel Spear";
-		description = "A simple steel spear";
+		description = "A steel-tipped spear with a ash shaft.";
 		slot = RIGHT_HAND;
 		value = 10;
 		weight = 2;

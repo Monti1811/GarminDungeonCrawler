@@ -6,7 +6,7 @@ class GoldDagger extends WeaponItem {
         WeaponItem.initialize();
         id = 62;
         name = "Gold Dagger";
-        description = "A powerful gold dagger";
+        description = "A small golden blade that gleams with inner light.";
         slot = EITHER_HAND;
         value = 400;
         weight = 0.5;
@@ -15,7 +15,7 @@ class GoldDagger extends WeaponItem {
             :luck => 4
         };
 
-        attack = 12;
+        attack = 7;
         attack_type = DEXTERITY;
     }
 

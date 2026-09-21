@@ -6,7 +6,7 @@ class GoldRing2 extends ArmorItem {
 		ArmorItem.initialize();
 		id = 1065;
 		name = "Amethyst Gold Ring";
-		description = "A simple amethyst gold ring";
+		description = "A gold ring set with an amethyst that glows with holy light.";
 		value = 30;
 		weight = 0.1;
 		slot = ACCESSORY;

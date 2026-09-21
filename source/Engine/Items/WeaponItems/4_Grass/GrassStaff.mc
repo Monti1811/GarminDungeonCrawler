@@ -6,7 +6,7 @@ class GrassStaff extends Staff {
         Staff.initialize();
         id = 47;
         name = "Grass Staff";
-        description = "A powerful grass staff. If the player has mana available, uses it to perform more powerful attacks.";
+        description = "A staff of living wood that channels mana into potent nature magic.";
         slot = RIGHT_HAND;
         value = 100;
         weight = 2;

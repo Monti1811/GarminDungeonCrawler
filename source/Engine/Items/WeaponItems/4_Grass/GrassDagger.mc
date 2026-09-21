@@ -6,7 +6,7 @@ class GrassDagger extends WeaponItem {
         WeaponItem.initialize();
         id = 42;
         name = "Grass Dagger";
-        description = "A powerful grass dagger";
+        description = "A thorn-carved blade pulsing with primal green energy.";
         slot = EITHER_HAND;
         value = 80;
         weight = 1;
@@ -16,7 +16,7 @@ class GrassDagger extends WeaponItem {
             :luck => 5
         };
 
-        attack = 10;
+        attack = 6;
         attack_type = DEXTERITY;
     }
 

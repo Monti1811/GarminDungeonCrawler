@@ -1,0 +1,30 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "servers": {
+      "monkeyc": {
+        "type": "local",
+        "command": ["python", "tools/mcp_monkeyc/server.py"],
+        "cwd": ".",
+        "environment": {
+          "MONKEYC_WORKSPACE": ".",
+          "MONKEYC_DEVELOPER_KEY_PATH": "F:/Code/Garmin/developer_key"
+        }
+      }
+    }
+  },
+  "lsp": {
+    "python-lsp": {
+      "command": ["pyright"],
+      "extensions": [".py", ".pyi"]
+    },
+    "monkeyc-lsp": {
+      "command": ["rafiki", "server"],
+      "extensions": [".mc"]
+    }
+	// "monkeyc-lsp": {
+    //   "command": ["java", "-jar", "C:/Users/Timon/AppData/Roaming/Garmin/ConnectIQ/Sdks/connectiq-sdk-win-8.4.1-2026-02-03-e9f77eeaa/bin/LanguageServer.jar"],
+    //   "extensions": [".mc"]
+    // }
+  }
+}

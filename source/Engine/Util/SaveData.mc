@@ -92,6 +92,7 @@ module SaveData {
 			"quests" => $.Quests.save(),
 			"discovered_enemies" => discovered_enemies.keys(),
 			"discovered_items" => discovered_items.keys(),
+			"stepgate" => StepGate.save(),
 		} as Dictionary<PropertyKeyType, PropertyValueType>;
 		Toybox.System.println("Saving game to " + chosen_save);
 		Toybox.System.println("Data: " + data);
@@ -122,6 +123,7 @@ module SaveData {
 		$.Game.load(data["game"] as Dictionary);
 		$.Quests.load(data["quests"] as Dictionary?);
 		$.EntityManager.load(data["entitymanager"] as Dictionary);
+		StepGate.load(data["stepgate"] as Dictionary?);
 		
 		// Load compendium data
 		discovered_enemies = {};

@@ -7,7 +7,7 @@ class SteelRing1 extends ArmorItem {
 		ArmorItem.initialize();
 		id = 1004;
 		name = "Steel Ring";
-		description = "A simple steel ring";
+		description = "A plain steel ring faintly humming with dormant enchantment.";
 		slot = ACCESSORY;
 		value = 5;
 		weight = 0.1;

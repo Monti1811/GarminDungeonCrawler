@@ -6,11 +6,12 @@ class Bies extends Enemy {
 		Enemy.initialize();
 		id = 29;
 		name = "Bies";
-		damage = 20;
+		description = "A demonic entity born of pure malice.";
+		damage = 14;
 		current_health = 250;
 		maxHealth = current_health;
 		energy_per_turn = 67;
-		armor = 20;
+		armor = 16;
         kill_experience = 200;
 	}
 
@@ -19,7 +20,7 @@ class Bies extends Enemy {
 	}
 
 	function findNextMove(map) as Point2D {
-        return Enemy.followPlayerSimple(map);
+		return Enemy.followPlayerDash(map, 2);
     }
 
 	function onLoad(save_data as Dictionary) as Void {

@@ -6,6 +6,7 @@ class ElementalEarth extends Elemental {
 		Elemental.initialize();
 		id = 19;
 		name = "Earth Elemental";
+		description = "A mighty elemental of living stone.";
 		children_id = 13;
 	}
 

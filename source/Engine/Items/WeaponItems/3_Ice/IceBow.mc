@@ -6,7 +6,7 @@ class IceBow extends Bow {
         Bow.initialize();
         id = 31;
         name = "Ice Bow";
-        description = "A powerful ice bow";
+        description = "A bow that launches shards of razor-sharp ice.";
         slot = RIGHT_HAND;
         value = 100;
         weight = 2;

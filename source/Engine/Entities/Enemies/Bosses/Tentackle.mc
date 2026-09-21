@@ -6,10 +6,11 @@ class Tentackle extends Enemy {
         Enemy.initialize();
         id = 26;
         name = "Tentackle";
+        description = "A massive tentacled horror from the deep.";
         current_health = 750;
         maxHealth = current_health;
-        damage = 100;
-        armor = 10;
+        damage = 22;
+        armor = 5;
         kill_experience = 500;
         energy_per_turn = 200; 
     }
@@ -23,6 +24,6 @@ class Tentackle extends Enemy {
 	}
 
     function findNextMove(map) as Point2D {
-        return Enemy.followPlayerSimple(map);
+        return Enemy.followPlayerStrafe(map, false);
     }
 }

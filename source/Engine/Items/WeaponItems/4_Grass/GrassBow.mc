@@ -6,7 +6,7 @@ class GrassBow extends Bow {
         Bow.initialize();
         id = 41;
         name = "Grass Bow";
-        description = "A powerful grass bow";
+        description = "A bow strung with living vine that fires thorned arrows.";
         slot = RIGHT_HAND;
         value = 100;
         weight = 2;

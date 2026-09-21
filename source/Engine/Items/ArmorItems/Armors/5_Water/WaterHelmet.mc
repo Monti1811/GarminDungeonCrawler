@@ -6,7 +6,7 @@ class WaterHelmet extends ArmorItem {
 		ArmorItem.initialize();
 		id = 1050;
 		name = "Water Helmet";
-		description = "An water helmet, very refreshing";
+		description = "A helm filled with the power of the raging sea.";
 		value = 70;
 		weight = 3;
 		slot = HEAD;
@@ -22,7 +22,7 @@ class WaterHelmet extends ArmorItem {
 	}
 	// ...existing code...
 	function getSprite() as ResourceId {
-		return $.Rez.Drawables.ice_helmet;
+		return $.Rez.Drawables.water_helmet;
 	}
 	
 	function deepcopy() as Item {

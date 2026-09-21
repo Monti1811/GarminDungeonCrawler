@@ -9,6 +9,7 @@ class NPC extends Entity {
 
 	function initialize() {
 		Entity.initialize();
+		self.entityType = :npc;
 	}
 
 	function hashCode() {

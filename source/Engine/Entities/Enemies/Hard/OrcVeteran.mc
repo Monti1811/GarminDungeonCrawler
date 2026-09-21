@@ -6,7 +6,8 @@ class OrcVeteran extends Enemy {
         Enemy.initialize();
         id = 34;
         name = "Veteran Orc";
-        damage = 100;
+        description = "A seasoned orc warrior with countless battles.";
+        damage = 41;
 		current_health = 75;
 		maxHealth = current_health;
 		armor = 0;
@@ -19,6 +20,6 @@ class OrcVeteran extends Enemy {
     }
 
     function findNextMove(map) as Point2D {
-        return Enemy.followPlayerSimple(map);
+        return Enemy.followPlayerDash(map, 2);
     }
 }

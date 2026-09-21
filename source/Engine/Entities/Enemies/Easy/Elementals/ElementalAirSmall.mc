@@ -6,11 +6,12 @@ class ElementalAirSmall extends Enemy {
 		Enemy.initialize();
 		id = 12;
 		name = "Small Air Elemental";
-		damage = 15;
+		description = "A minor elemental of swirling winds.";
+		damage = 9;
 		current_health = 50;
 		maxHealth = current_health;
 		energy_per_turn = 50;
-		armor = 5;
+		armor = 4;
         kill_experience = 15;
 	}
 
@@ -19,7 +20,7 @@ class ElementalAirSmall extends Enemy {
 	}
 
 	function findNextMove(map) as Point2D {
-        return Enemy.followPlayerSimple(map);
+		return Enemy.followPlayerStrafe(map, true);
     }
 
 	function onLoad(save_data as Dictionary) as Void {

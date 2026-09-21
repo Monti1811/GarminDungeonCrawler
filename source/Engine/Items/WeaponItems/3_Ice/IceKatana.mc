@@ -6,7 +6,7 @@ class IceKatana extends WeaponItem {
         WeaponItem.initialize();
         id = 34;
         name = "Ice Katana";
-        description = "A powerful ice katana";
+        description = "A frosted katana that trails mist with every swing.";
         slot = RIGHT_HAND;
         value = 100;
         weight = 4;
@@ -16,7 +16,7 @@ class IceKatana extends WeaponItem {
             :dexterity => 3
         };
 
-        attack = 14;
+        attack = 8;
         range = 1;
             element = ELEMENT_ICE;
     }

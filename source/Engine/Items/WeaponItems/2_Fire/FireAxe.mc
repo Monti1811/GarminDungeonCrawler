@@ -7,7 +7,7 @@ class FireAxe extends WeaponItem {
         WeaponItem.initialize();
         id = 20;
         name = "Fire Axe";
-        description = "A powerful fire axe";
+        description = "A heavy axe whose edge glows white-hot.";
         value = 100;
         weight = 3;
         slot = RIGHT_HAND;

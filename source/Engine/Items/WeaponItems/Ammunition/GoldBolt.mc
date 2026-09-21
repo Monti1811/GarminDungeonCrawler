@@ -6,7 +6,7 @@ class GoldBolt extends Ammunition {
 		Ammunition.initialize();
 		id = 253;
 		name = "Gold Bolt";
-		description = "A gold bolt";
+		description = "A golden bolt that pierces with divine force.";
 		type = BOLT;
 		attack = 15;
 		value = 50;

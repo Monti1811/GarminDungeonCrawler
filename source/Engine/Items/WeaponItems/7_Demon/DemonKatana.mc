@@ -6,7 +6,7 @@ class DemonKatana extends WeaponItem {
         WeaponItem.initialize();
         id = 74;
         name = "Demon Katana";
-        description = "A powerful demon katana";
+        description = "A cursed katana that feeds on the wielder's malice.";
         slot = RIGHT_HAND;
         value = 1000;
         weight = 4;
@@ -15,7 +15,7 @@ class DemonKatana extends WeaponItem {
             :dexterity => 8
         };
 
-        attack = 24;
+        attack = 17;
         range = 1;
     }
 

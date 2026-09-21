@@ -6,11 +6,11 @@ class BloodGauntlets extends ArmorItem {
 		ArmorItem.initialize();
 		id = 1082; // Updated ID
 		name = "Blood Gauntlets";
-		description = "Some blood gauntlets, they are red and bloody looking";
+		description = "Gauntlets slick with blood that amplify the wearer's killing blows.";
 		value = 2000;
 		weight = 2;
 		slot = EITHER_HAND;
-		defense = 20;
+		defense = 33;
 		attribute_bonus = {
 			:charisma => 10,
 			:constitution => 5,

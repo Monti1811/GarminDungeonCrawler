@@ -6,7 +6,7 @@ class WaterGreatsword extends WeaponItem {
         WeaponItem.initialize();
         id = 53;
         name = "Water Greatsword";
-        description = "A powerful water greatsword";
+        description = "A massive blade of swirling tidal energy.";
         slot = RIGHT_HAND;
         value = 150;
         weight = 6;
@@ -16,7 +16,7 @@ class WaterGreatsword extends WeaponItem {
             :dexterity => -4
         };
 
-        attack = 18;
+        attack = 10;
         range = 2;
         weapon_type = TWOHAND;
         cooldown = 1;

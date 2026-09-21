@@ -6,7 +6,7 @@ class GrassKatana extends WeaponItem {
         WeaponItem.initialize();
         id = 44;
         name = "Grass Katana";
-        description = "A powerful grass katana";
+        description = "A curved blade of hardened bark, impossibly sharp.";
         slot = RIGHT_HAND;
         value = 100;
         weight = 4;
@@ -17,7 +17,7 @@ class GrassKatana extends WeaponItem {
             :luck => 1
         };
 
-        attack = 14;
+        attack = 6;
         range = 1;
     }
 

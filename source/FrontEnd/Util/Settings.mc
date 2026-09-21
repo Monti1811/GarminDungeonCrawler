@@ -27,6 +27,12 @@ module Settings {
         for (var i = 0; i < setting_keys.size(); i++) {
             initSetting(setting_keys[i], settings[setting_keys[i]]);
         }
+        if (settings["max_room_size"] as Number > Constants.MAX_ROOM_TILES) {
+            settings["max_room_size"] = Constants.MAX_ROOM_TILES;
+        }
+        if (settings["min_room_size"] as Number > settings["max_room_size"] as Number) {
+            settings["min_room_size"] = 5;
+        }
     }
 
     function setValue(key as String, value as PropertyValueType) as Void {
@@ -39,7 +45,7 @@ module Settings {
             case -1:
                 return "Off";
             case 0:
-                return "Every turn";
+                return "Every 3 turns";
             default:
                 return "Every " + val + " minutes";
         }

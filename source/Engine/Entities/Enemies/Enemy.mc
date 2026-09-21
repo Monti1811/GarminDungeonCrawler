@@ -12,23 +12,32 @@ class Enemy extends Entity {
 	var maxHealth as Number = 100;
 	var kill_experience as Number = 10;
 	var name as String = "Enemy";
+	var description as String = "";
 	var level as Number = 1;
 	var experience as Number = 0;
 
 	var attack_cooldown as Number = 2;
 	var curr_attack_cooldown as Number = 0;
+	var teleport_move_cooldown as Number = 0;
+	var teleport_move_cooldown_max as Number = 3;
 
 	function initialize() {
 		Entity.initialize();
+		entityType = :enemy;
 	}
 
 	function setLevel(level as Number) as Void {
 		self.level = level;
-		self.maxHealth = self.maxHealth + 100 * (level - 1);
+		if (level <= 1) {
+			self.current_health = self.maxHealth;
+			return;
+		}
+		var depth_factor = (level - 1).toFloat();
+		self.maxHealth = (self.maxHealth * (1.0 + depth_factor * $.Constants.ENEMY_HEALTH_SCALE)).toNumber();
+		self.damage = (self.damage * (1.0 + depth_factor * $.Constants.ENEMY_DAMAGE_SCALE)).toNumber();
+		self.armor = (self.armor * (1.0 + depth_factor * $.Constants.ENEMY_ARMOR_SCALE)).toNumber();
+		self.kill_experience = (self.kill_experience * (1.0 + depth_factor * $.Constants.ENEMY_XP_SCALE)).toNumber();
 		self.current_health = self.maxHealth;
-		self.damage = self.damage * level/2;
-		self.armor = self.armor * level/2;
-		self.kill_experience = self.kill_experience * level;
 	}
 
 	function hashCode() {
@@ -100,12 +109,12 @@ class Enemy extends Entity {
 		var player = $.Game.getPlayer();
 		if (player.id == 2/*ARCHER*/ && MathUtil.isRandomPercent(25)) {
 			var right_hand_equip = player.getEquip(RIGHT_HAND);
-			if (right_hand_equip instanceof Bow) {
+			if (right_hand_equip != null && right_hand_equip.tag == :bow) {
 				var arrows = new Arrow();
 				arrows.amount = MathUtil.random(2, 5);
 				return arrows;
 			}
-			if (right_hand_equip instanceof CrossBow) {
+			if (right_hand_equip != null && right_hand_equip.tag == :crossbow) {
 				var bolts = new Bolt();
 				bolts.amount = MathUtil.random(2, 5);
 				return bolts;
@@ -128,14 +137,133 @@ class Enemy extends Entity {
 	}
 
 	function followPlayerSimple(map as Map) as Point2D {
-		var next_pos = Pathfinder.findSimplePathToPos(map, pos, $.getApp().getPlayer().getPos());
+		var next_pos = followPlayerDirect(map);
+		Toybox.System.println(name + " moving to " + next_pos);
+		self.next_pos = next_pos;
+		return next_pos;
+	}
+
+	function followPlayerDirect(map as Map) as Point2D {
+		var player_pos = $.getApp().getPlayer().getPos();
+		var next_pos = Pathfinder.findPathToPos(map, pos, player_pos);
+		if (next_pos == null) {
+			next_pos = Pathfinder.findSimplePathToPos(map, pos, player_pos);
+		}
+		if (next_pos == null) {
+			next_pos = self.pos;
+		}
+		self.next_pos = next_pos;
+		return next_pos;
+	}
+
+	function followPlayerFlank(map as Map) as Point2D? {
+		var player_pos = $.getApp().getPlayer().getPos();
+		var flank_targets = [] as Array<Point2D>;
+		var dx = player_pos[0] - pos[0];
+		var dy = player_pos[1] - pos[1];
+
+		if ($.MathUtil.abs(dx) >= $.MathUtil.abs(dy)) {
+			flank_targets.add([player_pos[0], player_pos[1] - 1]);
+			flank_targets.add([player_pos[0], player_pos[1] + 1]);
+		} else {
+			flank_targets.add([player_pos[0] - 1, player_pos[1]]);
+			flank_targets.add([player_pos[0] + 1, player_pos[1]]);
+		}
+
+		var next_pos = Pathfinder.findPathToAnyPos(map, pos, flank_targets);
+		if (next_pos == null) {
+			return followPlayerDirect(map);
+		}
+		return next_pos;
+	}
+
+	function followPlayerUnpredictable(map as Map) as Point2D? {
+		if ($.MathUtil.isRandomPercent(20)) {
+			return Pathfinder.randomMovement(map, pos);
+		}
+		if ($.MathUtil.isRandomPercent(35)) {
+			return Pathfinder.findSimplePathToPos(map, pos, $.getApp().getPlayer().getPos());
+		}
+		return followPlayerDirect(map);
+	}
+
+	function followPlayerFlankSafe(map as Map) as Point2D {
+		var next_pos = followPlayerFlank(map);
 		if (next_pos != null) {
-			Toybox.System.println(name + " moving to " + next_pos);
 			self.next_pos = next_pos;
 			return next_pos;
 		}
-		self.next_pos = self.pos;
-		return self.next_pos;
+		return followPlayerSimple(map);
+	}
+
+	function followPlayerUnpredictableSafe(map as Map) as Point2D {
+		var next_pos = followPlayerUnpredictable(map);
+		if (next_pos != null) {
+			self.next_pos = next_pos;
+			return next_pos;
+		}
+		return followPlayerSimple(map);
+	}
+
+	function followPlayerStrafe(map as Map, clockwise as Boolean) as Point2D {
+		var next_pos = Pathfinder.strafeAroundPlayer(map, pos, clockwise);
+		if (next_pos != null) {
+			self.next_pos = next_pos;
+			return next_pos;
+		}
+		return followPlayerFlankSafe(map);
+	}
+
+	function followPlayerDash(map as Map, max_steps as Number) as Point2D {
+		var next_pos = Pathfinder.dashTowardPlayer(map, pos, max_steps);
+		if (next_pos != null) {
+			self.next_pos = next_pos;
+			return next_pos;
+		}
+		return followPlayerSimple(map);
+	}
+
+	function followPlayerKiting(map as Map, min_distance as Number, max_distance as Number) as Point2D {
+		var next_pos = Pathfinder.keepDistanceToPlayer(map, pos, min_distance, max_distance);
+		if (next_pos != null) {
+			self.next_pos = next_pos;
+			return next_pos;
+		}
+		return followPlayerSimple(map);
+	}
+
+	function followPlayerTeleportBehind(map as Map) as Point2D {
+		if (!canUseTeleportMove()) {
+			return followPlayerFlankSafe(map);
+		}
+		var next_pos = Pathfinder.teleportBehindPlayer(map, pos);
+		if (next_pos != null) {
+			consumeTeleportMoveCooldown();
+			self.next_pos = next_pos;
+			return next_pos;
+		}
+		return followPlayerSimple(map);
+	}
+
+	function followPlayerTeleportFurthest(map as Map) as Point2D {
+		if (!canUseTeleportMove()) {
+			return followPlayerKiting(map, 3, 6);
+		}
+		var next_pos = Pathfinder.teleportToFurthestFromPlayer(map, pos);
+		if (next_pos != null) {
+			consumeTeleportMoveCooldown();
+			self.next_pos = next_pos;
+			return next_pos;
+		}
+		return followPlayerSimple(map);
+	}
+
+	function canUseTeleportMove() as Boolean {
+		return teleport_move_cooldown <= 0;
+	}
+
+	function consumeTeleportMoveCooldown() as Void {
+		teleport_move_cooldown = teleport_move_cooldown_max;
 	}
 
 	function randomMovement(map as Map) as Point2D {
@@ -149,8 +277,12 @@ class Enemy extends Entity {
 	}
 
 	function randomTeleport(map as Map) as Point2D {
+		if (!canUseTeleportMove()) {
+			return followPlayerSimple(map);
+		}
 		var next_pos = Pathfinder.randomTeleport(map, pos);
 		if (next_pos != null) {
+			consumeTeleportMoveCooldown();
 			self.next_pos = next_pos;
 			return next_pos;
 		}
@@ -159,8 +291,12 @@ class Enemy extends Entity {
 	}
 
 	function toPlayerTeleport(map as Map) as Point2D {
+		if (!canUseTeleportMove()) {
+			return followPlayerSimple(map);
+		}
 		var next_pos = Pathfinder.teleportToPlayer(map, pos);
 		if (next_pos != null) {
+			consumeTeleportMoveCooldown();
 			self.next_pos = next_pos;
 			return next_pos;
 		}
@@ -187,6 +323,9 @@ class Enemy extends Entity {
 		has_moved = false;
 		if (curr_attack_cooldown > 0) {
 			curr_attack_cooldown--;
+		}
+		if (teleport_move_cooldown > 0) {
+			teleport_move_cooldown--;
 		}
 	}
 
@@ -231,6 +370,8 @@ class Enemy extends Entity {
 		data["experience"] = experience;
 		data["attack_cooldown"] = attack_cooldown;
 		data["curr_attack_cooldown"] = curr_attack_cooldown;
+		data["teleport_move_cooldown"] = teleport_move_cooldown;
+		data["teleport_move_cooldown_max"] = teleport_move_cooldown_max;
 		return data;
 	}
 
@@ -282,6 +423,12 @@ class Enemy extends Entity {
 		}
 		if (data["curr_attack_cooldown"] != null) {
 			curr_attack_cooldown = data["curr_attack_cooldown"] as Number;
+		}
+		if (data["teleport_move_cooldown"] != null) {
+			teleport_move_cooldown = data["teleport_move_cooldown"] as Number;
+		}
+		if (data["teleport_move_cooldown_max"] != null) {
+			teleport_move_cooldown_max = data["teleport_move_cooldown_max"] as Number;
 		}
 	}
 

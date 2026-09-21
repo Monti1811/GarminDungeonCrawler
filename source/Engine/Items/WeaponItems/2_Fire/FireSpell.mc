@@ -7,7 +7,7 @@ class FireSpell extends Spell {
         Spell.initialize();
         id = 26;
         name = "Fire Spell";
-        description = "A powerful fire spell. If the player has mana available, uses it to perform a more powerful AoE attack.";
+        description = "A fire-imbued grimoire that unleashes scorching AoE blasts when fueled by mana.";
         slot = RIGHT_HAND;
         value = 100;
         weight = 1;

@@ -6,7 +6,7 @@ class WaterKatana extends WeaponItem {
         WeaponItem.initialize();
         id = 54;
         name = "Water Katana";
-        description = "A powerful water katana";
+        description = "A fluid blade that shifts like the ocean's surface.";
         slot = RIGHT_HAND;
         value = 100;
         weight = 4;
@@ -16,7 +16,7 @@ class WaterKatana extends WeaponItem {
             :dexterity => 3
         };
 
-        attack = 14;
+        attack = 7;
         range = 1;
     }
 

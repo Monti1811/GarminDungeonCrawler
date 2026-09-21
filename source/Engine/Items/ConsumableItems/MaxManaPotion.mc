@@ -7,10 +7,11 @@ class MaxManaPotion extends ConsumableItem {
 		ConsumableItem.initialize();
 		self.id = 2005;
 		self.name = "Max Mana Potion";
-		self.description = "An enormous mana potion";
+		self.description = "A massive vessel of concentrated magical power.";
 		self.effect_description = "Restores all mana";
 		self.value = 200;
 		self.weight = 1;
+		self.tag = :mana;
 	}
 
 	function onUseItem(player as Player) as Void {

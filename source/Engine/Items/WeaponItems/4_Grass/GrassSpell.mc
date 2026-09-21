@@ -6,7 +6,7 @@ class GrassSpell extends Spell {
         Spell.initialize();
         id = 46;
         name = "Grass Spell";
-        description = "A powerful grass spell. If the player has mana available, uses it to perform a more powerful AoE attack.";
+        description = "A nature-bound grimoire that unleashes AoE thornstorms when fueled by mana.";
         slot = RIGHT_HAND;
         value = 100;
         weight = 1;
@@ -16,7 +16,7 @@ class GrassSpell extends Spell {
             :luck => 2
         };
 
-        attack = 14;
+        attack = 6;
         range = 3;
         cooldown = 1;
         attack_type = INTELLIGENCE;

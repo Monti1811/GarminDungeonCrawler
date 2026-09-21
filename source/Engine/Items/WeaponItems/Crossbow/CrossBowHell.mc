@@ -7,7 +7,7 @@ class HellCrossBow extends Bow {
 		Bow.initialize();
 		id = 302;
 		name = "Hell Crossbow";
-		description = "A hellish crossbow, can attack every 2 turns.";
+		description = "A sinister crossbow forged in brimstone, fires every 2 turns.";
 		slot = RIGHT_HAND;
 		value = 14;
 		weight = 4;

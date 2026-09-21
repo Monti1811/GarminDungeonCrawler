@@ -2,78 +2,43 @@ import Toybox.Lang;
 
 module Players {
 
-    var players as Dictionary<Number, Symbol> = {
-        0 => :createWarrior,
-        1 => :createMage,
-        2 => :createArcher,
-        3 => :createNameless,
-        4 => :createPaladin,
+    var player_ids as Array<Number> = [0, 1, 2, 3, 4, 999];
 
-        999 => :createGod,
-    };
-
-
-    function createWarrior(name as String?) as Player {
-        if (name == null) {
-            name = "Warrior";
+    function createPlayerFromId(id as Number, name as String?) as Player {
+        switch (id) {
+            case 0:
+                if (name == null) { name = "Warrior"; }
+                return new Warrior(name);
+            case 1:
+                if (name == null) { name = "Mage"; }
+                return new Mage(name);
+            case 2:
+                if (name == null) { name = "Archer"; }
+                return new Archer(name);
+            case 3:
+                if (name == null) { name = "Nameless"; }
+                return new Nameless(name);
+            case 4:
+                if (name == null) { name = "Paladin"; }
+                return new Paladin(name);
+            case 999:
+                if (name == null) { name = "God"; }
+                return new God(name);
+            default:
+                if (name == null) { name = "Warrior"; }
+                return new Warrior(name);
         }
-        return new Warrior(name);
-    }
-
-    function createMage(name as String?) as Player {
-        if (name == null) {
-            name = "Mage";
-        }
-        return new Mage(name);
-    }
-
-    function createArcher(name as String?) as Player {
-        if (name == null) {
-            name = "Archer";
-        }
-        return new Archer(name);
-    }
-
-    function createNameless(name as String?) as Player {
-        if (name == null) {
-            name = "Nameless";
-        }
-        return new Nameless(name);
-    }
-
-    function createPaladin(name as String?) as Player {
-        if (name == null) {
-            name = "Paladin";
-        }
-        return new Paladin(name);
-    }
-
-    function createGod(name as String?) as Player {
-        if (name == null) {
-            name = "God";
-        }
-        return new God(name);
-    }
-
-
-    function createPlayerFromId(id as Number, name as String) as Player {
-        var method = new Lang.Method(self, players[id]);
-        return method.invoke(name) as Player;
     }
 
     function createRandomPlayer(name as String) as Player {
-        var player_keys = players.keys();
-        var rand = MathUtil.random(0, player_keys.size() - 1);
-        var method = new Lang.Method(self, players[player_keys[rand]]);
-        return method.invoke(name) as Player;
+        var rand = MathUtil.random(0, player_ids.size() - 1);
+        return createPlayerFromId(player_ids[rand], name);
     }
 
     function createAllPossibleCharacters() as Array<Player> {
         var all_players = [] as Array<Player>;
-        var player_keys = players.keys();
-        for (var i = 0; i < player_keys.size(); i++) {
-            var method = new Lang.Method(self, players[player_keys[i]]);
-            all_players.add(method.invoke(null) as Player);
+        for (var i = 0; i < player_ids.size(); i++) {
+            all_players.add(createPlayerFromId(player_ids[i], null));
         }
         return all_players;
     }

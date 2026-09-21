@@ -1,5 +1,6 @@
 import Toybox.Lang;
 import Toybox.WatchUi;
+import Toybox.Timer;
 
 class Turn {
 
@@ -9,6 +10,18 @@ class Turn {
     private var _player as Player;
 
     private var _autosave as Boolean = false;
+    private var _combat_timer as Timer.Timer?;
+
+    private var _enemy_queue as Array<Enemy>?;
+    private var _enemy_queue_index as Number = 0;
+    private var _enemy_target_pos as Point2D?;
+    private var _enemy_iteration as Number = 0;
+    private var _is_processing_turn as Boolean = false;
+    private var _turn_counter as Number = 0;
+
+    private const ENEMY_ACTION_DELAY_MS as Number = 50;
+    private const MAX_ENEMY_ITERATIONS as Number = 5;
+    private const AUTOSAVE_INTERVAL as Number = 3;
 
     private var MIN_ENERGY = $.Constants.MIN_ENERGY_PER_TURN;
 
@@ -19,13 +32,23 @@ class Turn {
         // Use provided map data once during construction; afterward, we always fetch via Game.
         _player_pos = map_data[:player_pos] as Point2D;
         _player.setPos(_player_pos);
+
+        _combat_timer = new Timer.Timer();
     }
 
     function setAutoSave(autosave as Boolean) as Void {
         _autosave = autosave;
     }
 
+    function isProcessingTurn() as Boolean {
+        return _is_processing_turn;
+    }
+
     function doTurn(direction as WalkDirection) as Void {
+        if (_is_processing_turn) {
+            return;
+        }
+
         // Remove existing damage texts
         _view.removeDamageTexts();
 
@@ -67,31 +90,21 @@ class Turn {
             resolvePlayerActions(map, new_pos, direction, map_element);
         }
         // Resolve enemy action
-        resolveEnemyActions(room.getEnemies().values(), _player_pos);
-
-        _view.getTimer().start(new Lang.Method(_view, (:removeDamageTexts)), 1000, false);
-
-        // Do stuff after the turn is over
-        _player.onTurnDone();
-        room.onTurnDone();
-
-        if (_autosave) {
-            $.SaveData.saveGame();
-        }
-
-		WatchUi.requestUpdate();
+		startEnemyActionResolution(room, _player_pos);
 	}
 
     // Move the player if nothing is in the waym except for items (which can be interacted with)
     function movePlayer(map as Map, new_pos as Point2D, itemInteraction as Boolean) as Void {
         var content = map.getTileFromPos(new_pos).content;
-        if (content != null && !(content instanceof Item && itemInteraction)) {
+        var isItem = content != null && content has :entityType && content.entityType == :item;
+        if (content != null && !(isItem && itemInteraction)) {
             return; // Cannot move if there's content that's not an interactable item
         }
 
         $.Game.getCurrentRoom().updatePlayerPos(new_pos);
         _player_pos = new_pos;
         _player.setPos(new_pos);
+        _view.setForegroundDirty();
     }
 
     function loadRoom(room as Room) as Void {
@@ -106,25 +119,25 @@ class Turn {
         _player.setPos(_player_pos);
         room.updatePlayerPos(_player_pos);
         _view.setPlayerSpritePos(_player_pos);
+        _view.setForegroundDirty();
         var room_pos = $.Game.getCurrentRoomPosition();
         $.Game.setRoomAsVisited(room_pos);
     }
 
-    private function getNewPlayerPosInNextRoom(next_pos as Point2D, direction as WalkDirection) as Point2D {
+    private function getNewPlayerPosInNextRoom(next_pos as Point2D, direction as WalkDirection, room as Room) as Point2D {
         var new_pos = next_pos;
-        var tile_width = getApp().tile_width;
-		var tile_height = getApp().tile_height;
-        var screen_size_x = Math.ceil(Constants.SCREEN_WIDTH/tile_width).toNumber();
-		var screen_size_y = Math.ceil(Constants.SCREEN_HEIGHT/tile_height).toNumber();
+        var map_size = room.getMap().getSize();
+        var map_width = map_size[0];
+        var map_height = map_size[1];
         switch (direction) {
             case UP:
-                new_pos = [next_pos[0], screen_size_y - 1] as Point2D;
+                new_pos = [next_pos[0], map_height - 1] as Point2D;
                 break;
             case DOWN:
                 new_pos = [next_pos[0], 0] as Point2D;
                 break;
             case LEFT:
-                new_pos = [screen_size_x - 1, next_pos[1]] as Point2D;
+                new_pos = [map_width - 1, next_pos[1]] as Point2D;
                 break;
             case RIGHT:
                 new_pos = [0, next_pos[1]] as Point2D;
@@ -168,7 +181,7 @@ class Turn {
                 $.Game.setCurrentRoom(next_room_name);
                 var next_room = $.Game.getCurrentRoom();
                 // Set the player position to the new room
-                new_pos = getNewPlayerPosInNextRoom(new_pos, direction);
+                new_pos = getNewPlayerPosInNextRoom(new_pos, direction, next_room);
                 next_room.setStartPos(new_pos);
                 loadRoom(next_room);
                 WatchUi.requestUpdate();
@@ -181,6 +194,9 @@ class Turn {
     function freeMemory() as Void {
         _view.freeMemory();
         _view = null;
+        _combat_timer = null;
+        _enemy_queue = null;
+        _enemy_target_pos = null;
     }
 
     function goToNextDungeon() as Void {
@@ -228,7 +244,7 @@ class Turn {
     }
 
     function interactWithItem(map as Map, new_pos as Point2D, map_element as Object?) as Boolean {
-        if (map_element != null && map_element instanceof Item) {
+        if (map_element != null && map_element has :entityType && map_element.entityType == :item) {
             var item = map_element as Item;
             var success = item.canBePickedUp(_player);
             var interaction = item.onInteract(_player, $.Game.getCurrentRoom());
@@ -241,7 +257,7 @@ class Turn {
     }
 
     function checkForNPC(map_element as Object?) as Boolean {
-        if (map_element != null && map_element instanceof NPC) {
+        if (map_element != null && map_element has :entityType && map_element.entityType == :npc) {
             var npc = map_element as NPC;
             npc.onInteract();
             return true;
@@ -249,54 +265,113 @@ class Turn {
         return false;
     }
 
-    function resolveEnemyActions(enemies as Array<Enemy>, target_pos as Point2D) as Void {
-        for (var i = enemies.size() - 1; i >= 0; i--) {
-            var enemy = enemies[i];
-            if (enemy.getEnergy() < MIN_ENERGY) {
-                enemies.remove(enemy);
-            }
-        }
-        // Do enemy actions
-        // Sort enemies by distance to player
-        var comparator = new MapUtil.EnemyDistanceCompare(_player_pos);
-        enemies.sort(comparator);
+    function startEnemyActionResolution(room as Room, target_pos as Point2D) as Void {
+        _is_processing_turn = true;
+        _enemy_target_pos = target_pos;
+        _enemy_iteration = 0;
+        _enemy_queue = buildEnemyQueue(room);
 
-        var room = $.Game.getCurrentRoom();
-        var map = room.getMap();
-        
-        var maxIterations = 10; 
-        var iterations = 0;
-        while (iterations < maxIterations) {
-            for (var i = 0; i < enemies.size(); i++) {
-                var enemy = enemies[i];
-                var curr_pos = enemy.getPos();
-                if (enemy.doAction(map) || 
-                        enemy.attackNearbyPlayer(map, target_pos)) {
-                    enemy.doTurnEnergyDelta(-MIN_ENERGY, 0, 2 * MIN_ENERGY);
-                    if (enemy.energy <= 0) {
-                        enemies.remove(enemy);
-                    }
-                    continue;
-                }	
-                var next_pos = enemy.findNextMove(map);
-                if (next_pos != curr_pos) {
-                    if (MapUtil.isPosPlayer(map, next_pos)) {
-                        Battle.attackPlayer(enemy, _player);
-                        enemy.doTurnEnergyDelta(-MIN_ENERGY, 0, 2 * MIN_ENERGY);
-                        if (enemy.energy <= 0) {
-                            enemies.remove(enemy);
-                        }
-                    } else {
-                        room.moveEnemy(enemy);
-                        enemy.doTurnEnergyDelta(-MIN_ENERGY, 0, 2 * MIN_ENERGY);
-                        if (enemy.energy <= 0) {
-                            enemies.remove(enemy);
-                        }
-                    }
-                }
-            }
-            iterations++;
+        if (_enemy_queue.size() == 0) {
+            finishTurn(room);
+            return;
         }
+
+        _combat_timer.start(method(:onEnemyActionTimer), ENEMY_ACTION_DELAY_MS, false);
+    }
+
+    function buildEnemyQueue(room as Room) as Array<Enemy> {
+        var enemies = room.getEnemies().values();
+        var queue = [] as Array<Enemy>;
+        for (var i = 0; i < enemies.size(); i++) {
+            var enemy = enemies[i] as Enemy;
+            if (enemy.getEnergy() >= MIN_ENERGY) {
+                queue.add(enemy);
+            }
+        }
+
+        var comparator = new MapUtil.EnemyDistanceCompare(_player_pos);
+        queue.sort(comparator);
+        return queue;
+    }
+
+    function onEnemyActionTimer() as Void {
+        var room = $.Game.getCurrentRoom();
+        if (_enemy_queue == null || _enemy_target_pos == null) {
+            finishTurn(room);
+            return;
+        }
+
+        if (_enemy_iteration >= MAX_ENEMY_ITERATIONS) {
+            finishTurn(room);
+            return;
+        }
+
+        if (_enemy_queue.size() == 0 || _enemy_queue_index >= _enemy_queue.size()) {
+            _enemy_iteration += 1;
+            _enemy_queue = buildEnemyQueue(room);
+            _enemy_queue_index = 0;
+            if (_enemy_queue.size() == 0) {
+                finishTurn(room);
+                return;
+            }
+        }
+
+        var enemy = _enemy_queue[_enemy_queue_index];
+        _enemy_queue_index++;
+        processEnemyAction(room, enemy, _enemy_target_pos);
+        WatchUi.requestUpdate();
+
+        _combat_timer.start(method(:onEnemyActionTimer), ENEMY_ACTION_DELAY_MS, false);
+    }
+
+    function processEnemyAction(room as Room, enemy as Enemy, target_pos as Point2D) as Void {
+        if (enemy.getEnergy() < MIN_ENERGY) {
+            return;
+        }
+
+        var map = room.getMap();
+        var curr_pos = enemy.getPos();
+
+        if (enemy.doAction(map) || enemy.attackNearbyPlayer(map, target_pos)) {
+            enemy.doTurnEnergyDelta(-MIN_ENERGY, 0, 2 * MIN_ENERGY);
+            _view.setForegroundDirty();
+            return;
+        }
+
+        var next_pos = enemy.findNextMove(map) as Point2D?;
+        if (next_pos == null) {
+            return;
+        }
+        if (next_pos != curr_pos) {
+            if (MapUtil.isPosPlayer(map, next_pos)) {
+                Battle.attackPlayer(enemy, _player);
+                enemy.doTurnEnergyDelta(-MIN_ENERGY, 0, 2 * MIN_ENERGY);
+                _view.setForegroundDirty();
+            } else {
+                room.moveEnemy(enemy);
+                enemy.doTurnEnergyDelta(-MIN_ENERGY, 0, 2 * MIN_ENERGY);
+                _view.setForegroundDirty();
+            }
+        }
+    }
+
+    function finishTurn(room as Room) as Void {
+        _view.getTimer().start(new Lang.Method(_view, (:removeDamageTexts)), 1000, false);
+
+        _player.onTurnDone();
+        room.onTurnDone();
+
+        _turn_counter++;
+        if (_autosave && _turn_counter >= AUTOSAVE_INTERVAL) {
+            $.SaveData.saveGame();
+            _turn_counter = 0;
+        }
+
+        _is_processing_turn = false;
+        _enemy_queue = null;
+        _enemy_queue_index = 0;
+        _enemy_target_pos = null;
+        WatchUi.requestUpdate();
     }
         
 

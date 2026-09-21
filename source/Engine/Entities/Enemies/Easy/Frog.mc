@@ -8,8 +8,9 @@ class Frog extends Enemy {
 		Enemy.initialize();
 		id = 0;
 		name = "Frog";
+		description = "A small magical frog found in dungeon ponds.";
 		energy_per_turn = 50; // every 2 turns
-		damage = 10;
+		damage = 6;
 		current_health = 35;
 		maxHealth = current_health;
 		armor = 0;
@@ -20,17 +21,25 @@ class Frog extends Enemy {
 		return $.Rez.Drawables.Frog;
 	}
 
-	function findNextMove(map as Map) as Point2D {
-		var direction = move_up ? -1 : 1;
-		var new_pos = [pos[0], pos[1] + direction];
-		
-		if (MapUtil.canMoveToPoint(map, new_pos)) {
-			self.next_pos = new_pos;
-			return new_pos;
+	function getPassablePosOrOpposite(map as Map, direction as Number) as Point2D {
+		var preferred_pos = [pos[0], pos[1] + direction];
+		if (MapUtil.canMoveToPoint(map, preferred_pos)) {
+			return preferred_pos;
 		}
 
-		self.next_pos = pos;
+		var opposite_pos = [pos[0], pos[1] - direction];
+		if (MapUtil.canMoveToPoint(map, opposite_pos)) {
+			return opposite_pos;
+		}
+
 		return pos;
+	}
+
+	function findNextMove(map as Map) as Point2D {
+		var direction = move_up ? -1 : 1;
+		var new_pos = getPassablePosOrOpposite(map, direction);
+		self.next_pos = new_pos;
+		return new_pos;
 	}
 
 	function onTurnDone() as Void {

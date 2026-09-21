@@ -51,6 +51,7 @@ class Player extends Entity {
 
 	function initialize() {
 		Entity.initialize();
+		entityType = :player;
 	}
 
 	function hashCode() {
@@ -114,7 +115,7 @@ class Player extends Entity {
 
 	function pickupItem(item as Item) as Boolean {
 		if (item.canBePickedUp(me)) {
-			if (item instanceof EquippableItem && 
+			if (item.slot != NONE && 
 					equipped[item.slot] == null &&
 					equipItem(item, item.slot, false)) {
 				item.onPickupItem(me);
@@ -129,7 +130,7 @@ class Player extends Entity {
 
 	function addInventoryItem(item as Item) as Boolean {
 		if (!inventory.wouldBeFull(item)) {
-			if (item.type == WEAPON && item instanceof Ammunition) {
+			if (item.type == WEAPON && item.slot == AMMUNITION) {
 				// If the ammunition is the same as the currently equipped, add to that stack
 				if (isSameAmmunition(item)) {
 					equipped[AMMUNITION].amount += item.amount;
@@ -184,7 +185,7 @@ class Player extends Entity {
 		level++;
 		experience -= next_level_experience;
 		next_level_experience = level * 100;
-		attribute_points += 3;
+		attribute_points += 5;
 	}
 
 	function getLevel() as Number {
@@ -194,7 +195,7 @@ class Player extends Entity {
 	function onDeath() as Void {
 		// Check if a life amulet was equipped
 		var accessory = equipped[ACCESSORY] as Item?;
-		if (accessory != null && accessory instanceof LifeAmulet) {
+		if (accessory != null && accessory.id == 1300) {
 			var amulet = accessory as LifeAmulet;
 			amulet.onDeath(me);
 			return;		
@@ -378,20 +379,26 @@ class Player extends Entity {
 
 	function getDefense(enemy as Enemy?) as Number {
 		var base_defense = attributes[:constitution];
-		var armors = [
-			equipped[HEAD] as ArmorItem?,
-			equipped[CHEST] as ArmorItem?,
-			equipped[BACK] as ArmorItem?,
-			equipped[LEGS] as ArmorItem?,
-			equipped[FEET] as ArmorItem?,
-			equipped[ACCESSORY] as ArmorItem?,
-			getArmorItem(LEFT_HAND),
-			getArmorItem(RIGHT_HAND),
-		];
-
-		var armors_size = armors.size();
+		var armors_size = 8;
 		for (var i = 0; i < armors_size; i++) {
-			var armor = armors[i];
+			var armor = null as ArmorItem?;
+			if (i == 0) {
+				armor = equipped[HEAD] as ArmorItem?;
+			} else if (i == 1) {
+				armor = equipped[CHEST] as ArmorItem?;
+			} else if (i == 2) {
+				armor = equipped[BACK] as ArmorItem?;
+			} else if (i == 3) {
+				armor = equipped[LEGS] as ArmorItem?;
+			} else if (i == 4) {
+				armor = equipped[FEET] as ArmorItem?;
+			} else if (i == 5) {
+				armor = equipped[ACCESSORY] as ArmorItem?;
+			} else if (i == 6) {
+				armor = getArmorItem(LEFT_HAND);
+			} else if (i == 7) {
+				armor = getArmorItem(RIGHT_HAND);
+			}
 			if (armor != null) {
 				base_defense += armor.getDefense(enemy, armors_size);
 			}
@@ -617,7 +624,12 @@ class Player extends Entity {
 	}
 
 	function freeMemory() as Void {
-		
+		inventory = new Inventory(0);
+		equipped = {};
+		attributes = {};
+		added_attributes = {};
+		elemental_effects = null;
+		_sprite_ref = null;
 	}
 
 }

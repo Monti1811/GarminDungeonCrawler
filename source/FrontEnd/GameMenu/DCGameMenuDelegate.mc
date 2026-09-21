@@ -96,7 +96,7 @@ class DCGameMenuDelegate extends WatchUi.Menu2InputDelegate {
         var inventory = player.getInventory();
         var weight_items = inventory.getCurrentItemWeight() as Numeric;
         var max_weight_items = inventory.getMaxItemWeight() as Numeric;
-        var inventoryMenu = new WatchUi.Menu2({:title=>"Inventory (" + weight_items.format("%.1f") + "/" + max_weight_items + ")"});
+        var inventoryMenu = new WatchUi.Menu2({:title=>new InventoryTitleDrawable(weight_items, max_weight_items)});
         inventoryMenu.addItem(new WatchUi.MenuItem(
             "Filter/Sort", 
             inventory_filter_str + "/" + inventory_sort + " " + inventory_sort_type, 
@@ -156,6 +156,7 @@ class DCGameMenuDelegate extends WatchUi.Menu2InputDelegate {
     function openDebug() as Void {
         var debugMenu = new WatchUi.Menu2({:title=>"Debug"});
         debugMenu.addItem(new WatchUi.MenuItem("Enemies", "Spawn enemies", :debug_enemies, null));
+        debugMenu.addItem(new WatchUi.MenuItem("NPCs", "Spawn NPCs", :debug_npcs, null));
         debugMenu.addItem(new WatchUi.MenuItem("Items", "Spawn items", :debug_items, null));
         debugMenu.addItem(new WatchUi.MenuItem("Player Stats", "Modify player state", :debug_player, null));
         WatchUi.pushView(debugMenu, new DCDebugMenuDelegate(), WatchUi.SLIDE_UP);
@@ -173,6 +174,23 @@ class DCGameMenuDelegate extends WatchUi.Menu2InputDelegate {
     }
 }
 
+class GameMenuIconDrawable extends WatchUi.Drawable {
+    
+    private var _icon as BitmapReference;
+
+    function initialize(icon as BitmapReference) {
+        Drawable.initialize({});
+        _icon = icon;
+    }
+
+    function draw(dc as Toybox.Graphics.Dc) as Void {
+        var x = ($.Constants.SCREEN_WIDTH * 15 / 360).toNumber();
+        var y = ($.Constants.SCREEN_HEIGHT * 25 / 360).toNumber();
+        var s = ($.Constants.SCREEN_WIDTH * 32 / 360).toNumber();
+        dc.drawScaledBitmap(x, y, s, s, _icon);
+    }
+}
+
 class DCItemIcon extends WatchUi.Drawable {
     
     private var _icon as BitmapReference;
@@ -183,7 +201,10 @@ class DCItemIcon extends WatchUi.Drawable {
     }
 
     function draw(dc as Toybox.Graphics.Dc) as Void {
-        dc.drawScaledBitmap(15, 25, 32, 32, _icon);
+        var x = ($.Constants.SCREEN_WIDTH * 15 / 360).toNumber();
+        var y = ($.Constants.SCREEN_HEIGHT * 25 / 360).toNumber();
+        var s = ($.Constants.SCREEN_WIDTH * 32 / 360).toNumber();
+        dc.drawScaledBitmap(x, y, s, s, _icon);
     }
 }
 
@@ -203,12 +224,18 @@ class DCInventoryDelegate extends WatchUi.Menu2InputDelegate {
         }
         item = item.getId() as Item;
         var menuitems = [] as Array<MenuItem>;
-        if (item instanceof WeaponItem || item instanceof ArmorItem) {
+        if (item.type == WEAPON || item.type == ARMOR) {
             menuitems.add(new WatchUi.MenuItem("Equip", null, :equip, null));
             menuitems.add(new WatchUi.MenuItem("Drop", null, :drop, null));
             menuitems.add(new WatchUi.MenuItem("Info", "More information", :info, null));
-        } else if (item instanceof ConsumableItem) {
+        } else if (item.type == CONSUMABLE) {
             menuitems.add(new WatchUi.MenuItem("Use", null, :use, null));
+            menuitems.add(new WatchUi.MenuItem("Drop", null, :drop, null));
+            menuitems.add(new WatchUi.MenuItem("Info", "More information", :info, null));
+        } else if (item.type == KEY) {
+            menuitems.add(new WatchUi.MenuItem("Drop", null, :drop, null));
+            menuitems.add(new WatchUi.MenuItem("Info", "More information", :info, null));
+        } else if (item.type == CUSTOM) {
             menuitems.add(new WatchUi.MenuItem("Drop", null, :drop, null));
             menuitems.add(new WatchUi.MenuItem("Info", "More information", :info, null));
         }

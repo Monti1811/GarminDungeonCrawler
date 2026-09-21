@@ -7,9 +7,28 @@ class DCItemInfoValuesView extends WatchUi.View {
 	private var _item as Item;
 	private var _item_type as ItemType;
 
-	private var distance_lines as Number;
+	private var _bgBitmap as BitmapReference;
+	private var _itemIcon as BitmapReference;
+	private var _small_font as FontResource;
+	private var _overlayTop as BitmapReference?;
+	private var _overlayBottom as BitmapReference?;
+	private var _ref as Number;
+	private var _bgX as Number;
+	private var _bgY as Number;
 
-	private var small_font as FontResource;
+	private const GOLD_COLOR = 0xFFD700;
+
+	private const ATTR_LEFT = [
+		:strength,
+		:constitution,
+		:dexterity
+	] as Array<Symbol>;
+
+	private const ATTR_RIGHT = [
+		:intelligence,
+		:wisdom,
+		:charisma
+	] as Array<Symbol>;
 
 	private const item_fn = {
 		WEAPON => :showWeaponStats,
@@ -18,164 +37,276 @@ class DCItemInfoValuesView extends WatchUi.View {
 		KEY => :showKeyStats,
 		CUSTOM => :showCustomStats,
 	} as Dictionary<ItemType, Symbol>;
-	private var fn as Method;
+	private var _fn as Method;
 
-    function initialize(item as Item) {
+	function initialize(item as Item) {
 		View.initialize();
 		_item = item;
 		_item_type = item.getItemType();
-		fn = method(item_fn[_item_type]);
-		small_font = WatchUi.loadResource($.Rez.Fonts.small);
-		distance_lines = ($.Constants.SCREEN_HEIGHT * 35 / 360).toNumber();
-	}
+		_fn = method(item_fn[_item_type]);
 
+		// Hintergrundbild je nach Item-Typ laden
+		if (_item_type == CONSUMABLE) {
+			_bgBitmap = WatchUi.loadResource($.Rez.Drawables.itemInfoMenuConsumable) as BitmapReference;
+		} else if (_item_type == WEAPON) {
+			_bgBitmap = WatchUi.loadResource($.Rez.Drawables.itemInfoMenuEmptyRound) as BitmapReference;
+			_overlayTop = WatchUi.loadResource($.Rez.Drawables.itemInfoMenuWeaponIcon) as BitmapReference;
+			_overlayBottom = WatchUi.loadResource($.Rez.Drawables.itemInfoMenuDamageIcon) as BitmapReference;
+		} else if (_item_type == ARMOR) {
+			_bgBitmap = WatchUi.loadResource($.Rez.Drawables.itemInfoMenuEmptyRound) as BitmapReference;
+			_overlayTop = WatchUi.loadResource($.Rez.Drawables.itemInfoMenuShieldIcon) as BitmapReference;
+			_overlayBottom = WatchUi.loadResource($.Rez.Drawables.itemInfoMenuShieldIcon) as BitmapReference;
+		} else if (_item_type == KEY) {
+			_bgBitmap = WatchUi.loadResource($.Rez.Drawables.itemInfoMenuKeyItem) as BitmapReference;
+		} else {
+			_bgBitmap = WatchUi.loadResource($.Rez.Drawables.itemInfoMenu) as BitmapReference;
+		}
+
+		_itemIcon = WatchUi.loadResource(item.getSprite()) as BitmapReference;
+		_small_font = WatchUi.loadResource($.Rez.Fonts.small) as FontResource;
+		_ref = Constants.SCREEN_WIDTH < Constants.SCREEN_HEIGHT ? Constants.SCREEN_WIDTH : Constants.SCREEN_HEIGHT;
+		_bgX = ((Constants.SCREEN_WIDTH - _ref) / 2).toNumber();
+		_bgY = ((Constants.SCREEN_HEIGHT - _ref) / 2).toNumber();
+	}
 
 	function onUpdate(dc) {
+		dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_BLACK);
 		dc.clear();
-		fn.invoke(dc);
-	}
 
-	function drawText(dc, text, counter, x_start, font as Graphics.FontType?, distance as Number?) {
-		if (font == null) {
-			font = Graphics.FONT_XTINY;
+		dc.drawScaledBitmap(_bgX, _bgY, _ref, _ref, _bgBitmap);
+
+		// Overlays für Waffen/Rüstung zeichnen
+		if (_overlayTop != null) {
+			var top_x = (_bgX + _ref * 164 / 360).toNumber();
+			var top_y = (_bgY + _ref * 28 / 360).toNumber();
+			var top_w = (_overlayTop.getWidth() * _ref / 360).toNumber();
+			var top_h = (_overlayTop.getHeight() * _ref / 360).toNumber();
+			dc.drawScaledBitmap(top_x, top_y, top_w, top_h, _overlayTop);
 		}
-		if (distance == null) {
-			distance = distance_lines;
+		if (_overlayBottom != null) {
+			var bot_x = (_bgX + _ref * 159 / 360).toNumber();
+			var bot_y = (_bgY + _ref * 102 / 360).toNumber();
+			var bot_w = (_overlayBottom.getWidth() * _ref / 360).toNumber();
+			var bot_h = (_overlayBottom.getHeight() * _ref / 360).toNumber();
+			dc.drawScaledBitmap(bot_x, bot_y, bot_w, bot_h, _overlayBottom);
 		}
-		var base_y = ($.Constants.SCREEN_HEIGHT * 90 / 360).toNumber();
-		dc.drawText(x_start, base_y + distance * counter, font, text, Graphics.TEXT_JUSTIFY_LEFT);
+
+		drawItemIcon(dc);
+		drawHeader(dc);
+		_fn.invoke(dc);
 	}
 
-	function drawCommonAttributes(dc, text_left, text_right, counter, distance) as Void {
-		var x_left = ($.Constants.SCREEN_WIDTH * 80 / 360).toNumber();
-		var x_right = ($.Constants.SCREEN_WIDTH / 2).toNumber();
-		var base_y = ($.Constants.SCREEN_HEIGHT * 70 / 360).toNumber();
-		dc.drawText(x_left, base_y + distance * counter, Graphics.FONT_XTINY, text_left, Graphics.TEXT_JUSTIFY_LEFT);
-		dc.drawText(x_right, base_y + distance * counter, Graphics.FONT_XTINY, text_right, Graphics.TEXT_JUSTIFY_LEFT);
+	// --- Header: Item Name + Item Type ---
+	function drawHeader(dc) {
+		var text_x = (Constants.SCREEN_WIDTH / 2).toNumber();
+		var name_y = (_bgY + _ref * 72 / 360).toNumber();
+		var type_y = (_bgY + _ref * 93 / 360).toNumber();
+
+		dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+		dc.drawText(text_x, name_y, Graphics.FONT_TINY, _item.getName(), Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
+
+		var type_str = $.Constants.ITEMTYPE_TO_STR[_item_type] as String;
+		dc.setColor(GOLD_COLOR, Graphics.COLOR_TRANSPARENT);
+		dc.drawText(text_x, type_y, _small_font, type_str, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
 	}
 
-	function drawAttributes(dc, text_left, text_right, counter, distance, x_axis as Number) as Void {
-		var base_y = ($.Constants.SCREEN_HEIGHT * 230 / 360).toNumber();
-		var offset_x = ($.Constants.SCREEN_WIDTH * 40 / 360).toNumber();
-		dc.drawText(x_axis, base_y + distance * counter, small_font, text_left, Graphics.TEXT_JUSTIFY_LEFT);
-		dc.drawText(x_axis + offset_x, base_y + distance * counter, small_font, text_right, Graphics.TEXT_JUSTIFY_LEFT);
+	// --- Item-Icon im blauen Rahmen ---
+	function drawItemIcon(dc) {
+		var x = (_bgX + _ref * 68 / 360).toNumber();
+		var y = (_bgY + _ref * 116 / 360).toNumber();
+		var size = (_ref * 64 / 360).toNumber();
+		dc.drawScaledBitmap(x, y, size, size, _itemIcon);
 	}
 
-	function drawAttributeTable(dc as Dc) {
-		var rect_x = ($.Constants.SCREEN_WIDTH * 90 / 360).toNumber();
-		var rect_y = ($.Constants.SCREEN_HEIGHT * 230 / 360).toNumber();
-		var rect_w = ($.Constants.SCREEN_WIDTH * 175 / 360).toNumber();
-		var rect_h = ($.Constants.SCREEN_HEIGHT * 65 / 360).toNumber();
-		dc.drawRectangle(rect_x, rect_y, rect_w, rect_h);
+	// --- 3 Stat-Werte rechts (nur Werte) ---
+	function drawStats(dc) {
+		var x_val = (_bgX + _ref * 305 / 360).toNumber();
+		var y1 = (_bgY + _ref * 119 / 360).toNumber();
+		var y2 = (_bgY + _ref * 148 / 360).toNumber();
+		var y3 = (_bgY + _ref * 175 / 360).toNumber();
 
-	}
+		dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
 
-	function showWeaponStats(dc) {
-		var weapon = _item as WeaponItem;
-		drawCommonAttributes(dc, "Damage", ": " + weapon.getBaseAttack(), 0, 30);
-		drawCommonAttributes(dc, "Equip Slot", ": " + $.Constants.EQUIPSLOT_TO_STR[weapon.getItemSlot()], 1, 30);
-		drawCommonAttributes(dc, "Value", ": " + weapon.getValue(), 2, 30);
-		drawCommonAttributes(dc, "Weight", ": " + weapon.getWeight(), 3, 30);
-		var attribute_bonus = weapon.getAllAttributeBonuses();
-		var bonus_keys = attribute_bonus.keys() as Array<Symbol>;
-		if (bonus_keys.size() > 0) {
-			var title_x = ($.Constants.SCREEN_WIDTH / 2).toNumber();
-			var title_y = ($.Constants.SCREEN_HEIGHT * 195 / 360).toNumber();
-			dc.drawText(title_x, title_y, Graphics.FONT_XTINY, "Attribute Bonus: ", Graphics.TEXT_JUSTIFY_CENTER);
-			drawAttributeTable(dc);
-			var attribute_keys = [
-				:strength,
-				:constitution,
-				:dexterity,
-				:intelligence,
-				:wisdom,
-				:charisma,
-				:luck
-			];
-			var x_left = ($.Constants.SCREEN_WIDTH * 107 / 360).toNumber();
-			var x_center = ($.Constants.SCREEN_WIDTH * 150 / 360).toNumber();
-			var x_right = ($.Constants.SCREEN_WIDTH * 187 / 360).toNumber();
-			for (var i = 0; i < attribute_keys.size(); i++) {
-				var symbol = attribute_keys[i];
-				var attribute_bonus_value = weapon.getAttributeBonus(symbol);
-				if (attribute_bonus_value > 0) {
-					attribute_bonus_value = "+" + attribute_bonus_value;
-				}
-				if (i == 6) {
-					drawAttributes(dc, $.Constants.ATT_SYMBOL_TO_STR_SHORT[symbol], ": " + attribute_bonus_value, 3, 15, x_center);
-				} else if (i < 3) {
-					drawAttributes(dc, $.Constants.ATT_SYMBOL_TO_STR_SHORT[symbol], ": " + attribute_bonus_value, i % 3, 15, x_left);
-				} else {
-					drawAttributes(dc, $.Constants.ATT_SYMBOL_TO_STR_SHORT[symbol], ": " + attribute_bonus_value, i % 3, 15, x_right);
-				}
+		if (_item_type == WEAPON) {
+			var weapon = _item as WeaponItem;
+			dc.drawText(x_val, y1, Graphics.FONT_XTINY, "" + weapon.getBaseAttack(), Graphics.TEXT_JUSTIFY_RIGHT | Graphics.TEXT_JUSTIFY_VCENTER);
+			dc.drawText(x_val, y2, Graphics.FONT_XTINY, "" + weapon.getValue(), Graphics.TEXT_JUSTIFY_RIGHT | Graphics.TEXT_JUSTIFY_VCENTER);
+			dc.drawText(x_val, y3, Graphics.FONT_XTINY, "" + weapon.getWeight(), Graphics.TEXT_JUSTIFY_RIGHT | Graphics.TEXT_JUSTIFY_VCENTER);
+		} else if (_item_type == ARMOR) {
+			var armor = _item as ArmorItem;
+			dc.drawText(x_val, y1, Graphics.FONT_XTINY, "" + armor.getBaseDefense(), Graphics.TEXT_JUSTIFY_RIGHT | Graphics.TEXT_JUSTIFY_VCENTER);
+			dc.drawText(x_val, y2, Graphics.FONT_XTINY, "" + armor.getValue(), Graphics.TEXT_JUSTIFY_RIGHT | Graphics.TEXT_JUSTIFY_VCENTER);
+			dc.drawText(x_val, y3, Graphics.FONT_XTINY, "" + armor.getWeight(), Graphics.TEXT_JUSTIFY_RIGHT | Graphics.TEXT_JUSTIFY_VCENTER);
+		} else if (_item_type == CONSUMABLE) {
+			var consumable = _item as ConsumableItem;
+			// Zeile 1: Type (Health/Mana)
+			var consumable_type = "None";
+			switch (_item.tag) {
+				case :mana:
+					consumable_type = "Mana";
+					break;
+				case :health:
+					consumable_type = "Health";
+					break;
+				default:
+					consumable_type = "None";
 			}
+			if (_item.tag == :mana) {
+				consumable_type = "Mana";
+			}
+			dc.drawText(x_val, y1, Graphics.FONT_XTINY, consumable_type, Graphics.TEXT_JUSTIFY_RIGHT | Graphics.TEXT_JUSTIFY_VCENTER);
+			// Zeile 2: Value
+			dc.drawText(x_val, y2, Graphics.FONT_XTINY, "" + consumable.getValue(), Graphics.TEXT_JUSTIFY_RIGHT | Graphics.TEXT_JUSTIFY_VCENTER);
+			// Zeile 3: Weight
+			dc.drawText(x_val, y3, Graphics.FONT_XTINY, "" + consumable.getWeight(), Graphics.TEXT_JUSTIFY_RIGHT | Graphics.TEXT_JUSTIFY_VCENTER);
+		} else if (_item_type == KEY) {
+			var delta = (_ref * 12 / 360).toNumber();
+			dc.drawText(x_val, y1 + delta, Graphics.FONT_XTINY, _item.getValue(), Graphics.TEXT_JUSTIFY_RIGHT | Graphics.TEXT_JUSTIFY_VCENTER);
+			dc.drawText(x_val, y2 + delta, Graphics.FONT_XTINY, "" + _item.getWeight(), Graphics.TEXT_JUSTIFY_RIGHT | Graphics.TEXT_JUSTIFY_VCENTER);
+		}
+	}
+
+	// --- Equip Slot unter dem Icon ---
+	function drawEquipSlot(dc) {
+		var x = (_bgX + _ref * 109 / 360).toNumber();
+		var y = (_bgY + _ref * 198 / 360).toNumber();
+
+		var slot_name = "";
+		if (_item_type == WEAPON) {
+			slot_name = $.Constants.EQUIPSLOT_TO_STR[(_item as WeaponItem).getItemSlot()];
+		} else if (_item_type == ARMOR) {
+			slot_name = $.Constants.EQUIPSLOT_TO_STR[(_item as ArmorItem).getItemSlot()];
 		}
 
+		dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+		dc.drawText(x, y, _small_font, slot_name, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
+	}
+
+	// --- Attribute Bonus (nur Werte) ---
+	function drawAttributeBonuses(dc) {
+		if (_item_type != WEAPON && _item_type != ARMOR) {
+			return;
+		}
+		var equippable = _item as EquippableItem;
+		var bonus = equippable.getAllAttributeBonuses();
+		if (bonus == null || bonus.size() == 0) {
+			return;
+		}
+
+		var x_left = (_bgX + _ref * 158 / 360).toNumber();
+		var x_right = (_bgX + _ref * 284 / 360).toNumber();
+
+		var y_rows = [
+			(_bgY + _ref * 245 / 360).toNumber(),
+			(_bgY + _ref * 263 / 360).toNumber(),
+			(_bgY + _ref * 281 / 360).toNumber()
+		] as Array<Number>;
+		var y_lck = (_bgY + _ref * 305 / 360).toNumber();
+
+		// Linke Spalte: STR, CON, DEX
+		for (var i = 0; i < 3; i++) {
+			var val = equippable.getAttributeBonus(ATTR_LEFT[i]);
+			var val_str = "" + val;
+			if (val > 0) {
+				val_str = "+" + val;
+				dc.setColor(Graphics.COLOR_GREEN, Graphics.COLOR_TRANSPARENT);
+			} else if (val < 0) {
+				dc.setColor(Graphics.COLOR_RED, Graphics.COLOR_TRANSPARENT);
+			} else {
+				dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+			}
+			dc.drawText(x_left, y_rows[i], _small_font, val_str, Graphics.TEXT_JUSTIFY_RIGHT | Graphics.TEXT_JUSTIFY_VCENTER);
+		}
+
+		// Rechte Spalte: INT, WIS, CHA
+		for (var i = 0; i < 3; i++) {
+			var val = equippable.getAttributeBonus(ATTR_RIGHT[i]);
+			var val_str = "" + val;
+			if (val > 0) {
+				val_str = "+" + val;
+				dc.setColor(Graphics.COLOR_GREEN, Graphics.COLOR_TRANSPARENT);
+			} else if (val < 0) {
+				dc.setColor(Graphics.COLOR_RED, Graphics.COLOR_TRANSPARENT);
+			} else {
+				dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+			}
+			dc.drawText(x_right, y_rows[i], _small_font, val_str, Graphics.TEXT_JUSTIFY_RIGHT | Graphics.TEXT_JUSTIFY_VCENTER);
+		}
+
+		// LCK zentriert unten
+		var lck_val = equippable.getAttributeBonus(:luck);
+		var lck_str = "" + lck_val;
+		if (lck_val > 0) {
+			lck_str = "+" + lck_val;
+			dc.setColor(Graphics.COLOR_GREEN, Graphics.COLOR_TRANSPARENT);
+		} else if (lck_val < 0) {
+			dc.setColor(Graphics.COLOR_RED, Graphics.COLOR_TRANSPARENT);
+		} else {
+			dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+		}
+		var lck_x = (_bgX + _ref * 214 / 360).toNumber();
+		dc.drawText(lck_x, y_lck, _small_font, lck_str, Graphics.TEXT_JUSTIFY_RIGHT | Graphics.TEXT_JUSTIFY_VCENTER);
+	}
+
+	// --- Effect Description für Consumables ---
+	function drawEffectDescription(dc) {
+		if (_item_type != CONSUMABLE) {
+			return;
+		}
+		var consumable = _item as ConsumableItem;
+		var effect = consumable.getEffectDescription();
+
+		var text_x = (Constants.SCREEN_WIDTH / 2).toNumber();
+		var text_y = (_bgY + _ref * 265 / 360).toNumber();
+		var area_w = (_ref * 280 / 360).toNumber();
+		var area_h = (_ref * 80 / 360).toNumber();
+
+		dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+		var formatted = Graphics.fitTextToArea(effect, _small_font, area_w, area_h, true);
+		dc.drawText(text_x, text_y, _small_font, formatted, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
+	}
+
+	// --- Effect Description für Key Items ---
+	function drawKeyDescription(dc) {
+		if (_item_type != KEY) {
+			return;
+		}
+		var key_item = _item as KeyItem;
+		var effect = key_item.getDescription();
+
+		var text_x = (Constants.SCREEN_WIDTH / 2).toNumber();
+		var text_y = (_bgY + _ref * 265 / 360).toNumber();
+		var area_w = (_ref * 280 / 360).toNumber();
+		var area_h = (_ref * 80 / 360).toNumber();
+
+		dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+		var formatted = Graphics.fitTextToArea(effect, _small_font, area_w, area_h, true);
+		dc.drawText(text_x, text_y, _small_font, formatted, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
+	}
+
+
+	// --- Typspezifische Stats ---
+	function showWeaponStats(dc) {
+		drawStats(dc);
+		drawEquipSlot(dc);
+		drawAttributeBonuses(dc);
 	}
 
 	function showArmorStats(dc) {
-		var armor = _item as ArmorItem;
-		drawCommonAttributes(dc, "Defense", ": " + armor.getBaseDefense(), 0, 30);
-		drawCommonAttributes(dc, "Equip Slot", ": " + $.Constants.EQUIPSLOT_TO_STR[armor.getItemSlot()], 1, 30);
-		drawCommonAttributes(dc, "Value", ": " + armor.getValue(), 2, 30);
-		drawCommonAttributes(dc, "Weight", ": " + armor.getWeight(), 3, 30);
-		var attribute_bonus = armor.getAllAttributeBonuses();
-		var bonus_keys = attribute_bonus.keys() as Array<Symbol>;
-		if (bonus_keys.size() > 0) {
-			var title_x = ($.Constants.SCREEN_WIDTH / 2).toNumber();
-			var title_y = ($.Constants.SCREEN_HEIGHT * 195 / 360).toNumber();
-			dc.drawText(title_x, title_y, Graphics.FONT_XTINY, "Attribute Bonus: ", Graphics.TEXT_JUSTIFY_CENTER);
-			drawAttributeTable(dc);
-			var attribute_keys = [
-				:strength,
-				:constitution,
-				:dexterity,
-				:intelligence,
-				:wisdom,
-				:charisma,
-				:luck
-			];
-			var x_left = ($.Constants.SCREEN_WIDTH * 107 / 360).toNumber();
-			var x_center = ($.Constants.SCREEN_WIDTH * 150 / 360).toNumber();
-			var x_right = ($.Constants.SCREEN_WIDTH * 187 / 360).toNumber();
-			for (var i = 0; i < attribute_keys.size(); i++) {
-				var symbol = attribute_keys[i];
-				var attribute_bonus_value = armor.getAttributeBonus(symbol);
-				if (attribute_bonus_value > 0) {
-					attribute_bonus_value = "+" + attribute_bonus_value;
-				}
-				if (i == 6) {
-					drawAttributes(dc, $.Constants.ATT_SYMBOL_TO_STR_SHORT[symbol], ": " + attribute_bonus_value, 3, 15, x_center);
-				} else if (i < 3) {
-					drawAttributes(dc, $.Constants.ATT_SYMBOL_TO_STR_SHORT[symbol], ": " + attribute_bonus_value, i % 3, 15, x_left);
-				} else {
-					drawAttributes(dc, $.Constants.ATT_SYMBOL_TO_STR_SHORT[symbol], ": " + attribute_bonus_value, i % 3, 15, x_right);
-				}
-			}
-		}
+		drawStats(dc);
+		drawEquipSlot(dc);
+		drawAttributeBonuses(dc);
 	}
 
 	function showConsumableStats(dc) {
-		var consumable = _item as ConsumableItem;
-		drawCommonAttributes(dc, "Value", ": " + consumable.getValue(), 0, 30);
-		drawCommonAttributes(dc, "Weight", ": " + consumable.getWeight(), 1, 30);
-		var text_x = ($.Constants.SCREEN_WIDTH / 2).toNumber();
-		var text_y1 = ($.Constants.SCREEN_HEIGHT * 155 / 360).toNumber();
-		var text_y2 = ($.Constants.SCREEN_HEIGHT / 2).toNumber();
-		var area_w = ($.Constants.SCREEN_WIDTH * 260 / 360).toNumber();
-		var area_h = ($.Constants.SCREEN_HEIGHT * 130 / 360).toNumber();
-		dc.drawText(text_x, text_y1, Graphics.FONT_XTINY, "Effect: ", Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
-		var formatted_text = Graphics.fitTextToArea(consumable.getEffectDescription(), Graphics.FONT_XTINY, area_w, area_h, false);
-		dc.drawText(text_x, text_y2, Graphics.FONT_XTINY, formatted_text, Graphics.TEXT_JUSTIFY_CENTER);
-
+		drawStats(dc);
+		drawEquipSlot(dc);
+		drawEffectDescription(dc);
 	}
 
 	function showKeyStats(dc) {
-		var keyItem = _item as KeyItem;
-		var x_start = ($.Constants.SCREEN_WIDTH * 60 / 360).toNumber();
-		drawText(dc, "Key Item " + keyItem.getName(), 0, x_start, null, null);
-
-
+		drawStats(dc);
+		drawKeyDescription(dc);
 	}
 
 	function showCustomStats(dc) {

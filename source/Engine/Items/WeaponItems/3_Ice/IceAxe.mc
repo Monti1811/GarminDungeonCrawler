@@ -6,7 +6,7 @@ class IceAxe extends WeaponItem {
         WeaponItem.initialize();
         id = 30;
         name = "Ice Axe";
-        description = "A powerful ice axe";
+        description = "A frost-bitten axe that freezes on impact.";
         value = 100;
         weight = 3;
         slot = RIGHT_HAND;
@@ -17,7 +17,7 @@ class IceAxe extends WeaponItem {
             :luck => -2
         };
 
-        attack = 12;
+        attack = 8;
         element = ELEMENT_ICE;
     }
 

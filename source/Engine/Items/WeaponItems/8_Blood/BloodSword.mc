@@ -6,7 +6,7 @@ class BloodSword extends WeaponItem {
         WeaponItem.initialize();
         id = 88;
         name = "Blood Sword";
-        description = "A powerful blood sword";
+        description = "A crimson blade that drinks deeply of its victim's life.";
         slot = RIGHT_HAND;
         value = 5000;
         weight = 3;
@@ -15,7 +15,7 @@ class BloodSword extends WeaponItem {
             :constitution => 10
         };
 
-        attack = 40;
+        attack = 65;
         range = 1;
     }
 

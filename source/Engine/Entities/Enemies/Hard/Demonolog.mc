@@ -11,7 +11,8 @@ class Demonolog extends Enemy {
 		Enemy.initialize();
 		id = 27;
 		name = "Demonolog";
-		damage = 20;
+		description = "A master of dark rituals and summoning.";
+		damage = 14;
 		current_health = 200;
 		maxHealth = current_health;
 		energy_per_turn = 67; 
@@ -24,12 +25,7 @@ class Demonolog extends Enemy {
 	}
 
 	function findNextMove(map as Map) as Point2D {
-        var player_pos = $.getApp().getPlayer().getPos();
-        var dist = $.MathUtil.abs(player_pos[0] - pos[0]) + $.MathUtil.abs(player_pos[1] - pos[1]);
-        if (dist <= 3) {
-            return Enemy.walkAwayFromPlayer(map);
-        }
-        return Enemy.followPlayerSimple(map);
+        return Enemy.followPlayerKiting(map, 3, 6);
     }
 
     function doAction(map as Map) as Boolean {

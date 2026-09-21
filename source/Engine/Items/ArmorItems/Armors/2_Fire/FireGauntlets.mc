@@ -6,7 +6,7 @@ class FireGauntlets extends ArmorItem {
 		ArmorItem.initialize();
 		id = 1022; 
 		name = "Fire Gauntlets";
-		description = "Some fire gauntlets";
+		description = "Gauntlets wreathed in perpetual fire.";
 		value = 50;
 		weight = 1.5;
 		slot = EITHER_HAND;

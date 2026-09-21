@@ -6,7 +6,7 @@ class DemonAxe extends WeaponItem {
         WeaponItem.initialize();
         id = 70;
         name = "Demon Axe";
-        description = "A powerful demon axe";
+        description = "A bloodstained waraxe crackling with hellfire.";
         value = 2000;
         weight = 2;
         slot = RIGHT_HAND;
@@ -16,7 +16,7 @@ class DemonAxe extends WeaponItem {
             :luck => -2
         };
 
-        attack = 20;
+        attack = 13;
     }
 
     function onEquipItem(player as Player) as Void {

@@ -18,7 +18,8 @@ class OrcShaman extends Enemy {
         Enemy.initialize();
         id = 33;
         name = "Shaman Orc";
-        damage = 15;
+        description = "An orc mystic wielding primal magic.";
+        damage = 10;
 		current_health = 100;
 		maxHealth = current_health;
 		energy_per_turn = 100;
@@ -31,12 +32,7 @@ class OrcShaman extends Enemy {
     }
 
     function findNextMove(map as Map) as Point2D {
-        var player_pos = $.getApp().getPlayer().getPos();
-        var dist = $.MathUtil.abs(player_pos[0] - pos[0]) + $.MathUtil.abs(player_pos[1] - pos[1]);
-        if (dist <= 3) {
-            return Enemy.walkAwayFromPlayer(map);
-        }
-        return Enemy.followPlayerSimple(map);
+        return Enemy.followPlayerKiting(map, 3, 5);
     }
 
 

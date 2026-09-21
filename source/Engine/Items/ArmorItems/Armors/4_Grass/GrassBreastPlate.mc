@@ -6,11 +6,11 @@ class GrassBreastPlate extends ArmorItem {
 		ArmorItem.initialize();
 		id = 1041;
 		name = "Grass Breastplate";
-		description = "A grass breastplate";
+		description = "A makeshift breastplate of woven grass fibers.";
 		value = 100;
 		weight = 8;
 		slot = CHEST;
-		defense = 10;
+		defense = 6;
 		attribute_bonus = {
 			:constitution => 3,
 			:charisma => 3,

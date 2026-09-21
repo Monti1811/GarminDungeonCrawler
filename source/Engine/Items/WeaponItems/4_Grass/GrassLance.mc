@@ -6,7 +6,7 @@ class GrassLance extends WeaponItem {
         WeaponItem.initialize();
         id = 45;
         name = "Grass Lance";
-        description = "A powerful grass lance";
+        description = "A lance of petrified wood tipped with a venomous thorn.";
         slot = RIGHT_HAND;
         value = 100;
         weight = 3;
@@ -16,7 +16,7 @@ class GrassLance extends WeaponItem {
             :luck => 5
         };
 
-        attack = 14;
+        attack = 6;
         range = 2;
         range_type = LINEAR;
         attack_type = DEXTERITY;

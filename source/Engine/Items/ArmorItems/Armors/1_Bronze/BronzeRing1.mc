@@ -6,7 +6,7 @@ class BronzeRing1 extends ArmorItem {
 		ArmorItem.initialize();
 		id = 1014; // Updated ID
 		name = "Bronze Ring";
-		description = "A bronze ring";
+		description = "A plain bronze ring with a faint enchantment.";
 		slot = ACCESSORY;
 		value = 13;
 		weight = 0.1;

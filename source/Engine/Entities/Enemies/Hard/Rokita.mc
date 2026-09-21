@@ -1,15 +1,13 @@
 import Toybox.Lang;
 
 class Rokita extends Enemy {
-
-    var teleport_cooldown = 0;
-	var teleport_cooldown_max = 3;
     
     function initialize() {
         Enemy.initialize();
         id = 35;
         name = "Rokita";
-        damage = 40;
+        description = "A deadly orc champion, feared by many.";
+        damage = 19;
 		current_health = 500;
 		maxHealth = current_health;
 		armor = 0;
@@ -22,10 +20,9 @@ class Rokita extends Enemy {
     }
 
     function findNextMove(map) as Point2D {
-        if (teleport_cooldown > 0) {
-			return Enemy.followPlayerSimple(map);
-		}
-		teleport_cooldown = teleport_cooldown_max;
-		return Enemy.toPlayerTeleport(map);
+        if (Enemy.canUseTeleportMove()) {
+            return Enemy.followPlayerTeleportBehind(map);
+        }
+        return Enemy.followPlayerUnpredictableSafe(map);
     }
 }

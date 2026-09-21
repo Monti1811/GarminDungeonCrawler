@@ -6,7 +6,7 @@ class GoldGreatsword extends WeaponItem {
         WeaponItem.initialize();
         id = 63;
         name = "Gold Greatsword";
-        description = "A powerful gold greatsword";
+        description = "A massive golden greatsword radiating sacred power.";
         slot = RIGHT_HAND;
         value = 750;
         weight = 7;
@@ -15,7 +15,7 @@ class GoldGreatsword extends WeaponItem {
             :dexterity => -2
         };
 
-        attack = 14;
+        attack = 7;
         range = 2;
         weapon_type = TWOHAND;
         cooldown = 1;

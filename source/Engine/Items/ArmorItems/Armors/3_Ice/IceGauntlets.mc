@@ -6,7 +6,7 @@ class IceGauntlets extends ArmorItem {
 		ArmorItem.initialize();
 		id = 1032;
 		name = "Ice Gauntlets";
-		description = "Some ice gauntlets";
+		description = "Gauntlets rimmed with frost that freeze on contact.";
 		value = 50;
 		weight = 2;
 		slot = EITHER_HAND;

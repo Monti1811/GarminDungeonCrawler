@@ -8,7 +8,7 @@ class PurpleBackpack extends ArmorItem {
 		ArmorItem.initialize();
 		id = 1251;
 		name = "Purple Backpack";
-		description = "A bigger backpack";
+		description = "A sturdy leather pack with extra storage space.";
 		value = 500;
 		weight = 0.5;
 		slot = BACK;
@@ -17,7 +17,7 @@ class PurpleBackpack extends ArmorItem {
 	}
 
 	function getSprite() as ResourceId {
-		return $.Rez.Drawables.backpack_green;
+		return $.Rez.Drawables.backpack_purple;
 	}
 
 	function onEquipItem(player as Player) as Void {

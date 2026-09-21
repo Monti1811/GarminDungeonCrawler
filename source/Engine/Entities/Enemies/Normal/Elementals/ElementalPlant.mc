@@ -6,6 +6,7 @@ class ElementalPlant extends Elemental {
 		Elemental.initialize();
 		id = 23;
 		name = "Plant Elemental";
+		description = "A fierce elemental of twisted nature.";
 		children_id = 30;
 	}
 

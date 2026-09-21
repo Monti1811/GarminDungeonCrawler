@@ -6,11 +6,11 @@ class BloodRing2 extends ArmorItem {
 		ArmorItem.initialize();
 		id = 1085; // Updated ID
 		name = "Blood Magic Ring";
-		description = "A blood magic ring";
+		description = "A ring that siphons life from foes to heal its wearer.";
 		slot = ACCESSORY;
 		value = 2500;
 		weight = 0.1;
-		defense = 7;
+		defense = 12;
 		attribute_bonus = {
 			:constitution => 5,
 			:intelligence => 10,

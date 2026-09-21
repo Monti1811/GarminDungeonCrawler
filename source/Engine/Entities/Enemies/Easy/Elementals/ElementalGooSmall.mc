@@ -6,11 +6,12 @@ class ElementalGooSmall extends Enemy {
 		Enemy.initialize();
 		id = 16;
 		name = "Small Goo Elemental";
-		damage = 15;
+		description = "A minor elemental of toxic ooze.";
+		damage = 9;
 		current_health = 50;
 		maxHealth = current_health;
 		energy_per_turn = 50;
-		armor = 5;
+		armor = 4;
         kill_experience = 15;
 	}
 
@@ -19,7 +20,7 @@ class ElementalGooSmall extends Enemy {
 	}
 
 	function findNextMove(map) as Point2D {
-        return Enemy.followPlayerSimple(map);
+		return Enemy.followPlayerStrafe(map, false);
     }
 
 	function onLoad(save_data as Dictionary) as Void {

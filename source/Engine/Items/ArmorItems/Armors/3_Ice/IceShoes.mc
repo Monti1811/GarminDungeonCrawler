@@ -6,7 +6,7 @@ class IceShoes extends ArmorItem {
 		ArmorItem.initialize();
 		id = 1033;
 		name = "Ice Shoes";
-		description = "A simple ice shoes";
+		description = "Frost-covered boots that leave a trail of ice crystals.";
 		value = 75;
 		weight = 3;
 		slot = FEET;

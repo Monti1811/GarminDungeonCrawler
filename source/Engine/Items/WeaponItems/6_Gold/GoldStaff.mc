@@ -6,7 +6,7 @@ class GoldStaff extends Staff {
         Staff.initialize();
         id = 67;
         name = "Gold Staff";
-        description = "A powerful gold staff. If the player has mana available, uses it to perform more powerful attacks.";
+        description = "A golden staff that amplifies mana into devastating holy light.";
         slot = RIGHT_HAND;
         value = 500;
         weight = 1;

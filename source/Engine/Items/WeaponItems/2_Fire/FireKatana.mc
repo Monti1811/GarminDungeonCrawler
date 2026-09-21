@@ -7,7 +7,7 @@ class FireKatana extends WeaponItem {
         WeaponItem.initialize();
         id = 24;
         name = "Fire Katana";
-        description = "A powerful fire katana";
+        description = "A curved blade radiating intense, lickable heat.";
         slot = RIGHT_HAND;
         value = 100;
         weight = 4;

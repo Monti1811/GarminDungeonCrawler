@@ -7,7 +7,7 @@ class FireStaff extends Staff {
         Staff.initialize();
         id = 27;
         name = "Fire Staff";
-        description = "A powerful fire staff. If the player has mana available, uses it to perform more powerful attacks.";
+        description = "A staff wreathed in eternal flame that converts mana into devastating fire magic.";
         slot = RIGHT_HAND;
         value = 100;
         weight = 2;

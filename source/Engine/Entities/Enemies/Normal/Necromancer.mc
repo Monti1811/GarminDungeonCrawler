@@ -11,9 +11,10 @@ class Necromancer extends Enemy {
 		Enemy.initialize();
 		id = 6;
 		name = "Necromancer";
-		damage = 20;
+		description = "A dark sorcerer who commands the dead.";
+		damage = 15;
 		current_health = 50;
-		maxHealth = 50;
+		maxHealth = 37;
 		energy_per_turn = 67; 
         armor = 0;
         kill_experience = 125;
@@ -24,12 +25,7 @@ class Necromancer extends Enemy {
 	}
 
 	function findNextMove(map as Map) as Point2D {
-        var player_pos = $.getApp().getPlayer().getPos();
-        var dist = $.MathUtil.abs(player_pos[0] - pos[0]) + $.MathUtil.abs(player_pos[1] - pos[1]);
-        if (dist <= 3) {
-            return Enemy.walkAwayFromPlayer(map);
-        }
-        return Enemy.followPlayerSimple(map);
+        return Enemy.followPlayerKiting(map, 3, 5);
     }
 
     function doAction(map as Map) as Boolean {

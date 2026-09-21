@@ -14,6 +14,10 @@ module Constants {
 	public const SCREEN_HEIGHT = Toybox.System.getDeviceSettings().screenHeight;
 	public const TILE_SIZE = 16;
 	public const ROOM_CENTER_INDEX = Math.floor((SCREEN_WIDTH / 2) / TILE_SIZE).toNumber();
+	public const ROOM_CENTER_INDEX_Y = Math.floor((SCREEN_HEIGHT / 2) / TILE_SIZE).toNumber();
+	public const SCREEN_TILES_X = Math.ceil(SCREEN_WIDTH / TILE_SIZE).toNumber();
+	public const SCREEN_TILES_Y = Math.ceil(SCREEN_HEIGHT / TILE_SIZE).toNumber();
+	public const MAX_ROOM_TILES = MathUtil.min(MathUtil.min(SCREEN_TILES_X, SCREEN_TILES_Y) - 3, 20);
 	public const COORDINATES_NEWGAME = [
 		(SCREEN_WIDTH/2).toNumber(), 
 		(SCREEN_HEIGHT * 75/360).toNumber()
@@ -30,7 +34,7 @@ module Constants {
 		WEAPON => "Weapon",
 		ARMOR => "Armor",
 		CONSUMABLE => "Consumable",
-		KEY => "Key"
+		KEY => "Key Item"
 	};
 
 	public const ATT_SYMBOL_TO_STR = {
@@ -65,6 +69,12 @@ module Constants {
 
 	// Global knob for scaling mana requirements on staffs and spells
 	public const MANA_LOSS_MULTIPLIER = 0.5;
+
+	// Enemy depth scaling (multiplicative, applied via setLevel)
+	public const ENEMY_DAMAGE_SCALE = 0.001;
+	public const ENEMY_HEALTH_SCALE = 0.005;
+	public const ENEMY_ARMOR_SCALE = 0.001;
+	public const ENEMY_XP_SCALE = 0.003;
 
 	public const EQUIPSLOT_TO_STR = {
 		HEAD => "Head",

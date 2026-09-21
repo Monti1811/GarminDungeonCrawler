@@ -6,7 +6,7 @@ class BronzeBreastPlate extends ArmorItem {
 		ArmorItem.initialize();
 		id = 1011; // Updated ID
 		name = "Bronze Breastplate";
-		description = "A bronze breastplate";
+		description = "A worn bronze chestplate, light but reliable.";
 		value = 25;
 		weight = 12;
 		slot = CHEST;

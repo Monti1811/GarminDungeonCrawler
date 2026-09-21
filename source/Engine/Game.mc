@@ -30,28 +30,30 @@ module Game {
 	var time_played as Number = 0;
 	var time_started as Time.Moment?;
 	var turns as Turn?;
-	// Room name, connections, size, visited
+	// Room name, connections, size, visited, flags, room_shape
 	var map as Array<Array<[
-		String, 							// Room name
-		Dictionary<WalkDirection, Boolean>, // Connections
-		Point2D, 							// Size of room
-		Boolean, 							// Visited
-		Array<Point2D?>]>> = []; 			// Special flags 
-		// [0] = Has stairs
-		// [1] = Has merchant
-		// [2] = Has boss
-		// [3] = Has quest giver
+		/*[0]*/	String, 							// Room name
+		/*[1]*/	Dictionary<WalkDirection, Boolean>, // Connections
+		/*[2]*/	Point2D, 							// Size of room
+		/*[3]*/	Boolean, 							// Visited
+		/*[4]*/	Array<Point2D?>,					// Special flags 
+		 		// [0] = Has stairs
+				// [1] = Has merchant
+				// [2] = Has boss
+				// [3] = Has quest giver
+		/*[5]*/	RoomShape? 							// Room shape	
+	]>> = [];
 
 	function init(player_id as Number) as Void {
 		// Set the seed for random number generation
 		Math.srand(Time.now().value());
+		depth = 0;
 		self.initModules(player_id);
 		Quests.init();
 		player = null;
 		dungeon = null;
 		turns = null;
 		time_played = 0;
-		depth = 0;
 		difficulty = MEDIUM;
 		game_mode = NORMAL;
 		map = [];
@@ -98,8 +100,8 @@ module Game {
 		}
 	}
 
-	function addRoomToMap(pos as Point2D, room_name as String, connections as Dictionary<WalkDirection, Boolean>, size as Point2D) as Void {
-		map[pos[0]][pos[1]] = [room_name, connections, size, false, createEmptyFlags()];
+	function addRoomToMap(pos as Point2D, room_name as String, connections as Dictionary<WalkDirection, Boolean>, size as Point2D, room_shape as RoomShape?) as Void {
+		map[pos[0]][pos[1]] = [room_name, connections, size, false, createEmptyFlags(), room_shape];
 	}
 
 	function setRoomAsVisited(pos as Point2D) as Void {
@@ -164,6 +166,10 @@ module Game {
 					}
 				}
 				room[4] = flags;
+				// Backward compatibility: add room_shape if missing
+				if (room.size() < 6) {
+					room.add(ROOMSHAPE_RECTANGLE);
+				}
 			}
 		}
 	}

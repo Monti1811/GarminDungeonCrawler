@@ -6,9 +6,10 @@ class Orc extends Enemy {
         Enemy.initialize();
         id = 3;
         name = "Orc";
+        description = "A brutish orc warrior seeking treasure.";
         current_health = 50;
-        maxHealth = 50;
-        damage = 5;
+        maxHealth = 34;
+        damage = 4;
         armor = 2;
         kill_experience = 10;
         energy_per_turn = 67; // every 2/3 turns
@@ -19,6 +20,6 @@ class Orc extends Enemy {
     }
 
     function findNextMove(map) as Point2D {
-        return Enemy.followPlayerSimple(map);
+        return Enemy.followPlayerDirect(map);
     }
 }

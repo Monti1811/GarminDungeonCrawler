@@ -8,6 +8,15 @@ class DCGameView extends WatchUi.View {
     private var _tile_width as Number;
     private var _tile_height as Number;
     private var _room_drawable as RoomDrawable?;
+    private var _background_layer as WatchUi.Layer?;
+    private var _foreground_layer as WatchUi.Layer?;
+    private var _overlay_layer as WatchUi.Layer?;
+    private var _background_dirty as Boolean = true;
+    private var _foreground_dirty as Boolean = true;
+    private var _overlay_dirty as Boolean = true;
+    private var _last_health_percent as Float?;
+    private var _last_second_bar as Symbol?;
+    private var _last_second_bar_percent as Numeric?;
 
 	private var _player_sprite as Bitmap?;
     private var _player_sprite_offset as Point2D = [0,0];
@@ -37,6 +46,19 @@ class DCGameView extends WatchUi.View {
             :map_string=>map_string
         });
 
+        _background_layer = new WatchUi.Layer({
+            :width => Constants.SCREEN_WIDTH,
+            :height => Constants.SCREEN_HEIGHT
+        });
+        _foreground_layer = new WatchUi.Layer({
+            :width => Constants.SCREEN_WIDTH,
+            :height => Constants.SCREEN_HEIGHT
+        });
+        _overlay_layer = new WatchUi.Layer({
+            :width => Constants.SCREEN_WIDTH,
+            :height => Constants.SCREEN_HEIGHT
+        });
+
 		_timer = new Timer.Timer();
         var autosave = $.Settings.settings["autosave"] as Number;
         if (autosave != -1) {
@@ -63,47 +85,16 @@ class DCGameView extends WatchUi.View {
             (player_sprite_dimensions[1] - _tile_height) / 2
         ];
 
-        setHint();
+        rightTopHint = $.HintHelper.createRightTopHint($.Rez.Drawables.rightTop);
 
     }
 
-    (:venu2)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 345, :locY => 67});
-    }
 
-    (:venu2plus)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 345, :locY => 67});
-    }
-
-    (:venu2s)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 300, :locY => 59});
-    }
-
-    (:venu3)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 360, :locY => 54});
-    }
-
-    (:venu3s)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 318, :locY => 59});
-    }
-
-    (:venu441mm)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 319, :locY => 72});
-    }
-
-    (:venu445mm)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 360, :locY => 54});
-    }
 
     function onLayout(dc as Dc) as Void {
-        //setLayout($.Rez.Layouts.DCGameView(dc));
+        addLayer(_background_layer);
+        addLayer(_foreground_layer);
+        addLayer(_overlay_layer);
     }
 
     function autoSave() as Void {
@@ -133,41 +124,83 @@ class DCGameView extends WatchUi.View {
     function setMapData(map_data as Dictionary) as Void {
         _tile_width = map_data[:tile_width] as Number;
         _tile_height = map_data[:tile_height] as Number;
+        _background_dirty = true;
     }
 
-    // Called when this View is brought to the foreground. Restore
-    // the state of this View and prepare it to be shown. This includes
-    // loading resources into memory.
     function onShow() as Void {
+        _background_dirty = true;
+        _foreground_dirty = true;
+        _overlay_dirty = true;
+    }
+
+    function setForegroundDirty() as Void {
+        _foreground_dirty = true;
+        WatchUi.requestUpdate();
     }
 
     // Update the view
     function onUpdate(dc as Dc) as Void {
-        // Call the parent onUpdate function to redraw the layout
-        if (getApp().getPlayer() == null) {
+        var player = getApp().getPlayer();
+        if (player == null) {
             return;
         }
 
-        dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_BLACK);
-        dc.clear();
+        View.onUpdate(dc);
 
-        
-		// Draw layout hint
-		View.onUpdate(dc);
-
-        _room_drawable.drawAll(dc, $.Game.getCurrentRoom());
-        rightTopHint.draw(dc);
-
-
-		drawPlayer(dc);
-        addPlayerDamage();
-        for (var i = 0; i < damage_texts.size(); i++) {
-            damage_texts[i].draw(dc);
+        if (_background_dirty) {
+            var bg_dc = _background_layer.getDc();
+            _room_drawable.draw(bg_dc);
+            _background_dirty = false;
         }
 
-        var player = getApp().getPlayer();
-        drawHealth(dc, player);
-        drawSecondBar(dc, player);
+        if (_foreground_dirty) {
+            var fg_dc = _foreground_layer.getDc();
+            fg_dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+            fg_dc.clear();
+            _room_drawable.drawForeground(fg_dc, $.Game.getCurrentRoom());
+            drawPlayer(fg_dc);
+            _foreground_dirty = false;
+        }
+
+        if (addPlayerDamage()) {
+            _overlay_dirty = true;
+        }
+
+        var health_percent = player.getHealthPercent();
+        var second_bar = player.second_bar as Symbol?;
+        var second_bar_percent = null as Numeric?;
+        if (second_bar != null) {
+            if (second_bar == :mana) {
+                var bar_values = drawManaBar(player);
+                second_bar_percent = bar_values[1];
+            }
+        }
+
+        if (_last_health_percent == null ||
+            _last_health_percent != health_percent ||
+            _last_second_bar != second_bar ||
+            _last_second_bar_percent != second_bar_percent) {
+            _overlay_dirty = true;
+        }
+
+        if (_overlay_dirty) {
+            var ui_dc = _overlay_layer.getDc();
+            ui_dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+            ui_dc.clear();
+            rightTopHint.draw(ui_dc);
+            for (var i = 0; i < damage_texts.size(); i++) {
+                damage_texts[i].draw(ui_dc);
+            }
+
+            drawHealth(ui_dc, player);
+            drawSecondBar(ui_dc, player);
+
+            _last_health_percent = health_percent;
+            _last_second_bar = second_bar;
+            _last_second_bar_percent = second_bar_percent;
+            _overlay_dirty = false;
+        }
+
     }
 
     function drawHealth(dc as Dc, player as Player) as Void {
@@ -177,14 +210,22 @@ class DCGameView extends WatchUi.View {
         var bar_radius = (min_size * 175 / 360).toNumber();
         var outer_outline_radius = (min_size * 178 / 360).toNumber();
         var inner_outline_radius = (min_size * 172 / 360).toNumber();
-        var line_x1 = (Constants.SCREEN_WIDTH * 5 / 360).toNumber();
-        var line_y1 = (Constants.SCREEN_HEIGHT * 149 / 360).toNumber();
-        var line_x2 = (Constants.SCREEN_WIDTH * 11 / 360).toNumber();
-        var line_y2 = (Constants.SCREEN_HEIGHT * 150 / 360).toNumber();
-        var line2_x1 = (Constants.SCREEN_WIDTH * 150 / 360).toNumber();
-        var line2_y1 = (Constants.SCREEN_HEIGHT * 11 / 360).toNumber();
-        var line2_x2 = (Constants.SCREEN_WIDTH * 149 / 360).toNumber();
-        var line2_y2 = (Constants.SCREEN_HEIGHT * 5 / 360).toNumber();
+        var marker_radius = (min_size * 175 / 360).toNumber();
+        // Convert Garmin angles (0°=top, clockwise) to screen coords (0°=right, y-down)
+        var end170 = $.MathUtil.getArcCoordinates(center_x, center_y, marker_radius, 170 + 90, 170 + 90) as Array<Array<Number>>;
+        var end100 = $.MathUtil.getArcCoordinates(center_x, center_y, marker_radius, 100 + 90, 100 + 90) as Array<Array<Number>>;
+        var p170 = end170[0];
+        var p100 = end100[0];
+        // Tick marks along radius, length 3
+        var tick_len = 3;
+        var line_x1 = p170[0] - (p170[0] - center_x) * tick_len / marker_radius;
+        var line_y1 = p170[1] - (p170[1] - center_y) * tick_len / marker_radius;
+        var line_x2 = p170[0] + (p170[0] - center_x) * tick_len / marker_radius;
+        var line_y2 = p170[1] + (p170[1] - center_y) * tick_len / marker_radius;
+        var line2_x1 = p100[0] - (p100[0] - center_x) * tick_len / marker_radius;
+        var line2_y1 = p100[1] - (p100[1] - center_y) * tick_len / marker_radius;
+        var line2_x2 = p100[0] + (p100[0] - center_x) * tick_len / marker_radius;
+        var line2_y2 = p100[1] + (p100[1] - center_y) * tick_len / marker_radius;
 
         // Draw health bar
         dc.setColor(Graphics.COLOR_DK_RED, Graphics.COLOR_BLACK);
@@ -201,10 +242,6 @@ class DCGameView extends WatchUi.View {
         dc.drawLine(line2_x1, line2_y1, line2_x2, line2_y2);
     }
 
-    private const bar_to_fn as Dictionary<Symbol, Symbol> = {
-        :mana=>:drawManaBar
-    };
-
     function drawSecondBar(dc as Dc, player as Player) as Void {
         if (player.second_bar == null) {
             return;
@@ -215,17 +252,27 @@ class DCGameView extends WatchUi.View {
         var bar_radius = (min_size * 175 / 360).toNumber();
         var outer_outline_radius = (min_size * 178 / 360).toNumber();
         var inner_outline_radius = (min_size * 172 / 360).toNumber();
-        var line_x1 = (Constants.SCREEN_WIDTH * 5 / 360).toNumber();
-        var line_y1 = (Constants.SCREEN_HEIGHT * 211 / 360).toNumber();
-        var line_x2 = (Constants.SCREEN_WIDTH * 11 / 360).toNumber();
-        var line_y2 = (Constants.SCREEN_HEIGHT * 210 / 360).toNumber();
-        var line2_x1 = (Constants.SCREEN_WIDTH * 150 / 360).toNumber();
-        var line2_y1 = (Constants.SCREEN_HEIGHT * 349 / 360).toNumber();
-        var line2_x2 = (Constants.SCREEN_WIDTH * 149 / 360).toNumber();
-        var line2_y2 = (Constants.SCREEN_HEIGHT * 355 / 360).toNumber();
+        var marker_radius = (min_size * 175 / 360).toNumber();
+        // Convert Garmin angles (0°=top, clockwise) to screen coords (0°=right, y-down)
+        var end260 = $.MathUtil.getArcCoordinates(center_x, center_y, marker_radius, 260 + 90, 260 + 90) as Array<Array<Number>>;
+        var end190 = $.MathUtil.getArcCoordinates(center_x, center_y, marker_radius, 190 + 90, 190 + 90) as Array<Array<Number>>;
+        var p260 = end260[0];
+        var p190 = end190[0];
+        // Tick marks along radius, length 3
+        var tick_len = 3;
+        var line_x1 = p260[0] - (p260[0] - center_x) * tick_len / marker_radius;
+        var line_y1 = p260[1] - (p260[1] - center_y) * tick_len / marker_radius;
+        var line_x2 = p260[0] + (p260[0] - center_x) * tick_len / marker_radius;
+        var line_y2 = p260[1] + (p260[1] - center_y) * tick_len / marker_radius;
+        var line2_x1 = p190[0] - (p190[0] - center_x) * tick_len / marker_radius;
+        var line2_y1 = p190[1] - (p190[1] - center_y) * tick_len / marker_radius;
+        var line2_x2 = p190[0] + (p190[0] - center_x) * tick_len / marker_radius;
+        var line2_y2 = p190[1] + (p190[1] - center_y) * tick_len / marker_radius;
 
-        var method = new Lang.Method(self, bar_to_fn[player.second_bar]);
-        var bar_values = method.invoke(player) as [Numeric, Numeric];
+        var bar_values = [0, 0] as [Numeric, Numeric];
+        if (player.second_bar == :mana) {
+            bar_values = drawManaBar(player);
+        }
         // Draw second bar
         dc.setColor(bar_values[0], Graphics.COLOR_BLACK);
         dc.setPenWidth(5);
@@ -247,15 +294,16 @@ class DCGameView extends WatchUi.View {
         return [Graphics.COLOR_DK_BLUE as Number, bar_percent];
         
     }
-    function addPlayerDamage() as Void {
+    function addPlayerDamage() as Boolean {
         var player = getApp().getPlayer();
         var player_pos = player.getPos();
         var damage_received = player.damage_received;
         player.damage_received = 0;
         if (damage_received == 0) {
-            return;
+            return false;
         }
         addDamageText(damage_received, player_pos);
+        return true;
     }
 
     function drawPlayer(dc as Dc) as Void {
@@ -268,11 +316,11 @@ class DCGameView extends WatchUi.View {
     // Called when this View is removed from the screen. Save the
     // state of this View here. This includes freeing resources from
     // memory.
-    function onHide() as Void {
-    }
+    function onHide() as Void {    }
 
     function removeDamageTexts() as Void {
         damage_texts = [];
+        _overlay_dirty = true;
         WatchUi.requestUpdate();
     }
 
@@ -289,6 +337,7 @@ class DCGameView extends WatchUi.View {
             :font=>Graphics.FONT_XTINY
         });
         damage_texts.add(damage_text);
+        _overlay_dirty = true;
     }
 
     function setPlayerSpritePos(pos as Point2D) as Void {
@@ -297,6 +346,13 @@ class DCGameView extends WatchUi.View {
     }
 
     function freeMemory() as Void {
+        clearLayers();
+        _background_layer = null;
+        _foreground_layer = null;
+        _overlay_layer = null;
+        _last_health_percent = null;
+        _last_second_bar = null;
+        _last_second_bar_percent = null;
         _player_sprite = null;
         _room_drawable.freeMemory();
         _room_drawable = null;

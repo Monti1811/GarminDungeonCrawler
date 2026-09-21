@@ -6,11 +6,11 @@ class GoldRing1 extends ArmorItem {
 		ArmorItem.initialize();
 		id = 1064;
 		name = "Gold Ring";
-		description = "A simple gold ring";
+		description = "A golden band that hums with sacred energy.";
 		slot = ACCESSORY;
 		value = 28;
 		weight = 0.1;
-		defense = 9;
+		defense = 7;
 		attribute_bonus = {
 			:constitution => 8,
 			:wisdom => 8,

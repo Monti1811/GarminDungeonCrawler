@@ -6,11 +6,11 @@ class BloodShoes extends ArmorItem {
 		ArmorItem.initialize();
 		id = 1083; // Updated ID
 		name = "Blood Shoes";
-		description = "Some blood shoes";
+		description = "Blood-soaked boots that whisper of past victims.";
 		value = 1200;
 		weight = 3;
 		slot = FEET;
-		defense = 15;
+		defense = 23;
 		attribute_bonus = {
 			:dexterity => 10,
 			:strength => 7

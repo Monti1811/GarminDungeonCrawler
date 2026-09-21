@@ -6,7 +6,7 @@ class DemonSpell extends Spell {
         Spell.initialize();
         id = 72;
         name = "Demon Spell";
-        description = "A powerful demon spell. If the player has mana available, uses it to perform a more powerful AoE attack.";
+        description = "A hellbound grimoire that unleashes AoE waves of abyssal flame when fueled by mana.";
         slot = RIGHT_HAND;
         value = 1000;
         weight = 0.5;
@@ -14,7 +14,7 @@ class DemonSpell extends Spell {
             :wisdom => 10
         };
 
-        attack = 18;
+        attack = 11;
         range = 3;
         cooldown = 1;
         attack_type = INTELLIGENCE;

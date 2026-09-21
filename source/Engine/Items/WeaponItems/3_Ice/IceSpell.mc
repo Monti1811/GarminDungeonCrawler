@@ -6,7 +6,7 @@ class IceSpell extends Spell {
         Spell.initialize();
         id = 36;
         name = "Ice Spell";
-        description = "A powerful ice spell. If the player has mana available, uses it to perform a more powerful AoE attack.";
+        description = "A frost-bound grimoire that unleashes AoE blizzards when fueled by mana.";
         slot = RIGHT_HAND;
         value = 100;
         weight = 1;
@@ -14,7 +14,7 @@ class IceSpell extends Spell {
             :wisdom => 6
         };
 
-        attack = 14;
+        attack = 8;
         range = 3;
         cooldown = 1;
         attack_type = INTELLIGENCE;

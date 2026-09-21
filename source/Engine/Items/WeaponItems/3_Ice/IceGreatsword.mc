@@ -6,7 +6,7 @@ class IceGreatsword extends WeaponItem {
         WeaponItem.initialize();
         id = 33;
         name = "Ice Greatsword";
-        description = "A powerful ice greatsword";
+        description = "A colossal blade of enchanted glacial ice.";
         slot = RIGHT_HAND;
         value = 150;
         weight = 6;
@@ -16,7 +16,7 @@ class IceGreatsword extends WeaponItem {
             :dexterity => -4
         };
 
-        attack = 18;
+        attack = 9;
         range = 2;
         weapon_type = TWOHAND;
         element = ELEMENT_ICE;

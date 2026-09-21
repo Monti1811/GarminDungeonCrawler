@@ -6,7 +6,7 @@ class GoldLance extends WeaponItem {
         WeaponItem.initialize();
         id = 65;
         name = "Gold Lance";
-        description = "A powerful gold lance";
+        description = "A gleaming lance forged from enchanted gold.";
         slot = RIGHT_HAND;
         value = 500;
         weight = 2;
@@ -15,7 +15,7 @@ class GoldLance extends WeaponItem {
             :luck => 5
         };
 
-        attack = 16;
+        attack = 9;
         range = 2;
         range_type = LINEAR;
         attack_type = DEXTERITY;

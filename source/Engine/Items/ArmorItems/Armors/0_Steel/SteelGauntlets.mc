@@ -7,7 +7,7 @@ class SteelGauntlets extends ArmorItem {
 		ArmorItem.initialize();
 		id = 1002;
 		name = "Steel Gauntlets";
-		description = "Simple steel gauntlets";
+		description = "Steel-plated gauntlets that strengthen your grip.";
 		value = 5;
 		weight = 2;
 		slot = EITHER_HAND;

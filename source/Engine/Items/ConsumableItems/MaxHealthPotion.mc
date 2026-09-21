@@ -7,10 +7,11 @@ class MaxHealthPotion extends ConsumableItem {
 		ConsumableItem.initialize();
 		self.id = 2004;
 		self.name = "Max Health Potion";
-		self.description = "An enormous health potion";
+		self.description = "A massive vial of pure life essence.";
 		self.effect_description = "Restores all health";
 		self.value = 200;
 		self.weight = 1;
+		self.tag = :health;
 	}
 
 	function onUseItem(player as Player) as Void {

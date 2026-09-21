@@ -17,7 +17,7 @@ class Elemental extends Enemy {
 	}
 
 	function findNextMove(map) as Point2D {
-        return Enemy.followPlayerSimple(map);
+		return Enemy.followPlayerStrafe(map, false);
     }
 
 	function onDeath() as Void {

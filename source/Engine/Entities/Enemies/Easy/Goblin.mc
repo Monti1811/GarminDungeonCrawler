@@ -6,9 +6,10 @@ class Goblin extends Enemy {
         Enemy.initialize();
         id = 25;
         name = "Goblin";
+        description = "A cunning goblin with quick reflexes.";
         current_health = 35;
-        maxHealth = 35;
-        damage = 10;
+        maxHealth = 26;
+        damage = 6;
         armor = 2;
         kill_experience = 15;
         energy_per_turn = 100; 
@@ -19,6 +20,6 @@ class Goblin extends Enemy {
     }
 
     function findNextMove(map) as Point2D {
-        return Enemy.followPlayerSimple(map);
+        return Enemy.followPlayerFlankSafe(map);
     }
 }

@@ -7,7 +7,7 @@ class SteelDagger extends WeaponItem {
 		WeaponItem.initialize();
 		id = 2;
 		name = "Steel Dagger";
-		description = "A simple steel dagger";
+		description = "A short steel blade, quick and silent.";
 		slot = EITHER_HAND;
 		value = 10;
 		weight = 0.5;

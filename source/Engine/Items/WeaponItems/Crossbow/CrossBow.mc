@@ -5,9 +5,10 @@ class CrossBow extends Bow {
 
 	function initialize() {
 		Bow.initialize();
+		tag = :crossbow;
 		id = 300;
 		name = "Crossbow";
-		description = "A simple crossbow, can attack every 3 turns.";
+		description = "A mechanical crossbow that fires every 3 turns.";
 		slot = RIGHT_HAND;
 		value = 12;
 		weight = 4;

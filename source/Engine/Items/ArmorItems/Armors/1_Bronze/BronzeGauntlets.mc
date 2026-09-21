@@ -6,7 +6,7 @@ class BronzeGauntlets extends ArmorItem {
 		ArmorItem.initialize();
 		id = 1012; // Updated ID
 		name = "Bronze Gauntlets";
-		description = "Some bronze gauntlets";
+		description = "Basic bronze gauntlets offering minimal protection.";
 		value = 13;
 		weight = 2.5;
 		slot = EITHER_HAND;

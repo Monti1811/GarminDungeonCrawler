@@ -6,11 +6,12 @@ class Chort extends Enemy {
 		Enemy.initialize();
 		id = 28;
 		name = "Chort";
-		damage = 25;
+		description = "A lesser demon with a fiery temper.";
+		damage = 18;
 		current_health = 150;
 		maxHealth = current_health;
 		energy_per_turn = 100;
-		armor = 10;
+		armor = 8;
         kill_experience = 175;
 	}
 
@@ -19,7 +20,7 @@ class Chort extends Enemy {
 	}
 
 	function findNextMove(map) as Point2D {
-        return Enemy.followPlayerSimple(map);
+		return Enemy.followPlayerDash(map, 2);
     }
 
 	function onLoad(save_data as Dictionary) as Void {

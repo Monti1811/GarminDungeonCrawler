@@ -6,7 +6,7 @@ class GrassSword extends WeaponItem {
         WeaponItem.initialize();
         id = 48;
         name = "Grass Sword";
-        description = "A powerful grass sword";
+        description = "A blade of woven living vines, sharp as any steel.";
         slot = RIGHT_HAND;
         value = 100;
         weight = 4;
@@ -17,7 +17,7 @@ class GrassSword extends WeaponItem {
             :luck => 1,
         };
 
-        attack = 14;
+        attack = 6;
         range = 1;
     }
 

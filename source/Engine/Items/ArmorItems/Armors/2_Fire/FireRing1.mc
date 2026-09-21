@@ -6,7 +6,7 @@ class FireRing1 extends ArmorItem {
 		ArmorItem.initialize();
 		id = 1024;
 		name = "Mirror Ring";
-		description = "A mirror ring";
+		description = "A ring set with a smoldering ember that never cools.";
 		slot = ACCESSORY;
 		value = 50;
 		weight = 0.1;

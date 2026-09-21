@@ -1,51 +1,7 @@
-# Dungeon Crawler (Garmin watch game)
+# Dungeon Crawler
 
-DungeonCrawler is a lightweight, turn-based roguelike built for Garmin watches (tested on the Venu 2S). You guide a hero through randomly generated dungeon rooms, collect loot, fight monsters, and descend deeper by finding the stairs.
+A turn-based roguelike for Garmin watches. Guide a hero through randomly generated dungeon rooms, collect loot, fight monsters, and descend deeper by finding the stairs.
 
-## At a glance
-- Short sessions: quick, turn-based moves suited to the watch form factor.
-- Procedural dungeons: each run builds new room layouts with enemies, loot, merchants, and stairs.
-- Character setup: pick a hero, view starting stats/gear, and name your character.
-- Loot & gear: weapons, armor, consumables, and occasional high-quality items or treasure chests.
-- Encounters: monsters populate rooms; difficulty scales as you descend.
-- Merchants: rare rooms let you trade and restock between fights.
-- Saves: manual save from the menu, optional autosave, and save-on-exit if enabled in settings.
-
-## How to play
-1. Install the app on your Garmin watch (Venu 2S supported), then start DungeonCrawler.
-2. Create your hero: step through the character details screens, confirm, then enter a name.
-3. Read the intro story, then the first room loads.
-4. Move by tapping the screen in the direction you want to go (top = up, bottom = down, left = left, right = right). Each tap spends one turn.
-5. Explore rooms: 
-   - Fight monsters that block your path.
-   - Pick up loot and open treasure chests.
-   - Look for stairs to dive to the next dungeon depth.
-   - Visit merchants when you find them to trade.
-6. Press the watch’s menu button to open the in-game menu any time.
-7. Climb the stairs to progress; deeper levels mean tougher foes but better rewards.
-
-## Controls
-- Tap screen quadrants to move: upper = up, lower = down, left side = left, right side = right.
-- Menu button: opens the Game Menu (inventory, map, player details, save, log, settings).
-- Back button: asks for confirmation to leave the game (it will save on exit if that option is enabled).
-
-## On-screen indicators
-- Red arc: your health.
-- Second arc: resource bar for certain classes.
-- Damage numbers briefly appear above your hero when you’re hit.
-
-## Saving & loading
-- Open the Game Menu and choose **Save** to manually save.
-- Autosave can be enabled in Settings (either every turn or on a timer, depending on your choice).
-- If “save on exit” is enabled, leaving the game from the back button prompt also saves.
-
-## Tips for your first runs
-- Avoid taking on multiple enemies at once—lure them into corridors.
-- Open chests when you see them; high-quality gear is rare.
-- Visit merchants before descending stairs to restock.
-- Keep an eye on your health arc; retreat if it dips low.
-
-## Screenshots
 <p align="center">
    <img src="media/dungeon.png" alt="Dungeon room" width="170" />
    <img src="media/map.png" alt="Dungeon map" width="170" />
@@ -54,31 +10,69 @@ DungeonCrawler is a lightweight, turn-based roguelike built for Garmin watches (
    <img src="media/equips.png" alt="Equipment" width="170" />
 </p>
 
-## Local release script
-Use `helpers/create-release.ps1` to build `.prg` files locally and publish a GitHub release.
+## Features
 
-### Prerequisites
-- Java in `PATH`
-- Git in `PATH`
-- GitHub CLI (`gh`) in `PATH` and authenticated (`gh auth login`)
-- Garmin developer key file on disk
-- Connect IQ SDK installed locally (the script auto-detects `monkeybrains.jar` in `%APPDATA%\Garmin\ConnectIQ\Sdks`)
+- **Short sessions** -- quick, turn-based moves suited to the watch form factor
+- **Procedural dungeons** -- each run builds new room layouts with enemies, loot, merchants, and stairs
+- **6 hero classes** -- Warrior, Mage, Archer, Nameless, Paladin (plus a debug God class)
+- **150+ items** -- weapons, armor, consumables, treasure chests across 9 elemental tiers
+- **38 enemy types** -- scaled by depth, with elemental variants and boss encounters
+- **Dungeon styles** -- 13 visual themes (Fire, Ice, Shadow, Crystal, etc.) with unique color palettes
+- **Merchants & quests** -- trade gear, accept quests from NPCs, earn rewards
+- **Save system** -- manual save, optional autosave, save-on-exit
 
-### Create release from local build
-```powershell
-.\helpers\create-release.ps1 -Tag v1.2.0 -DeveloperKeyPath "F:\Code\Garmin\developer_key"
-```
+## Supported Devices
 
-### Optional parameters
-- Build selected devices only:
-```powershell
-.\helpers\create-release.ps1 -Tag v1.2.0 -DeveloperKeyPath "F:\Code\Garmin\developer_key" -Devices venu2s,venu3
-```
-- Create and push the tag if missing:
-```powershell
-.\helpers\create-release.ps1 -Tag v1.2.0 -DeveloperKeyPath "F:\Code\Garmin\developer_key" -CreateTag
-```
-- Override monkeybrains jar path:
-```powershell
-.\helpers\create-release.ps1 -Tag v1.2.0 -DeveloperKeyPath "F:\Code\Garmin\developer_key" -MonkeybrainsJarPath "C:\Users\<you>\AppData\Roaming\Garmin\ConnectIQ\Sdks\<sdk>\bin\monkeybrains.jar"
-```
+**Venu Series:** Venu 2, Venu 2S, Venu 2 Plus, Venu 3, Venu 3S, Venu 4 41mm, Venu 4 45mm, Venu Sq2, Venu Sq2m, Venu X1
+
+**fenix Series:** fenix 7, fenix 7S, fenix 7X, fenix 7 Pro, fenix 7S Pro, fenix 7X Pro, fenix 7 Pro (no wifi), fenix 7X Pro (no wifi), fenix 8 43mm, fenix 8 47mm, fenix 8 Pro 47mm, fenix 8 Solar 47mm, fenix 8 Solar 51mm, fenix 9 43mm, fenix 9 47mm, fenix 9 Pro 43mm, fenix 9 Pro 47mm, fenix 9 Pro 51mm, fenix 9 Pro Solar 47mm, fenix 9 Pro Solar 51mm, fenix E
+
+**Forerunner Series:** Forerunner 170, Forerunner 170m, Forerunner 265, Forerunner 265S, Forerunner 570 42mm, Forerunner 570 47mm, Forerunner 70, Forerunner 955, Forerunner 965, Forerunner 970
+
+**Other:** epix 2, epix 2 Pro 42mm, epix 2 Pro 47mm, epix 2 Pro 51mm, MARQ 2, MARQ 2 Aviator, D2 Air X10, D2 Mach 1, D2 Mach 2, D2 Mach 2 Pro, Descent G2, Descent Mk3 43mm, Descent Mk3 51mm, Enduro 3, Approach S50, Approach S70 42mm, Approach S70 47mm, vivoactive 5, vivoactive 6
+
+## How to Play
+
+1. Start DungeonCrawler on your watch
+2. Create your hero: pick a class, allocate attribute points, name your character
+3. Move by tapping screen quadrants (top = up, bottom = down, left = left, right = right)
+4. Fight monsters, pick up loot, open treasure chests
+5. Find stairs to descend to the next dungeon depth
+6. Visit merchants to buy/sell gear
+7. Press the menu button for inventory, map, player details, and settings
+
+## Controls
+
+| Input | Action |
+|-------|--------|
+| Tap upper screen | Move up |
+| Tap lower screen | Move down |
+| Tap left side | Move left |
+| Tap right side | Move right |
+| Menu button | Open game menu |
+| Back button | Exit game (with save prompt) |
+
+## On-Screen Indicators
+
+- **Red arc** -- player health
+- **Second arc** -- mana (Mage, Nameless) or class resource
+- **Damage numbers** -- floating text above your hero when hit
+
+## Documentation
+
+Detailed documentation lives in [`documentations/`](documentations/):
+
+| Document | Description |
+|----------|-------------|
+| [Architecture](documentations/architecture.md) | System overview, data flow, memory management |
+| [Engine](documentations/engine.md) | Game state, maps, turns, combat, entities |
+| [Player](documentations/player.md) | Classes, attributes, leveling, equipment |
+| [Enemies](documentations/enemies.md) | Enemy types, AI, spawning, difficulty scaling |
+| [Items](documentations/items.md) | Item hierarchy, tiers, equipment slots |
+| [Map Generation](documentations/map-generation.md) | Room shapes, wall variants, dungeon styles |
+| [Frontend](documentations/frontend.md) | UI layer, views, menus, controls |
+| [Save/Load](documentations/save-load.md) | Serialization, compendium, save slots |
+| [Testing](documentations/testing.md) | Test framework, running tests |
+| [Tooling](documentations/tooling.md) | Balance scripts, MCP server, helpers |
+| [Build](documentations/build.md) | Build instructions, release process |
+| [Dungeon Styles](documentations/dungeon-styles.md) | Visual themes, tile recommendations, color palettes |

@@ -6,9 +6,10 @@ class Imp extends Enemy {
 		Enemy.initialize();
 		id = 4;
 		name = "Imp";
-		damage = 12;
+		description = "A mischievous little demon with fire magic.";
+		damage = 8;
 		current_health = 25;
-		maxHealth = 25;
+		maxHealth = 18;
 		energy_per_turn = 100;
 		armor = 0;
         kill_experience = 15;
@@ -19,7 +20,7 @@ class Imp extends Enemy {
 	}
 
 	function findNextMove(map) as Point2D {
-        return Enemy.followPlayerSimple(map);
+		return Enemy.followPlayerUnpredictableSafe(map);
     }
 
 	function onLoad(save_data as Dictionary) as Void {

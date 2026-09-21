@@ -6,7 +6,7 @@ class WaterDagger extends WeaponItem {
         WeaponItem.initialize();
         id = 52;
         name = "Water Dagger";
-        description = "A powerful water dagger";
+        description = "A dagger of pressurized water, cutting like a razor.";
         slot = EITHER_HAND;
         value = 80;
         weight = 1;
@@ -16,7 +16,7 @@ class WaterDagger extends WeaponItem {
             :intelligence => 2
         };
 
-        attack = 10;
+        attack = 7;
         attack_type = DEXTERITY;
     }
 

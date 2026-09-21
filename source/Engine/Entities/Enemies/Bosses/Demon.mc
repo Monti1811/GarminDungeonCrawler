@@ -6,9 +6,10 @@ class Demon extends Enemy {
 		Enemy.initialize();
         id = 2;
 		name = "Demon";
+		description = "A powerful demon lord of destruction.";
         attack_cooldown = 0;
-        damage = 125;
-        armor = 50;
+        damage = 21;
+        armor = 11;
         current_health = 750;
         maxHealth = current_health;
 		kill_experience = 1000;
@@ -23,7 +24,7 @@ class Demon extends Enemy {
 	}
 
 	function findNextMove(map) as Point2D {
-        return Enemy.followPlayerSimple(map);
+		return Enemy.followPlayerTeleportBehind(map);
     }
 
 	function onLoad(save_data as Dictionary) as Void {

@@ -6,7 +6,7 @@ class DemonGreatsword extends WeaponItem {
         WeaponItem.initialize();
         id = 73;
         name = "Demon Greatsword";
-        description = "A powerful demon greatsword";
+        description = "A colossal blade forged in the lowest pits of the abyss.";
         slot = RIGHT_HAND;
         value = 3000;
         weight = 7;
@@ -15,7 +15,7 @@ class DemonGreatsword extends WeaponItem {
             :dexterity => -2
         };
 
-        attack = 24;
+        attack = 17;
         range = 2;
         weapon_type = TWOHAND;
         cooldown = 1;

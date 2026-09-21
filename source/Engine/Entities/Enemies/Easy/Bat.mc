@@ -6,9 +6,10 @@ class Bat extends Enemy {
 		Enemy.initialize();
 		id = 1;
 		name = "Bat";
+		description = "A swift cave bat with sharp fangs.";
 		current_health = 25;
-		maxHealth = 25;
-		armor = 5;
+		maxHealth = 18;
+		armor = 4;
         kill_experience = 20;
 	}
 
@@ -17,7 +18,7 @@ class Bat extends Enemy {
 	}
 
 	function findNextMove(map) as Point2D {
-        return Enemy.followPlayerSimple(map);
+		return Enemy.followPlayerStrafe(map, true);
     }
 
 	function onLoad(save_data as Dictionary) as Void {

@@ -6,7 +6,7 @@ class BloodLance extends WeaponItem {
         WeaponItem.initialize();
         id = 85;
         name = "Blood Lance";
-        description = "A powerful blood lance";
+        description = "A lance stained red, thirsting for the next kill.";
         slot = RIGHT_HAND;
         value = 5000;
         weight = 2;
@@ -15,7 +15,7 @@ class BloodLance extends WeaponItem {
             :luck => 10
         };
 
-        attack = 40;
+        attack = 65;
         range = 2;
         range_type = LINEAR;
         attack_type = DEXTERITY;

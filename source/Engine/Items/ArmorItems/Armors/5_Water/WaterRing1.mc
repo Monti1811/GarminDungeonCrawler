@@ -6,7 +6,7 @@ class WaterRing1 extends ArmorItem {
 		ArmorItem.initialize();
 		id = 1054;
 		name = "Sapphire Ring";
-		description = "A sapphire ring";
+		description = "A sapphire ring that whispers of the deep ocean.";
 		slot = ACCESSORY;
 		value = 50;
 		weight = 0.1;

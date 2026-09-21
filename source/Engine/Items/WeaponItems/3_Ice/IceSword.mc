@@ -6,7 +6,7 @@ class IceSword extends WeaponItem {
         WeaponItem.initialize();
         id = 38;
         name = "Ice Sword";
-        description = "A powerful ice sword";
+        description = "A blade of living frost that chills the air around it.";
         slot = RIGHT_HAND;
         value = 100;
         weight = 4;
@@ -16,7 +16,7 @@ class IceSword extends WeaponItem {
             :constitution => 2
         };
 
-        attack = 14;
+        attack = 8;
         range = 1;
         element = ELEMENT_ICE;
     }

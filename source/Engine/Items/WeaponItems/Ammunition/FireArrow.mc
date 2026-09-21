@@ -6,7 +6,7 @@ class FireArrow extends Ammunition {
 		Ammunition.initialize();
 		id = 201;
 		name = "Fire Arrow";
-		description = "A fire arrow";
+		description = "An arrow with an oil-soaked tip that ignites on launch.";
 		type = ARROW;
 		element_override = ELEMENT_FIRE;
 		attack = 2;

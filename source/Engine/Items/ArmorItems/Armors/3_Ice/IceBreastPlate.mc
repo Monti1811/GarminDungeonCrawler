@@ -6,11 +6,11 @@ class IceBreastPlate extends ArmorItem {
 		ArmorItem.initialize();
 		id = 1031;
 		name = "Ice Breastplate";
-		description = "A ice breastplate";
+		description = "A chestplate of enchanted glacial ice, cold to the touch.";
 		value = 100;
 		weight = 10;
 		slot = CHEST;
-		defense = 10;
+		defense = 8;
 		attribute_bonus = {
 			:constitution => 4,
 			:wisdom => 4,

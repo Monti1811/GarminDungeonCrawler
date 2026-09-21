@@ -6,7 +6,7 @@ class WoodShield extends ArmorItem {
 		ArmorItem.initialize();
 		id = 1200;
 		name = "Shield";
-		description = "A simple shield";
+		description = "A rough-hewn wooden shield, better than nothing.";
 		value = 5;
 		weight = 1.5;
 		slot = LEFT_HAND;

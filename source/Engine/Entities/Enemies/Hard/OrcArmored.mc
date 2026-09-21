@@ -6,10 +6,11 @@ class OrcArmored extends Enemy {
         Enemy.initialize();
         id = 31;
         name = "Armored Orc";
-        damage = 50;
+        description = "A heavily armored orc footman.";
+        damage = 21;
 		current_health = 175;
 		maxHealth = current_health;
-		armor = 50;
+		armor = 25;
         kill_experience = 300;
 		energy_per_turn = 50;
     }
@@ -19,6 +20,6 @@ class OrcArmored extends Enemy {
     }
 
     function findNextMove(map) as Point2D {
-        return Enemy.followPlayerSimple(map);
+        return Enemy.followPlayerDirect(map);
     }
 }

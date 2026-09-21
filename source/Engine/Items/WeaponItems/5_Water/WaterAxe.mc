@@ -6,7 +6,7 @@ class WaterAxe extends WeaponItem {
         WeaponItem.initialize();
         id = 50;
         name = "Water Axe";
-        description = "A powerful water axe";
+        description = "A waraxe that crashes like a wave upon its foe.";
         value = 100;
         weight = 3;
         slot = RIGHT_HAND;
@@ -17,7 +17,7 @@ class WaterAxe extends WeaponItem {
             :luck => -2
         };
 
-        attack = 12;
+        attack = 7;
     }
 
     function onEquipItem(player as Player) as Void {

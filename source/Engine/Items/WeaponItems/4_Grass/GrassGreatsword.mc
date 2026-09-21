@@ -6,7 +6,7 @@ class GrassGreatsword extends WeaponItem {
         WeaponItem.initialize();
         id = 43;
         name = "Grass Greatsword";
-        description = "A powerful grass greatsword";
+        description = "A massive blade of twisted roots that pulses with primal force.";
         slot = RIGHT_HAND;
         value = 150;
         weight = 6;
@@ -16,7 +16,7 @@ class GrassGreatsword extends WeaponItem {
             :luck => 2
         };
 
-        attack = 18;
+        attack = 8;
         range = 2;
         weapon_type = TWOHAND;
         cooldown = 1;

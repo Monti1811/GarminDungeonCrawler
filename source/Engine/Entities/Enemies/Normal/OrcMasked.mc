@@ -6,9 +6,10 @@ class OrcMasked extends Enemy {
         Enemy.initialize();
         id = 32;
         name = "Masked Orc";
-        damage = 20;
+        description = "A cunning orc assassin hiding behind a mask.";
+        damage = 14;
 		current_health = 125;
-		maxHealth = 125;
+		maxHealth = 88;
 		energy_per_turn = 100;
 		armor = 2;
         kill_experience = 125;
@@ -19,6 +20,6 @@ class OrcMasked extends Enemy {
     }
 
     function findNextMove(map) as Point2D {
-        return Enemy.followPlayerSimple(map);
+        return Enemy.followPlayerFlankSafe(map);
     }
 }

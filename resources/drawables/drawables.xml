@@ -1,38 +1,53 @@
 <drawables>
     <bitmap id="LauncherIcon" filename="launcher_icon.png" packingFormat="png" />
-    <bitmap id="LauncherIconMainScreen" filename="launcher_icon_mainscreen.png" packingFormat="png" />
+    <!-- <bitmap id="LauncherIconMainScreen" filename="launcher_icon_mainscreen.png" packingFormat="png" /> -->
     <bitmap id="Player" filename="player.png" packingFormat="png" />
     <bitmap id="Frog" filename="monsters/frog.png" packingFormat="png" />
     <bitmap id="Stairs" filename="stairs.png" packingFormat="png" />
-    <!-- Right low hint :locX => 290, :locY => 220 --> 
-    <bitmap id="rightLow" personality="
-            system_icon_light__hint_button_right_bottom
-            system_loc__hint_button_right_bottom" />
-    <bitmap id="warningToastIcon" personality="
-        system_icon_destructive__warning
-        system_size__toast_icon
-    "/>
-    <!-- ActionMenu hint -->
-    <bitmap id="actionMenu" personality="
-        system_icon_dark__hint_action_menu
-        system_loc__hint_action_menu" />
+    <!-- Item Info Menu Backgrounds -->
+    <bitmap id="itemInfoMenu" filename="menus/iteminfomenu/iteminfomenu.png" packingFormat="png" />
+    <bitmap id="itemInfoMenuConsumable" filename="menus/iteminfomenu/iteminfomenu_consumables_round.png" packingFormat="png" />
+    <bitmap id="itemInfoMenuEmptyRound" filename="menus/iteminfomenu/iteminfomenu_empty_round.png" packingFormat="png" />
+    <bitmap id="itemInfoMenuKeyItem" filename="menus/iteminfomenu/iteminfomenu_keyitem_round.png" packingFormat="png" />
+    <bitmap id="itemInfoMenuWeaponIcon" filename="menus/iteminfomenu/weapon.png" packingFormat="png" />
+    <bitmap id="itemInfoMenuShieldIcon" filename="menus/iteminfomenu/shield.png" packingFormat="png" />
+    <bitmap id="itemInfoMenuDamageIcon" filename="menus/iteminfomenu/damage.png" packingFormat="png" />
+    <!-- <bitmap id="characterInfoRound" filename="menus/characterinfo/characterinfo_round.png" packingFormat="png" /> -->
+    <bitmap id="characterInfoRoundNoStats" filename="menus/characterinfo/characterinfo_round_nostats.png" packingFormat="png" />
+    <bitmap id="characterInfoStatsMana" filename="menus/characterinfo/characterinfo_stats_mana.png" packingFormat="png" />
+    <bitmap id="characterInfoStatsNoMana" filename="menus/characterinfo/characterinfo_stats_no_mana.png" packingFormat="png" />
+    <bitmap id="characterAttributes" filename="menus/characterattributes/characterattributes.png" packingFormat="png" />
+    <!-- Enemy Info Menu Backgrounds -->
+    <bitmap id="enemyInfoStatsRound" filename="menus/enemyinfostats/enemyinfostats_round.png" packingFormat="png" />
 
-    <!-- Right top hint :locX => 300, :locY => 60 -->
+    <!-- Game Menu Icons -->
+    <bitmap id="gameMenuPlayer" filename="menus/gamemenu/player.png" packingFormat="png" />
+    <bitmap id="gameMenuInventory" filename="menus/gamemenu/inventory.png" packingFormat="png" />
+    <bitmap id="gameMenuQuests" filename="menus/gamemenu/quests.png" packingFormat="png" />
+    <bitmap id="gameMenuMap" filename="menus/gamemenu/map.png" packingFormat="png" />
+    <bitmap id="gameMenuCompendium" filename="menus/gamemenu/compendium.png" packingFormat="png" />
+    <bitmap id="gameMenuSave" filename="menus/gamemenu/save.png" packingFormat="png" />
+    <bitmap id="gameMenuLog" filename="menus/gamemenu/log.png" packingFormat="png" />
+    <bitmap id="gameMenuSettings" filename="menus/gamemenu/settings.png" packingFormat="png" />
+
+    <!-- Quest backgrounds -->
+    <bitmap id="questBackground" filename="menus/questgiver/quest.png" packingFormat="png" />
+
+    <!-- Right top hint -->
     <bitmap id="rightTop" personality="
             system_icon_light__hint_button_right_top
             system_loc__hint_button_right_top" />
 
-    <!-- Right top accept :locX => 300, :locY => 60 -->
+    <!-- Right top accept -->
     <bitmap id="rightTopAccept" personality="
              system_icon_positive__hint_button_right_top
             system_loc__hint_button_right_top" />
 
-    <!-- Right top cancel :locX => 290, :locY => 220 --> 
+    <!-- Right bottom cancel -->
     <bitmap id="rightBottomCancel" personality="
              system_icon_destructive__hint_button_right_bottom
             system_loc__hint_button_right_bottom" />
-   
-    
+
     <bitmap id="saveToastIcon" personality="
         system_icon_dark__save
         system_size__toast_icon
@@ -48,28 +63,17 @@
         system_size__toast_icon
     "/>
 
-    
-
     <!-- Players/NPCs -->
     <bitmap id="Basic" filename="players/hero_basic.png" packingFormat="png" />
-    <bitmap id="Barbarian" filename="players/npc_barbarian.png" packingFormat="png" />
-    <bitmap id="Dwarf" filename="players/npc_dwarf.png" packingFormat="png" />
-    <bitmap id="Dwarf2" filename="players/npc_dwarf_2.png" packingFormat="png" />
     <bitmap id="Elf" filename="players/npc_elf.png" packingFormat="png" />
-    <bitmap id="Elf2" filename="players/npc_elf_2.png" packingFormat="png" />
     <bitmap id="KnightBlue" filename="players/npc_knight_blue.png" packingFormat="png" />
-    <bitmap id="KnightGreen" filename="players/npc_knight_green.png" packingFormat="png" />
-    <bitmap id="KnightYellow" filename="players/npc_knight_yellow.png" packingFormat="png" />
-    <bitmap id="Mage" filename="players/npc_mage.png" packingFormat="png" />
     <bitmap id="Merchant" filename="players/npc_merchant.png" packingFormat="png" />
-    <bitmap id="Merchant2" filename="players/npc_merchant_2.png" packingFormat="png" />
     <bitmap id="Paladin" filename="players/npc_paladin.png" packingFormat="png" />
     <bitmap id="Sage" filename="players/npc_sage.png" packingFormat="png" />
-    <bitmap id="Trickster" filename="players/npc_trickster.png" packingFormat="png" />
     <bitmap id="Wizard" filename="players/npc_wizzard.png" packingFormat="png" />
     <bitmap id="Wrestler" filename="players/npc_wrestler.png" packingFormat="png" />
 
-    <!-- Weapons/Armor/Items -->
+    <!-- Weapons -->
     <bitmap id="steel_sword" filename="items/steel_sword.png" packingFormat="png" />
     <bitmap id="steel_staff" filename="items/steel_staff.png" packingFormat="png" />
     <bitmap id="steel_axe" filename="items/steel_axe.png" packingFormat="png" />
@@ -151,42 +155,8 @@
     <bitmap id="blood_bow" filename="items/blood_bow.png" packingFormat="png" />
     <bitmap id="blood_spell" filename="items/blood_spell.png" packingFormat="png" />
     <bitmap id="blood_katana" filename="items/blood_katana.png" packingFormat="png" />
-    <bitmap id="poison_sword" filename="items/poison_sword.png" packingFormat="png" />
-    <bitmap id="poison_staff" filename="items/poison_staff.png" packingFormat="png" />
-    <bitmap id="poison_axe" filename="items/poison_axe.png" packingFormat="png" />
-    <bitmap id="poison_lance" filename="items/poison_lance.png" packingFormat="png" />
-    <bitmap id="poison_greatsword" filename="items/poison_greatsword.png" packingFormat="png" />
-    <bitmap id="poison_dagger" filename="items/poison_dagger.png" packingFormat="png" />
-    <bitmap id="poison_bow" filename="items/poison_bow.png" packingFormat="png" />
-    <bitmap id="poison_spell" filename="items/poison_spell.png" packingFormat="png" />
-    <bitmap id="poison_katana" filename="items/poison_katana.png" packingFormat="png" />
-    <bitmap id="platinum_sword" filename="items/platinum_sword.png" packingFormat="png" />
-    <bitmap id="platinum_staff" filename="items/platinum_staff.png" packingFormat="png" />
-    <bitmap id="platinum_axe" filename="items/platinum_axe.png" packingFormat="png" />
-    <bitmap id="platinum_lance" filename="items/platinum_lance.png" packingFormat="png" />
-    <bitmap id="platinum_greatsword" filename="items/platinum_greatsword.png" packingFormat="png" />
-    <bitmap id="platinum_dagger" filename="items/platinum_dagger.png" packingFormat="png" />
-    <bitmap id="platinum_bow" filename="items/platinum_bow.png" packingFormat="png" />
-    <bitmap id="platinum_spell" filename="items/platinum_spell.png" packingFormat="png" />
-    <bitmap id="platinum_katana" filename="items/platinum_katana.png" packingFormat="png" />
-    <bitmap id="heaven_sword" filename="items/heaven_sword.png" packingFormat="png" />
-    <bitmap id="heaven_staff" filename="items/heaven_staff.png" packingFormat="png" />
-    <bitmap id="heaven_axe" filename="items/heaven_axe.png" packingFormat="png" />
-    <bitmap id="heaven_lance" filename="items/heaven_lance.png" packingFormat="png" />
-    <bitmap id="heaven_greatsword" filename="items/heaven_greatsword.png" packingFormat="png" />
-    <bitmap id="heaven_dagger" filename="items/heaven_dagger.png" packingFormat="png" />
-    <bitmap id="heaven_bow" filename="items/heaven_bow.png" packingFormat="png" />
-    <bitmap id="heaven_spell" filename="items/heaven_spell.png" packingFormat="png" />
-    <bitmap id="heaven_katana" filename="items/heaven_katana.png" packingFormat="png" />
-    <bitmap id="hell_sword" filename="items/hell_sword.png" packingFormat="png" />
-    <bitmap id="hell_staff" filename="items/hell_staff.png" packingFormat="png" />
-    <bitmap id="hell_axe" filename="items/hell_axe.png" packingFormat="png" />
-    <bitmap id="hell_lance" filename="items/hell_lance.png" packingFormat="png" />
-    <bitmap id="hell_greatsword" filename="items/hell_greatsword.png" packingFormat="png" />
-    <bitmap id="hell_dagger" filename="items/hell_dagger.png" packingFormat="png" />
-    <bitmap id="hell_bow" filename="items/hell_bow.png" packingFormat="png" />
-    <bitmap id="hell_spell" filename="items/hell_spell.png" packingFormat="png" />
-    <bitmap id="hell_katana" filename="items/hell_katana.png" packingFormat="png" />
+
+    <!-- Armor -->
     <bitmap id="steel_helmet" filename="items/steel_helmet.png" packingFormat="png" />
     <bitmap id="steel_armor" filename="items/steel_armor.png" packingFormat="png" />
     <bitmap id="steel_gauntlets" filename="items/steel_gauntlets.png" packingFormat="png" />
@@ -241,22 +211,23 @@
     <bitmap id="blood_leg_armor" filename="items/blood_leg_armor.png" packingFormat="png" />
     <bitmap id="blood_ring1" filename="items/blood_ring1.png" packingFormat="png" />
     <bitmap id="blood_ring2" filename="items/blood_ring2.png" packingFormat="png" />
+
+    <!-- Consumables -->
     <bitmap id="potion_health" filename="items/potion_health.png" packingFormat="png" />
     <bitmap id="potion_health_greater" filename="items/potion_health_greater.png" packingFormat="png" />
     <bitmap id="potion_health_max" filename="items/potion_health_max.png" packingFormat="png" />
     <bitmap id="potion_mana" filename="items/potion_mana.png" packingFormat="png" />
     <bitmap id="potion_mana_greater" filename="items/potion_mana_greater.png" packingFormat="png" />
     <bitmap id="potion_mana_max" filename="items/potion_mana_max.png" packingFormat="png" />
+
+    <!-- Special items -->
     <bitmap id="key" filename="items/key.png" packingFormat="png" />
     <bitmap id="gold" filename="items/gold.png" packingFormat="png" />
-    <bitmap id="diamond" filename="items/diamond.png" packingFormat="png" />
-    <bitmap id="gold_big" filename="items/gold_big.png" packingFormat="png" />
     <bitmap id="chest_closed" filename="items/chest_closed.png" packingFormat="png" />
     <bitmap id="chest_open_empty" filename="items/chest_open_empty.png" packingFormat="png" />
     <bitmap id="chest_open_full" filename="items/chest_open_full.png" packingFormat="png" />
-    <bitmap id="chest_golden_closed" filename="items/chest_golden_closed.png" packingFormat="png" />
-    <bitmap id="chest_golden_open_empty" filename="items/chest_golden_open_empty.png" packingFormat="png" />
-    <bitmap id="chest_golden_open_full" filename="items/chest_golden_open_full.png" packingFormat="png" />
+
+    <!-- Ammunition -->
     <bitmap id="arrow" filename="items/arrow.png" packingFormat="png" />
     <bitmap id="arrow_fire" filename="items/arrow_fire.png" packingFormat="png" />
     <bitmap id="arrow_ice" filename="items/arrow_ice.png" packingFormat="png" />
@@ -268,14 +239,16 @@
     <bitmap id="bolt_fire" filename="items/bolt_fire.png" packingFormat="png" />
     <bitmap id="bolt_ice" filename="items/bolt_ice.png" packingFormat="png" />
     <bitmap id="bolt_gold" filename="items/bolt_gold.png" packingFormat="png" />
+
+    <!-- Shields -->
     <bitmap id="shield_steel" filename="items/shield_steel.png" packingFormat="png" />
     <bitmap id="shield_silver" filename="items/shield_silver.png" packingFormat="png" />
     <bitmap id="shield_gold" filename="items/shield_gold.png" packingFormat="png" />
     <bitmap id="shield_wood" filename="items/shield_wood.png" packingFormat="png" />
 
+    <!-- Backpacks & Accessories -->
     <bitmap id="backpack_green" filename="items/backpack_green.png" packingFormat="png" />
     <bitmap id="backpack_purple" filename="items/backpack_purple.png" packingFormat="png" />
-
     <bitmap id="life_amulet" filename="items/life_amulet.png" packingFormat="png" />
     <bitmap id="mana_crystal" filename="items/mana_crystal.png" packingFormat="png" />
 
@@ -286,7 +259,6 @@
     <bitmap id="monster_zombie_small" filename="monsters/monster_zombie_small.png" packingFormat="png" />
     <bitmap id="monster_skelet" filename="monsters/monster_skelet.png" packingFormat="png" />
     <bitmap id="monster_zombie" filename="monsters/monster_zombie.png" packingFormat="png" />
-    <bitmap id="monster_zombie_green" filename="monsters/monster_zombie_green.png" packingFormat="png" />
     <bitmap id="monster_bat" filename="monsters/monster_bat.png" packingFormat="png" />
     <bitmap id="monster_necromancer" filename="monsters/monster_necromancer.png" packingFormat="png" />
     <bitmap id="monster_dark_knight" filename="monsters/monster_dark_knight.png" packingFormat="png" />
@@ -316,7 +288,6 @@
     <bitmap id="monster_elemental_plant_small" filename="monsters/monster_elemental_plant_small.png" packingFormat="png" />
     <bitmap id="monster_elemental_gold_tall" filename="monsters/monster_elemental_gold_tall.png" packingFormat="png" />
     <bitmap id="monster_elemental_gold_short" filename="monsters/monster_elemental_gold_short.png" packingFormat="png" />
-    <bitmap id="monster_zombie_tall" filename="monsters/monster_zombie_tall.png" packingFormat="png" />
-    <bitmap id="monster_zombie_short" filename="monsters/monster_zombie_short.png" packingFormat="png" />
-
+    <bitmap id="monster_shadow_stalker" filename="generated/monster_shadow_stalker.png" packingFormat="png" />
+    <bitmap id="monster_gloom_lurker" filename="generated/monster_gloom_lurker.png" packingFormat="png" />
 </drawables>
