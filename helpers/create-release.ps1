@@ -2,7 +2,7 @@ param(
     [Parameter(Mandatory = $true)]
     [string]$Tag,
 
-    [string[]]$Devices = @("venu2", "venu2plus", "venu2s", "venu3", "venu3s", "venu441mm", "venu445mm"),
+    [string[]]$Devices,
 
     [string]$MonkeybrainsJarPath,
 
@@ -19,33 +19,36 @@ param(
 
 $ErrorActionPreference = "Stop"
 
-function Resolve-MonkeybrainsJar {
-    param([string]$ProvidedPath)
-
-    if ($ProvidedPath) {
-        $resolved = Resolve-Path -Path $ProvidedPath -ErrorAction Stop
-        return $resolved.Path
-    }
-
-    $sdkRoot = Join-Path $env:APPDATA "Garmin\ConnectIQ\Sdks"
-    if (-not (Test-Path $sdkRoot)) {
-        throw "Monkeybrains jar not provided and SDK folder not found at '$sdkRoot'."
-    }
-
-    $candidates = Get-ChildItem -Path $sdkRoot -Filter "monkeybrains.jar" -Recurse -File | Sort-Object LastWriteTimeUtc -Descending
-    if (-not $candidates -or $candidates.Count -eq 0) {
-        throw "No monkeybrains.jar found under '$sdkRoot'."
-    }
-
-    return $candidates[0].FullName
-}
-
 function Require-Command {
     param([string]$Name)
 
     if (-not (Get-Command $Name -ErrorAction SilentlyContinue)) {
         throw "Required command '$Name' is not installed or not in PATH."
     }
+}
+
+function Get-ManifestDevices {
+    param([string]$ManifestPath)
+
+    if (-not (Test-Path $ManifestPath)) {
+        throw "Manifest not found at '$ManifestPath'."
+    }
+
+    [xml]$manifest = Get-Content $ManifestPath -Raw
+    $ns = New-Object System.Xml.XmlNamespaceManager($manifest.NameTable)
+    $ns.AddNamespace("iq", "http://www.garmin.com/xml/connectiq")
+
+    $productNodes = $manifest.SelectNodes("//iq:product/@id", $ns)
+    $devices = @()
+    foreach ($node in $productNodes) {
+        $devices += $node.Value
+    }
+
+    if ($devices.Count -eq 0) {
+        throw "No devices found in manifest.xml."
+    }
+
+    return $devices
 }
 
 $scriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
@@ -55,71 +58,76 @@ if (-not $OutputDir) {
     $OutputDir = Join-Path $repoRoot "release\$Tag"
 }
 
-$allowedDevices = @("venu2", "venu2plus", "venu2s", "venu3", "venu3s", "venu441mm", "venu445mm")
-$invalidDevices = $Devices | Where-Object { $_ -notin $allowedDevices }
-if ($invalidDevices) {
-    throw "Invalid device(s): $($invalidDevices -join ', '). Allowed: $($allowedDevices -join ', ')."
+$manifestPath = Join-Path $repoRoot "manifest.xml"
+
+if (-not $Devices -or $Devices.Count -eq 0) {
+    $Devices = Get-ManifestDevices -ManifestPath $manifestPath
+    Write-Host "Loaded $($Devices.Count) devices from manifest.xml"
 }
 
-Require-Command -Name "java"
+Require-Command -Name "node"
 Require-Command -Name "git"
 if (-not $SkipRelease) {
     Require-Command -Name "gh"
 }
 
-$jarPath = Resolve-MonkeybrainsJar -ProvidedPath $MonkeybrainsJarPath
 $keyPath = (Resolve-Path -Path $DeveloperKeyPath -ErrorAction Stop).Path
-$monkeyJunglePath = (Resolve-Path -Path (Join-Path $repoRoot "monkey.jungle") -ErrorAction Stop).Path
+
+# Ensure node_modules are installed
+$nodeModulesPath = Join-Path $repoRoot "node_modules"
+if (-not (Test-Path $nodeModulesPath)) {
+    Write-Host "Installing dependencies..."
+    Push-Location $repoRoot
+    try {
+        & npm install
+        if ($LASTEXITCODE -ne 0) {
+            throw "npm install failed."
+        }
+    }
+    finally {
+        Pop-Location
+    }
+}
 
 New-Item -Path $OutputDir -ItemType Directory -Force | Out-Null
 
 Push-Location $repoRoot
 try {
-    $existingTag = git tag --list $Tag
-    if (-not $existingTag) {
-        if ($CreateTag) {
-            git tag $Tag
-            git push origin $Tag
-        }
-        else {
-            throw "Tag '$Tag' does not exist locally. Re-run with -CreateTag or create and push it first."
+    if (-not $SkipRelease) {
+        $existingTag = git tag --list $Tag
+        if (-not $existingTag) {
+            if ($CreateTag) {
+                git tag $Tag
+                git push origin $Tag
+            }
+            else {
+                throw "Tag '$Tag' does not exist locally. Re-run with -CreateTag or create and push it first."
+            }
         }
     }
 
-    Write-Host "Using monkeybrains: $jarPath"
-    Write-Host "Building for devices: $($Devices -join ', ')"
+    Write-Host "Building optimized release for $($Devices.Count) devices..."
+    Write-Host "Devices: $($Devices -join ', ')"
 
     $builtFiles = New-Object System.Collections.Generic.List[string]
 
     foreach ($device in $Devices) {
-        foreach ($variant in @("debug", "release")) {
-            $output = Join-Path $OutputDir "DungeonCrawler-$Tag-$device-$variant.prg"
+        $output = $OutputDir
 
-            $javaArgs = @(
-                "-Xms1g",
-                "-Dfile.encoding=UTF-8",
-                "-Dapple.awt.UIElement=true",
-                "-jar", $jarPath,
-                "-o", $output,
-                "-f", $monkeyJunglePath,
-                "-y", $keyPath,
-                "-d", $device
-            )
+        Write-Host "Building optimized $device..."
+        & node "helpers/optimize-build.mjs" $device $output $keyPath
+        if ($LASTEXITCODE -ne 0) {
+            throw "Build failed for $device."
+        }
 
-            if ($variant -eq "release") {
-                $javaArgs += "-r"
-            }
-
-            Write-Host "Building $variant for $device..."
-            & java @javaArgs
-            if ($LASTEXITCODE -ne 0) {
-                throw "Build failed for $device ($variant)."
-            }
-
-            $builtFiles.Add($output)
+        # Find the generated file
+        $builtFile = Get-ChildItem -Path $OutputDir -Filter "DungeonCrawler-$device.*" | Select-Object -First 1
+        if ($builtFile) {
+            $builtFiles.Add($builtFile.FullName)
         }
     }
 
+    Write-Host ""
     Write-Host "Built files:"
     $builtFiles | ForEach-Object { Write-Host " - $_" }
 
