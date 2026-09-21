@@ -6,7 +6,7 @@ class GrassHelmet extends ArmorItem {
 		ArmorItem.initialize();
 		id = 1040;
 		name = "Grass Helmet";
-		description = "A simple grass helmet";
+		description = "A woven grass helmet, barely better than cloth.";
 		value = 70;
 		weight = 3;
 		slot = HEAD;

@@ -11,6 +11,7 @@ class Demonolog extends Enemy {
 		Enemy.initialize();
 		id = 27;
 		name = "Demonolog";
+		description = "A master of dark rituals and summoning.";
 		damage = 14;
 		current_health = 200;
 		maxHealth = current_health;

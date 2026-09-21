@@ -6,7 +6,7 @@ class DemonSword extends WeaponItem {
         WeaponItem.initialize();
         id = 78;
         name = "Demon Sword";
-        description = "A powerful demon sword";
+        description = "A sinister blade forged in the depths of the underworld.";
         slot = RIGHT_HAND;
         value = 2000;
         weight = 3;

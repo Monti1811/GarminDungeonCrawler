@@ -3,7 +3,7 @@
 ## Build
 
 ```bash
-& "java.exe" "-Xms1g" "-Dfile.encoding=UTF-8" "-Dapple.awt.UIElement=true" "-jar" "c:\Users\Timon\AppData\Roaming\Garmin\ConnectIQ\Sdks\connectiq-sdk-win-8.4.1-2026-02-03-e9f77eeaa\bin\monkeybrains.jar" "-o" "bin\DungeonCrawler.prg" "-f" "f:\Code\Garmin\DungeonCrawler\monkey.jungle" "-y" "f:\Code\Garmin\developer_key" "-d" "venu2s_sim" "-w"
+& "java.exe" "-Xms1g" "-Dfile.encoding=UTF-8" "-Dapple.awt.UIElement=true" "-jar" "c:\Users\Timon\AppData\Roaming\Garmin\ConnectIQ\Sdks\connectiq-sdk-win-9.2.0-2026-06-09-92a1605b2\bin\monkeybrains.jar" "-o" "bin\DungeonCrawler.prg" "-f" "f:\Code\Garmin\DungeonCrawler\monkey.jungle" "-y" "f:\Code\Garmin\developer_key" "-d" "venu2s_sim" "-w"
 ```
 
 Working directory: `F:/Code/Garmin/DungeonCrawler`
@@ -30,6 +30,7 @@ Die Dungeon-Tiles werden als Bitmap Font generiert. Prozess:
 **WICHTIG:** `test2_0.png` wird NICHT automatisch kopiert! Immer beide Dateien kopieren.
 
 **Char-Zuordnung:**
+
 - 32-41: Bestehende Tiles (EMPTY, WALL, PASSABLE, STAIRS etc.)
 - 42-44: Horizontale Wände
   - 42=`wall_h_top` (Wand oben, Boden unten)
@@ -58,6 +59,18 @@ Die Dungeon-Tiles werden als Bitmap Font generiert. Prozess:
 
 **Wand-Varianten werden zur Laufzeit berechnet** in `Map.getWallVariant(x,y)` basierend auf Nachbarschaft.
 
+## Drawables
+
+Nicht mehr referenzierte Bitmap-Einträge in `drawables.xml` werden **auskommentiert**, nicht gelöscht. So bleibt die Historie erhalten und Bitmaps können bei Bedarf wieder aktiviert werden.
+
+```xml
+<!-- <bitmap id="unusedBitmap" filename="items/unused.png" packingFormat="png" /> -->
+```
+
+Prüfung mit `monkeyc_analyze_drawable_usage` — 0 Unused-Einträge als Ziel.
+
+Rechteckige Screen-Varianten werden in `resources-rectangle/drawables/drawables.xml` als Override definiert (gleiche ID, anderes Filename).
+
 ## Watchdog / Connect IQ Laufzeit-Beschränkungen
 
 Der Garmin-Watchdog ist **aufruf-basiert**, nicht zeitbasiert. Es gibt eine bestimmte maximale Anzahl von Funktionsaufrufen pro Zeitspanne.
@@ -67,6 +80,7 @@ Der Garmin-Watchdog ist **aufruf-basiert**, nicht zeitbasiert. Es gibt eine best
 **Wichtig:** Jeder einzelne `onTimer()`-Tick muss innerhalb der Aufruf-Limits bleiben. Wenn zu viele Funktionen in einem Tick aufgerufen werden (z.B. durch verschachtelte Loops oder Allokationen), löst der Watchdog einen Reset aus.
 
 **Optimierungsstrategien:**
+
 - Loops reduzieren (max-Tries reduzieren, Innere Loops vermeiden)
 - Array-Allokationen vermeiden (direkte `setTypeXY()` statt `[x,y]` Arrays)
 - Einmalige Berechnungen statt wiederholter Aufrufe (z.B. Gewichte live berechnen statt cached)
@@ -94,6 +108,7 @@ Die Dungeon-Tiles werden als Bitmap Font generiert. Prozess:
 **WICHTIG:** `test2_0.png` wird NICHT automatisch kopiert! Immer beide Dateien kopieren.
 
 **Char-Zuordnung:**
+
 - 32-41: Bestehende Tiles (EMPTY, WALL, PASSABLE, STAIRS etc.)
 - 42-44: Horizontale Wände
   - 42=`wall_h_top` (Wand oben, Boden unten)
@@ -132,6 +147,7 @@ Tests ausführen mit `run_tests.ps1` (kein offenes CMD-Fenster):
 ```
 
 Das Script:
+
 1. Kompiliert mit `-t` (Test-Modus)
 2. Startet Simulator mit `venu2s` (NICHT `venu2s_sim`)
 3. Führt `monkeydo` (Java direkt) mit `/t` aus
@@ -140,6 +156,7 @@ Das Script:
 Wichtig: Simulator-Device muss `venu2s` sein, `venu2s_sim` funktioniert nicht mit `monkeydo`.
 
 Manuell (ohne Script):
+
 ```bash
 # Kompilieren
 & "java.exe" "-Xms1g" "-Dfile.encoding=UTF-8" "-Dapple.awt.UIElement=true" "-jar" "...\monkeybrains.jar" "-o" "bin\DungeonCrawler.prg" "-f" "monkey.jungle" "-y" "f:\Code\Garmin\developer_key" "-d" "venu2s" "-w" "-t"

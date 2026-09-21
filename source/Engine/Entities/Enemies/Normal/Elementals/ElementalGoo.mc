@@ -6,6 +6,7 @@ class ElementalGoo extends Elemental {
 		Elemental.initialize();
 		id = 22;
 		name = "Goo Elemental";
+		description = "A dangerous elemental of corrosive ooze.";
 		children_id = 16;
 	}
 

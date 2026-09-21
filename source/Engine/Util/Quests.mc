@@ -61,6 +61,14 @@ class Quest {
                 return "Deal Damage";
             case TAKE_DAMAGE:
                 return "Endure Damage";
+            case RUN_MINUTES:
+                return "Running";
+            case WALK_STAIRS:
+                return "Climb Stairs";
+            case BIKE_DISTANCE:
+                return "Cycling";
+            case WALK_STEPS:
+                return "Walking";
         }
         return "Quest";
     }
@@ -289,13 +297,35 @@ module Quests {
 
     function buildQuestChoices(depth as Number, amount as Number) as Array<Quest> {
         var choices = [] as Array<Quest>;
+        var used_types = [] as Array<QuestType>;
         for (var i = 0; i < amount; i++) {
-            var quest = createRandomQuest(depth);
+            var quest = createQuestWithUniqueType(depth, used_types);
             if (quest != null) {
                 choices.add(quest);
+                used_types.add(quest.type);
             }
         }
         return choices;
+    }
+
+    function createQuestWithUniqueType(depth as Number, used_types as Array<QuestType>) as Quest? {
+        for (var attempt = 0; attempt < 10; attempt++) {
+            var quest = createRandomQuest(depth);
+            if (quest == null) {
+                return null;
+            }
+            var duplicate = false;
+            for (var j = 0; j < used_types.size(); j++) {
+                if (used_types[j] == quest.type) {
+                    duplicate = true;
+                    break;
+                }
+            }
+            if (!duplicate) {
+                return quest;
+            }
+        }
+        return createRandomQuest(depth);
     }
 
     function createRandomQuest(depth as Number) as Quest? {

@@ -6,7 +6,7 @@ class WaterGauntlets extends ArmorItem {
 		ArmorItem.initialize();
 		id = 1052;
 		name = "Water Gauntlets";
-		description = "Some water gauntlets";
+		description = "Gauntlets that channel the crushing pressure of the deep.";
 		value = 50;
 		weight = 2;
 		slot = EITHER_HAND;

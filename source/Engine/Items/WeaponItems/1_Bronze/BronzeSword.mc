@@ -6,7 +6,7 @@ class BronzeSword extends WeaponItem {
         WeaponItem.initialize();
         id = 18;
         name = "Bronze Sword";
-        description = "A simple bronze sword";
+        description = "A weathered sword cast from dull bronze.";
         slot = RIGHT_HAND;
         value = 25;
         weight = 4;

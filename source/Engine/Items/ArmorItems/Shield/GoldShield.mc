@@ -6,7 +6,7 @@ class GoldShield extends ArmorItem {
 		ArmorItem.initialize();
 		id = 1203;
 		name = "Gold Shield";
-		description = "A golden shield";
+		description = "A gleaming golden shield of imposing craftsmanship.";
 		value = 500;
 		weight = 5;
 		slot = LEFT_HAND;

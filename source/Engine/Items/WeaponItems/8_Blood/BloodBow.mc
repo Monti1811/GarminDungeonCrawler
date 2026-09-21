@@ -6,7 +6,7 @@ class BloodBow extends Bow {
         Bow.initialize();
         id = 81;
         name = "Blood Bow";
-        description = "A powerful blood bow";
+        description = "A bowstring taut with congealed blood, firing Crimson bolts.";
         slot = RIGHT_HAND;
         value = 5000;
         weight = 1;

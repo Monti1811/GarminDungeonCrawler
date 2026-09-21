@@ -6,6 +6,7 @@ class Imp extends Enemy {
 		Enemy.initialize();
 		id = 4;
 		name = "Imp";
+		description = "A mischievous little demon with fire magic.";
 		damage = 8;
 		current_health = 25;
 		maxHealth = 18;

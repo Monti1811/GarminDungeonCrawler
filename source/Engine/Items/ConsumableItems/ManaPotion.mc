@@ -7,10 +7,11 @@ class ManaPotion extends ConsumableItem {
 		ConsumableItem.initialize();
 		id = 2001;
 		name = "Mana Potion";
-		description = "A small mana potion";
+		description = "A shimmering blue draught of arcane energy.";
 		effect_description = "Restores 20 mana";
 		value = 20;
 		weight = 0.1;
+		tag = :mana;
 	}
 
 	function onUseItem(player as Player) as Void {

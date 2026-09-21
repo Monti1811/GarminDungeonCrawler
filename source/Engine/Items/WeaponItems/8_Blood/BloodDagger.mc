@@ -6,7 +6,7 @@ class BloodDagger extends WeaponItem {
         WeaponItem.initialize();
         id = 82;
         name = "Blood Dagger";
-        description = "A powerful blood dagger";
+        description = "A serrated blade that drinks the blood of its victims.";
         slot = EITHER_HAND;
         value = 4000;
         weight = 0.5;

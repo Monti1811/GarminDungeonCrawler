@@ -7,6 +7,8 @@ module NPCs {
 		1 => :createQuestGiver,
 	};
 
+	var npc_ids as Array<Number> = [0, 1];
+
 	var weights as Dictionary<Number, Number> = {
 		0 => 5,
 		1 => 2,

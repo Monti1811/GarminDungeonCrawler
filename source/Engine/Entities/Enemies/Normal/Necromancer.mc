@@ -11,6 +11,7 @@ class Necromancer extends Enemy {
 		Enemy.initialize();
 		id = 6;
 		name = "Necromancer";
+		description = "A dark sorcerer who commands the dead.";
 		damage = 15;
 		current_health = 50;
 		maxHealth = 37;

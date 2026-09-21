@@ -6,7 +6,7 @@ class GrassRing2 extends ArmorItem {
 		ArmorItem.initialize();
 		id = 1045;
 		name = "Corruption Ring";
-		description = "A corruption ring";
+		description = "A corrupted ring pulsing with dark overgrown energy.";
 		value = 50;
 		weight = 0.1;
 		slot = ACCESSORY;

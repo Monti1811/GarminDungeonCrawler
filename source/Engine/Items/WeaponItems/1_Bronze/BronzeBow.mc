@@ -6,7 +6,7 @@ class BronzeBow extends Bow {
         Bow.initialize();
         id = 11;
         name = "Bronze Bow";
-        description = "A simple bronze bow";
+        description = "A simple bow with a bronze-reinforced riser.";
         slot = RIGHT_HAND;
         value = 25;
         weight = 2;

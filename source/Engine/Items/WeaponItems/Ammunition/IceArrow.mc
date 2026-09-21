@@ -6,7 +6,7 @@ class IceArrow extends Ammunition {
 		Ammunition.initialize();
 		id = 202;
 		name = "Ice Arrow";
-		description = "An ice arrow";
+		description = "An arrow tipped with a shard of eternal frost.";
 		type = ARROW;
 		element_override = ELEMENT_ICE;
 		attack = 2;

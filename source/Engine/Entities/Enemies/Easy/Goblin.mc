@@ -6,6 +6,7 @@ class Goblin extends Enemy {
         Enemy.initialize();
         id = 25;
         name = "Goblin";
+        description = "A cunning goblin with quick reflexes.";
         current_health = 35;
         maxHealth = 26;
         damage = 6;

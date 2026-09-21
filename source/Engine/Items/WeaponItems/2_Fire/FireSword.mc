@@ -6,7 +6,7 @@ class FireSword extends WeaponItem {
         WeaponItem.initialize();
         id = 28;
         name = "Fire Sword";
-        description = "A powerful fire sword";
+        description = "A blazing blade wreathed in living flame.";
         slot = RIGHT_HAND;
         value = 100;
         weight = 4;

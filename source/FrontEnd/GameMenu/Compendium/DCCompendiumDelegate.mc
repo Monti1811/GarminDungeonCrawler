@@ -28,6 +28,7 @@ class DCCompendiumDelegate extends WatchUi.Menu2InputDelegate {
         for (var i = 0; i < discovered_ids.size(); i++) {
             var enemy_id = discovered_ids[i];
             var enemy = $.Enemies.createEnemyFromId(enemy_id);
+            enemy.setLevel($.Game.depth);
             var subtitle = "HP: " + enemy.maxHealth + " ATK: " + enemy.damage;
             var icon = new DCCompendiumEnemyIcon(enemy);
             menu.addItem(new WatchUi.IconMenuItem(enemy.getName(), subtitle, enemy_id, icon, null));
@@ -107,13 +108,12 @@ class DCCompendiumEnemyListDelegate extends WatchUi.Menu2InputDelegate {
             return;
         }
         var enemy = $.Enemies.createEnemyFromId(enemy_id as Number);
+        enemy.setLevel($.Game.depth);
         showEnemyDetails(enemy);
     }
 
     function showEnemyDetails(enemy as Enemy) as Void {
-        var factory = new DCEnemyInfoFactory(enemy);
-        var viewLoop = new WatchUi.ViewLoop(factory, {:wrap => true});
-        WatchUi.pushView(viewLoop, new DCGameMenuItemInfoDelegate(viewLoop), WatchUi.SLIDE_IMMEDIATE);
+        WatchUi.pushView(new DCEnemyInfoStatsView(enemy), new WatchUi.BehaviorDelegate(), WatchUi.SLIDE_IMMEDIATE);
     }
 }
 

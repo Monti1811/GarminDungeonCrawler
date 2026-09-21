@@ -6,7 +6,7 @@ class WaterRing2 extends ArmorItem {
 		ArmorItem.initialize();
 		id = 1055;
 		name = "Obsidian Ring";
-		description = "An obsidian ring";
+		description = "An obsidian ring that draws moisture from the air.";
 		value = 50;
 		weight = 0.1;
 		slot = ACCESSORY;

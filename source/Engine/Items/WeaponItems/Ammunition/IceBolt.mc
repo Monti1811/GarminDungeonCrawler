@@ -6,7 +6,7 @@ class IceBolt extends Ammunition {
 		Ammunition.initialize();
 		id = 252;
 		name = "Ice Bolt";
-		description = "An ice bolt";
+		description = "A bolt enchanted with biting cold.";
 		type = BOLT;
 		element_override = ELEMENT_ICE;
 		attack = 2;

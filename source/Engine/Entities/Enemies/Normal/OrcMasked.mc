@@ -6,6 +6,7 @@ class OrcMasked extends Enemy {
         Enemy.initialize();
         id = 32;
         name = "Masked Orc";
+        description = "A cunning orc assassin hiding behind a mask.";
         damage = 14;
 		current_health = 125;
 		maxHealth = 88;

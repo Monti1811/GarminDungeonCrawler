@@ -6,7 +6,7 @@ class Bolt extends Ammunition {
 		Ammunition.initialize();
 		id = 250;
 		name = "Bolt";
-		description = "A simple bolt";
+		description = "A standard crossbow bolt with an iron tip.";
 		type = BOLT;
 		attack = 4;
 	}

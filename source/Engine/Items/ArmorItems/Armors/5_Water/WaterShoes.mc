@@ -6,7 +6,7 @@ class WaterShoes extends ArmorItem {
 		ArmorItem.initialize();
 		id = 1053;
 		name = "Water Shoes";
-		description = "A simple water shoes";
+		description = "Boots that ripple with fluid enchantment, never slipping.";
 		value = 75;
 		weight = 3;
 		slot = FEET;

@@ -12,6 +12,7 @@ class Enemy extends Entity {
 	var maxHealth as Number = 100;
 	var kill_experience as Number = 10;
 	var name as String = "Enemy";
+	var description as String = "";
 	var level as Number = 1;
 	var experience as Number = 0;
 

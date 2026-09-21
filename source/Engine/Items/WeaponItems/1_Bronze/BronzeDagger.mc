@@ -6,7 +6,7 @@ class BronzeDagger extends WeaponItem {
         WeaponItem.initialize();
         id = 12;
         name = "Bronze Dagger";
-        description = "A simple bronze dagger";
+        description = "A small bronze knife, barely holding an edge.";
         slot = EITHER_HAND;
         value = 25;
         weight = 1;

@@ -7,7 +7,7 @@ class SteelShoes extends ArmorItem {
 		ArmorItem.initialize();
 		id = 1003;
 		name = "Steel Shoes";
-		description = "A simple steel shoes";
+		description = "Reinforced steel boots for armored mobility.";
 		value = 7;
 		weight = 3;
 		slot = FEET;

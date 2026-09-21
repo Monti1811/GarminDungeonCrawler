@@ -1,7 +1,6 @@
 import Toybox.Lang;
 import Toybox.WatchUi;
 import Toybox.Graphics;
-import Rez.Styles;
 
 class DCPlayerDetailsEquipmentsView extends WatchUi.View {
 	
@@ -11,7 +10,8 @@ class DCPlayerDetailsEquipmentsView extends WatchUi.View {
 	private var equipped_res as Dictionary<ItemSlot, BitmapReference?> = {};
 	private const num_to_equipslot as Array<ItemSlot> = [HEAD, CHEST, BACK, LEGS, FEET, LEFT_HAND, RIGHT_HAND, ACCESSORY, AMMUNITION];
 
-	private var layout_type as Number = 0;
+	private var _rightTopHint as WatchUi.Bitmap?;
+	private var _rightBottomHint as WatchUi.Bitmap?;
 	
 	function initialize(player as Player, withHint as Boolean, creation as Boolean) {
 		View.initialize();
@@ -19,27 +19,25 @@ class DCPlayerDetailsEquipmentsView extends WatchUi.View {
 		small_font = WatchUi.loadResource($.Rez.Fonts.small);
 		size_rectangles = (Constants.SCREEN_WIDTH * 74 / 360).toNumber();
 		if (withHint) {
-			layout_type = 1;
+			_rightTopHint = $.HintHelper.createRightTopHint($.Rez.Drawables.rightTop);
 		}
 		if (creation) {
-			layout_type = 2;
+			_rightTopHint = $.HintHelper.createRightTopHint($.Rez.Drawables.rightTopAccept);
+			_rightBottomHint = $.HintHelper.createRightBottomHint($.Rez.Drawables.rightBottomCancel);
 		}
 	}
 
 	function onLayout(dc) {
-		if (self.layout_type == 1) {
-			setLayout(Rez.Layouts.DCPlayerDetailsEquipmentsViewHint(dc));
-		} else if (self.layout_type == 2) {
-			setLayout(Rez.Layouts.DCPlayerDetailsEquipmentsViewCreation(dc));
-		}
 	}
 
 	function drawRectangle(dc as Dc, x as Number, y as Number, name as String, equipslot as ItemSlot) as Void {
 		var x_start = x - size_rectangles/2;
 		var y_start = y - size_rectangles/2;
 		var y_line = y + 1*size_rectangles/5;
+		dc.setColor(0x2596E3, Graphics.COLOR_TRANSPARENT);
 		dc.drawRectangle(x_start, y_start, size_rectangles, size_rectangles);
 		dc.drawLine(x_start, y_line, x_start + size_rectangles, y_line);
+		dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
 		dc.drawText(x, y_line, small_font, name, Graphics.TEXT_JUSTIFY_CENTER);
 		var res = equipped_res[equipslot];
 		if (res != null) {
@@ -76,8 +74,13 @@ class DCPlayerDetailsEquipmentsView extends WatchUi.View {
 		dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_BLACK);
         dc.clear();
 
-		// Update layout
-		View.onUpdate(dc);
+		// Draw hints
+		if (_rightTopHint != null) {
+			_rightTopHint.draw(dc);
+		}
+		if (_rightBottomHint != null) {
+			_rightBottomHint.draw(dc);
+		}
 
 		dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
 

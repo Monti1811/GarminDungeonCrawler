@@ -6,6 +6,7 @@ class Bat extends Enemy {
 		Enemy.initialize();
 		id = 1;
 		name = "Bat";
+		description = "A swift cave bat with sharp fangs.";
 		current_health = 25;
 		maxHealth = 18;
 		armor = 4;

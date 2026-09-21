@@ -6,7 +6,7 @@ class DemonRing1 extends ArmorItem {
 		ArmorItem.initialize();
 		id = 1074;
 		name = "Demon Ring";
-		description = "A simple demon ring";
+		description = "A ring bearing the sigil of a forgotten abyssal lord.";
 		slot = ACCESSORY;
 		value = 700;
 		weight = 0.1;

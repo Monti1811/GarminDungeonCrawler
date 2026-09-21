@@ -6,7 +6,7 @@ class DemonStaff extends Staff {
         Staff.initialize();
         id = 77;
         name = "Demon Staff";
-        description = "A powerful demon staff. If the player has mana available, uses it to perform more powerful attacks.";
+        description = "A demonic staff pulsing with dark mana, fueling devastating spells.";
         slot = RIGHT_HAND;
         value = 2000;
         weight = 1;

@@ -6,7 +6,7 @@ class BronzeRing2 extends ArmorItem {
 		ArmorItem.initialize();
 		id = 1015;
 		name = "Silver Ring";
-		description = "A silver ring";
+		description = "A tarnished bronze ring with a faint protective ward.";
 		slot = ACCESSORY;
 		value = 13;
 		weight = 0.1;

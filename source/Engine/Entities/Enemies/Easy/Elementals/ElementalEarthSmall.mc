@@ -6,6 +6,7 @@ class ElementalEarthSmall extends Enemy {
 		Enemy.initialize();
 		id = 13;
 		name = "Small Earth Elemental";
+		description = "A minor elemental of stone and soil.";
 		damage = 9;
 		current_health = 50;
 		maxHealth = current_health;

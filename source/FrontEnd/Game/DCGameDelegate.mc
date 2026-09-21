@@ -1,5 +1,6 @@
 import Toybox.Lang;
 import Toybox.WatchUi;
+import Toybox.Graphics;
 
 enum WalkDirection {
     UP,
@@ -94,14 +95,14 @@ class DCGameDelegate extends WatchUi.BehaviorDelegate {
 
     function showMenu() as Void {
         var actionMenu = new WatchUi.Menu2({:title=>"Game Menu"});
-        actionMenu.addItem(new WatchUi.MenuItem(getApp().getPlayer().getName(), "Show details", :player, null));
-        actionMenu.addItem(new WatchUi.MenuItem("Inventory", "Show inventory", :inventory, null));
-        actionMenu.addItem(new WatchUi.MenuItem("Quests", "Show active quests", :quests, null));
-        actionMenu.addItem(new WatchUi.MenuItem("Map", "Show map", :map, null));
-        actionMenu.addItem(new WatchUi.MenuItem("Compendium", "Discovered enemies & items", :compendium, null));
-        actionMenu.addItem(new WatchUi.MenuItem("Save", "Save the game", :save, null));
-        actionMenu.addItem(new WatchUi.MenuItem("Log", "Show last actions", :log, null));
-        actionMenu.addItem(new WatchUi.MenuItem("Settings", "Change settings", :settings, null));
+        actionMenu.addItem(new WatchUi.IconMenuItem(getApp().getPlayer().getName(), "Show details", :player, new GameMenuIconDrawable(WatchUi.loadResource($.Rez.Drawables.gameMenuPlayer) as Graphics.BitmapReference), null));
+        actionMenu.addItem(new WatchUi.IconMenuItem("Inventory", "Show inventory", :inventory, new GameMenuIconDrawable(WatchUi.loadResource($.Rez.Drawables.gameMenuInventory) as Graphics.BitmapReference), null));
+        actionMenu.addItem(new WatchUi.IconMenuItem("Quests", "Show active quests", :quests, new GameMenuIconDrawable(WatchUi.loadResource($.Rez.Drawables.gameMenuQuests) as Graphics.BitmapReference), null));
+        actionMenu.addItem(new WatchUi.IconMenuItem("Map", "Show map", :map, new GameMenuIconDrawable(WatchUi.loadResource($.Rez.Drawables.gameMenuMap) as Graphics.BitmapReference), null));
+        actionMenu.addItem(new WatchUi.IconMenuItem("Compendium", "Discovered enemies & items", :compendium, new GameMenuIconDrawable(WatchUi.loadResource($.Rez.Drawables.gameMenuCompendium) as Graphics.BitmapReference), null));
+        actionMenu.addItem(new WatchUi.IconMenuItem("Save", "Save the game", :save, new GameMenuIconDrawable(WatchUi.loadResource($.Rez.Drawables.gameMenuSave) as Graphics.BitmapReference), null));
+        actionMenu.addItem(new WatchUi.IconMenuItem("Log", "Show last actions", :log, new GameMenuIconDrawable(WatchUi.loadResource($.Rez.Drawables.gameMenuLog) as Graphics.BitmapReference), null));
+        actionMenu.addItem(new WatchUi.IconMenuItem("Settings", "Change settings", :settings, new GameMenuIconDrawable(WatchUi.loadResource($.Rez.Drawables.gameMenuSettings) as Graphics.BitmapReference), null));
         self.addDebugMenu(actionMenu);
 
         WatchUi.pushView(actionMenu, new DCGameMenuDelegate(), SLIDE_UP);

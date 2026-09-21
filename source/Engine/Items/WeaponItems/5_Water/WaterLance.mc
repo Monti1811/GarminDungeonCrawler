@@ -6,7 +6,7 @@ class WaterLance extends WeaponItem {
         WeaponItem.initialize();
         id = 55;
         name = "Water Lance";
-        description = "A powerful water lance";
+        description = "A lance of spiraling water, impossibly hard.";
         slot = RIGHT_HAND;
         value = 100;
         weight = 3;

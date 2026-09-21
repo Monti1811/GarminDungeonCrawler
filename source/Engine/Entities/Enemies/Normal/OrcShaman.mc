@@ -18,6 +18,7 @@ class OrcShaman extends Enemy {
         Enemy.initialize();
         id = 33;
         name = "Shaman Orc";
+        description = "An orc mystic wielding primal magic.";
         damage = 10;
 		current_health = 100;
 		maxHealth = current_health;

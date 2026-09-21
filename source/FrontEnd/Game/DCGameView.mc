@@ -85,308 +85,8 @@ class DCGameView extends WatchUi.View {
             (player_sprite_dimensions[1] - _tile_height) / 2
         ];
 
-        setHint();
+        rightTopHint = $.HintHelper.createRightTopHint($.Rez.Drawables.rightTop);
 
-    }
-
-    (:venu2)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 345, :locY => 67});
-    }
-
-    (:venu2plus)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 345, :locY => 67});
-    }
-
-    (:venu2s)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 300, :locY => 59});
-    }
-
-    (:venu3)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 360, :locY => 54});
-    }
-
-    (:venu3s)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 318, :locY => 59});
-    }
-
-    (:venu441mm)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 319, :locY => 72});
-    }
-
-    (:venu445mm)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 360, :locY => 54});
-    }
-
-    (:fenix7s)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 207, :locY => 44});
-    }
-
-    (:fenix7spro)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 207, :locY => 44});
-    }
-
-    (:fenix7)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 225, :locY => 48});
-    }
-
-    (:fenix7pro)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 225, :locY => 48});
-    }
-
-    (:fenix7pronowifi)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 225, :locY => 48});
-    }
-
-    (:fenix8solar47mm)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 206, :locY => 42});
-    }
-
-    (:fenix9prosolar47mm)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 206, :locY => 42});
-    }
-
-    (:fenix7x)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 242, :locY => 52});
-    }
-
-    (:fenix7xpro)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 242, :locY => 52});
-    }
-
-    (:fenix7xpronowifi)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 242, :locY => 52});
-    }
-
-    (:fenix8solar51mm)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 222, :locY => 44});
-    }
-
-    (:fenix9prosolar51mm)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 225, :locY => 55});
-    }
-
-    (:fenix843mm)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 323, :locY => 71});
-    }
-
-    (:fenix943mm)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 323, :locY => 71});
-    }
-
-    (:fenix9pro43mm)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 323, :locY => 71});
-    }
-
-    (:fenixe)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 323, :locY => 71});
-    }
-
-    (:fenix847mm)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 353, :locY => 77});
-    }
-
-    (:fenix8pro47mm)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 353, :locY => 77});
-    }
-
-    (:fenix947mm)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 353, :locY => 77});
-    }
-
-    (:fenix9pro47mm)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 353, :locY => 77});
-    }
-
-    (:fenix9pro51mm)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 353, :locY => 77});
-    }
-
-    (:fr955)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 224, :locY => 50});
-    }
-
-    (:enduro3)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 222, :locY => 44});
-    }
-
-    (:fr265s)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 297, :locY => 69});
-    }
-
-    (:approachs50)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 338, :locY => 73});
-    }
-
-    (:approachs7042mm)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 338, :locY => 73});
-    }
-
-    (:descentg2)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 337, :locY => 72});
-    }
-
-    (:descentmk343mm)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 337, :locY => 72});
-    }
-
-    (:epix2pro42mm)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 337, :locY => 72});
-    }
-
-    (:fr170)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 323, :locY => 73});
-    }
-
-    (:fr170m)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 323, :locY => 73});
-    }
-
-    (:fr57042mm)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 323, :locY => 73});
-    }
-
-    (:fr70)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 323, :locY => 73});
-    }
-
-    (:marq2)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 337, :locY => 72});
-    }
-
-    (:marq2aviator)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 337, :locY => 72});
-    }
-
-    (:venusq2)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 307, :locY => 70});
-    }
-
-    (:venusq2m)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 307, :locY => 70});
-    }
-
-    (:venux1)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 389, :locY => 80});
-    }
-
-    (:vivoactive5)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 318, :locY => 59});
-    }
-
-    (:vivoactive6)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 319, :locY => 72});
-    }
-
-    (:d2airx10)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 345, :locY => 67});
-    }
-
-    (:d2mach1)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 360, :locY => 77});
-    }
-
-    (:epix2)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 360, :locY => 77});
-    }
-
-    (:epix2pro47mm)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 360, :locY => 77});
-    }
-
-    (:fr265)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 343, :locY => 81});
-    }
-
-    (:approachs7047mm)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 393, :locY => 85});
-    }
-
-    (:d2mach2)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 353, :locY => 77});
-    }
-
-    (:d2mach2pro)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 353, :locY => 77});
-    }
-
-    (:descentmk351mm)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 393, :locY => 84});
-    }
-
-    (:epix2pro51mm)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 393, :locY => 84});
-    }
-
-    (:fr57047mm)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 379, :locY => 89});
-    }
-
-    (:fr965)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 379, :locY => 89});
-    }
-
-    (:fr970)
-    function setHint() as Void {
-        rightTopHint = new WatchUi.Bitmap({:rezId=>$.Rez.Drawables.rightTop, :locX => 379, :locY => 89});
     }
 
 
@@ -511,18 +211,21 @@ class DCGameView extends WatchUi.View {
         var outer_outline_radius = (min_size * 178 / 360).toNumber();
         var inner_outline_radius = (min_size * 172 / 360).toNumber();
         var marker_radius = (min_size * 175 / 360).toNumber();
-        var end170 = $.MathUtil.getArcCoordinates(center_x, center_y, marker_radius, 170, 170) as Array<Array<Number>>;
-        var end100 = $.MathUtil.getArcCoordinates(center_x, center_y, marker_radius, 100, 100) as Array<Array<Number>>;
+        // Convert Garmin angles (0°=top, clockwise) to screen coords (0°=right, y-down)
+        var end170 = $.MathUtil.getArcCoordinates(center_x, center_y, marker_radius, 170 + 90, 170 + 90) as Array<Array<Number>>;
+        var end100 = $.MathUtil.getArcCoordinates(center_x, center_y, marker_radius, 100 + 90, 100 + 90) as Array<Array<Number>>;
         var p170 = end170[0];
         var p100 = end100[0];
-        var line_x1 = p170[0] - 3;
-        var line_y1 = p170[1] - 1;
-        var line_x2 = p170[0] + 3;
-        var line_y2 = p170[1] + 1;
-        var line2_x1 = p100[0] - 3;
-        var line2_y1 = p100[1] - 1;
-        var line2_x2 = p100[0] + 3;
-        var line2_y2 = p100[1] + 1;
+        // Tick marks along radius, length 3
+        var tick_len = 3;
+        var line_x1 = p170[0] - (p170[0] - center_x) * tick_len / marker_radius;
+        var line_y1 = p170[1] - (p170[1] - center_y) * tick_len / marker_radius;
+        var line_x2 = p170[0] + (p170[0] - center_x) * tick_len / marker_radius;
+        var line_y2 = p170[1] + (p170[1] - center_y) * tick_len / marker_radius;
+        var line2_x1 = p100[0] - (p100[0] - center_x) * tick_len / marker_radius;
+        var line2_y1 = p100[1] - (p100[1] - center_y) * tick_len / marker_radius;
+        var line2_x2 = p100[0] + (p100[0] - center_x) * tick_len / marker_radius;
+        var line2_y2 = p100[1] + (p100[1] - center_y) * tick_len / marker_radius;
 
         // Draw health bar
         dc.setColor(Graphics.COLOR_DK_RED, Graphics.COLOR_BLACK);
@@ -550,18 +253,21 @@ class DCGameView extends WatchUi.View {
         var outer_outline_radius = (min_size * 178 / 360).toNumber();
         var inner_outline_radius = (min_size * 172 / 360).toNumber();
         var marker_radius = (min_size * 175 / 360).toNumber();
-        var end260 = $.MathUtil.getArcCoordinates(center_x, center_y, marker_radius, 260, 260) as Array<Array<Number>>;
-        var end190 = $.MathUtil.getArcCoordinates(center_x, center_y, marker_radius, 190, 190) as Array<Array<Number>>;
+        // Convert Garmin angles (0°=top, clockwise) to screen coords (0°=right, y-down)
+        var end260 = $.MathUtil.getArcCoordinates(center_x, center_y, marker_radius, 260 + 90, 260 + 90) as Array<Array<Number>>;
+        var end190 = $.MathUtil.getArcCoordinates(center_x, center_y, marker_radius, 190 + 90, 190 + 90) as Array<Array<Number>>;
         var p260 = end260[0];
         var p190 = end190[0];
-        var line_x1 = p260[0] - 3;
-        var line_y1 = p260[1] - 1;
-        var line_x2 = p260[0] + 3;
-        var line_y2 = p260[1] + 1;
-        var line2_x1 = p190[0] - 3;
-        var line2_y1 = p190[1] - 1;
-        var line2_x2 = p190[0] + 3;
-        var line2_y2 = p190[1] + 1;
+        // Tick marks along radius, length 3
+        var tick_len = 3;
+        var line_x1 = p260[0] - (p260[0] - center_x) * tick_len / marker_radius;
+        var line_y1 = p260[1] - (p260[1] - center_y) * tick_len / marker_radius;
+        var line_x2 = p260[0] + (p260[0] - center_x) * tick_len / marker_radius;
+        var line_y2 = p260[1] + (p260[1] - center_y) * tick_len / marker_radius;
+        var line2_x1 = p190[0] - (p190[0] - center_x) * tick_len / marker_radius;
+        var line2_y1 = p190[1] - (p190[1] - center_y) * tick_len / marker_radius;
+        var line2_x2 = p190[0] + (p190[0] - center_x) * tick_len / marker_radius;
+        var line2_y2 = p190[1] + (p190[1] - center_y) * tick_len / marker_radius;
 
         var bar_values = [0, 0] as [Numeric, Numeric];
         if (player.second_bar == :mana) {

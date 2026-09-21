@@ -6,7 +6,7 @@ class FireShoes extends ArmorItem {
 		ArmorItem.initialize();
 		id = 1023;
 		name = "Fire Shoes";
-		description = "Some fire shoes";
+		description = "Boots that smolder with each step, leaving embers in their wake.";
 		value = 75;
 		weight = 3;
 		slot = FEET;

@@ -14,6 +14,9 @@ class DCDebugMenuDelegate extends WatchUi.Menu2InputDelegate {
             case :debug_enemies:
                 openEnemyList();
                 break;
+            case :debug_npcs:
+                openNpcList();
+                break;
             case :debug_items:
                 openItemList();
                 break;
@@ -34,6 +37,18 @@ class DCDebugMenuDelegate extends WatchUi.Menu2InputDelegate {
 			menu.addItem(new WatchUi.IconMenuItem(enemy.getName(), subtitle, enemy_ids[i], icon, null));
         }
         WatchUi.pushView(menu, new DCDebugSpawnEnemyDelegate(), WatchUi.SLIDE_UP);
+    }
+
+    function openNpcList() as Void {
+        var menu = new WatchUi.Menu2({:title=>"NPCs (Debug)"});
+        var npc_ids = $.NPCs.npc_ids;
+        npc_ids.sort(new NumberCompare());
+        for (var i = 0; i < npc_ids.size(); i++) {
+            var npc = $.NPCs.createNPCFromId(npc_ids[i]);
+            var subtitle = "Id " + npc_ids[i];
+            menu.addItem(new WatchUi.MenuItem(npc.getName(), subtitle, npc_ids[i], null));
+        }
+        WatchUi.pushView(menu, new DCDebugSpawnNpcDelegate(), WatchUi.SLIDE_UP);
     }
 
     function openItemList() as Void {

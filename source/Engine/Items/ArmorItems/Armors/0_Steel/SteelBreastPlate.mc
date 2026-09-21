@@ -7,7 +7,7 @@ class SteelBreastPlate extends ArmorItem {
 		ArmorItem.initialize();
 		id = 1001;
 		name = "Steel Breastplate";
-		description = "A steel breastplate";
+		description = "A heavy steel breastplate guarding the torso.";
 		value = 10;
 		weight = 10;
 		slot = CHEST;

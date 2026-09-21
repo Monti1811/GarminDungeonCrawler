@@ -6,7 +6,7 @@ class GrassLance extends WeaponItem {
         WeaponItem.initialize();
         id = 45;
         name = "Grass Lance";
-        description = "A powerful grass lance";
+        description = "A lance of petrified wood tipped with a venomous thorn.";
         slot = RIGHT_HAND;
         value = 100;
         weight = 3;

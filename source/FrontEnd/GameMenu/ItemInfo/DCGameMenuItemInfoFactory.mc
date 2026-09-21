@@ -3,7 +3,7 @@ import Toybox.Lang;
 import Toybox.WatchUi;
 
 class DCGameMenuItemInfoFactory extends WatchUi.ViewLoopFactory {
-    private const NUM_PAGES = 3;
+    private const NUM_PAGES = 2;
     private var _item as Item;
 
     function initialize(item as Item) {
@@ -13,15 +13,15 @@ class DCGameMenuItemInfoFactory extends WatchUi.ViewLoopFactory {
 
     //! Retrieve a view/delegate pair for the page at the given index
     function getView(page as Number) as [ViewLoopFactory.Views ] or [ ViewLoopFactory.Views, ViewLoopFactory.Delegates] {
-        switch (page) {
+        switch (page) {   
             case 0:
-                return [new $.DCItemInfoOverviewView(_item), new WatchUi.BehaviorDelegate()];
-            case 1:
                 return [new $.DCItemInfoValuesView(_item), new WatchUi.BehaviorDelegate()];
-            case 2: 
+            case 1: 
                 return [new $.DCItemInfoDescriptionView(_item), new WatchUi.BehaviorDelegate()];
+            /*case 2:
+                return [new $.DCItemInfoOverviewView(_item), new WatchUi.BehaviorDelegate()];*/
         }
-        return [new $.DCItemInfoOverviewView(_item), new WatchUi.BehaviorDelegate()];
+        return [new $.DCItemInfoValuesView(_item), new WatchUi.BehaviorDelegate()];
     }
 
     //! Return the number of view/delegate pairs that are managed by this factory

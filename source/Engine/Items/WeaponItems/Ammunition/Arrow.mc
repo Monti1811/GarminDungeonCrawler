@@ -6,7 +6,7 @@ class Arrow extends Ammunition {
 		Ammunition.initialize();
 		id = 200;
 		name = "Arrow";
-		description = "A simple arrow";
+		description = "A standard fletched arrow, nothing fancy but it flies true.";
 		type = ARROW;
 		attack = 4;
 		value = 5;

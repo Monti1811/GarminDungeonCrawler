@@ -6,7 +6,7 @@ class BronzeLance extends WeaponItem {
         WeaponItem.initialize();
         id = 15;
         name = "Bronze Lance";
-        description = "A simple bronze lance";
+        description = "A long bronze-tipped lance for thrusting attacks.";
         slot = RIGHT_HAND;
         value = 25;
         weight = 3;

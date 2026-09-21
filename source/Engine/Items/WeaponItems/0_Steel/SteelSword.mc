@@ -7,7 +7,7 @@ class SteelSword extends WeaponItem {
 		WeaponItem.initialize();
 		id = 8;
 		name = "Steel Sword";
-		description = "A simple steel sword";
+		description = "A straightforward blade forged from tempered steel.";
 		slot = RIGHT_HAND;
 		value = 10;
 		weight = 3;

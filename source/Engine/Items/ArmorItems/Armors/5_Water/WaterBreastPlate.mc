@@ -6,7 +6,7 @@ class WaterBreastPlate extends ArmorItem {
 		ArmorItem.initialize();
 		id = 1051;
 		name = "Water Breastplate";
-		description = "A water breastplate";
+		description = "A breastplate infused with the relentless force of the tide.";
 		value = 100;
 		weight = 8;
 		slot = CHEST;

@@ -6,7 +6,7 @@ class GrassShoes extends ArmorItem {
 		ArmorItem.initialize();
 		id = 1043;
 		name = "Grass Shoes";
-		description = "A simple grass shoes";
+		description = "Soft grass-woven shoes, silent on the ground.";
 		value = 75;
 		weight = 3;
 		slot = FEET;

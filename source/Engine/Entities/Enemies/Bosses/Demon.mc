@@ -6,6 +6,7 @@ class Demon extends Enemy {
 		Enemy.initialize();
         id = 2;
 		name = "Demon";
+		description = "A powerful demon lord of destruction.";
         attack_cooldown = 0;
         damage = 21;
         armor = 11;

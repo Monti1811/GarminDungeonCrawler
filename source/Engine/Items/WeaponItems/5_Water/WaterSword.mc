@@ -6,7 +6,7 @@ class WaterSword extends WeaponItem {
         WeaponItem.initialize();
         id = 58;
         name = "Water Sword";
-        description = "A powerful water sword";
+        description = "A fluid blade of crystalline water magic.";
         slot = RIGHT_HAND;
         value = 100;
         weight = 4;

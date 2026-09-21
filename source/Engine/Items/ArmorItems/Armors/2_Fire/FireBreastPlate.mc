@@ -6,7 +6,7 @@ class FireBreastPlate extends ArmorItem {
 		ArmorItem.initialize();
 		id = 1021;
 		name = "Fire Breastplate";
-		description = "A fire breastplate";
+		description = "A smoldering chestplate infused with elemental flame.";
 		value = 100;
 		weight = 8;
 		slot = CHEST;

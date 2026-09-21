@@ -6,7 +6,7 @@ class GoldAxe extends WeaponItem {
         WeaponItem.initialize();
         id = 60;
         name = "Gold Axe";
-        description = "A powerful gold axe";
+        description = "A golden waraxe that hums with divine authority.";
         value = 500;
         weight = 2;
         slot = RIGHT_HAND;

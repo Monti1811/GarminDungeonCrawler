@@ -6,6 +6,7 @@ class Zombie extends Enemy {
 		Enemy.initialize();
 		id = 8;
 		name = "Zombie";
+		description = "A rotting undead with surprising strength.";
 		damage = 9;
 		current_health = 125;
 		maxHealth = 87;

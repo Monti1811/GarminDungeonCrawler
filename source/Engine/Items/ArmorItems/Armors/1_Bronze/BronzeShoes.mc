@@ -6,7 +6,7 @@ class BronzeShoes extends ArmorItem {
 		ArmorItem.initialize();
 		id = 1013;
 		name = "Bronze Shoes";
-		description = "Some bronze shoes";
+		description = "Bronze-plated boots, light but offering minimal protection.";
 		value = 20;
 		weight = 3;
 		slot = FEET;

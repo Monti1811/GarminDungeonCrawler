@@ -6,6 +6,7 @@ class ElementalPlantSmall extends Enemy {
 		Enemy.initialize();
 		id = 30;
 		name = "Small Plant Elemental";
+		description = "A minor elemental of thorny vines.";
 		damage = 9;
 		current_health = 50;
 		maxHealth = current_health;

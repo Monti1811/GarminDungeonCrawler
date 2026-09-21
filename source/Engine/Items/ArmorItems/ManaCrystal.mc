@@ -8,7 +8,7 @@ class ManaCrystal extends ArmorItem {
 		ArmorItem.initialize();
 		id = 1301;
 		name = "Mana Crystal";
-		description = "Restores mana when equipped, will break after some time.";
+		description = "A crystallized mana shard that slowly restores energy, but is fragile.";
 		value = 100;
 		weight = 0.5;
 		slot = ACCESSORY;

@@ -6,7 +6,7 @@ class DemonRing2 extends ArmorItem {
 		ArmorItem.initialize();
 		id = 1075;
 		name = "Death Ring";
-		description = "A ring showing the skull of a demon";
+		description = "A ring crowned with a miniature demon skull that whispers threats.";
 		value = 700;
 		weight = 0.1;
 		slot = ACCESSORY;

@@ -6,7 +6,7 @@ class FireBolt extends Ammunition {
 		Ammunition.initialize();
 		id = 251;
 		name = "Fire Bolt";
-		description = "A fire bolt";
+		description = "A crossbow bolt that bursts into flame upon impact.";
 		type = BOLT;
 		element_override = ELEMENT_FIRE;
 		attack = 2;

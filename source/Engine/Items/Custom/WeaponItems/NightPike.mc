@@ -7,7 +7,7 @@ class NightPike extends WeaponItem {
 		WeaponItem.initialize();
 		id = 303;
 		name = "Night Pike";
-		description = "A custom weapon item";
+		description = "A shadowy pike that strikes from the darkness.";
 		slot = RIGHT_HAND;
 		value = 10;
 		weight = 1.0;

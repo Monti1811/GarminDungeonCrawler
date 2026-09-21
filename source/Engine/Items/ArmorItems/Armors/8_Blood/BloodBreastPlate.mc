@@ -6,7 +6,7 @@ class BloodBreastPlate extends ArmorItem {
 		ArmorItem.initialize();
 		id = 1081; // Updated ID
 		name = "Blood Breastplate";
-		description = "A blood breastplate";
+		description = "A chestplate encrusted with dried blood that never washes away.";
 		value = 5000;
 		weight = 8;
 		slot = CHEST;

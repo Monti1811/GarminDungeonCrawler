@@ -7,7 +7,7 @@ class Key extends KeyItem {
 	var type as ItemType = KEY;
 	var slot as ItemSlot = NONE;
 	var value as Number = 0;
-	var weight as Number = 0;
+	var weight as Numeric = 0.01;
 
 	function initialize() {
 		KeyItem.initialize();

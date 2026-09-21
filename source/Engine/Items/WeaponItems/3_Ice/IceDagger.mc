@@ -6,7 +6,7 @@ class IceDagger extends WeaponItem {
         WeaponItem.initialize();
         id = 32;
         name = "Ice Dagger";
-        description = "A powerful ice dagger";
+        description = "A crystalline blade that numbs the flesh it cuts.";
         slot = EITHER_HAND;
         value = 80;
         weight = 1;

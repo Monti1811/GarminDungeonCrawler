@@ -6,7 +6,7 @@ class SteelShield extends ArmorItem {
 		ArmorItem.initialize();
 		id = 1201;
 		name = "Steel Shield";
-		description = "A simple shield";
+		description = "A sturdy shield forged from overlapping steel plates.";
 		value = 50;
 		weight = 2.5;
 		slot = LEFT_HAND;

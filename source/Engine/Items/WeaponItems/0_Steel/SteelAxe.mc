@@ -7,7 +7,7 @@ class SteelAxe extends WeaponItem {
 		WeaponItem.initialize();
 		id = 0;
 		name = "Steel Axe";
-		description = "A simple steel axe";
+		description = "A sturdy steel axe built for cleaving.";
 		value = 10;
 		weight = 2;
 		slot = RIGHT_HAND;

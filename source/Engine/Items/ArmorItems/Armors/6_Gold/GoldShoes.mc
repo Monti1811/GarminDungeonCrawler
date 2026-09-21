@@ -6,7 +6,7 @@ class GoldShoes extends ArmorItem {
 		ArmorItem.initialize();
 		id = 1063;
 		name = "Gold Shoes";
-		description = "A simple gold shoes";
+		description = "Golden boots that gleam with each step, light as a prayer.";
 		value = 35;
 		weight = 3;
 		slot = FEET;

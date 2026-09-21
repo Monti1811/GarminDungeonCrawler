@@ -6,7 +6,7 @@ class BronzeSpell extends Spell {
         Spell.initialize();
         id = 16;
         name = "Bronze Spell";
-        description = "A simple bronze spell. If the player has mana available, uses it to perform a more powerful AoE attack.";
+        description = "A bronze-bound tome that channels mana into AoE spells.";
         slot = RIGHT_HAND;
         value = 25;
         weight = 1;

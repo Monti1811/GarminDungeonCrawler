@@ -5,100 +5,121 @@ import Toybox.Graphics;
 class DCPlayerDetailsAttributesView extends WatchUi.View {
 	
 	private var _player as Player;
+	private var _bg as BitmapReference?;
 
-	private var x_axis as Number;
-	private var value_x_axis as Number;
+	private var _title_x as Number = 0;
+	private var _title_y as Number = 0;
+	private var _bar_x as Number = 0;
+	private var _bar_max_width as Number = 0;
+	private var _bar_height as Number = 0;
+	private var _value_x as Number = 0;
+	private var _row_top as Number = 0;
+	private var _row_spacing as Number = 0;
+	private var _row_height as Number = 0;
 
-	private var minus_x_axis as Number;
-	private var plus_x_axis as Number;
+	private var _rightTopHint as WatchUi.Bitmap?;
+	private var _rightBottomHint as WatchUi.Bitmap?;
 
-	private var rectangle_x as Number;
-	private var rectangle_y as Number;
-	private var rectangle_width as Number;
-	private var tableentry_size as Number;
+	private static var ATTR_COLORS as Array<Number> = [
+		0xFF4444, // STR - Red
+		0xFF8C00, // CON - Orange
+		0x44FF44, // DEX - Green
+		0x4488FF, // INT - Blue
+		0x44FFFF, // WIS - Cyan
+		0xFF44FF, // CHA - Magenta
+		0xFFFF44  // LCK - Yellow
+	] as Array<Number>;
 
-	private var layout_type as Number = 0;
+	private static var ATTR_KEYS as Array<Symbol> = [
+		:strength, :constitution, :dexterity, :intelligence, :wisdom, :charisma, :luck
+	] as Array<Symbol>;
 	
 	function initialize(player as Player, withHint as Boolean, creation as Boolean) {
 		View.initialize();
 		_player = player;
 		
-		// Calculate dynamic positions based on screen size
-		x_axis = (Constants.SCREEN_WIDTH * 85 / 360).toNumber();
-		value_x_axis = (Constants.SCREEN_WIDTH * 240 / 360).toNumber();
-		minus_x_axis = (Constants.SCREEN_WIDTH * 205 / 360).toNumber();
-		plus_x_axis = (Constants.SCREEN_WIDTH * 275 / 360).toNumber();
-		rectangle_x = (Constants.SCREEN_WIDTH * 75 / 360).toNumber();
-		rectangle_y = (Constants.SCREEN_HEIGHT * 75 / 360).toNumber();
-		rectangle_width = (Constants.SCREEN_WIDTH * 210 / 360).toNumber();
-		tableentry_size = (Constants.SCREEN_HEIGHT * 30 / 360).toNumber();
-		
+		_bg = WatchUi.loadResource($.Rez.Drawables.characterAttributes) as BitmapReference?;
+
 		if (withHint) {
-			layout_type = 1;
+			_rightTopHint = $.HintHelper.createRightTopHint($.Rez.Drawables.rightTop);
 		}
 		if (creation) {
-			layout_type = 2;
+			_rightTopHint = $.HintHelper.createRightTopHint($.Rez.Drawables.rightTopAccept);
+			_rightBottomHint = $.HintHelper.createRightBottomHint($.Rez.Drawables.rightBottomCancel);
 		}
 	}
-
-	function onLayout(dc as Dc) as Void {
-		if (layout_type == 1) {
-			setLayout($.Rez.Layouts.DCAttributesViewHint(dc));
-		} else if (layout_type == 2) {
-			setLayout($.Rez.Layouts.DCPlayerDetailsEquipmentsViewCreation(dc));
-		}
-	}
-	
 	
 	function onUpdate(dc) {
 		dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_BLACK);
-        dc.clear();
+		dc.clear();
 
-		// Draw layout (includes hints)
-		View.onUpdate(dc);
+		var W = dc.getWidth();
+		var H = dc.getHeight();
+		var ref = W < H ? W : H;
+		var bgX = (W - ref) / 2;
+		var bgY = (H - ref) / 2;
 
+		// Draw background centered
+		if (_bg != null) {
+			dc.drawScaledBitmap(bgX, bgY, ref, ref, _bg as BitmapReference);
+		}
+
+		// Draw hints
+		if (_rightTopHint != null) {
+			_rightTopHint.draw(dc);
+		}
+		if (_rightBottomHint != null) {
+			_rightBottomHint.draw(dc);
+		}
+
+		// Proportional positions relative to ref (centered background)
+		_title_x = (W / 2).toNumber();
+		_title_y = (bgY + ref * 78 / 360).toNumber();
+		_row_top = (bgY + ref * 98 / 360).toNumber();
+		_row_spacing = (ref * 28 / 360).toNumber();
+		_row_height = (ref * 15 / 360).toNumber();
+		_bar_x = (bgX + ref * 135 / 360).toNumber();
+		_bar_max_width = (ref * 115 / 360).toNumber();
+		_bar_height = (_row_height * 10 / 28).toNumber();
+		_value_x = (bgX + ref * 287 / 360).toNumber();
+
+		// Title
 		dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-		drawTable(dc);
-		drawEntries(dc);
-		//drawPlusMinus(dc);
+		dc.drawText(_title_x, _title_y, Graphics.FONT_XTINY, "Attributes (" + _player.getAttributePoints() + ")", Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
+
+		drawBars(dc);
 	}
 
-	function drawTable(dc as Dc) as Void {
-		var title_x = (Constants.SCREEN_WIDTH / 2).toNumber();
-		var title_y = (Constants.SCREEN_HEIGHT * 50 / 360).toNumber();
-		dc.drawText(title_x, title_y, Graphics.FONT_TINY, "Attributes (" + _player.getAttributePoints() + ")", Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
-		dc.drawRectangle(rectangle_x, rectangle_y, rectangle_width, rectangle_width);
-		for (var i = 1; i < 7; i += 1) {
-			var y = rectangle_x + i * tableentry_size;
-			dc.drawLine(rectangle_x, y, rectangle_x + rectangle_width, y);
+	function drawBars(dc as Dc) as Void {
+		// Find max value for proportional bars
+		var max_val = 0;
+		for (var i = 0; i < 7; i++) {
+			var val = _player.getAttribute(ATTR_KEYS[i]) as Number;
+			if (val > max_val) {
+				max_val = val;
+			}
+		}
+
+		var half_bar = _bar_height / 2;
+
+		for (var i = 0; i < 7; i++) {
+			var val = _player.getAttribute(ATTR_KEYS[i]) as Number;
+			var center_y = _row_top + i * _row_spacing + _row_height / 2;
+
+			// Bar fill
+			if (max_val > 0) {
+				var bar_width = (val * _bar_max_width / max_val).toNumber();
+				if (bar_width < 2) {
+					bar_width = 2;
+				}
+				dc.setColor(ATTR_COLORS[i], Graphics.COLOR_TRANSPARENT);
+				dc.fillRectangle(_bar_x, center_y - half_bar, bar_width, _bar_height);
+			}
+
+			// Value
+			dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+			dc.drawText(_value_x, center_y, Graphics.FONT_XTINY, val, Graphics.TEXT_JUSTIFY_RIGHT | Graphics.TEXT_JUSTIFY_VCENTER);
 		}
 	}
-
-	function drawEntries(dc as Dc) as Void {
-		dc.drawText(x_axis, rectangle_x + tableentry_size/2, Graphics.FONT_XTINY, "Strength", Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER);
-		dc.drawText(x_axis, rectangle_x + 3 * tableentry_size/2, Graphics.FONT_XTINY, "Constitution", Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER);
-		dc.drawText(x_axis, rectangle_x + 5 * tableentry_size/2, Graphics.FONT_XTINY, "Dexterity", Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER);
-		dc.drawText(x_axis, rectangle_x + 7 * tableentry_size/2, Graphics.FONT_XTINY, "Intelligence", Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER);
-		dc.drawText(x_axis, rectangle_x + 9 * tableentry_size/2, Graphics.FONT_XTINY, "Wisdom", Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER);
-		dc.drawText(x_axis, rectangle_x + 11 * tableentry_size/2, Graphics.FONT_XTINY, "Charisma", Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER);
-		dc.drawText(x_axis, rectangle_x + 13 * tableentry_size/2, Graphics.FONT_XTINY, "Luck", Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER);
-
-		dc.drawText(value_x_axis, rectangle_x + tableentry_size/2, Graphics.FONT_XTINY, _player.getAttribute(:strength), Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
-		dc.drawText(value_x_axis, rectangle_x + 3 * tableentry_size/2, Graphics.FONT_XTINY, _player.getAttribute(:constitution), Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
-		dc.drawText(value_x_axis, rectangle_x + 5 * tableentry_size/2, Graphics.FONT_XTINY, _player.getAttribute(:dexterity), Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
-		dc.drawText(value_x_axis, rectangle_x + 7 * tableentry_size/2, Graphics.FONT_XTINY, _player.getAttribute(:intelligence), Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
-		dc.drawText(value_x_axis, rectangle_x + 9 * tableentry_size/2, Graphics.FONT_XTINY, _player.getAttribute(:wisdom), Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
-		dc.drawText(value_x_axis, rectangle_x + 11 * tableentry_size/2, Graphics.FONT_XTINY, _player.getAttribute(:charisma), Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
-		dc.drawText(value_x_axis, rectangle_x + 13 * tableentry_size/2, Graphics.FONT_XTINY, _player.getAttribute(:luck), Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
-
-	}
-
-	function drawPlusMinus(dc as Dc) as Void {
-		for (var i = rectangle_x + tableentry_size/2; i < rectangle_x + rectangle_width; i += tableentry_size) {
-			dc.drawText(minus_x_axis, i, Graphics.FONT_XTINY, "-", Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
-			dc.drawText(plus_x_axis, i, Graphics.FONT_XTINY, "+", Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
-		}
-	}
-
 	
 }

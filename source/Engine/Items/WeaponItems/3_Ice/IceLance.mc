@@ -6,7 +6,7 @@ class IceLance extends WeaponItem {
         WeaponItem.initialize();
         id = 35;
         name = "Ice Lance";
-        description = "A powerful ice lance";
+        description = "A lance carved from a single icicle of eternal winter.";
         slot = RIGHT_HAND;
         value = 100;
         weight = 3;

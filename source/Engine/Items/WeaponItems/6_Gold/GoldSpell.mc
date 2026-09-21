@@ -6,7 +6,7 @@ class GoldSpell extends Spell {
         Spell.initialize();
         id = 66;
         name = "Gold Spell";
-        description = "A powerful gold spell. If the player has mana available, uses it to perform a more powerful AoE attack.";
+        description = "A golden tome that channels mana into radiant AoE bursts.";
         slot = RIGHT_HAND;
         value = 500;
         weight = 0.5;

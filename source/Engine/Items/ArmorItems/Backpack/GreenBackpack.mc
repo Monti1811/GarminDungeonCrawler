@@ -6,7 +6,7 @@ class GreenBackpack extends ArmorItem {
 		ArmorItem.initialize();
 		id = 1250;
 		name = "Green Backpack";
-		description = "A simple backpack";
+		description = "A simple canvas pack that offers modest extra storage.";
 		value = 100;
 		weight = 0.5;
 		slot = BACK;

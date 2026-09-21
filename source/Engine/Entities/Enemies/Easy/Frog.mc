@@ -8,6 +8,7 @@ class Frog extends Enemy {
 		Enemy.initialize();
 		id = 0;
 		name = "Frog";
+		description = "A small magical frog found in dungeon ponds.";
 		energy_per_turn = 50; // every 2 turns
 		damage = 6;
 		current_health = 35;

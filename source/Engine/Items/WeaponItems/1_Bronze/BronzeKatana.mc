@@ -6,7 +6,7 @@ class BronzeKatana extends WeaponItem {
         WeaponItem.initialize();
         id = 14;
         name = "Bronze Katana";
-        description = "A simple bronze katana";
+        description = "A roughly forged bronze katana.";
         slot = RIGHT_HAND;
         value = 25;
         weight = 4;
