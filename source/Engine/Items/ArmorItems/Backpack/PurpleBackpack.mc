@@ -17,7 +17,7 @@ class PurpleBackpack extends ArmorItem {
 	}
 
 	function getSprite() as ResourceId {
-		return $.Rez.Drawables.backpack_green;
+		return $.Rez.Drawables.backpack_purple;
 	}
 
 	function onEquipItem(player as Player) as Void {

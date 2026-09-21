@@ -45,7 +45,7 @@ class SteelRing2 extends ArmorItem {
 		ArmorItem.onBuyItem(player);
 	}
 	function getSprite() as ResourceId {
-		return $.Rez.Drawables.steel_ring1;
+		return $.Rez.Drawables.steel_ring2;
 	}
 	
 

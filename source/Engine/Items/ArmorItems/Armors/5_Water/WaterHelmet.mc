@@ -22,7 +22,7 @@ class WaterHelmet extends ArmorItem {
 	}
 	// ...existing code...
 	function getSprite() as ResourceId {
-		return $.Rez.Drawables.ice_helmet;
+		return $.Rez.Drawables.water_helmet;
 	}
 	
 	function deepcopy() as Item {

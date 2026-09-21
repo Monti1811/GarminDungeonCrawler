@@ -6,7 +6,7 @@ class Gold extends Item {
 	var name as String = "Gold";
 	var description as String = "Used to pay for goods.";
 	var value as Number = 1;
-	var weight as Number = 0;
+	var weight as Numeric = 0;
 
 	function initialize() {
 		Item.initialize();
