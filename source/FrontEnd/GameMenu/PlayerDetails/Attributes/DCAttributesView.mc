@@ -7,15 +7,15 @@ class DCPlayerDetailsAttributesView extends WatchUi.View {
 	private var _player as Player;
 	private var _bg as BitmapReference?;
 
-	private var _title_x as Number;
-	private var _title_y as Number;
-	private var _bar_x as Number;
-	private var _bar_max_width as Number;
-	private var _bar_height as Number;
-	private var _value_x as Number;
-	private var _row_top as Number;
-	private var _row_spacing as Number;
-	private var _row_height as Number;
+	private var _title_x as Number = 0;
+	private var _title_y as Number = 0;
+	private var _bar_x as Number = 0;
+	private var _bar_max_width as Number = 0;
+	private var _bar_height as Number = 0;
+	private var _value_x as Number = 0;
+	private var _row_top as Number = 0;
+	private var _row_spacing as Number = 0;
+	private var _row_height as Number = 0;
 
 	private var _rightTopHint as WatchUi.Bitmap?;
 	private var _rightBottomHint as WatchUi.Bitmap?;
@@ -40,17 +40,6 @@ class DCPlayerDetailsAttributesView extends WatchUi.View {
 		
 		_bg = WatchUi.loadResource($.Rez.Drawables.characterAttributes) as BitmapReference?;
 
-		// Proportional positions based on 360 reference
-		_title_y = (Constants.SCREEN_HEIGHT * 78 / 360).toNumber();
-		_title_x = (Constants.SCREEN_WIDTH / 2).toNumber();
-		_row_top = (Constants.SCREEN_HEIGHT * 98 / 360).toNumber();
-		_row_spacing = (Constants.SCREEN_HEIGHT * 28 / 360).toNumber();
-		_row_height = (Constants.SCREEN_HEIGHT * 15 / 360).toNumber();
-		_bar_x = (Constants.SCREEN_WIDTH * 135 / 360).toNumber();
-		_bar_max_width = (Constants.SCREEN_WIDTH * 115 / 360).toNumber();
-		_bar_height = (_row_height * 10 / 28).toNumber();
-		_value_x = (Constants.SCREEN_WIDTH * 287 / 360).toNumber();
-		
 		if (withHint) {
 			_rightTopHint = $.HintHelper.createRightTopHint($.Rez.Drawables.rightTop);
 		}
@@ -64,13 +53,14 @@ class DCPlayerDetailsAttributesView extends WatchUi.View {
 		dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_BLACK);
 		dc.clear();
 
+		var W = dc.getWidth();
+		var H = dc.getHeight();
+		var ref = W < H ? W : H;
+		var bgX = (W - ref) / 2;
+		var bgY = (H - ref) / 2;
+
 		// Draw background centered
 		if (_bg != null) {
-			var W = dc.getWidth();
-			var H = dc.getHeight();
-			var ref = W < H ? W : H;
-			var bgX = (W - ref) / 2;
-			var bgY = (H - ref) / 2;
 			dc.drawScaledBitmap(bgX, bgY, ref, ref, _bg as BitmapReference);
 		}
 
@@ -81,6 +71,17 @@ class DCPlayerDetailsAttributesView extends WatchUi.View {
 		if (_rightBottomHint != null) {
 			_rightBottomHint.draw(dc);
 		}
+
+		// Proportional positions relative to ref (centered background)
+		_title_x = (W / 2).toNumber();
+		_title_y = (bgY + ref * 78 / 360).toNumber();
+		_row_top = (bgY + ref * 98 / 360).toNumber();
+		_row_spacing = (ref * 28 / 360).toNumber();
+		_row_height = (ref * 15 / 360).toNumber();
+		_bar_x = (bgX + ref * 135 / 360).toNumber();
+		_bar_max_width = (ref * 115 / 360).toNumber();
+		_bar_height = (_row_height * 10 / 28).toNumber();
+		_value_x = (bgX + ref * 287 / 360).toNumber();
 
 		// Title
 		dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
