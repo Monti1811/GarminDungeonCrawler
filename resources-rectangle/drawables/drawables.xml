@@ -1,4 +1,9 @@
 <drawables>
     <bitmap id="itemInfoMenu" filename="../../resources/drawables/menus/iteminfomenu/iteminfomenu_squared.png" packingFormat="png" />
+    <bitmap id="itemInfoMenuEmptyRound" filename="../../resources/drawables/menus/iteminfomenu/iteminfomenu_empty_squared.png" packingFormat="png" />
+    <bitmap id="itemInfoMenuConsumable" filename="../../resources/drawables/menus/iteminfomenu/iteminfomenu_consumables_squared.png" packingFormat="png" />
     <bitmap id="characterInfoRound" filename="../../resources/drawables/menus/characterinfo/characterinfo_squared.png" packingFormat="png" />
+    <bitmap id="characterInfoRoundNoStats" filename="../../resources/drawables/menus/characterinfo/characterinfo_squared_nostats.png" packingFormat="png" />
+    <bitmap id="enemyInfoStatsRound" filename="../../resources/drawables/menus/enemyinfostats/enemyinfostats_squared.png" packingFormat="png" />
+    <bitmap id="itemInfoMenuKeyItem" filename="../../resources/drawables/menus/iteminfomenu/iteminfomenu_keyitem_squared.png" packingFormat="png" />
 </drawables>

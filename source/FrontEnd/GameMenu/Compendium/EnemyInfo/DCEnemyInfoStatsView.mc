@@ -21,7 +21,11 @@ class DCEnemyInfoStatsView extends WatchUi.View {
 		dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_BLACK);
 		dc.clear();
 
-		dc.drawScaledBitmap(0, 0, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, _bgBitmap);
+		var ref = Constants.SCREEN_WIDTH < Constants.SCREEN_HEIGHT ? Constants.SCREEN_WIDTH : Constants.SCREEN_HEIGHT;
+		var bgSize = (ref * 360 / 360).toNumber();
+		var bgX = ((Constants.SCREEN_WIDTH - bgSize) / 2).toNumber();
+		var bgY = ((Constants.SCREEN_HEIGHT - bgSize) / 2).toNumber();
+		dc.drawScaledBitmap(bgX, bgY, bgSize, bgSize, _bgBitmap);
 
 		drawEnemyName(dc);
 		drawEnemyIcon(dc);
@@ -30,23 +34,31 @@ class DCEnemyInfoStatsView extends WatchUi.View {
 	}
 
 	function drawEnemyName(dc) {
+		var ref = Constants.SCREEN_WIDTH < Constants.SCREEN_HEIGHT ? Constants.SCREEN_WIDTH : Constants.SCREEN_HEIGHT;
+		var bgY = ((Constants.SCREEN_HEIGHT - ref) / 2).toNumber();
 		var text_x = (Constants.SCREEN_WIDTH / 2).toNumber();
-		var name_y = (Constants.SCREEN_HEIGHT * 78 / 360).toNumber();
+		var name_y = (bgY + ref * 78 / 360).toNumber();
 		dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
 		dc.drawText(text_x, name_y, Graphics.FONT_TINY, _enemy.name, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
 	}
 
 	function drawEnemyIcon(dc) {
-		var x = (Constants.SCREEN_WIDTH * 70 / 360).toNumber();
-		var y = (Constants.SCREEN_HEIGHT * 128 / 360).toNumber();
-		var size = (Constants.SCREEN_WIDTH * 64 / 360).toNumber();
+		var ref = Constants.SCREEN_WIDTH < Constants.SCREEN_HEIGHT ? Constants.SCREEN_WIDTH : Constants.SCREEN_HEIGHT;
+		var bgX = ((Constants.SCREEN_WIDTH - ref) / 2).toNumber();
+		var bgY = ((Constants.SCREEN_HEIGHT - ref) / 2).toNumber();
+		var x = (bgX + ref * 70 / 360).toNumber();
+		var y = (bgY + ref * 128 / 360).toNumber();
+		var size = (ref * 64 / 360).toNumber();
 		dc.drawScaledBitmap(x, y, size, size, _enemyIcon);
 	}
 
 	function drawStats(dc) {
-		var value_x = (Constants.SCREEN_WIDTH * 285 / 360).toNumber();
-		var y_start = (Constants.SCREEN_HEIGHT * 113 / 360).toNumber();
-		var row_dist = (Constants.SCREEN_HEIGHT * 24 / 360).toNumber();
+		var ref = Constants.SCREEN_WIDTH < Constants.SCREEN_HEIGHT ? Constants.SCREEN_WIDTH : Constants.SCREEN_HEIGHT;
+		var bgX = ((Constants.SCREEN_WIDTH - ref) / 2).toNumber();
+		var bgY = ((Constants.SCREEN_HEIGHT - ref) / 2).toNumber();
+		var value_x = (bgX + ref * 285 / 360).toNumber();
+		var y_start = (bgY + ref * 115 / 360).toNumber();
+		var row_dist = (ref * 24 / 360).toNumber();
 
 		var actions_per_turn = (_enemy.energy_per_turn.toFloat() / $.Constants.MIN_ENERGY_PER_TURN.toFloat()).format("%.1f");
 
@@ -63,13 +75,15 @@ class DCEnemyInfoStatsView extends WatchUi.View {
 		if (_enemy.description.length() == 0) {
 			return;
 		}
+		var ref = Constants.SCREEN_WIDTH < Constants.SCREEN_HEIGHT ? Constants.SCREEN_WIDTH : Constants.SCREEN_HEIGHT;
+		var bgY = ((Constants.SCREEN_HEIGHT - ref) / 2).toNumber();
 		var text_x = (Constants.SCREEN_WIDTH / 2).toNumber();
-		var desc_y = (Constants.SCREEN_HEIGHT * 290 / 360).toNumber();
-		var area_w = (Constants.SCREEN_WIDTH * 160 / 360).toNumber();
-		var area_h = (Constants.SCREEN_HEIGHT * 60 / 360).toNumber();
+		var desc_y = (bgY + ref * 290 / 360).toNumber();
+		var area_w = (ref * 160 / 360).toNumber();
+		var area_h = (ref * 60 / 360).toNumber();
 
 		dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
-		var formatted = Graphics.fitTextToArea(_enemy.description, _small_font, area_w, area_h, false);
+		var formatted = Graphics.fitTextToArea(_enemy.description, _small_font, area_w, area_h, true);
 		dc.drawText(text_x, desc_y, _small_font, formatted, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
 	}
 }
