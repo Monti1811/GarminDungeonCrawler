@@ -41,6 +41,7 @@ class Dungeon {
 		}
 		var style_chances = {
 			DUNGEONSTYLE_NORMAL => 50,
+			DUNGEONSTYLE_FIRE => 5,
 			DUNGEONSTYLE_ICE => 5,
 			DUNGEONSTYLE_POISON => 5,
 			DUNGEONSTYLE_SHADOW => 5,
