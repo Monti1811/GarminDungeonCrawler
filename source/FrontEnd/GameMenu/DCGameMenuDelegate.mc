@@ -225,6 +225,12 @@ class DCInventoryDelegate extends WatchUi.Menu2InputDelegate {
             menuitems.add(new WatchUi.MenuItem("Use", null, :use, null));
             menuitems.add(new WatchUi.MenuItem("Drop", null, :drop, null));
             menuitems.add(new WatchUi.MenuItem("Info", "More information", :info, null));
+        } else if (item.type == KEY) {
+            menuitems.add(new WatchUi.MenuItem("Drop", null, :drop, null));
+            menuitems.add(new WatchUi.MenuItem("Info", "More information", :info, null));
+        } else if (item.type == CUSTOM) {
+            menuitems.add(new WatchUi.MenuItem("Drop", null, :drop, null));
+            menuitems.add(new WatchUi.MenuItem("Info", "More information", :info, null));
         }
         showOptions(item, menuitems);
     }
