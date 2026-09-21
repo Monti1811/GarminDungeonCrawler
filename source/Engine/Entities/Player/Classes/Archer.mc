@@ -9,6 +9,10 @@ class Archer extends Player {
 		self.name = name;
 		self.description = "An archer character";
 
+		// Set health
+		self.current_health = 30;
+		self.maxHealth = 30;
+
 		// Give starting items
 		self.equipItem(new SteelBow(), RIGHT_HAND, null);
 		self.equipItem(new SteelGauntlets(), LEFT_HAND, null);
