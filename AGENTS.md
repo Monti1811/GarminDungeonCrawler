@@ -59,6 +59,18 @@ Die Dungeon-Tiles werden als Bitmap Font generiert. Prozess:
 
 **Wand-Varianten werden zur Laufzeit berechnet** in `Map.getWallVariant(x,y)` basierend auf Nachbarschaft.
 
+## Drawables
+
+Nicht mehr referenzierte Bitmap-Einträge in `drawables.xml` werden **auskommentiert**, nicht gelöscht. So bleibt die Historie erhalten und Bitmaps können bei Bedarf wieder aktiviert werden.
+
+```xml
+<!-- <bitmap id="unusedBitmap" filename="items/unused.png" packingFormat="png" /> -->
+```
+
+Prüfung mit `monkeyc_analyze_drawable_usage` — 0 Unused-Einträge als Ziel.
+
+Rechteckige Screen-Varianten werden in `resources-rectangle/drawables/drawables.xml` als Override definiert (gleiche ID, anderes Filename).
+
 ## Watchdog / Connect IQ Laufzeit-Beschränkungen
 
 Der Garmin-Watchdog ist **aufruf-basiert**, nicht zeitbasiert. Es gibt eine bestimmte maximale Anzahl von Funktionsaufrufen pro Zeitspanne.
