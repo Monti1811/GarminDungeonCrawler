@@ -138,8 +138,8 @@ module Game {
 	}
 
 	function updateTimePlayed(time as Time.Moment) as Void {
-		Toybox.System.println("Time started: " + time_started.value());
-		Toybox.System.println("Time ended: " + time.value());
+		DebugLogger.println("Time started: " + time_started.value());
+		DebugLogger.println("Time ended: " + time.value());
 		var diff = time.subtract(time_started);
 		time_played += diff.value();
 		time_started = time;

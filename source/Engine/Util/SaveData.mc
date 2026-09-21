@@ -94,8 +94,8 @@ module SaveData {
 			"discovered_items" => discovered_items.keys(),
 			"stepgate" => StepGate.save(),
 		} as Dictionary<PropertyKeyType, PropertyValueType>;
-		Toybox.System.println("Saving game to " + chosen_save);
-		Toybox.System.println("Data: " + data);
+		DebugLogger.println("Saving game to " + chosen_save);
+		DebugLogger.println("Data: " + data);
 		_save_data = data;
 		var playerData = data["player"] as Dictionary<PropertyKeyType, PropertyValueType>;
 		var gameData = data["game"] as Dictionary<PropertyKeyType, PropertyValueType>;

@@ -1,5 +1,4 @@
 import Toybox.Lang;
-import Toybox.System;
 
 module Log {
 
@@ -15,7 +14,7 @@ module Log {
 
 	function print() as Void {
 		for (var i = 0; i < messages.size(); i++) {
-			System.println(messages[i]);
+			DebugLogger.println(messages[i]);
 		}
 	}
 

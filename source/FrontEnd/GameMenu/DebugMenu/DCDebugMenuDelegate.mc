@@ -56,7 +56,7 @@ class DCDebugMenuDelegate extends WatchUi.Menu2InputDelegate {
         var item_ids = $.Items.item_ids;
         item_ids.sort(new NumberCompare());
         for (var i = 0; i < item_ids.size(); i++) {
-			Toybox.System.println("Item ID: " + item_ids[i]);
+			DebugLogger.println("Item ID: " + item_ids[i]);
             var item = $.Items.createItemFromId(item_ids[i]);
             var subtitle = "Id " + item_ids[i];
 			var icon = new DCItemIcon(item);

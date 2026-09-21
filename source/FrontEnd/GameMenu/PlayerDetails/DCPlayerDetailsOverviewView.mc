@@ -83,6 +83,7 @@ class DCPlayerDetailsOverviewView extends WatchUi.View {
 		var x_val = (_bgX + _ref * 330 / 360).toNumber();
 		var y_start = (_bgY + _ref * 112 / 360).toNumber();
 		var row_dist = (_ref * 20 / 360).toNumber();
+		var counter = 0;
 
 		dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
 
@@ -93,21 +94,23 @@ class DCPlayerDetailsOverviewView extends WatchUi.View {
 		dc.drawText(x_val, y_start + row_dist, _small_font, _player.getExperience().format("%.0f") + "/" + _player.getNextLevelExperience(), Graphics.TEXT_JUSTIFY_RIGHT | Graphics.TEXT_JUSTIFY_VCENTER);
 
 		// HP
-		dc.drawText(x_val, y_start + row_dist * 2, _small_font, _player.getHealth() + "/" + _player.getMaxHealth(), Graphics.TEXT_JUSTIFY_RIGHT | Graphics.TEXT_JUSTIFY_VCENTER);
-
-		// ATK
-		dc.drawText(x_val, y_start + row_dist * 3, _small_font, _player.getAttack(null).toString(), Graphics.TEXT_JUSTIFY_RIGHT | Graphics.TEXT_JUSTIFY_VCENTER);
-
-		// DEF
-		dc.drawText(x_val, y_start + row_dist * 4, _small_font, _player.getDefense(null).toString(), Graphics.TEXT_JUSTIFY_RIGHT | Graphics.TEXT_JUSTIFY_VCENTER);
+		dc.drawText(x_val, y_start + row_dist * (counter + 2), _small_font, _player.getHealth() + "/" + _player.getMaxHealth(), Graphics.TEXT_JUSTIFY_RIGHT | Graphics.TEXT_JUSTIFY_VCENTER);
 
 		// MANA
 		if (_hasMana) {
-			dc.drawText(x_val, y_start + row_dist * 5, _small_font, _player.getCurrentMana() + "/" + _player.getMaxMana(), Graphics.TEXT_JUSTIFY_RIGHT | Graphics.TEXT_JUSTIFY_VCENTER);
+			dc.drawText(x_val, y_start + row_dist * (counter + 3), _small_font, _player.getCurrentMana() + "/" + _player.getMaxMana(), Graphics.TEXT_JUSTIFY_RIGHT | Graphics.TEXT_JUSTIFY_VCENTER);
+			counter += 1;
 		}
 
+		// ATK
+		dc.drawText(x_val, y_start + row_dist * (counter + 3), _small_font, _player.getAttack(null).toString(), Graphics.TEXT_JUSTIFY_RIGHT | Graphics.TEXT_JUSTIFY_VCENTER);
+
+		// DEF
+		dc.drawText(x_val, y_start + row_dist * (counter + 4), _small_font, _player.getDefense(null).toString(), Graphics.TEXT_JUSTIFY_RIGHT | Graphics.TEXT_JUSTIFY_VCENTER);
+
+
 		// GOLD
-		dc.drawText(x_val, y_start + row_dist * (_hasMana ? 6 : 5), _small_font, _player.getGold().format("%.0f"), Graphics.TEXT_JUSTIFY_RIGHT | Graphics.TEXT_JUSTIFY_VCENTER);
+		dc.drawText(x_val, y_start + row_dist * (counter + 5), _small_font, _player.getGold().format("%.0f"), Graphics.TEXT_JUSTIFY_RIGHT | Graphics.TEXT_JUSTIFY_VCENTER);
 	}
 
 	function drawStatus(dc) {

@@ -138,7 +138,7 @@ class Enemy extends Entity {
 
 	function followPlayerSimple(map as Map) as Point2D {
 		var next_pos = followPlayerDirect(map);
-		Toybox.System.println(name + " moving to " + next_pos);
+		DebugLogger.println(name + " moving to " + next_pos);
 		self.next_pos = next_pos;
 		return next_pos;
 	}

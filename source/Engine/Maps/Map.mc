@@ -2,7 +2,6 @@ import Toybox.Lang;
 import Toybox.Graphics;
 import Toybox.Math;
 import Toybox.WatchUi;
-import Toybox.System;
 import Toybox.Application;
 import Toybox.Application.Storage;
 
@@ -726,7 +725,7 @@ class Map {
 		// Safety check: ensure the shape is connected
 		if (!isRoomConnected(map, left, right, top, bottom)) {
 			// Fall back to rectangle if shape is disconnected
-			System.println("WARNING: Room shape " + shape + " is disconnected, falling back to RECTANGLE");
+			DebugLogger.println("WARNING: Room shape " + shape + " is disconnected, falling back to RECTANGLE");
 			for (var i = left + 1; i < right; i++) {
 				for (var j = top + 1; j < bottom; j++) {
 					map.setType([i, j], PASSABLE);
