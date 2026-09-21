@@ -1,0 +1,12 @@
+{
+  "name": "dungeoncrawler",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "optimize": "node helpers/optimize-build.mjs"
+  },
+  "devDependencies": {
+    "@markw65/monkeyc-optimizer": "^1.2.6"
+  }
+}

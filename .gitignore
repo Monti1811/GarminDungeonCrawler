@@ -12,3 +12,4 @@ log.zip
 **.pyc
 .env
 **/__pycache__/
+node_modules/
