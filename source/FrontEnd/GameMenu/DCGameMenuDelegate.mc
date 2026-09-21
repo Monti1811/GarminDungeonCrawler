@@ -173,6 +173,20 @@ class DCGameMenuDelegate extends WatchUi.Menu2InputDelegate {
     }
 }
 
+class GameMenuIconDrawable extends WatchUi.Drawable {
+    
+    private var _icon as BitmapReference;
+
+    function initialize(icon as BitmapReference) {
+        Drawable.initialize({});
+        _icon = icon;
+    }
+
+    function draw(dc as Toybox.Graphics.Dc) as Void {
+        dc.drawScaledBitmap(15, 25, 32, 32, _icon);
+    }
+}
+
 class DCItemIcon extends WatchUi.Drawable {
     
     private var _icon as BitmapReference;
