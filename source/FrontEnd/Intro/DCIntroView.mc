@@ -40,7 +40,7 @@ class DCIntroView extends WatchUi.View {
         var text_y = (Constants.SCREEN_HEIGHT / 2).toNumber();
         var area_width = (Constants.SCREEN_WIDTH * 260 / 360).toNumber();
         var area_height = (Constants.SCREEN_HEIGHT * 260 / 360).toNumber();
-        var formatted_text = Graphics.fitTextToArea(_text, _font, area_width, area_height, false);
+        var formatted_text = Graphics.fitTextToArea(_text, _font, area_width, area_height, true);
         dc.drawText(text_x, text_y, _font, formatted_text, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
 
     }
