@@ -194,6 +194,7 @@ class Turn {
     function freeMemory() as Void {
         _view.freeMemory();
         _view = null;
+        _combat_timer.stop();
         _combat_timer = null;
         _enemy_queue = null;
         _enemy_target_pos = null;
