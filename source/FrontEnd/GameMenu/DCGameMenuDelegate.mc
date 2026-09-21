@@ -156,6 +156,7 @@ class DCGameMenuDelegate extends WatchUi.Menu2InputDelegate {
     function openDebug() as Void {
         var debugMenu = new WatchUi.Menu2({:title=>"Debug"});
         debugMenu.addItem(new WatchUi.MenuItem("Enemies", "Spawn enemies", :debug_enemies, null));
+        debugMenu.addItem(new WatchUi.MenuItem("NPCs", "Spawn NPCs", :debug_npcs, null));
         debugMenu.addItem(new WatchUi.MenuItem("Items", "Spawn items", :debug_items, null));
         debugMenu.addItem(new WatchUi.MenuItem("Player Stats", "Modify player state", :debug_player, null));
         WatchUi.pushView(debugMenu, new DCDebugMenuDelegate(), WatchUi.SLIDE_UP);
