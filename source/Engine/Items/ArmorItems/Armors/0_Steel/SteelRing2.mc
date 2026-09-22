@@ -11,7 +11,7 @@ class SteelRing2 extends ArmorItem {
 		value = 5;
 		weight = 0.1;
 		slot = ACCESSORY;
-		defense = 1;
+		defense = 2;
 		attribute_bonus = {
 			:intelligence => 3,
 			:wisdom => 2

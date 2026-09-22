@@ -7,10 +7,10 @@ class Wogol extends Enemy {
 		id = 9;
 		name = "Wogol";
 		description = "A vicious orc berserker in a blood rage.";
-		damage = 26;
+		damage = 33;
 		current_health = 250;
-		maxHealth = 117;
-		armor = 8;
+		maxHealth = 76;
+		armor = 12;
         kill_experience = 250;
 		energy_per_turn = 50;
 	}

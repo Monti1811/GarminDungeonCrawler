@@ -15,7 +15,7 @@ class GoldDagger extends WeaponItem {
             :luck => 4
         };
 
-        attack = 7;
+        attack = 41;
         attack_type = DEXTERITY;
     }
 

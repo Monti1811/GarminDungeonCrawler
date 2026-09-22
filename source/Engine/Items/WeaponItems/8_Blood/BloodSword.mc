@@ -15,7 +15,7 @@ class BloodSword extends WeaponItem {
             :constitution => 10
         };
 
-        attack = 65;
+        attack = 78;
         range = 1;
     }
 

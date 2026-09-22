@@ -15,7 +15,7 @@ class BronzeGreatsword extends WeaponItem {
             :dexterity => -3
         };
 
-        attack = 15;
+        attack = 23;
         range = 2;
         weapon_type = TWOHAND;
         cooldown = 1;

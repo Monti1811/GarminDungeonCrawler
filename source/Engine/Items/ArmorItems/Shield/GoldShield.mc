@@ -16,7 +16,7 @@ class GoldShield extends ArmorItem {
 			:luck => 5
 		};
 
-		defense = 10;
+		defense = 47;
 
 	}
 	

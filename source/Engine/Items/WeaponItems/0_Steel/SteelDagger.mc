@@ -16,7 +16,7 @@ class SteelDagger extends WeaponItem {
 			:luck => 2
 		};
 
-		attack = 7;
+		attack = 10;
 		// range = 1;
 		attack_type = DEXTERITY;
 	}

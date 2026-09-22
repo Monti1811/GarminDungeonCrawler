@@ -8,9 +8,9 @@ class GloomLurker extends Enemy {
         name = "Gloom Lurker";
         description = "A sinister creature that feeds on despair.";
         current_health = 62;
-        maxHealth = 62;
-        damage = 9;
-        armor = 3;
+        maxHealth = 218;
+        damage = 15;
+        armor = 6;
         kill_experience = 16;
         energy_per_turn = 78;
     }

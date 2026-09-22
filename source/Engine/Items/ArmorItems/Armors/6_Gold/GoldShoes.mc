@@ -10,7 +10,7 @@ class GoldShoes extends ArmorItem {
 		value = 35;
 		weight = 3;
 		slot = FEET;
-		defense = 7;
+		defense = 47;
 		attribute_bonus = {
 			:dexterity => 8
 		};

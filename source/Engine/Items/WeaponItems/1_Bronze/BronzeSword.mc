@@ -15,7 +15,7 @@ class BronzeSword extends WeaponItem {
             :constitution => 1
         };
 
-        attack = 12;
+        attack = 18;
         range = 1;
     }
 

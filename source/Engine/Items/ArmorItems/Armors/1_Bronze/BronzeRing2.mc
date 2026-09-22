@@ -11,7 +11,7 @@ class BronzeRing2 extends ArmorItem {
 		value = 13;
 		weight = 0.1;
 		slot = ACCESSORY;
-		defense = 2;
+		defense = 6;
 		attribute_bonus = {
 			:intelligence => 4,
 			:wisdom => 3

@@ -7,7 +7,7 @@ class Rokita extends Enemy {
         id = 35;
         name = "Rokita";
         description = "A deadly orc champion, feared by many.";
-        damage = 19;
+        damage = 22;
 		current_health = 500;
 		maxHealth = current_health;
 		armor = 0;

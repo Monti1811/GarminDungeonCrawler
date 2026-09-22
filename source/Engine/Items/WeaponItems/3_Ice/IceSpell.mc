@@ -14,7 +14,7 @@ class IceSpell extends Spell {
             :wisdom => 6
         };
 
-        attack = 8;
+        attack = 27;
         range = 3;
         cooldown = 1;
         attack_type = INTELLIGENCE;
@@ -25,14 +25,14 @@ class IceSpell extends Spell {
 
     function activateSpell() as Void {
         Spell.activateSpell();
-        attack = 14;
+        attack = 27;
         range = 3;
         range_type = SURROUNDING;
     }
 
     function deactivateSpell() as Void {
         Spell.deactivateSpell();
-        attack = 3;
+        attack = 27;
         range = 1;
         range_type = DIRECTIONAL;
     }

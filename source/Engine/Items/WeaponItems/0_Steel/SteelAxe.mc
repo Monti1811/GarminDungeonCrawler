@@ -17,7 +17,7 @@ class SteelAxe extends WeaponItem {
 			:luck => -1
 		};
 
-		attack = 8;
+		attack = 11;
 
 	}
 

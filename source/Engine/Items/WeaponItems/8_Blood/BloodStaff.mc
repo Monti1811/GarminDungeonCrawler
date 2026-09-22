@@ -14,7 +14,7 @@ class BloodStaff extends Staff {
             :intelligence => 20
         };
 
-        attack = 19;
+        attack = 52;
         range = 1;
         range_type = LINEAR;
         attack_type = INTELLIGENCE;

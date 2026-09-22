@@ -15,7 +15,7 @@ class BloodDagger extends WeaponItem {
             :luck => 10
         };
 
-        attack = 53;
+        attack = 59;
         attack_type = DEXTERITY;
     }
 

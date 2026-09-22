@@ -16,7 +16,7 @@ class GrassSpell extends Spell {
             :luck => 2
         };
 
-        attack = 6;
+        attack = 33;
         range = 3;
         cooldown = 1;
         attack_type = INTELLIGENCE;
@@ -26,14 +26,14 @@ class GrassSpell extends Spell {
 
     function activateSpell() as Void {
         Spell.activateSpell();
-        attack = 14;
+        attack = 33;
         range = 3;
         range_type = SURROUNDING;
     }
 
     function deactivateSpell() as Void {
         Spell.deactivateSpell();
-        attack = 3;
+        attack = 33;
         range = 1;
         range_type = DIRECTIONAL;
     }

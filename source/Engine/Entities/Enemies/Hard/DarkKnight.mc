@@ -10,10 +10,10 @@ class DarkKnight extends Enemy {
 		id = 11;
 		name = "Dark Knight";
 		description = "A fallen knight clad in shadow-forged armor.";
-		damage = 21;
+		damage = 24;
 		current_health = 200;
 		maxHealth = current_health;
-		armor = 16;
+		armor = 21;
         kill_experience = 400;
 		energy_per_turn = 75;
 	}

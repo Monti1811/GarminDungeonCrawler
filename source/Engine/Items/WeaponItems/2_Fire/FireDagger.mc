@@ -17,7 +17,7 @@ class FireDagger extends WeaponItem {
             :strength => 2
         };
 
-        attack = 10;
+        attack = 18;
         attack_type = DEXTERITY;
         element = ELEMENT_FIRE;
     }

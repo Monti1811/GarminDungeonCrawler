@@ -15,7 +15,7 @@ class SilverShield extends ArmorItem {
 			:dexterity => -2
 		};
 
-		defense = 10;
+		defense = 8;
 
 	}
 	

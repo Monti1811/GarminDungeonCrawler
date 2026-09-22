@@ -10,7 +10,7 @@ class WaterShoes extends ArmorItem {
 		value = 75;
 		weight = 3;
 		slot = FEET;
-		defense = 7;
+		defense = 38;
 		attribute_bonus = {
 			:dexterity => 3,
 			:intelligence => 3,

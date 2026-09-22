@@ -7,11 +7,11 @@ class ElementalEarthSmall extends Enemy {
 		id = 13;
 		name = "Small Earth Elemental";
 		description = "A minor elemental of stone and soil.";
-		damage = 9;
+		damage = 20;
 		current_health = 50;
 		maxHealth = current_health;
 		energy_per_turn = 50;
-		armor = 4;
+		armor = 7;
         kill_experience = 15;
 	}
 

@@ -16,7 +16,7 @@ class FireBow extends Bow {
             :strength => 2
         };
 
-        attack = 5;
+        attack = 16;
         range = 3;
         range_type = LINEAR;
         attack_type = DEXTERITY;

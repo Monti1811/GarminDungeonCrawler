@@ -15,7 +15,7 @@ class FireSword extends WeaponItem {
             :constitution => 2
         };
 
-        attack = 14;
+        attack = 24;
         range = 1;
         element = ELEMENT_FIRE;
     }

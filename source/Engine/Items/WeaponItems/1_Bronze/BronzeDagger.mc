@@ -15,7 +15,7 @@ class BronzeDagger extends WeaponItem {
             :luck => 3
         };
 
-        attack = 8;
+        attack = 14;
         attack_type = DEXTERITY;
     }
 

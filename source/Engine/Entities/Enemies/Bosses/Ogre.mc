@@ -9,8 +9,8 @@ class Ogre extends Enemy {
         description = "A hulking ogre of immense strength.";
         current_health = 1000;
         maxHealth = current_health;
-        damage = 27;
-        armor = 12;
+        damage = 8;
+        armor = 10;
         kill_experience = 1000;
         energy_per_turn = 34; // every 3 turns
     }

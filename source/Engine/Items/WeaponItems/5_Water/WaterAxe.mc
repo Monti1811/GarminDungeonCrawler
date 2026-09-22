@@ -17,7 +17,7 @@ class WaterAxe extends WeaponItem {
             :luck => -2
         };
 
-        attack = 7;
+        attack = 40;
     }
 
     function onEquipItem(player as Player, slot as ItemSlot) as Void {

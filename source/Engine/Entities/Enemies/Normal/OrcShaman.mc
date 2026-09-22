@@ -19,7 +19,7 @@ class OrcShaman extends Enemy {
         id = 33;
         name = "Shaman Orc";
         description = "An orc mystic wielding primal magic.";
-        damage = 10;
+        damage = 31;
 		current_health = 100;
 		maxHealth = current_health;
 		energy_per_turn = 100;

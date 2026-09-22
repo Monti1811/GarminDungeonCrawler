@@ -16,7 +16,7 @@ class FireStaff extends Staff {
             :strength => 2
         };
 
-        attack = 4;
+        attack = 16;
         range = 1;
         range_type = LINEAR;
         attack_type = INTELLIGENCE;
@@ -27,13 +27,13 @@ class FireStaff extends Staff {
 
     function activateStaff() as Void {
         Staff.activateStaff();
-        attack = 26;
+        attack = 16;
         range = 3;
     }
 
     function deactivateStaff() as Void {
         Staff.deactivateStaff();
-        attack = 4;
+        attack = 16;
         range = 1;
     }
 

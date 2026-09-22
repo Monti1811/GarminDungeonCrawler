@@ -15,7 +15,7 @@ class SteelBow extends Bow {
 			:dexterity => 2
 		};
 
-		attack = 3;
+		attack = 8;
 		range = 3;
 		range_type = LINEAR;
 		attack_type = DEXTERITY;

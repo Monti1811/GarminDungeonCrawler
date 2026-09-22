@@ -15,7 +15,7 @@ class WoodShield extends ArmorItem {
 			:dexterity => -1
 		};
 
-		defense = 4;
+		defense = 3;
 
 	}
 

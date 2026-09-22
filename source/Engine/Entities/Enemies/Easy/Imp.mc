@@ -7,9 +7,9 @@ class Imp extends Enemy {
 		id = 4;
 		name = "Imp";
 		description = "A mischievous little demon with fire magic.";
-		damage = 8;
+		damage = 15;
 		current_health = 25;
-		maxHealth = 18;
+		maxHealth = 108;
 		energy_per_turn = 100;
 		armor = 0;
         kill_experience = 15;

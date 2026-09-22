@@ -14,7 +14,7 @@ class BloodBow extends Bow {
             :dexterity => 20
         };
 
-        attack = 31;
+        attack = 52;
         range = 3;
         range_type = LINEAR;
         attack_type = DEXTERITY;

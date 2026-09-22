@@ -7,11 +7,11 @@ class ElementalGooSmall extends Enemy {
 		id = 16;
 		name = "Small Goo Elemental";
 		description = "A minor elemental of toxic ooze.";
-		damage = 9;
+		damage = 20;
 		current_health = 50;
 		maxHealth = current_health;
 		energy_per_turn = 50;
-		armor = 4;
+		armor = 7;
         kill_experience = 15;
 	}
 

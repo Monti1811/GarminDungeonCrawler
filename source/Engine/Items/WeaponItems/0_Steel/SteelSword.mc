@@ -16,7 +16,7 @@ class SteelSword extends WeaponItem {
 			:constitution => 1
 		};
 
-		attack = 10;
+		attack = 13;
 		range = 1;
 	}
 

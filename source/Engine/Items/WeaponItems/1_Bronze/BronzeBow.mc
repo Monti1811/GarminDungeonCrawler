@@ -14,7 +14,7 @@ class BronzeBow extends Bow {
             :dexterity => 3
         };
 
-        attack = 4;
+        attack = 12;
         range = 3;
         range_type = LINEAR;
         attack_type = DEXTERITY;

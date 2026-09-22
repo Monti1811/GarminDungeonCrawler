@@ -15,7 +15,7 @@ class BronzeKatana extends WeaponItem {
             :dexterity => 3
         };
 
-        attack = 12;
+        attack = 18;
         range = 1;
     }
 

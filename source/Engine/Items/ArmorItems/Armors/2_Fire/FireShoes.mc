@@ -10,7 +10,7 @@ class FireShoes extends ArmorItem {
 		value = 75;
 		weight = 3;
 		slot = FEET;
-		defense = 7;
+		defense = 15;
 		attribute_bonus = {
 			:dexterity => 3,
 			:strength => 3

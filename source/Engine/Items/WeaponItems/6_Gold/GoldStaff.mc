@@ -14,7 +14,7 @@ class GoldStaff extends Staff {
             :intelligence => 8
         };
 
-        attack = 5;
+        attack = 36;
         range = 1;
         range_type = LINEAR;
         attack_type = INTELLIGENCE;

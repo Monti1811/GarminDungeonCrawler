@@ -11,7 +11,7 @@ class SteelBreastPlate extends ArmorItem {
 		value = 10;
 		weight = 10;
 		slot = CHEST;
-		defense = 5;
+		defense = 3;
 		attribute_bonus = {
 			:constitution => 2,
 			:dexterity => -1

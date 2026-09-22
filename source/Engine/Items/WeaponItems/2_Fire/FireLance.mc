@@ -17,7 +17,7 @@ class FireLance extends WeaponItem {
             :strength => 2
         };
 
-        attack = 14;
+        attack = 24;
         range = 2;
         range_type = LINEAR;
         attack_type = DEXTERITY;

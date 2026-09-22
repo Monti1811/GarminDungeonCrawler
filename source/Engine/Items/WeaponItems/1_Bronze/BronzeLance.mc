@@ -15,7 +15,7 @@ class BronzeLance extends WeaponItem {
             :luck => 3        
         };
 
-        attack = 12;
+        attack = 18;
         range = 2;
         range_type = LINEAR;
         attack_type = DEXTERITY;

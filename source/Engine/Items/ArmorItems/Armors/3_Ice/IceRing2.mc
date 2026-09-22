@@ -10,7 +10,7 @@ class IceRing2 extends ArmorItem {
 		value = 50;
 		weight = 0.1;
 		slot = ACCESSORY;
-		defense = 5;
+		defense = 17;
 		attribute_bonus = {
 			:intelligence => 3,
 			:charisma => 4,

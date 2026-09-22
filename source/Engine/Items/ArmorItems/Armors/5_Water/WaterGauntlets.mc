@@ -10,7 +10,7 @@ class WaterGauntlets extends ArmorItem {
 		value = 50;
 		weight = 2;
 		slot = EITHER_HAND;
-		defense = 7;
+		defense = 38;
 		attribute_bonus = {
 			:charisma => 3,
 			:intelligence => 3,

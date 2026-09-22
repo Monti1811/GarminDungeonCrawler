@@ -16,7 +16,7 @@ class SteelLance extends WeaponItem {
 			:luck => 2
 		};
 
-		attack = 10;
+		attack = 13;
 		range = 2;
 		range_type = LINEAR;
 		attack_type = DEXTERITY;

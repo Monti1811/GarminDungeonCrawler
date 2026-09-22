@@ -16,7 +16,7 @@ class IceLance extends WeaponItem {
             :wisdom => 2
         };
 
-        attack = 8;
+        attack = 30;
         range = 2;
         range_type = LINEAR;
         attack_type = DEXTERITY;

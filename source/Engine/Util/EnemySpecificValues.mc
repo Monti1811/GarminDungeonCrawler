@@ -27,44 +27,44 @@ class EnemySpecificValues {
 	private function getEnemyWeightsForDepth(depth as Number) as Array
 	<Dictionary<Symbol, Number>> {
 		var enemy_weights = [
-			{:id => 0, :cost => 3, :weight => tieredWeight(depth, [ {:max => 4, :weight => 18}, {:max => 9, :weight => 12}, {:max => 16, :weight => 6}, {:max => 999, :weight => 2} ])}, // Frog
-			{:id => 1, :cost => 7, :weight => tieredWeight(depth, [ {:max => 4, :weight => 18}, {:max => 9, :weight => 12}, {:max => 16, :weight => 6}, {:max => 999, :weight => 2} ])}, // Bat
-			{:id => 4, :cost => 5, :weight => tieredWeight(depth, [ {:max => 4, :weight => 16}, {:max => 10, :weight => 12}, {:max => 18, :weight => 6}, {:max => 999, :weight => 3} ])}, // Imp
-			{:id => 7, :cost => 3, :weight => tieredWeight(depth, [ {:max => 4, :weight => 18}, {:max => 9, :weight => 12}, {:max => 16, :weight => 6}, {:max => 999, :weight => 3} ])}, // ZombieSmall
-			{:id => 8, :cost => 5, :weight => tieredWeight(depth, [ {:max => 4, :weight => 16}, {:max => 10, :weight => 12}, {:max => 18, :weight => 6}, {:max => 999, :weight => 3} ])}, // Zombie
-			{:id => 3, :cost => 5, :weight => tieredWeight(depth, [ {:max => 4, :weight => 0}, {:max => 10, :weight => 10}, {:max => 18, :weight => 8}, {:max => 999, :weight => 5} ])}, // Orc
-			{:id => 5, :cost => 10, :weight => tieredWeight(depth, [ {:max => 5, :weight => 0}, {:max => 10, :weight => 6}, {:max => 18, :weight => 8}, {:max => 999, :weight => 6} ])}, // Skeleton
-			{:id => 25, :cost => 10, :weight => tieredWeight(depth, [ {:max => 3, :weight => 0}, {:max => 9, :weight => 8}, {:max => 16, :weight => 10}, {:max => 999, :weight => 6} ])}, // Goblin
-			{:id => 9, :cost => 20, :weight => tieredWeight(depth, [ {:max => 5, :weight => 0}, {:max => 10, :weight => 6}, {:max => 16, :weight => 8}, {:max => 999, :weight => 5} ])}, // Wogol
-			{:id => 10, :cost => 50, :weight => tieredWeight(depth, [ {:max => 7, :weight => 0}, {:max => 12, :weight => 4}, {:max => 18, :weight => 7}, {:max => 999, :weight => 4} ])}, // Ogre
-			{:id => 6, :cost => 20, :weight => tieredWeight(depth, [ {:max => 7, :weight => 0}, {:max => 12, :weight => 3}, {:max => 18, :weight => 6}, {:max => 999, :weight => 6} ])}, // Necromancer
-			{:id => 11, :cost => 25, :weight => tieredWeight(depth, [ {:max => 11, :weight => 0}, {:max => 16, :weight => 3}, {:max => 22, :weight => 6}, {:max => 999, :weight => 5} ])}, // DarkKnight
-			{:id => 12, :cost => 5, :weight => tieredWeight(depth, [ {:max => 4, :weight => 0}, {:max => 10, :weight => 5}, {:max => 16, :weight => 7}, {:max => 999, :weight => 4} ])}, // ElementalAirSmall
-			{:id => 13, :cost => 5, :weight => tieredWeight(depth, [ {:max => 4, :weight => 0}, {:max => 10, :weight => 5}, {:max => 16, :weight => 7}, {:max => 999, :weight => 4} ])}, // ElementalEarthSmall
-			{:id => 14, :cost => 5, :weight => tieredWeight(depth, [ {:max => 4, :weight => 0}, {:max => 10, :weight => 5}, {:max => 16, :weight => 7}, {:max => 999, :weight => 4} ])}, // ElementalFireSmall
-			{:id => 15, :cost => 5, :weight => tieredWeight(depth, [ {:max => 4, :weight => 0}, {:max => 10, :weight => 5}, {:max => 16, :weight => 7}, {:max => 999, :weight => 4} ])}, // ElementalGoldSmall
-			{:id => 16, :cost => 5, :weight => tieredWeight(depth, [ {:max => 4, :weight => 0}, {:max => 10, :weight => 5}, {:max => 16, :weight => 7}, {:max => 999, :weight => 4} ])}, // ElementalGooSmall
-			{:id => 30, :cost => 5, :weight => tieredWeight(depth, [ {:max => 4, :weight => 0}, {:max => 10, :weight => 5}, {:max => 16, :weight => 7}, {:max => 999, :weight => 4} ])}, // ElementalPlantSmall
-			{:id => 17, :cost => 5, :weight => tieredWeight(depth, [ {:max => 4, :weight => 0}, {:max => 10, :weight => 5}, {:max => 16, :weight => 7}, {:max => 999, :weight => 4} ])}, // ElementalWaterSmall
-			{:id => 18, :cost => 20, :weight => tieredWeight(depth, [ {:max => 11, :weight => 0}, {:max => 16, :weight => 4}, {:max => 22, :weight => 7}, {:max => 999, :weight => 6} ])}, // ElementalAir
-			{:id => 19, :cost => 20, :weight => tieredWeight(depth, [ {:max => 11, :weight => 0}, {:max => 16, :weight => 4}, {:max => 22, :weight => 7}, {:max => 999, :weight => 6} ])}, // ElementalEarth
-			{:id => 20, :cost => 20, :weight => tieredWeight(depth, [ {:max => 11, :weight => 0}, {:max => 16, :weight => 4}, {:max => 22, :weight => 7}, {:max => 999, :weight => 6} ])}, // ElementalFire
+			{:id => 0, :cost => 3, :weight => tieredWeight(depth, [ {:max => 4, :weight => 18}, {:max => 9, :weight => 8}, {:max => 16, :weight => 2}, {:max => 999, :weight => 0} ])}, // Frog
+			{:id => 1, :cost => 7, :weight => tieredWeight(depth, [ {:max => 4, :weight => 18}, {:max => 9, :weight => 19}, {:max => 16, :weight => 5}, {:max => 999, :weight => 2} ])}, // Bat
+			{:id => 4, :cost => 5, :weight => tieredWeight(depth, [ {:max => 4, :weight => 16}, {:max => 10, :weight => 13}, {:max => 18, :weight => 5}, {:max => 999, :weight => 2} ])}, // Imp
+			{:id => 7, :cost => 3, :weight => tieredWeight(depth, [ {:max => 4, :weight => 18}, {:max => 9, :weight => 17}, {:max => 16, :weight => 5}, {:max => 999, :weight => 2} ])}, // ZombieSmall
+			{:id => 8, :cost => 5, :weight => tieredWeight(depth, [ {:max => 4, :weight => 16}, {:max => 10, :weight => 11}, {:max => 18, :weight => 5}, {:max => 999, :weight => 2} ])}, // Zombie
+			{:id => 3, :cost => 5, :weight => tieredWeight(depth, [ {:max => 4, :weight => 0}, {:max => 10, :weight => 14}, {:max => 18, :weight => 7}, {:max => 999, :weight => 2} ])}, // Orc
+			{:id => 5, :cost => 10, :weight => tieredWeight(depth, [ {:max => 5, :weight => 0}, {:max => 10, :weight => 7}, {:max => 18, :weight => 7}, {:max => 999, :weight => 2} ])}, // Skeleton
+			{:id => 25, :cost => 10, :weight => tieredWeight(depth, [ {:max => 3, :weight => 0}, {:max => 9, :weight => 11}, {:max => 16, :weight => 9}, {:max => 999, :weight => 3} ])}, // Goblin
+			{:id => 9, :cost => 20, :weight => tieredWeight(depth, [ {:max => 5, :weight => 0}, {:max => 10, :weight => 8}, {:max => 16, :weight => 7}, {:max => 999, :weight => 3} ])}, // Wogol
+			{:id => 10, :cost => 50, :weight => tieredWeight(depth, [ {:max => 7, :weight => 0}, {:max => 12, :weight => 4}, {:max => 18, :weight => 5}, {:max => 999, :weight => 0} ])}, // Ogre
+			{:id => 6, :cost => 20, :weight => tieredWeight(depth, [ {:max => 7, :weight => 0}, {:max => 12, :weight => 3}, {:max => 18, :weight => 6}, {:max => 999, :weight => 3} ])}, // Necromancer
+			{:id => 11, :cost => 25, :weight => tieredWeight(depth, [ {:max => 11, :weight => 0}, {:max => 16, :weight => 3}, {:max => 22, :weight => 5}, {:max => 999, :weight => 2} ])}, // DarkKnight
+			{:id => 12, :cost => 5, :weight => tieredWeight(depth, [ {:max => 4, :weight => 0}, {:max => 10, :weight => 6}, {:max => 16, :weight => 6}, {:max => 999, :weight => 2} ])}, // ElementalAirSmall
+			{:id => 13, :cost => 5, :weight => tieredWeight(depth, [ {:max => 4, :weight => 0}, {:max => 10, :weight => 6}, {:max => 16, :weight => 6}, {:max => 999, :weight => 2} ])}, // ElementalEarthSmall
+			{:id => 14, :cost => 5, :weight => tieredWeight(depth, [ {:max => 4, :weight => 0}, {:max => 10, :weight => 6}, {:max => 16, :weight => 6}, {:max => 999, :weight => 2} ])}, // ElementalFireSmall
+			{:id => 15, :cost => 5, :weight => tieredWeight(depth, [ {:max => 4, :weight => 0}, {:max => 10, :weight => 6}, {:max => 16, :weight => 6}, {:max => 999, :weight => 2} ])}, // ElementalGoldSmall
+			{:id => 16, :cost => 5, :weight => tieredWeight(depth, [ {:max => 4, :weight => 0}, {:max => 10, :weight => 6}, {:max => 16, :weight => 6}, {:max => 999, :weight => 2} ])}, // ElementalGooSmall
+			{:id => 30, :cost => 5, :weight => tieredWeight(depth, [ {:max => 4, :weight => 0}, {:max => 10, :weight => 6}, {:max => 16, :weight => 6}, {:max => 999, :weight => 4} ])}, // ElementalPlantSmall
+			{:id => 17, :cost => 5, :weight => tieredWeight(depth, [ {:max => 4, :weight => 0}, {:max => 10, :weight => 6}, {:max => 16, :weight => 6}, {:max => 999, :weight => 2} ])}, // ElementalWaterSmall
+			{:id => 18, :cost => 20, :weight => tieredWeight(depth, [ {:max => 11, :weight => 0}, {:max => 16, :weight => 4}, {:max => 22, :weight => 7}, {:max => 999, :weight => 2} ])}, // ElementalAir
+			{:id => 19, :cost => 20, :weight => tieredWeight(depth, [ {:max => 11, :weight => 0}, {:max => 16, :weight => 4}, {:max => 22, :weight => 7}, {:max => 999, :weight => 2} ])}, // ElementalEarth
+			{:id => 20, :cost => 20, :weight => tieredWeight(depth, [ {:max => 11, :weight => 0}, {:max => 16, :weight => 4}, {:max => 22, :weight => 7}, {:max => 999, :weight => 2} ])}, // ElementalFire
 			{:id => 21, :cost => 20, :weight => tieredWeight(depth, [ {:max => 11, :weight => 0}, {:max => 16, :weight => 4}, {:max => 22, :weight => 7}, {:max => 999, :weight => 6} ])}, // ElementalGold
 			{:id => 22, :cost => 20, :weight => tieredWeight(depth, [ {:max => 11, :weight => 0}, {:max => 16, :weight => 4}, {:max => 22, :weight => 7}, {:max => 999, :weight => 6} ])}, // ElementalGoo
 			{:id => 23, :cost => 20, :weight => tieredWeight(depth, [ {:max => 11, :weight => 0}, {:max => 16, :weight => 4}, {:max => 22, :weight => 7}, {:max => 999, :weight => 6} ])}, // ElementalPlant
 			{:id => 24, :cost => 20, :weight => tieredWeight(depth, [ {:max => 11, :weight => 0}, {:max => 16, :weight => 4}, {:max => 22, :weight => 7}, {:max => 999, :weight => 6} ])}, // ElementalWater
-			{:id => 26, :cost => 50, :weight => tieredWeight(depth, [ {:max => 6, :weight => 0}, {:max => 12, :weight => 6}, {:max => 18, :weight => 7}, {:max => 999, :weight => 3} ])}, // Tentackle
-			{:id => 2, :cost => 50, :weight => tieredWeight(depth, [ {:max => 9, :weight => 0}, {:max => 14, :weight => 3}, {:max => 20, :weight => 6}, {:max => 999, :weight => 4} ])}, // Demon
-			{:id => 27, :cost => 30, :weight => tieredWeight(depth, [ {:max => 13, :weight => 0}, {:max => 18, :weight => 4}, {:max => 24, :weight => 7}, {:max => 999, :weight => 6} ])}, // Demonolog
-			{:id => 33, :cost => 20, :weight => tieredWeight(depth, [ {:max => 7, :weight => 0}, {:max => 14, :weight => 5}, {:max => 20, :weight => 7}, {:max => 999, :weight => 6} ])}, // OrcShaman
-			{:id => 32, :cost => 20, :weight => tieredWeight(depth, [ {:max => 5, :weight => 0}, {:max => 12, :weight => 6}, {:max => 18, :weight => 7}, {:max => 999, :weight => 5} ])}, // OrcMasked
-			{:id => 31, :cost => 50, :weight => tieredWeight(depth, [ {:max => 9, :weight => 0}, {:max => 15, :weight => 4}, {:max => 22, :weight => 7}, {:max => 999, :weight => 6} ])}, // OrcArmored
-			{:id => 34, :cost => 50, :weight => tieredWeight(depth, [ {:max => 11, :weight => 0}, {:max => 17, :weight => 4}, {:max => 24, :weight => 7}, {:max => 999, :weight => 6} ])}, // OrcVeteran
-			{:id => 28, :cost => 40, :weight => tieredWeight(depth, [ {:max => 15, :weight => 0}, {:max => 20, :weight => 4}, {:max => 26, :weight => 6}, {:max => 999, :weight => 6} ])}, // Chort
-			{:id => 29, :cost => 50, :weight => tieredWeight(depth, [ {:max => 17, :weight => 0}, {:max => 22, :weight => 3}, {:max => 999, :weight => 5} ])}, // Bies
-			{:id => 35, :cost => 50, :weight => tieredWeight(depth, [ {:max => 19, :weight => 0}, {:max => 24, :weight => 4}, {:max => 999, :weight => 6} ])}, // Rokita
-			{:id => 36, :cost => 9, :weight => tieredWeight(depth, [ {:max => 6, :weight => 0}, {:max => 12, :weight => 4}, {:max => 20, :weight => 5}, {:max => 999, :weight => 5} ])}, // Shadow Stalker
-			{:id => 37, :cost => 10, :weight => tieredWeight(depth, [ {:max => 6, :weight => 0}, {:max => 12, :weight => 5}, {:max => 20, :weight => 6}, {:max => 999, :weight => 6} ])} // Gloom Lurker
+			{:id => 26, :cost => 50, :weight => tieredWeight(depth, [ {:max => 6, :weight => 0}, {:max => 12, :weight => 6}, {:max => 18, :weight => 6}, {:max => 999, :weight => 2} ])}, // Tentackle
+			{:id => 2, :cost => 50, :weight => tieredWeight(depth, [ {:max => 9, :weight => 0}, {:max => 14, :weight => 3}, {:max => 20, :weight => 6}, {:max => 999, :weight => 1} ])}, // Demon
+			{:id => 27, :cost => 30, :weight => tieredWeight(depth, [ {:max => 13, :weight => 0}, {:max => 18, :weight => 4}, {:max => 24, :weight => 7}, {:max => 999, :weight => 4} ])}, // Demonolog
+			{:id => 33, :cost => 20, :weight => tieredWeight(depth, [ {:max => 7, :weight => 0}, {:max => 14, :weight => 5}, {:max => 20, :weight => 7}, {:max => 999, :weight => 4} ])}, // OrcShaman
+			{:id => 32, :cost => 20, :weight => tieredWeight(depth, [ {:max => 5, :weight => 0}, {:max => 12, :weight => 7}, {:max => 18, :weight => 6}, {:max => 999, :weight => 2} ])}, // OrcMasked
+			{:id => 31, :cost => 50, :weight => tieredWeight(depth, [ {:max => 9, :weight => 0}, {:max => 15, :weight => 4}, {:max => 22, :weight => 6}, {:max => 999, :weight => 3} ])}, // OrcArmored
+			{:id => 34, :cost => 50, :weight => tieredWeight(depth, [ {:max => 11, :weight => 0}, {:max => 17, :weight => 4}, {:max => 24, :weight => 7}, {:max => 999, :weight => 2} ])}, // OrcVeteran
+			{:id => 28, :cost => 40, :weight => tieredWeight(depth, [ {:max => 15, :weight => 0}, {:max => 20, :weight => 4}, {:max => 26, :weight => 6}, {:max => 999, :weight => 4} ])}, // Chort
+			{:id => 29, :cost => 50, :weight => tieredWeight(depth, [ {:max => 17, :weight => 0}, {:max => 22, :weight => 3}, {:max => 999, :weight => 3} ])}, // Bies
+			{:id => 35, :cost => 50, :weight => tieredWeight(depth, [ {:max => 19, :weight => 0}, {:max => 24, :weight => 4}, {:max => 999, :weight => 2} ])}, // Rokita
+			{:id => 36, :cost => 9, :weight => tieredWeight(depth, [ {:max => 6, :weight => 0}, {:max => 12, :weight => 4}, {:max => 20, :weight => 4}, {:max => 999, :weight => 1} ])}, // Shadow Stalker
+			{:id => 37, :cost => 10, :weight => tieredWeight(depth, [ {:max => 6, :weight => 0}, {:max => 12, :weight => 6}, {:max => 20, :weight => 5}, {:max => 999, :weight => 2} ])} // Gloom Lurker
 		] as Array<Dictionary<Symbol, Number>>;
 
 		return enemy_weights;

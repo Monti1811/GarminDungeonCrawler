@@ -10,7 +10,7 @@ class GrassGauntlets extends ArmorItem {
 		value = 50;
 		weight = 1.5;
 		slot = EITHER_HAND;
-		defense = 6;
+		defense = 30;
 		attribute_bonus = {
 			:charisma => 5,
 			:luck => 1,

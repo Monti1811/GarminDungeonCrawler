@@ -10,7 +10,7 @@ class BronzeGauntlets extends ArmorItem {
 		value = 13;
 		weight = 2.5;
 		slot = EITHER_HAND;
-		defense = 4;
+		defense = 8;
 		attribute_bonus = {
 			:charisma => 3
 		};

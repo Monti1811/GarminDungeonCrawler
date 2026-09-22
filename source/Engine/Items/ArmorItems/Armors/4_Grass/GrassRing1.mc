@@ -10,7 +10,7 @@ class GrassRing1 extends ArmorItem {
 		slot = ACCESSORY;
 		value = 50;
 		weight = 0.1;
-		defense = 5;
+		defense = 27;
 		attribute_bonus = {
 			:constitution => 2,
 			:charisma => 6,

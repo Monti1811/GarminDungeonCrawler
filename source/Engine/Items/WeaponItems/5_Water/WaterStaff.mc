@@ -14,7 +14,7 @@ class WaterStaff extends Staff {
             :intelligence => 6,
         };
 
-        attack = 4;
+        attack = 30;
         range = 1;
         range_type = LINEAR;
         attack_type = INTELLIGENCE;
@@ -24,7 +24,7 @@ class WaterStaff extends Staff {
 
     function activateStaff() as Void {
         Staff.activateStaff();
-        attack = 26;
+        attack = 30;
         range = 3;
     }
 

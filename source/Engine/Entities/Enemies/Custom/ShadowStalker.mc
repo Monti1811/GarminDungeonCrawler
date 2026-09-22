@@ -8,8 +8,8 @@ class ShadowStalker extends Enemy {
         name = "Shadow Stalker";
         description = "A phantom that strikes from the darkness.";
         current_health = 55;
-        maxHealth = 55;
-        damage = 8;
+        maxHealth = 199;
+        damage = 15;
         armor = 2;
         kill_experience = 14;
         energy_per_turn = 80;
