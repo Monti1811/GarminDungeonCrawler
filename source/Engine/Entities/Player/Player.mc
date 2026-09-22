@@ -123,6 +123,7 @@ class Player extends Entity {
 				}
 			} else if (item.slot != NONE && 
 					equipped[item.slot] == null &&
+					!isTwoHandedEquipped() &&
 					equipItem(item, item.slot, false)) {
 				item.onPickupItem(me);
 				return true;
@@ -135,19 +136,34 @@ class Player extends Entity {
 		return false;
 	}
 
+	function isTwoHandedEquipped() as Boolean {
+		var right_hand = equipped[RIGHT_HAND] as Item?;
+		return right_hand != null && right_hand has :weapon_type && (right_hand as WeaponItem).weapon_type == TWOHAND;
+	}
+
 	function resolveEitherHandSlot(item as Item) as ItemSlot? {
+		var right_hand = equipped[RIGHT_HAND] as Item?;
+		var left_hand = equipped[LEFT_HAND] as Item?;
+		var right_is_twohand = right_hand != null && right_hand has :weapon_type && (right_hand as WeaponItem).weapon_type == TWOHAND;
+
 		if (item.type == ARMOR) {
-			// Gauntlets → left hand
-			if (equipped[LEFT_HAND] == null) {
+			// Gauntlets → left hand (but not if two-handed weapon is equipped)
+			if (right_is_twohand) {
+				return null;
+			}
+			if (left_hand == null) {
 				return LEFT_HAND;
-			} else if (equipped[RIGHT_HAND] == null) {
+			} else if (right_hand == null) {
 				return RIGHT_HAND;
 			}
 		} else {
-			// Daggers → right hand
-			if (equipped[RIGHT_HAND] == null) {
+			// Daggers → right hand (but not if two-handed weapon is equipped)
+			if (right_is_twohand) {
+				return null;
+			}
+			if (right_hand == null) {
 				return RIGHT_HAND;
-			} else if (equipped[LEFT_HAND] == null) {
+			} else if (left_hand == null) {
 				return LEFT_HAND;
 			}
 		}
