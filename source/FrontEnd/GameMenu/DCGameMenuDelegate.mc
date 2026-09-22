@@ -385,9 +385,16 @@ class DCOptionsDelegate extends WatchUi.Menu2InputDelegate {
                     WatchUi.pushView(equipMenu, new DCEquipOptionsDelegate(_item, _delegate), WatchUi.SLIDE_UP);
                     return;
                 }
-                var success = getApp().getPlayer().equipItem(_item, _item.getItemSlot(), true);
-                if (!success) {
-                    WatchUi.showToast("Could not equip item", {:icon=>Rez.Drawables.cancelToastIcon});
+                
+                var player = getApp().getPlayer();
+                var reason = player.getEquipFailReason(_item, _item.getItemSlot());
+                if (reason != null) {
+                    WatchUi.showToast(reason, {:icon=>Rez.Drawables.cancelToastIcon});
+                } else {
+                    var success = player.equipItem(_item, _item.getItemSlot(), true);
+                    if (!success) {
+                        WatchUi.showToast("Could not equip item", {:icon=>Rez.Drawables.cancelToastIcon});
+                    }
                 }
                 WatchUi.popView(SLIDE_DOWN);
                 WatchUi.popView(SLIDE_DOWN);
@@ -442,17 +449,12 @@ class DCEquipOptionsDelegate extends WatchUi.Menu2InputDelegate {
 
     function onSelect(item as MenuItem) as Void {
         var type = item.getId() as Symbol;
-        var success = false;
-        switch (type) {
-            case :left:
-                success = getApp().getPlayer().equipItem(_item, LEFT_HAND, true);
-                break;
-            case :right:
-                success = getApp().getPlayer().equipItem(_item, RIGHT_HAND, true); 
-                break;    
-        }
-        if (!success) {
-            WatchUi.showToast("Could not equip item", {:icon=>Rez.Drawables.cancelToastIcon});
+        var target_slot = type == :left ? LEFT_HAND : RIGHT_HAND;
+        var reason = getApp().getPlayer().getEquipFailReason(_item, target_slot);
+        if (reason != null) {
+            WatchUi.showToast(reason, {:icon=>Rez.Drawables.cancelToastIcon});
+        } else {
+            getApp().getPlayer().equipItem(_item, target_slot, true);
         }
         WatchUi.popView(SLIDE_DOWN);
         WatchUi.popView(SLIDE_DOWN);

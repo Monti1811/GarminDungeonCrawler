@@ -33,7 +33,8 @@ class Item {
 	}
 	function onUseItem(player as Player) as Void;
 	function onPickupItem(player as Player) as Void {
-		var text = "Picked up" + (amount > 1 ? " x" + amount : "") + " " + name + ".";
+		var text = (self.equipped ? "Equipped" : "Picked up") + 
+					(amount > 1 ? " x" + amount : "") + " " + name + ".";
 		WatchUi.showToast(text, {:icon=>self.getSprite()});
 		$.Log.log(text);
 		// Track item as discovered in compendium
@@ -44,6 +45,10 @@ class Item {
 	function onBuyItem(player as Player) as Void;
 
 	function onInteract(player as Player, room as Room) as Boolean {
+		if (player.getInventory().wouldBeFull(self)) {
+			WatchUi.showToast("Inventory full", {:icon=>$.Rez.Drawables.cancelToastIcon});
+			return false;
+		}
 		var success = player.pickupItem(self);
 		if (success) {
 			room.removeItem(self);

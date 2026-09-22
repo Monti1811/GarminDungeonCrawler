@@ -141,6 +141,16 @@ class Player extends Entity {
 		return right_hand != null && right_hand has :weapon_type && (right_hand as WeaponItem).weapon_type == TWOHAND;
 	}
 
+	function getEquipFailReason(item as Item, slot as ItemSlot) as String? {
+		if (isTwoHandedEquipped() && slot != RIGHT_HAND) {
+			return "Two-handed weapon equipped";
+		}
+		if (inventory.wouldBeFull(item)) {
+			return "Weight limit exceeded";
+		}
+		return null;
+	}
+
 	function resolveEitherHandSlot(item as Item) as ItemSlot? {
 		var right_hand = equipped[RIGHT_HAND] as Item?;
 		var left_hand = equipped[LEFT_HAND] as Item?;
