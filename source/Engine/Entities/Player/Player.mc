@@ -115,17 +115,43 @@ class Player extends Entity {
 
 	function pickupItem(item as Item) as Boolean {
 		if (item.canBePickedUp(me)) {
-			if (item.slot != NONE && 
+			if (item.slot == EITHER_HAND) {
+				var target_slot = resolveEitherHandSlot(item);
+				if (target_slot != null && equipItem(item, target_slot, false)) {
+					item.onPickupItem(me);
+					return true;
+				}
+			} else if (item.slot != NONE && 
 					equipped[item.slot] == null &&
 					equipItem(item, item.slot, false)) {
 				item.onPickupItem(me);
 				return true;
-			} else if (addInventoryItem(item)) {
+			}
+			if (addInventoryItem(item)) {
 				item.onPickupItem(me);
 				return true;
 			}
 		}
 		return false;
+	}
+
+	function resolveEitherHandSlot(item as Item) as ItemSlot? {
+		if (item.type == ARMOR) {
+			// Gauntlets → left hand
+			if (equipped[LEFT_HAND] == null) {
+				return LEFT_HAND;
+			} else if (equipped[RIGHT_HAND] == null) {
+				return RIGHT_HAND;
+			}
+		} else {
+			// Daggers → right hand
+			if (equipped[RIGHT_HAND] == null) {
+				return RIGHT_HAND;
+			} else if (equipped[LEFT_HAND] == null) {
+				return LEFT_HAND;
+			}
+		}
+		return null;
 	}
 
 	function addInventoryItem(item as Item) as Boolean {
