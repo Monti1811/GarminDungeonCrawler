@@ -143,12 +143,18 @@ class RoomDrawable extends WatchUi.Drawable {
         return 0x000000; // EMPTY
     }
 
+    (:debug)
     function printRoom() as Void {
         DebugLogger.println("Printing room");
         for (var i = 0; i < _map_string.size(); i++) {
             DebugLogger.println(_map_string[i]);
         }
     }
+
+    (:release)
+    function printRoom() as Void {}
+
+
 
     function updateToNewRoom(options as Dictionary) as Void {
         _map_string = options[:map_string] as Array<String>;
