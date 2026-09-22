@@ -25,8 +25,8 @@ class WeaponItem extends EquippableItem {
 		slot = RIGHT_HAND;
 	}
 
-	function onEquipItem(player as Player) as Void {
-		EquippableItem.onEquipItem(player);
+	function onEquipItem(player as Player, slot as ItemSlot) as Void {
+		EquippableItem.onEquipItem(player, slot);
 		if (slot == LEFT_HAND) {
 			var right_hand = player.getEquip(RIGHT_HAND) as WeaponItem?;
 			if (right_hand != null && right_hand.weapon_type == TWOHAND) {

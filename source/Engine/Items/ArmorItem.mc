@@ -14,8 +14,8 @@ class ArmorItem extends EquippableItem {
 		slot = CHEST;
 	}
 
-	function onEquipItem(player as Player) as Void {
-		EquippableItem.onEquipItem(player);
+	function onEquipItem(player as Player, slot as ItemSlot) as Void {
+		EquippableItem.onEquipItem(player, slot);
 	}
 	function onUnequipItem(player as Player) as Void {
 		EquippableItem.onUnequipItem(player);

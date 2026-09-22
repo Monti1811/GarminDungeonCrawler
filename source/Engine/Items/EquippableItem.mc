@@ -8,8 +8,8 @@ class EquippableItem extends Item {
 		Item.initialize();
 	}
 
-	function onEquipItem(player as Player) as Void {
-		Item.onEquipItem(player);
+	function onEquipItem(player as Player, slot as ItemSlot) as Void {
+		Item.onEquipItem(player, slot);
 		var bonus_keys = attribute_bonus.keys() as Array<Symbol>;
 		for (var i = 0; i < bonus_keys.size(); i++) {
 			var symbol = bonus_keys[i];

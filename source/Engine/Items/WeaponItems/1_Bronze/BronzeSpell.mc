@@ -36,8 +36,8 @@ class BronzeSpell extends Spell {
         range_type = DIRECTIONAL;
     }
 
-    function onEquipItem(player as Player) as Void {
-        Spell.onEquipItem(player);
+    function onEquipItem(player as Player, slot as ItemSlot) as Void {
+        Spell.onEquipItem(player, slot);
     }
 
     function onUnequipItem(player as Player) as Void {

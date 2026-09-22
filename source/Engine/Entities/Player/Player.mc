@@ -93,7 +93,7 @@ class Player extends Entity {
 			item.amount += equipped[AMMUNITION].amount;
 		}
 		equipped[slot] = item;
-		item.onEquipItem(me);
+		item.onEquipItem(me, slot);
 		return true;
 	}
 

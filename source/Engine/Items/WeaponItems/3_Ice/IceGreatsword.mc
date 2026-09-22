@@ -23,8 +23,8 @@ class IceGreatsword extends WeaponItem {
         cooldown = 1;
     }
 
-    function onEquipItem(player as Player) as Void {
-        WeaponItem.onEquipItem(player);
+    function onEquipItem(player as Player, slot as ItemSlot) as Void {
+        WeaponItem.onEquipItem(player, slot);
         player.unequipItem(LEFT_HAND);
     }
 

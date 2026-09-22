@@ -36,8 +36,8 @@ class GrassStaff extends Staff {
         range = 1;
     }
 
-    function onEquipItem(player as Player) as Void {
-        Staff.onEquipItem(player);
+    function onEquipItem(player as Player, slot as ItemSlot) as Void {
+        Staff.onEquipItem(player, slot);
     }
 
     function onUnequipItem(player as Player) as Void {

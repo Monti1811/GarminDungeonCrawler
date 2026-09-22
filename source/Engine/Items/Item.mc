@@ -13,17 +13,20 @@ class Item {
 	var pos as Point2D = [0, 0];
 	var equipped as Boolean = false;
 	var in_inventory as Boolean = false;
+	var equipped_slot as ItemSlot = NONE;
 	var tag as Symbol = :none;
 	var entityType as Symbol = :item;
 	var _sprite_ref as Toybox.Graphics.BitmapReference? = null;
 
 	function initialize();
-	function onEquipItem(player as Player) as Void {
+	function onEquipItem(player as Player, slot as ItemSlot) as Void {
 		self.equipped = true;
+		self.equipped_slot = slot;
 		$.SaveData.discovered_items[id] = true;
 	}
 	function onUnequipItem(player as Player) as Void {
 		self.equipped = false;
+		self.equipped_slot = NONE;
 	}
 	function canBeUsed(player as Player) as Boolean {
 		return true;
@@ -96,12 +99,15 @@ class Item {
 	}
 
 	function getItemSlot() as ItemSlot {
+		if (equipped && equipped_slot != NONE) {
+			return equipped_slot;
+		}
 		return slot;
 	}
 
 	function isItemSlot(slot as ItemSlot) as Boolean {
-		if (slot == EITHER_HAND) {
-			return self.slot == RIGHT_HAND || self.slot == LEFT_HAND;
+		if (self.slot == EITHER_HAND) {
+			return slot == RIGHT_HAND || slot == LEFT_HAND;
 		}
 		return self.slot == slot;
 	}
