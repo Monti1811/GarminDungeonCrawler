@@ -80,7 +80,7 @@ class WeaponItem extends EquippableItem {
 
 	function getAttack(enemy as Enemy?, weapons_size as Number) as Number {
 		var player = $.getApp().getPlayer();
-		var attribute_modifiers = $.Constants.ATTRIBUTE_WEIGHTS[attack_type] as Dictionary<Symbol, Float>;
+		var attribute_modifiers = $.Constants.ATTACK_ATTRIBUTE_WEIGHTS[attack_type] as Dictionary<Symbol, Float>;
 		var attack = self.getBaseAttack();
 		if (attack == 0) {
 			return 0;

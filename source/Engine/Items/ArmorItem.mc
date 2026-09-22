@@ -46,7 +46,7 @@ class ArmorItem extends EquippableItem {
 
 	function getDefense(enemy as Enemy?, armors_size as Number) as Number {
 		var player = $.getApp().getPlayer();
-		var attribute_modifiers = $.Constants.ATTRIBUTE_WEIGHTS[defense_type] as Dictionary<Symbol, Float>;
+		var attribute_modifiers = $.Constants.DEFENSE_ATTRIBUTE_WEIGHTS[defense_type] as Dictionary<Symbol, Float>;
 		var defense = self.getBaseDefense();
 		var attribute_keys = [
 			:strength,
