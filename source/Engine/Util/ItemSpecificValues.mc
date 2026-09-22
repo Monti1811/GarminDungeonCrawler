@@ -445,7 +445,7 @@ private function buildArmorWeights(depth as Number) as Dictionary<Number, Numeri
                 addMultipliers(m, [1004,1005,1014,1015,1024,1025,1034,1035,1044,1045,1054,1055,1064,1065,1074,1075,1084,1085], 1.1); // Rings modest boost
                 addMultipliers(m, [1250,1251,1252], 0.9);
                 addMultipliers(m, [2000,2002,2004], 1.05); // Core consumables slight up
-                addMultipliers(m, [2001,2003,2005], 0.95); // Secondary consumables slightly down
+                addMultipliers(m, [2001,2003,2005], 0); // No mana -> no mana potions
                 break;
             case 1: // Mage
                 // Lean heavily into staves/spells and support gear, avoid melee/ranged
@@ -469,6 +469,7 @@ private function buildArmorWeights(depth as Number) as Dictionary<Number, Numeri
                 addMultipliers(m, [1,11,21,31,41,51,61,71,81], 2.2); // Bows boosted
                 addMultipliers(m, [1200,1201,1202,1203], 0.7); // Shields less useful
                 addMultipliers(m, [2000,2002], 0.9); // Light touch on food/regen
+                addMultipliers(m, [2001,2003,2005], 0); // No mana -> no mana potions
                 break;
             case 4: // Paladin
                 // Defensive focus: heavy on shields/armor/rings, light on weapons
@@ -485,7 +486,7 @@ private function buildArmorWeights(depth as Number) as Dictionary<Number, Numeri
                 addMultipliers(m, [1004,1005,1014,1015,1024,1025,1034,1035,1044,1045,1054,1055,1064,1065,1074,1075,1084,1085], 1.4); // Rings/charms
                 addMultipliers(m, [1250,1251,1252,1300,1301], 1.15); // Carry and trinkets
                 addMultipliers(m, [2000,2002,2004], 1.15); // Core consumables (healing/defense)
-                addMultipliers(m, [2001,2003,2005], 1.05); // Utility consumables
+                addMultipliers(m, [2001,2003,2005], 0); // No mana -> no mana potions
                 addMultipliers(m, [200,201,202,203,250,251,252,253,300,301,302], 0.15); // Ammo/crossbows minimized
                 addMultipliers(m, [1,11,21,31,41,51,61,71,81], 0.6); // Bows rare
                 addMultipliers(m, [6,7,16,17,26,27,36,37,46,47,56,57,66,67,76,77,86,87], 0.15); // Staves/spells modest
