@@ -77,16 +77,61 @@ module SaveData {
 		saveSaves();
 	}
 
+	// Copy all real room keys from the save dict into buffer keys (real keys are kept)
+	function loadRoomsToBuffer(data as Dictionary) as Void {
+		var dungeon_data = data["dungeon"] as Dictionary?;
+		if (dungeon_data == null) {
+			return;
+		}
+		var rooms = dungeon_data["rooms"] as Array<String?>?;
+		if (rooms == null) {
+			return;
+		}
+		for (var i = 0; i < rooms.size(); i++) {
+			var real_name = rooms[i];
+			if (real_name == null) {
+				continue;
+			}
+			var room_data = Storage.getValue(real_name) as Dictionary?;
+			if (room_data != null) {
+				var buffer_name = $.SimUtil.toBufferRoomName(real_name);
+				Storage.setValue(buffer_name, room_data);
+			}
+		}
+	}
+
+	// Copy all buffer room keys to real keys for the current dungeon
+	function saveRoomsFromBuffer(dungeon as Dungeon) as Void {
+		var rooms = dungeon.getRooms();
+		for (var i = 0; i < rooms.size(); i++) {
+			for (var j = 0; j < rooms[i].size(); j++) {
+				var buffer_name = rooms[i][j];
+				if (buffer_name == null) {
+					continue;
+				}
+				var room_data = Storage.getValue(buffer_name) as Dictionary?;
+				if (room_data != null) {
+					var real_name = $.SimUtil.toRealRoomName(buffer_name);
+					Storage.setValue(real_name, room_data);
+				}
+			}
+		}
+	}
+
 	public function saveGame() as Void {
 		var player = $.Game.getPlayer();
 		if (Storage.getValue(chosen_save) == null) {
 			Storage.setValue("save_num", current_save_num);
 		}
 		$.Game.updateTimePlayed(Toybox.Time.now());
+		var dungeon = $.Game.getDungeon();
+		if (dungeon == null) {
+			return;
+		}
 		var data = {
 			"player" => player.save(),
 			"level" => player.getLevel(),
-			"dungeon" => $.Game.getDungeon().save(),
+			"dungeon" => dungeon.save(),
 			"game" => $.Game.save(),
 			"entitymanager" => $.EntityManager.save(),
 			"quests" => $.Quests.save(),
@@ -94,15 +139,16 @@ module SaveData {
 			"discovered_items" => discovered_items.keys(),
 			"stepgate" => StepGate.save(),
 		} as Dictionary<PropertyKeyType, PropertyValueType>;
+		saveRoomsFromBuffer(dungeon);
 		DebugLogger.println("Saving game to " + chosen_save);
 		DebugLogger.println("Data: " + data);
 		_save_data = data;
 		var playerData = data["player"] as Dictionary<PropertyKeyType, PropertyValueType>;
 		var gameData = data["game"] as Dictionary<PropertyKeyType, PropertyValueType>;
 		var data_to_show = [
-			playerData["name"] as PropertyValueType, 
-			data["level"] as PropertyValueType, 
-			gameData["depth"] as PropertyValueType, 
+			playerData["name"] as PropertyValueType,
+			data["level"] as PropertyValueType,
+			gameData["depth"] as PropertyValueType,
 			gameData["time_played"] as PropertyValueType,
 			playerData["id"] as PropertyValueType
 		] as Array<PropertyValueType>;
@@ -110,10 +156,28 @@ module SaveData {
 		_save_data = {};
 	}
 
+	// Convert real room names in the loaded game map to buffer names for play
+	function convertMapNamesToBuffer() as Void {
+		var map = $.Game.map;
+		if (map.size() == 0 || map[0].size() == 0 || map[0][0] == null) {
+			return;
+		}
+		for (var i = 0; i < map.size(); i++) {
+			for (var j = 0; j < map[i].size(); j++) {
+				var room = map[i][j];
+				if (room != null && room[0] != null) {
+					room[0] = $.SimUtil.toBufferRoomName(room[0] as String);
+				}
+			}
+		}
+	}
+
 	public function loadGame(save as String) as Void {
 		chosen_save = save;
 		loadFromMemory();
 		var data = getSaveData();
+		// Copy real room keys to buffer before loading dungeon (real keys are kept)
+		loadRoomsToBuffer(data);
 		var player_data = data["player"] as Dictionary;
 		var player_id = player_data["id"] as Number;
 		$.Game.init(player_id);
@@ -121,10 +185,12 @@ module SaveData {
 		$.Game.setPlayer(player);
 		$.Game.setDungeon(Dungeon.load(data["dungeon"] as Dictionary));
 		$.Game.load(data["game"] as Dictionary);
+		// Map was loaded with real names; convert to buffer for play
+		convertMapNamesToBuffer();
 		$.Quests.load(data["quests"] as Dictionary?);
 		$.EntityManager.load(data["entitymanager"] as Dictionary);
 		StepGate.load(data["stepgate"] as Dictionary?);
-		
+
 		// Load compendium data
 		discovered_enemies = {};
 		discovered_items = {};
@@ -172,27 +238,34 @@ module SaveData {
 		];
 	}
 
-	public function deleteDungeonSave() as Void {
-		var dungeon = $.Game.getDungeon();
-		var dungeon_save_keys = dungeon.getRooms() as Array<Array<String?>>;
-		for (var i = 0; i < dungeon_save_keys.size(); i++) {
-			for (var j = 0; j < dungeon_save_keys[i].size(); j++) {
-				if (dungeon_save_keys[i][j] != null) {
-					Storage.deleteValue(dungeon_save_keys[i][j]);
-				}
+	// Delete room keys listed in a save dict + the save key itself (no buffer, no probing)
+	function deleteRoomsInDict(dungeon_data as Dictionary?) as Void {
+		if (dungeon_data == null) {
+			return;
+		}
+		var rooms = dungeon_data["rooms"] as Array<String?>?;
+		if (rooms == null) {
+			return;
+		}
+		for (var i = 0; i < rooms.size(); i++) {
+			if (rooms[i] != null) {
+				Storage.deleteValue(rooms[i]);
 			}
+		}
+	}
+
+	public function deleteDungeonSave() as Void {
+		var data = Storage.getValue(chosen_save) as Dictionary?;
+		if (data != null) {
+			deleteRoomsInDict(data["dungeon"] as Dictionary?);
 		}
 		Storage.deleteValue(chosen_save);
 	}
 
 	public function deleteSave(save as String) {
-		var temp = Storage.getValue(save) as Dictionary;
-		var dungeon = temp["dungeon"] as Dictionary?;
-		if (dungeon != null) {
-			var dungeon_save_keys = dungeon["rooms"] as Array<String>;
-			for (var i = 0; i < dungeon_save_keys.size(); i++) {
-				Storage.deleteValue(dungeon_save_keys[i]);
-			}
+		var data = Storage.getValue(save) as Dictionary?;
+		if (data != null) {
+			deleteRoomsInDict(data["dungeon"] as Dictionary?);
 		}
 		Storage.deleteValue(save);
 		saves.remove(save);

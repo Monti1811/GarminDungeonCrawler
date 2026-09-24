@@ -5,7 +5,7 @@ import Toybox.Test;
 function getRoomNameReturnsExpectedString(logger as Test.Logger) as Boolean {
     $.SaveData.chosen_save = "0";
     var name = SimUtil.getRoomName(1, 2);
-    Test.assertEqual(name, "0_dungeon_1_2");
+    Test.assertEqual(name, "buffer_1_2");
     return true;
 }
 
@@ -13,15 +13,43 @@ function getRoomNameReturnsExpectedString(logger as Test.Logger) as Boolean {
 function getRoomNameWithDifferentCoords(logger as Test.Logger) as Boolean {
     $.SaveData.chosen_save = "0";
     var name = SimUtil.getRoomName(3, 7);
-    Test.assertEqual(name, "0_dungeon_3_7");
+    Test.assertEqual(name, "buffer_3_7");
     return true;
 }
 
 (:test)
-function getPosFromRoomNameParsesCorrectly(logger as Test.Logger) as Boolean {
+function getPosFromRoomNameParsesBufferCorrectly(logger as Test.Logger) as Boolean {
+    var pos = SimUtil.getPosFromRoomName("buffer_1_2");
+    Test.assertEqual(pos[0], 1);
+    Test.assertEqual(pos[1], 2);
+    return true;
+}
+
+(:test)
+function getPosFromRoomNameParsesRealCorrectly(logger as Test.Logger) as Boolean {
     var pos = SimUtil.getPosFromRoomName("0_dungeon_1_2");
     Test.assertEqual(pos[0], 1);
     Test.assertEqual(pos[1], 2);
+    return true;
+}
+
+(:test)
+function getRealRoomNameFormat(logger as Test.Logger) as Boolean {
+    $.SaveData.chosen_save = "3";
+    var name = SimUtil.getRealRoomName(1, 2);
+    Test.assertEqual(name, "3_dungeon_1_2");
+    return true;
+}
+
+(:test)
+function toRealAndBufferRoomNameRoundTrip(logger as Test.Logger) as Boolean {
+    $.SaveData.chosen_save = "5";
+    var buffer = SimUtil.getRoomName(4, 6);
+    Test.assertEqual(buffer, "buffer_4_6");
+    var real = SimUtil.toRealRoomName(buffer);
+    Test.assertEqual(real, "5_dungeon_4_6");
+    var back = SimUtil.toBufferRoomName(real);
+    Test.assertEqual(back, buffer);
     return true;
 }
 

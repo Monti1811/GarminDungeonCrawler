@@ -73,12 +73,30 @@ module Game {
 	}
 
 	function save() as Dictionary {
+		// Copy map with real room names for persistence (original stays buffer names)
+		var map_size = map.size();
+		var map_copy = new [map_size] as Array<Array<Array>>;
+		for (var i = 0; i < map_size; i++) {
+			var row_size = map[i].size();
+			map_copy[i] = new [row_size] as Array<Array>;
+			for (var j = 0; j < row_size; j++) {
+				var room = map[i][j] as Array;
+				var room_copy = [] as Array;
+				for (var k = 0; k < room.size(); k++) {
+					room_copy.add(room[k]);
+				}
+				if (room_copy[0] != null) {
+					room_copy[0] = $.SimUtil.toRealRoomName(room_copy[0] as String);
+				}
+				map_copy[i][j] = room_copy as Array;
+			}
+		}
 		return {
 			"difficulty" => difficulty,
 			"game_mode" => game_mode,
 			"depth" => depth,
 			"time_played" => time_played,
-			"map" => map,
+			"map" => map_copy,
 		};
 	}
 

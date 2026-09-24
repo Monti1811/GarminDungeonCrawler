@@ -230,26 +230,13 @@ class Dungeon {
 		Storage.setValue(room_name, room.save());
 	}
 
-	function loadRoom(room_name as String) as Room {
-		var room = Storage.getValue(room_name) as Dictionary?;
-		if (room == null) {
-			// Room not in Storage — create an empty fallback room
-			DebugLogger.println("WARNING: Room '" + room_name + "' not found in Storage, creating fallback");
-			room = {
-				"size_x" => 10, "size_y" => 10,
-				"tile_width" => getApp().tile_width, "tile_height" => getApp().tile_height,
-				"start_pos" => [5, 5],
-				"map" => (new Map(22, 22, true)).save(),
-				"items" => [], "enemies" => [], "npcs" => [],
-				"left" => 6, "right" => 15, "top" => 6, "bottom" => 15,
-				"shape" => null
-			} as Dictionary;
-		}
-		return Room.load(room);
-	}
+function loadRoom(room_name as String) as Room {
+        var room = Storage.getValue(room_name) as Dictionary?;
+        return Room.load(room);
+    }
 
 	function saveCurrentRoom() as Void {
-		if (_current_room != null) {
+		if (_current_room != null && _current_room_name != null) {
 			var room_save = _current_room.save();
 			Storage.setValue(_current_room_name, room_save);
 		}
@@ -346,7 +333,8 @@ class Dungeon {
 		for (var i = 0; i < _size[0]; i++) {
 			for (var j = 0; j < _size[1]; j++) {
 				if (_rooms[i][j] != null) {
-					data["rooms"][i * _size[1] + j] = _rooms[i][j];
+					// Persist real key names in the save dict
+					data["rooms"][i * _size[1] + j] = $.SimUtil.toRealRoomName(_rooms[i][j]);
 				}
 			}
 		}
@@ -361,7 +349,12 @@ class Dungeon {
 		var rooms = data["rooms"] as Array<String?>;
 		for (var i = 0; i < _size[0]; i++) {
 			for (var j = 0; j < _size[1]; j++) {
-				_rooms[i][j] = rooms[i * _size[1] + j];
+				var name = rooms[i * _size[1] + j];
+				// Save dict stores real keys; use buffer keys in memory
+				if (name != null) {
+					name = $.SimUtil.toBufferRoomName(name);
+				}
+				_rooms[i][j] = name;
 			}
 		}
 		setCurrentRoomFromIndex(data["current_room_position"] as Point2D);
