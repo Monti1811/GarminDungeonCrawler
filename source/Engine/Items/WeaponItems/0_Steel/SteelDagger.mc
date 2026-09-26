@@ -16,13 +16,13 @@ class SteelDagger extends WeaponItem {
 			:luck => 2
 		};
 
-		attack = 7;
+		attack = 10;
 		// range = 1;
 		attack_type = DEXTERITY;
 	}
 
-	function onEquipItem(player as Player) as Void {
-		WeaponItem.onEquipItem(player);
+	function onEquipItem(player as Player, slot as ItemSlot) as Void {
+		WeaponItem.onEquipItem(player, slot);
 	}
 	function onUnequipItem(player as Player) as Void {
 		WeaponItem.onUnequipItem(player);

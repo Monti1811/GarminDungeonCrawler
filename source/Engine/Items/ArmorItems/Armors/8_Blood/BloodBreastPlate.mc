@@ -10,15 +10,15 @@ class BloodBreastPlate extends ArmorItem {
 		value = 5000;
 		weight = 8;
 		slot = CHEST;
-		defense = 65;
+		defense = 68;
 		attribute_bonus = {
 			:constitution => 20,
 			:strength => 5,
 		};
 	}
 
-	function onEquipItem(player as Player) as Void {
-		ArmorItem.onEquipItem(player);
+	function onEquipItem(player as Player, slot as ItemSlot) as Void {
+		ArmorItem.onEquipItem(player, slot);
 	}
 	// ...existing code...
 	function getSprite() as ResourceId {

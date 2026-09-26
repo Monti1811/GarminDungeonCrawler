@@ -2,6 +2,8 @@
 
 Enemy types, AI behavior, spawning, and difficulty scaling.
 
+> Current values (stats, spawn weights, balance status): [enemies-values.md](enemies-values.md)
+
 ## Enemy Roster (38 types)
 
 ### Easy (early depths)

@@ -14,7 +14,7 @@ class BronzeSpell extends Spell {
             :wisdom => 3
         };
 
-        attack = 12;
+        attack = 16;
         range = 3;
         cooldown = 1;
         attack_type = INTELLIGENCE;
@@ -24,20 +24,20 @@ class BronzeSpell extends Spell {
 
     function activateSpell() as Void {
         Spell.activateSpell();
-        attack = 12;
+        attack = 16;
         range = 3;
         range_type = SURROUNDING;
     }
 
     function deactivateSpell() as Void {
         Spell.deactivateSpell();
-        attack = 2;
+        attack = 16;
         range = 1;
         range_type = DIRECTIONAL;
     }
 
-    function onEquipItem(player as Player) as Void {
-        Spell.onEquipItem(player);
+    function onEquipItem(player as Player, slot as ItemSlot) as Void {
+        Spell.onEquipItem(player, slot);
     }
 
     function onUnequipItem(player as Player) as Void {

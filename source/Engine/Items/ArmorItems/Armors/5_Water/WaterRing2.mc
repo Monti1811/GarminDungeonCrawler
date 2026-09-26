@@ -10,7 +10,7 @@ class WaterRing2 extends ArmorItem {
 		value = 50;
 		weight = 0.1;
 		slot = ACCESSORY;
-		defense = 5;
+		defense = 29;
 		attribute_bonus = {
 			:intelligence => 4,
 			:wisdom => 5
@@ -18,8 +18,8 @@ class WaterRing2 extends ArmorItem {
 		defense_type = WISDOM;
 	}
 
-	function onEquipItem(player as Player) as Void {
-		ArmorItem.onEquipItem(player);
+	function onEquipItem(player as Player, slot as ItemSlot) as Void {
+		ArmorItem.onEquipItem(player, slot);
 	}
 	// ...existing code...
 	function getSprite() as ResourceId {

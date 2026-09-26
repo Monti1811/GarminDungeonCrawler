@@ -15,12 +15,12 @@ class BronzeSword extends WeaponItem {
             :constitution => 1
         };
 
-        attack = 12;
+        attack = 18;
         range = 1;
     }
 
-    function onEquipItem(player as Player) as Void {
-        WeaponItem.onEquipItem(player);
+    function onEquipItem(player as Player, slot as ItemSlot) as Void {
+        WeaponItem.onEquipItem(player, slot);
     }
 
     function onUnequipItem(player as Player) as Void {

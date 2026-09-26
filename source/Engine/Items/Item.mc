@@ -13,24 +13,28 @@ class Item {
 	var pos as Point2D = [0, 0];
 	var equipped as Boolean = false;
 	var in_inventory as Boolean = false;
+	var equipped_slot as ItemSlot = NONE;
 	var tag as Symbol = :none;
 	var entityType as Symbol = :item;
 	var _sprite_ref as Toybox.Graphics.BitmapReference? = null;
 
 	function initialize();
-	function onEquipItem(player as Player) as Void {
+	function onEquipItem(player as Player, slot as ItemSlot) as Void {
 		self.equipped = true;
+		self.equipped_slot = slot;
 		$.SaveData.discovered_items[id] = true;
 	}
 	function onUnequipItem(player as Player) as Void {
 		self.equipped = false;
+		self.equipped_slot = NONE;
 	}
 	function canBeUsed(player as Player) as Boolean {
 		return true;
 	}
 	function onUseItem(player as Player) as Void;
 	function onPickupItem(player as Player) as Void {
-		var text = "Picked up" + (amount > 1 ? " x" + amount : "") + " " + name + ".";
+		var text = (self.equipped ? "Equipped" : "Picked up") + 
+					(amount > 1 ? " x" + amount : "") + " " + name + ".";
 		WatchUi.showToast(text, {:icon=>self.getSprite()});
 		$.Log.log(text);
 		// Track item as discovered in compendium
@@ -41,6 +45,10 @@ class Item {
 	function onBuyItem(player as Player) as Void;
 
 	function onInteract(player as Player, room as Room) as Boolean {
+		if (player.getInventory().wouldBeFull(self)) {
+			WatchUi.showToast("Inventory full", {:icon=>$.Rez.Drawables.cancelToastIcon});
+			return false;
+		}
 		var success = player.pickupItem(self);
 		if (success) {
 			room.removeItem(self);
@@ -96,12 +104,15 @@ class Item {
 	}
 
 	function getItemSlot() as ItemSlot {
+		if (equipped && equipped_slot != NONE) {
+			return equipped_slot;
+		}
 		return slot;
 	}
 
 	function isItemSlot(slot as ItemSlot) as Boolean {
-		if (slot == EITHER_HAND) {
-			return self.slot == RIGHT_HAND || self.slot == LEFT_HAND;
+		if (self.slot == EITHER_HAND) {
+			return slot == RIGHT_HAND || slot == LEFT_HAND;
 		}
 		return self.slot == slot;
 	}

@@ -10,15 +10,15 @@ class BronzeGauntlets extends ArmorItem {
 		value = 13;
 		weight = 2.5;
 		slot = EITHER_HAND;
-		defense = 4;
+		defense = 8;
 		attribute_bonus = {
 			:charisma => 3
 		};
 		defense_type = CHARISMA;
 	}
 
-	function onEquipItem(player as Player) as Void {
-		ArmorItem.onEquipItem(player);
+	function onEquipItem(player as Player, slot as ItemSlot) as Void {
+		ArmorItem.onEquipItem(player, slot);
 	}
 	// ...existing code...
 	function getSprite() as ResourceId {

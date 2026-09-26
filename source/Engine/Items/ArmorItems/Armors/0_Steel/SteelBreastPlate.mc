@@ -11,15 +11,15 @@ class SteelBreastPlate extends ArmorItem {
 		value = 10;
 		weight = 10;
 		slot = CHEST;
-		defense = 5;
+		defense = 3;
 		attribute_bonus = {
 			:constitution => 2,
 			:dexterity => -1
 		};
 	}
 
-	function onEquipItem(player as Player) as Void {
-		ArmorItem.onEquipItem(player);
+	function onEquipItem(player as Player, slot as ItemSlot) as Void {
+		ArmorItem.onEquipItem(player, slot);
 	}
 	function onUnequipItem(player as Player) as Void {
 		ArmorItem.onUnequipItem(player);

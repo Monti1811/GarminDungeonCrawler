@@ -8,7 +8,7 @@ import random
 import re
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 ATTRIBUTE_KEYS = ["strength", "constitution", "dexterity", "intelligence", "wisdom", "charisma", "luck"]
 ATTACK_WEIGHTS = {
@@ -20,6 +20,11 @@ ATTACK_WEIGHTS = {
     "WISDOM": {"strength": 0.05, "constitution": 0.1, "dexterity": 0.25, "intelligence": 0.5, "wisdom": 1.0, "charisma": 0.5, "luck": 0.25},
 }
 
+MAX_ENEMIES_PER_ROOM = 15
+DEFAULT_MIN_ROOM_SIZE = 5
+DEFAULT_MAX_ROOM_SIZE = 15
+ITEM_TYPE_WEIGHTS = ((0, 20), (1, 20), (2, 40), (3, 5))  # Main.mc getItemType
+
 
 @dataclass
 class Enemy:
@@ -30,6 +35,7 @@ class Enemy:
     armor: int
     max_health: int
     kill_experience: int
+    attack_cooldown: int = 2
 
 
 @dataclass
@@ -81,6 +87,10 @@ class ItemWeightTables:
     weapon_weights: Dict[int, List[Tuple[int, float]]]
     armor_weights: Dict[int, List[Tuple[int, float]]]
     consumable_weights: Dict[int, List[Tuple[int, float]]]
+    method_bodies: Dict[str, str] = field(default_factory=dict)
+    class_item_multipliers: Dict[int, Dict[int, float]] = field(default_factory=dict)
+    _base_cache: Dict[int, List[Dict[int, float]]] = field(default_factory=dict)
+    _class_cache: Dict[Tuple[int, int], List[Dict[int, float]]] = field(default_factory=dict)
 
 
 def read(path: Path) -> str:
@@ -111,6 +121,9 @@ def extract_function_body(text: str, function_name: str) -> Optional[str]:
 
 def parse_number_assignment(body: str, key: str, default: int) -> int:
     m = re.search(rf"(?:self\.)?{re.escape(key)}\s*=\s*(-?\d+)\s*;", body)
+    if m:
+        return int(m.group(1))
+    m = re.search(rf"var\s+{re.escape(key)}\s+as\s+\w+\s*=\s*(-?\d+)\s*;", body)
     return int(m.group(1)) if m else default
 
 
@@ -126,6 +139,35 @@ def parse_attributes_dict(body: str) -> Dict[str, int]:
     return values
 
 
+def normalize_start_attributes(
+    attributes: Dict[str, int],
+    attr_min: int,
+    attr_max: int,
+    attr_sum: int,
+) -> Dict[str, int]:
+    """Clamp each start attribute into [min, max] and redistribute so total == sum."""
+    clamped = {k: int(clamp(int(attributes.get(k, 0)), attr_min, attr_max)) for k in ATTRIBUTE_KEYS}
+    total = sum(clamped.values())
+    if total == attr_sum:
+        return clamped
+
+    # Redistribute excess/deficit while respecting bounds (stable order, luck last).
+    order = [k for k in ATTRIBUTE_KEYS if k != "luck"] + (["luck"] if "luck" in clamped else [])
+    while total != attr_sum:
+        delta = 1 if total < attr_sum else -1
+        moved = False
+        for key in order:
+            new_val = clamped[key] + delta
+            if attr_min <= new_val <= attr_max:
+                clamped[key] = new_val
+                total += delta
+                moved = True
+                break
+        if not moved:
+            break
+    return clamped
+
+
 def parse_attribute_bonus_dict(body: str) -> Dict[str, int]:
     m = re.search(r"attribute_bonus\s*=\s*\{(.*?)\};", body, re.S)
     result: Dict[str, int] = {}
@@ -136,31 +178,111 @@ def parse_attribute_bonus_dict(body: str) -> Dict[str, int]:
     return result
 
 
+def enemy_effective_attack_period(energy_per_turn: int, attack_cooldown: int) -> int:
+    """Port of Turn.mc energy gating.
+
+    An enemy only acts while energy >= Constants.MIN_ENERGY_PER_TURN (100), spends it and
+    regains energy_per_turn afterwards (clamped to 100); attack_cooldown ticks down on every
+    turn. Returns the resulting attack period in turns (Ogre: 34 energy -> every 3 turns).
+    """
+    if energy_per_turn <= 0 or attack_cooldown <= 0:
+        return max(1, attack_cooldown)
+    energy = 100
+    cooldown = 0
+    first_attack = -1
+    for turn in range(1, 1000):
+        if energy >= 100:
+            if cooldown == 0:
+                cooldown = attack_cooldown
+                if first_attack < 0:
+                    first_attack = turn
+                else:
+                    return turn - first_attack
+            energy -= 100
+        energy = min(100, energy + energy_per_turn)
+        if cooldown > 0:
+            cooldown -= 1
+    return max(1, attack_cooldown)
+
+
 def parse_enemy_files(workspace: Path) -> Dict[int, Enemy]:
     enemies_dir = workspace / "source/Engine/Entities/Enemies"
-    defaults = {"damage": 10, "armor": 0, "maxHealth": 100, "kill_experience": 10}
-    parsed: Dict[int, Enemy] = {}
+    defaults: Dict[str, int] = {
+        "damage": 10,
+        "armor": 0,
+        "max_health": 100,
+        "kill_experience": 10,
+        "attack_cooldown": 2,
+        "energy_per_turn": 100,
+    }
+    classes: Dict[str, Dict[str, Any]] = {}
     for file in enemies_dir.rglob("*.mc"):
         if file.name in {"Enemy.mc", "Enemies.mc"}:
             continue
         text = read(file)
-        if "extends Enemy" not in text:
+        class_match = re.search(r"class\s+(\w+)\s+extends\s+(\w+)", text)
+        if not class_match:
             continue
         body = extract_function_body(text, "initialize")
         if not body:
             continue
+        classes[class_match.group(1)] = {
+            "parent": class_match.group(2),
+            "file": file,
+            "body": body,
+        }
+
+    resolved: Dict[str, Dict[str, Any]] = {}
+
+    def resolve(class_name: str, seen: Tuple[str, ...] = ()) -> Dict[str, Any]:
+        """Resolve stats of a class, inheriting everything its base class defines."""
+        if class_name in resolved:
+            return resolved[class_name]
+        entry = classes.get(class_name)
+        if entry is None or class_name in seen:
+            values: Dict[str, Any] = dict(defaults)
+            resolved.setdefault(class_name, values)
+            return values
+        body = str(entry["body"])
+        values = dict(resolve(str(entry["parent"]), seen + (class_name,)))
+        values["file"] = entry["file"]
         enemy_id = parse_number_assignment(body, "id", -1)
-        if enemy_id < 0:
-            continue
+        if enemy_id >= 0:
+            values["id"] = enemy_id
         name_match = re.search(r"name\s*=\s*\"([^\"]+)\"\s*;", body)
-        parsed[enemy_id] = Enemy(
-            id=enemy_id,
-            name=name_match.group(1) if name_match else file.stem,
-            file=file,
-            damage=parse_number_assignment(body, "damage", defaults["damage"]),
-            armor=parse_number_assignment(body, "armor", defaults["armor"]),
-            max_health=parse_number_assignment(body, "maxHealth", parse_number_assignment(body, "current_health", defaults["maxHealth"])),
-            kill_experience=parse_number_assignment(body, "kill_experience", defaults["kill_experience"]),
+        if name_match:
+            values["name"] = name_match.group(1)
+        elif "name" not in values:
+            values["name"] = Path(str(entry["file"])).stem
+        for key in ("damage", "armor", "kill_experience", "attack_cooldown", "energy_per_turn"):
+            value = parse_number_assignment(body, key, -1)
+            if value >= 0:
+                values[key] = value
+        max_health = parse_number_assignment(body, "maxHealth", -1)
+        if max_health < 0:
+            max_health = parse_number_assignment(body, "current_health", -1)
+        if max_health >= 0:
+            values["max_health"] = max_health
+        resolved[class_name] = values
+        return values
+
+    parsed: Dict[int, Enemy] = {}
+    for class_name in classes:
+        values = resolve(class_name)
+        enemy_id = values.get("id")
+        if enemy_id is None:
+            continue
+        energy_per_turn = int(values.get("energy_per_turn", defaults["energy_per_turn"]))
+        attack_cooldown = int(values.get("attack_cooldown", defaults["attack_cooldown"]))
+        parsed[int(enemy_id)] = Enemy(
+            id=int(enemy_id),
+            name=str(values.get("name", class_name)),
+            file=values["file"],
+            damage=int(values.get("damage", defaults["damage"])),
+            armor=int(values.get("armor", defaults["armor"])),
+            max_health=int(values.get("max_health", defaults["max_health"])),
+            kill_experience=int(values.get("kill_experience", defaults["kill_experience"])),
+            attack_cooldown=enemy_effective_attack_period(energy_per_turn, attack_cooldown),
         )
     return parsed
 
@@ -242,7 +364,11 @@ def parse_player_classes(workspace: Path) -> Dict[int, PlayerClass]:
         current_health = parse_number_assignment(body, "current_health", 30)
         max_health = parse_number_assignment(body, "maxHealth", current_health)
         max_mana = parse_number_assignment(body, "maxMana", 0)
+        if max_mana == 0:
+            max_mana = parse_number_assignment(text, "maxMana", 0)
         current_mana = parse_number_assignment(body, "current_mana", max_mana)
+        if current_mana == 0 and max_mana > 0:
+            current_mana = parse_number_assignment(text, "current_mana", max_mana)
         attributes = parse_attributes_dict(body)
         starting_items = re.findall(r"self\.equipItem\(new\s+(\w+)\(\)", body)
         level_up_body = extract_function_body(text, "onLevelUp") or ""
@@ -294,47 +420,308 @@ def parse_class_multipliers(workspace: Path) -> Dict[int, Dict[int, float]]:
     return multipliers
 
 
+ITEM_TABLE_METHODS = (
+    "buildWeaponWeights",
+    "buildArmorWeights",
+    "buildConsumableWeights",
+    "buildHighQualityWeights",
+    "buildMerchantWeights",
+)
+
+
+def extract_method_body_from(text: str, method_name: str) -> str:
+    pattern = re.compile(rf"private\s+function\s+{re.escape(method_name)}\s*\(.*?\)\s*as\s*[^{{]+\{{", re.S)
+    m = pattern.search(text)
+    if not m:
+        return ""
+    open_brace = text.find("{", m.start())
+    depth = 0
+    i = open_brace
+    while i < len(text):
+        c = text[i]
+        if c == "{":
+            depth += 1
+        elif c == "}":
+            depth -= 1
+            if depth == 0:
+                return text[open_brace + 1 : i]
+        i += 1
+    return ""
+
+
+def parse_item_tiered_table(body: str) -> Dict[int, List[Tuple[int, float]]]:
+    table: Dict[int, List[Tuple[int, float]]] = {}
+    entry_re = re.compile(r"(\d+)\s*=>\s*tieredWeight\(depth,\s*\[(.*?)\]\)", re.S)
+    tier_re = re.compile(r":max\s*=>\s*(\d+)\s*,\s*:weight\s*=>\s*([\d.]+)")
+    for entry in entry_re.finditer(body):
+        item_id = int(entry.group(1))
+        tiers = [(int(a), float(b)) for a, b in tier_re.findall(entry.group(2))]
+        if tiers:
+            table[item_id] = tiers
+    return table
+
+
+_ITEM_TIER_RE = re.compile(r":max\s*=>\s*(\d+)\s*,\s*:weight\s*=>\s*([\d.]+)")
+
+
+def _item_tiers_from_text(text: str) -> List[Tuple[int, float]]:
+    return [(int(a), float(b)) for a, b in _ITEM_TIER_RE.findall(text)]
+
+
+def _format_item_tiers(tiers: List[Tuple[int, float]]) -> str:
+    parts = []
+    for tier_max, weight in tiers:
+        w = str(int(weight)) if float(weight).is_integer() else f"{weight:g}"
+        parts.append(f"≤{int(tier_max)}: {w}")
+    return ", ".join(parts)
+
+
+def parse_item_inline_tiers(body: str) -> Dict[int, List[Tuple[int, float]]]:
+    """id => tieredWeight(...) entries of a method body, keyed by item id."""
+    table: Dict[int, List[Tuple[int, float]]] = {}
+    if not body:
+        return table
+    for m in re.finditer(r"(\d+)\s*=>\s*tieredWeight\(depth,\s*\[(.*?)\]\)", body, re.S):
+        table[int(m.group(1))] = _item_tiers_from_text(m.group(2))
+    return table
+
+
+def parse_item_weight_report(
+    body: str,
+    cross_tiers: Optional[Dict[int, List[Tuple[int, float]]]] = None,
+) -> List[Tuple[str, List[int], str]]:
+    """Parse a build*Weights method body into report rows: (weight_expr, sorted_item_ids, tiers_text).
+
+    Handles var-based tables (`var steel_weight = tieredWeight(...)` + `0 => steel_weight`),
+    aliases (`var bolt_weight = arrow_weight`), scaled refs (`water_weight / 2`),
+    cross-table refs (`consumable_weights[2004] / 2`) and non-tiered formulas.
+    """
+    if not body:
+        return []
+
+    var_tiers: Dict[str, List[Tuple[int, float]]] = {}
+    aliases: Dict[str, str] = {}
+    consumed: List[Tuple[int, int]] = []
+
+    for m in re.finditer(r"var\s+(\w+)\s*=\s*tieredWeight\(depth,\s*\[(.*?)\]\)\s*;", body, re.S):
+        var_tiers[m.group(1)] = _item_tiers_from_text(m.group(2))
+        consumed.append(m.span())
+    for m in re.finditer(r"var\s+(\w+)\s*=\s*(\w+)\s*;", body):
+        if not any(start <= m.start() < end for start, end in consumed):
+            aliases[m.group(1)] = m.group(2)
+
+    def lookup(name: str, guard: int = 0) -> Optional[List[Tuple[int, float]]]:
+        if name in var_tiers:
+            return var_tiers[name]
+        if name in aliases and guard < 5:
+            return lookup(aliases[name], guard + 1)
+        return None
+
+    def resolve(expr: str) -> Optional[List[Tuple[int, float]]]:
+        e = expr.strip()
+        m = re.fullmatch(r"(\w+)\s*/\s*(\d+)", e)
+        if m and int(m.group(2)) > 0:
+            tiers = lookup(m.group(1))
+            if tiers is not None:
+                div = int(m.group(2))
+                return [(tier_max, weight / div) for tier_max, weight in tiers]
+        m = re.fullmatch(r"(\w+)\[(\d+)\](?:\s*/\s*(\d+))?", e)
+        if m and m.group(1) == "consumable_weights" and cross_tiers is not None:
+            tiers = cross_tiers.get(int(m.group(2)))
+            if tiers is not None:
+                div = int(m.group(3)) if m.group(3) else 1
+                return [(tier_max, weight / div) for tier_max, weight in tiers]
+        return lookup(e)
+
+    groups: Dict[str, Tuple[str, List[int], Optional[List[Tuple[int, float]]]]] = {}
+
+    def add_entry(key: str, display: str, item_id: int, tiers: Optional[List[Tuple[int, float]]]) -> None:
+        if key in groups:
+            groups[key][1].append(item_id)
+        else:
+            groups[key] = (display, [item_id], tiers)
+
+    spans: List[Tuple[int, int]] = list(consumed)
+
+    for m in re.finditer(r"(\d+)\s*=>\s*tieredWeight\(depth,\s*\[(.*?)\]\)", body, re.S):
+        tiers = _item_tiers_from_text(m.group(2))
+        add_entry("inline:" + repr(tiers), "inline", int(m.group(1)), tiers)
+        spans.append(m.span())
+
+    for m in re.finditer(r"^\s*(\d+)\s*=>\s*(.+?),?\s*$", body, re.M):
+        if any(start <= m.start(1) < end for start, end in spans):
+            continue
+        expr = m.group(2).strip().rstrip(",").strip()
+        if expr.startswith("tieredWeight"):
+            continue
+        add_entry("expr:" + expr, expr, int(m.group(1)), resolve(expr))
+
+    rows = []
+    for _, (display, ids, tiers) in sorted(groups.items(), key=lambda kv: min(kv[1][1])):
+        tiers_text = _format_item_tiers(tiers) if tiers else "—"
+        rows.append((display, sorted(ids), tiers_text))
+    return rows
+
+
+def parse_class_item_multipliers(text: str) -> Dict[int, Dict[int, float]]:
+    multipliers: Dict[int, Dict[int, float]] = {}
+    fn = extract_function_body(text, "getClassItemMultipliers")
+    if not fn:
+        return multipliers
+    case_pattern = re.compile(r"case\s+(\d+)\s*:\s*(.*?)(?=\n\s*case\s+\d+\s*:|\n\s*default\s*:|\Z)", re.S)
+    add_re = re.compile(r"addMultipliers\s*\(\s*m\s*,\s*\[([^\]]*)\]\s*,\s*([\d.]+)\s*\)", re.S)
+    for cm in case_pattern.finditer(fn):
+        class_id = int(cm.group(1))
+        entries: Dict[int, float] = {}
+        for ids_raw, factor in add_re.findall(cm.group(2)):
+            factor_f = float(factor)
+            for id_str in ids_raw.split(","):
+                id_str = id_str.strip()
+                if id_str:
+                    entries[int(id_str)] = factor_f
+        multipliers[class_id] = entries
+    return multipliers
+
+
+class MonkeyMath:
+    """Toybox Math subset used by ItemSpecificValues weight expressions."""
+
+    @staticmethod
+    def log(value: float, base: Optional[float] = None) -> float:
+        if base is None:
+            return math.log(value)
+        return math.log(value, base)
+
+
+_TIERED_CALL_RE = re.compile(r"tieredWeight\s*\(\s*depth\s*,\s*\[(.*?)\]\s*\)", re.S)
+_TIER_PAIR_RE = re.compile(r":max\s*=>\s*(\d+)\s*,\s*:weight\s*=>\s*([-\d.]+)")
+_CONSUMABLE_REF_RE = re.compile(r"consumable_weights\s*\[\s*(\d+)\s*\]")
+_VAR_DECL_RE = re.compile(r"\bvar\s+([A-Za-z_]\w*)\s*=\s*(.*?);", re.S)
+
+
+def eval_item_expr(expr: str, depth: int, env: Dict[str, float], consumable: Dict[int, float]) -> float:
+    def repl_tiered(m: "re.Match[str]") -> str:
+        tiers = [(int(a), float(b)) for a, b in _TIER_PAIR_RE.findall(m.group(1))]
+        return repr(tiered_weight(depth, tiers))
+
+    expr = _TIERED_CALL_RE.sub(repl_tiered, expr)
+    expr = _CONSUMABLE_REF_RE.sub(lambda m: repr(float(consumable.get(int(m.group(1)), 0.0))), expr)
+    try:
+        return float(eval(expr, {"__builtins__": {}}, {"depth": depth, "Math": MonkeyMath, **env}))  # noqa: S307
+    except Exception:
+        return 0.0
+
+
+def extract_dict_entries(block: str) -> List[Tuple[int, str]]:
+    entries: List[Tuple[int, str]] = []
+    head_re = re.compile(r"(\d+)\s*=>")
+    m = head_re.search(block)
+    while m:
+        j = m.end()
+        level = 0
+        while j < len(block):
+            c = block[j]
+            if c in "([":
+                level += 1
+            elif c in ")]":
+                level -= 1
+            elif level == 0 and (c == "," or c == "}"):
+                break
+            j += 1
+        expr = block[m.end() : j].strip().split("//")[0].strip()
+        if expr:
+            entries.append((int(m.group(1)), expr))
+        m = head_re.search(block, j)
+    return entries
+
+
+def extract_brace_block_after(text: str, position: int) -> str:
+    brace = text.find("{", position)
+    if brace < 0:
+        return ""
+    level = 0
+    i = brace
+    while i < len(text):
+        c = text[i]
+        if c in "{[(":
+            level += 1
+        elif c in "}])":
+            level -= 1
+            if level == 0:
+                return text[brace + 1 : i]
+        i += 1
+    return ""
+
+
+def extract_return_entries(body: str) -> List[Tuple[int, str]]:
+    idx = body.find("return")
+    if idx < 0:
+        return []
+    return extract_dict_entries(extract_brace_block_after(body, idx))
+
+
+_DICT_VAR_RE = re.compile(r"\bvar\s+[A-Za-z_]\w*\s*=\s*\{")
+
+
+def extract_dict_var_entries(body: str) -> List[Tuple[int, str]]:
+    m = _DICT_VAR_RE.search(body)
+    if not m:
+        return []
+    return extract_dict_entries(extract_brace_block_after(body, m.start()))
+
+
+def eval_item_table(body: str, depth: int, consumable: Optional[Dict[int, float]] = None) -> Dict[int, float]:
+    if not body:
+        return {}
+    cons = consumable or {}
+    env: Dict[str, float] = {}
+    for name, expr in _VAR_DECL_RE.findall(body):
+        expr = expr.strip()
+        if expr.startswith("{"):
+            continue
+        env[name] = eval_item_expr(expr, depth, env, cons)
+    entries = extract_return_entries(body)
+    if not entries:
+        entries = extract_dict_var_entries(body)
+    return {item_id: eval_item_expr(expr, depth, env, cons) for item_id, expr in entries}
+
+
+def item_drop_tables(tables: ItemWeightTables, depth: int) -> List[Dict[int, float]]:
+    cached = tables._base_cache.get(depth)
+    if cached is None:
+        consumable = eval_item_table(tables.method_bodies.get("buildConsumableWeights", ""), depth)
+        cached = [
+            eval_item_table(tables.method_bodies.get("buildWeaponWeights", ""), depth),
+            eval_item_table(tables.method_bodies.get("buildArmorWeights", ""), depth),
+            consumable,
+            eval_item_table(tables.method_bodies.get("buildHighQualityWeights", ""), depth, consumable),
+        ]
+        tables._base_cache[depth] = cached
+    return cached
+
+
+def item_drop_tables_for_class(tables: ItemWeightTables, depth: int, class_id: int) -> List[Dict[int, float]]:
+    key = (depth, class_id)
+    cached = tables._class_cache.get(key)
+    if cached is None:
+        multipliers = tables.class_item_multipliers.get(class_id, {})
+        cached = [
+            {item_id: weight * multipliers.get(item_id, 1.0) for item_id, weight in table.items()}
+            for table in item_drop_tables(tables, depth)
+        ]
+        tables._class_cache[key] = cached
+    return cached
+
+
 def parse_item_weight_tables(workspace: Path) -> ItemWeightTables:
     text = read(workspace / "source/Engine/Util/ItemSpecificValues.mc")
-
-    def extract_method_body(method_name: str) -> str:
-        pattern = re.compile(rf"private\s+function\s+{re.escape(method_name)}\s*\(.*?\)\s*as\s*[^{{]+\{{", re.S)
-        m = pattern.search(text)
-        if not m:
-            return ""
-        open_brace = text.find("{", m.start())
-        depth = 0
-        i = open_brace
-        while i < len(text):
-            c = text[i]
-            if c == "{":
-                depth += 1
-            elif c == "}":
-                depth -= 1
-                if depth == 0:
-                    return text[open_brace + 1 : i]
-            i += 1
-        return ""
-
-    def parse_table(method_name: str) -> Dict[int, List[Tuple[int, float]]]:
-        body = extract_method_body(method_name)
-        if not body:
-            return {}
-        table: Dict[int, List[Tuple[int, float]]] = {}
-        entry_re = re.compile(r"(\d+)\s*=>\s*tieredWeight\(depth,\s*\[(.*?)\]\)", re.S)
-        tier_re = re.compile(r":max\s*=>\s*(\d+)\s*,\s*:weight\s*=>\s*([\d.]+)")
-        for entry in entry_re.finditer(body):
-            item_id = int(entry.group(1))
-            tiers_raw = entry.group(2)
-            tiers = [(int(a), float(b)) for a, b in tier_re.findall(tiers_raw)]
-            if tiers:
-                table[item_id] = tiers
-        return table
-
+    bodies = {name: extract_method_body_from(text, name) for name in ITEM_TABLE_METHODS}
     return ItemWeightTables(
-        weapon_weights=parse_table("buildWeaponWeights"),
-        armor_weights=parse_table("buildArmorWeights"),
-        consumable_weights=parse_table("buildConsumableWeights"),
+        weapon_weights=parse_item_tiered_table(bodies["buildWeaponWeights"]),
+        armor_weights=parse_item_tiered_table(bodies["buildArmorWeights"]),
+        consumable_weights=parse_item_tiered_table(bodies["buildConsumableWeights"]),
+        method_bodies=bodies,
+        class_item_multipliers=parse_class_item_multipliers(text),
     )
 
 
@@ -443,6 +830,212 @@ def expected_enemy_profile_for_depth(
     return weighted_xp / total_weight, max(1.0, weighted_cost / total_weight)
 
 
+# --- Item progression by depth ---
+# Maps item IDs to (name, min_depth) for the best items per slot per tier.
+# One new tier every 10 depths:
+#   Tier 0 Steel:  depth 1+
+#   Tier 1 Bronze: depth 11+
+#   Tier 2 Fire:   depth 21+
+#   Tier 3 Ice:    depth 31+
+#   Tier 4 Grass:  depth 41+
+#   Tier 5 Water:  depth 51+
+#   Tier 6 Gold:   depth 61+
+#   Tier 7 Demon:  depth 71+
+#   Tier 8 Blood:  depth 81+
+
+# Weapon IDs: each tier has 9 weapons (Axe=0, Bow=1, Dagger=2, Greatsword=3,
+# Katana=4, Lance/Spear=5, Spell=6, Staff=7, Sword=8) within a tier block of 10.
+# We pick one representative weapon per tier (Sword = *8).
+TIERED_WEAPONS = [
+    # (item_id, min_depth) – ordered by depth
+    (8,   1),   # SteelSword
+    (18, 11),   # BronzeSword
+    (28, 21),   # FireSword
+    (38, 31),   # IceSword
+    (48, 35),   # GrassSword
+    (58, 42),   # WaterSword
+    (68, 61),   # GoldSword
+    (78, 71),   # DemonSword
+    (88, 81),   # BloodSword
+]
+
+# For Bows (position 1 in each tier block)
+TIERED_BOWS = [
+    (1,   1),   # SteelBow
+    (11, 11),   # BronzeBow
+    (21, 21),   # FireBow
+    (31, 31),   # IceBow
+    (41, 35),   # GrassBow
+    (51, 42),   # WaterBow
+    (61, 61),   # GoldBow
+    (71, 71),   # DemonBow
+    (81, 81),   # BloodBow
+]
+
+# Armor IDs: each tier has 6 armor pieces (Helmet=0, BreastPlate=1, Gauntlets=2,
+# Shoes=3, Ring1=4, Ring2=5) within a tier block of 10, starting at 1000.
+# We pick BreastPlate (defense) and Ring (attribute bonus) per tier.
+TIERED_BREASTPLATES = [
+    (1001,  1),  # SteelBreastPlate
+    (1011, 11),  # BronzeBreastPlate
+    (1021, 21),  # FireBreastPlate
+    (1031, 31),  # IceBreastPlate
+    (1041, 35),  # GrassBreastPlate
+    (1051, 42),  # WaterBreastPlate
+    (1061, 61),  # GoldBreastPlate
+    (1071, 71),  # DemonBreastPlate
+    (1081, 81),  # BloodBreastPlate
+]
+
+TIERED_RINGS = [
+    (1004,  1),  # SteelRing1
+    (1014, 11),  # BronzeRing1
+    (1024, 21),  # FireRing1
+    (1034, 31),  # IceRing1
+    (1044, 35),  # GrassRing1
+    (1054, 42),  # WaterRing1
+    (1064, 61),  # GoldRing1
+    (1074, 71),  # DemonRing1
+    (1084, 81),  # BloodRing1
+]
+
+# Full armor set: Helmet (slot 0), Gauntlets (slot 2), Shoes (slot 3) per tier block.
+TIERED_HELMETS = [
+    (1000,  1),  # SteelHelmet
+    (1010, 11),  # BronzeHelmet
+    (1020, 21),  # FireHelmet
+    (1030, 31),  # IceHelmet
+    (1040, 35),  # GrassHelmet
+    (1050, 42),  # WaterHelmet
+    (1060, 61),  # GoldHelmet
+    (1070, 71),  # DemonHelmet
+    (1080, 81),  # BloodHelmet
+]
+
+TIERED_GAUNTLETS = [
+    (1002,  1),  # SteelGauntlets
+    (1012, 11),  # BronzeGauntlets
+    (1022, 21),  # FireGauntlets
+    (1032, 31),  # IceGauntlets
+    (1042, 35),  # GrassGauntlets
+    (1052, 42),  # WaterGauntlets
+    (1062, 61),  # GoldGauntlets
+    (1072, 71),  # DemonGauntlets
+    (1082, 81),  # BloodGauntlets
+]
+
+TIERED_BOOTS = [
+    (1003,  1),  # SteelShoes
+    (1013, 11),  # BronzeShoes
+    (1023, 21),  # FireShoes
+    (1033, 31),  # IceShoes
+    (1043, 35),  # GrassShoes
+    (1053, 42),  # WaterShoes
+    (1063, 61),  # GoldShoes
+    (1073, 71),  # DemonShoes
+    (1083, 81),  # BloodShoes
+]
+
+
+def _best_item_at_depth(table: List[Tuple[int, int]], depth: int, items_by_id: Dict[int, Item]) -> Optional[Item]:
+    """Return the best (highest-ID) item from a tiered table available at the given depth."""
+    best = None
+    for item_id, min_depth in table:
+        if depth >= min_depth and item_id in items_by_id:
+            best = items_by_id[item_id]
+    return best
+
+
+def get_items_for_depth(
+    player: PlayerClass,
+    class_id: int,
+    depth: int,
+    items_by_class: Dict[str, Item],
+    items_by_id: Dict[int, Item],
+) -> List[Item]:
+    """Determine the best equipment a player would have at a given depth.
+
+    Uses starting items as a baseline and upgrades individual slots when
+    better tiered items become available at the current depth.
+    """
+    # Start with the player's starting items
+    equipped = [items_by_class[name] for name in player.starting_items if name in items_by_class]
+
+    # Determine weapon type from starting weapon
+    uses_ranged = any(x.kind == "weapon" and x.uses_ammo for x in equipped)
+    tiered_weapons = TIERED_BOWS if uses_ranged else TIERED_WEAPONS
+
+    # Upgrade weapon
+    best_weapon = _best_item_at_depth(tiered_weapons, depth, items_by_id)
+    if best_weapon is not None:
+        # Replace existing weapon
+        new_equipped = [x for x in equipped if x.kind != "weapon"]
+        new_equipped.append(best_weapon)
+        equipped = new_equipped
+
+    # Upgrade breastplate (best defense)
+    best_bp = _best_item_at_depth(TIERED_BREASTPLATES, depth, items_by_id)
+    if best_bp is not None:
+        new_equipped = [x for x in equipped if not (x.kind == "armor" and x.defense > 0 and x.class_name != "LifeAmulet" and x.class_name != "ManaCrystal")]
+        new_equipped.append(best_bp)
+        equipped = new_equipped
+
+    # Upgrade ring (attribute bonus)
+    best_ring = _best_item_at_depth(TIERED_RINGS, depth, items_by_id)
+    if best_ring is not None:
+        new_equipped = [x for x in equipped if not (x.kind == "armor" and x.class_name in ("SteelRing1", "SteelRing2", "BronzeRing1", "BronzeRing2", "FireRing1", "FireRing2", "IceRing1", "IceRing2", "GrassRing1", "GrassRing2", "WaterRing1", "WaterRing2", "GoldRing1", "GoldRing2", "DemonRing1", "DemonRing2", "BloodRing1", "BloodRing2"))]
+        new_equipped.append(best_ring)
+        equipped = new_equipped
+
+    # Upgrade remaining armor slots (helmet, gauntlets, shoes) so defense
+    # matches a realistic mid-game loadout instead of breastplate-only.
+    for table in (TIERED_HELMETS, TIERED_GAUNTLETS, TIERED_BOOTS):
+        best_piece = _best_item_at_depth(table, depth, items_by_id)
+        if best_piece is not None and not any(x.id == best_piece.id for x in equipped):
+            equipped.append(best_piece)
+
+    return equipped
+
+
+EXPECTED_ROOM_XP_CACHE: Dict[Tuple[int, int], float] = {}
+EXPECTED_ROOM_XP_SAMPLES = 32
+
+
+def expected_room_xp(
+    depth: int,
+    class_id: int,
+    enemies: Dict[int, Enemy],
+    enemy_weights: List[Dict[str, object]],
+    class_multipliers: Dict[int, Dict[int, float]],
+    enemy_depth_scaling: Optional[Dict[str, object]] = None,
+    min_room_size: int = DEFAULT_MIN_ROOM_SIZE,
+    max_room_size: int = DEFAULT_MAX_ROOM_SIZE,
+) -> float:
+    """Expected XP from one room: samples Main.mc geometry + calculateEnemiesForRoom + chooseEnemies."""
+    key = (depth, class_id)
+    cached = EXPECTED_ROOM_XP_CACHE.get(key)
+    if cached is not None:
+        return cached
+
+    scaling = enemy_depth_scaling or {}
+    total_xp = 0.0
+    for _ in range(EXPECTED_ROOM_XP_SAMPLES):
+        room_size, room_max = sample_room_geometry(min_room_size, max_room_size)
+        difficulty_factor = 2 if roll_percent(10) else 1
+        count, points = calculate_enemies_for_room(depth, room_size, room_max, difficulty_factor)
+        if count <= 0:
+            continue
+        for enemy_id in choose_enemies(count, points, depth, class_id, enemy_weights, class_multipliers):
+            enemy = enemies.get(enemy_id)
+            if enemy is None:
+                continue
+            total_xp += scale_enemy_for_depth(enemy, depth, scaling).kill_experience
+
+    result = total_xp / EXPECTED_ROOM_XP_SAMPLES
+    EXPECTED_ROOM_XP_CACHE[key] = result
+    return result
+
+
 def projected_player_for_depth(
     player: PlayerClass,
     class_id: int,
@@ -450,33 +1043,27 @@ def projected_player_for_depth(
     enemies: Dict[int, Enemy],
     enemy_weights: List[Dict[str, object]],
     class_multipliers: Dict[int, Dict[int, float]],
-    strict_realism: bool,
-    enemy_count_multiplier: float,
-    enemy_budget_scale_by_depth: List[Dict[str, float]],
     rooms_per_depth_for_progression: int,
     initial_attribute_points: int,
     enemy_depth_scaling: Optional[Dict[str, object]] = None,
+    min_room_size: int = DEFAULT_MIN_ROOM_SIZE,
+    max_room_size: int = DEFAULT_MAX_ROOM_SIZE,
 ) -> Tuple[int, int, int, Dict[str, int]]:
     cumulative_experience = 0.0
     for explored_depth in range(1, depth):
-        avg_xp, avg_cost = expected_enemy_profile_for_depth(
+        xp_per_room = expected_room_xp(
             depth=explored_depth,
             class_id=class_id,
             enemies=enemies,
             enemy_weights=enemy_weights,
             class_multipliers=class_multipliers,
             enemy_depth_scaling=enemy_depth_scaling,
+            min_room_size=min_room_size,
+            max_room_size=max_room_size,
         )
-        if avg_xp <= 0:
+        if xp_per_room <= 0:
             continue
-        enemies_per_room = 1.0
-        if strict_realism:
-            budget_scale = value_for_depth(explored_depth, enemy_budget_scale_by_depth, 1.0)
-            base_budget = 10 + explored_depth * 3.5
-            budget = base_budget * max(0.2, enemy_count_multiplier) * max(0.2, budget_scale)
-            enemies_per_room = clamp(budget / max(1.0, avg_cost), 1.0, 15.0)
-        xp_diminishing = 1.0 / (1.0 + explored_depth * 0.012)
-        cumulative_experience += avg_xp * enemies_per_room * max(1, rooms_per_depth_for_progression) * xp_diminishing
+        cumulative_experience += xp_per_room * max(1, rooms_per_depth_for_progression)
 
     level = 1
     levels_gained = 0
@@ -524,8 +1111,8 @@ def compute_player_defense(attributes: Dict[str, int], armors: List[Item]) -> fl
     base = float(attributes.get("constitution", 0))
     if not armors:
         return max(0.0, base)
-    n = len(armors)
     total = base
+    armors_size = 8  # Game's Player.getDefense always passes armors_size = 8
     for armor in armors:
         if armor.defense <= 0:
             continue
@@ -534,7 +1121,7 @@ def compute_player_defense(attributes: Dict[str, int], armors: List[Item]) -> fl
         for key in ATTRIBUTE_KEYS:
             if key == "luck":
                 continue
-            defense += attributes[key] * float(weights.get(key, 0.0)) / (4 * n)
+            defense += attributes[key] * float(weights.get(key, 0.0)) / (4 * armors_size)
         total += defense
     return max(0.0, total)
 
@@ -606,7 +1193,87 @@ def scale_enemy_for_depth(enemy: Enemy, depth: int, scaling: Dict[str, object]) 
         armor=int(enemy.armor * (1.0 + f * float(scaling.get("armorScale", 0.01)))),
         max_health=int(enemy.max_health * (1.0 + f * float(scaling.get("healthScale", 0.02)))),
         kill_experience=int(enemy.kill_experience * (1.0 + f * float(scaling.get("xpScale", 0.01)))),
+        attack_cooldown=enemy.attack_cooldown,
     )
+
+
+def mc_clamp(value: float, low: float, high: float) -> float:
+    if value < low:
+        return low
+    if value > high:
+        return high
+    return value
+
+
+def roll_percent(chance: int) -> bool:
+    """MathUtil.isRandomPercent: uniform roll 1..100, true when roll <= chance."""
+    return random.randint(1, 100) <= chance
+
+
+def sample_room_geometry(min_room_size: int, max_room_size: int) -> Tuple[int, int]:
+    """Room interior area and enemy cap for one room (Main.mc createRoomShapeForDungeon)."""
+    size_x = 2 * (random.randint(min_room_size, max_room_size) // 2)
+    size_y = 2 * (random.randint(min_room_size, max_room_size) // 2)
+    room_size = (size_x - 1) * (size_y - 1)
+    room_max = (size_x * size_y) // 10
+    return room_size, room_max
+
+
+def calculate_enemies_for_room(depth: int, room_size: int, room_max: int, difficulty_factor: int) -> Tuple[int, int]:
+    """Main.mc calculateEnemiesForRoom: returns (enemy_count, enemy_points)."""
+    if roll_percent(10):
+        return 0, 0
+    depth_sqrt = math.sqrt(depth)
+    room_size_scaling = room_size / 50.0
+    num_enemies = 1 + room_size_scaling + (depth_sqrt / 2.0) / difficulty_factor
+    cap = min(room_max, MAX_ENEMIES_PER_ROOM)
+    count = int(mc_clamp(math.floor(num_enemies), 1, cap))
+    points = 2 + int(math.floor(depth * difficulty_factor + depth_sqrt * room_size_scaling))
+    return count, points
+
+
+def choose_enemies(
+    max_enemies: int,
+    allocated_points: int,
+    depth: int,
+    class_id: int,
+    enemy_weights: List[Dict[str, object]],
+    class_multipliers: Dict[int, Dict[int, float]],
+) -> List[int]:
+    """Main.mc chooseEnemies: min-cost preference plus weighted pick (rand quantised to 0.01)."""
+    multipliers = class_multipliers.get(class_id, {})
+    entries = [
+        (
+            int(entry["id"]),
+            int(entry["cost"]),
+            tiered_weight(depth, entry["tiers"]) * multipliers.get(int(entry["id"]), 1.0),
+        )
+        for entry in enemy_weights
+    ]
+    chosen: List[int] = []
+    remaining = allocated_points
+    while remaining > 0 and len(chosen) < max_enemies:
+        min_cost = 10 if remaining > 50 else (5 if remaining > 20 else 0)
+        eligible = [(eid, cost, w) for eid, cost, w in entries if cost <= remaining and cost >= min_cost]
+        total = sum(w for _, _, w in eligible)
+        if total <= 0:
+            eligible = [(eid, cost, w) for eid, cost, w in entries if cost <= remaining]
+            total = sum(w for _, _, w in eligible)
+        if total <= 0 or not eligible:
+            break
+        roll = (random.randint(0, 99) / 100.0) * total
+        accumulated = 0.0
+        picked: Optional[Tuple[int, int]] = None
+        for eid, cost, weight in eligible:
+            accumulated += weight
+            if roll <= accumulated:
+                picked = (eid, cost)
+                break
+        if picked is None:
+            picked = (eligible[-1][0], eligible[-1][1])
+        chosen.append(picked[0])
+        remaining -= picked[1]
+    return chosen
 
 
 def strict_room_enemy_ids(
@@ -614,64 +1281,66 @@ def strict_room_enemy_ids(
     class_id: int,
     enemy_weights: List[Dict[str, object]],
     class_multipliers: Dict[int, Dict[int, float]],
-    enemy_count_multiplier: float,
-    enemy_weight_jitter: float,
-    enemy_budget_scale: float,
-) -> List[int]:
-    multipliers = class_multipliers.get(class_id, {})
+    min_room_size: int = DEFAULT_MIN_ROOM_SIZE,
+    max_room_size: int = DEFAULT_MAX_ROOM_SIZE,
+) -> Tuple[List[int], int]:
+    """One room's spawn: geometry, difficulty roll, enemy count/points, chooseEnemies."""
+    room_size, room_max = sample_room_geometry(min_room_size, max_room_size)
+    difficulty_factor = 2 if roll_percent(10) else 1
+    count, points = calculate_enemies_for_room(depth, room_size, room_max, difficulty_factor)
+    if count <= 0:
+        return [], room_size
+    return choose_enemies(count, points, depth, class_id, enemy_weights, class_multipliers), room_size
 
-    base_budget = 10 + depth * 3.5
-    budget = int(max(4, base_budget * max(0.2, enemy_count_multiplier) * max(0.2, enemy_budget_scale)))
-    max_enemies = int(min(15, 2 + depth // 7 + random.randint(0, 2)))
-    generated: List[int] = []
 
-    for _ in range(max_enemies):
-        candidates: Dict[int, float] = {}
-        for entry in enemy_weights:
-            enemy_id = int(entry["id"])
-            cost = int(entry["cost"])
-            if cost > budget:
-                continue
-            base_w = tiered_weight(depth, entry["tiers"])
-            if base_w <= 0:
-                continue
-            final_w = base_w * multipliers.get(enemy_id, 1.0)
-            final_w = jitter_weight(final_w, enemy_weight_jitter)
-            if final_w > 0:
-                candidates[enemy_id] = final_w
+def game_item_type() -> int:
+    """Main.mc getItemType: integer weighted pick over {weapon, armor, consumable, high quality}."""
+    total = sum(weight for _, weight in ITEM_TYPE_WEIGHTS)
+    roll = random.randint(0, total - 1)
+    for type_id, weight in ITEM_TYPE_WEIGHTS:
+        roll -= weight
+        if roll < 0:
+            return type_id
+    return 0
 
-        picked = weighted_pick(candidates)
-        if picked is None:
+
+def game_weighted_item_pick(weights: Dict[int, float]) -> Optional[int]:
+    """Items.createRandomWeightedItem: integer roll against cumulative float weights."""
+    total = sum(weights.values())
+    if total <= 0:
+        return None
+    roll = random.randint(0, max(0, math.floor(total) - 1))
+    current = 0.0
+    picked: Optional[int] = None
+    for item_id, weight in weights.items():
+        current += weight
+        if roll < current:
+            picked = item_id
             break
-
-        picked_cost = next(int(e["cost"]) for e in enemy_weights if int(e["id"]) == picked)
-        generated.append(picked)
-        budget -= picked_cost
-        if budget <= 0:
-            break
-
-    if not generated:
-        fallback: Dict[int, float] = {}
-        for entry in enemy_weights:
-            enemy_id = int(entry["id"])
-            base_w = tiered_weight(depth, entry["tiers"])
-            if base_w > 0:
-                fallback[enemy_id] = base_w
-        picked = weighted_pick(fallback)
-        if picked is not None:
-            generated.append(picked)
-
-    return generated
+    return picked
 
 
 def strict_encounter_resources(
     depth: int,
     player: PlayerClass,
-    item_tables: ItemWeightTables,
-    item_weight_jitter: float,
-    item_drop_scale: float,
+    class_id: int,
+    enemy_count: int,
+    room_size: int,
+    item_tables: Optional[ItemWeightTables],
 ) -> Dict[str, List[int]]:
-    resources = {"health": [], "mana": []}
+    """Main.mc getItemsNumForRoom + getItemType + Items.createRandomWeightedItem."""
+    resources: Dict[str, List[int]] = {"health": [], "mana": []}
+    if item_tables is None:
+        return resources
+
+    items = 0.5 + 0.15 * math.sqrt(depth) + enemy_count / 4.0 + room_size / 100.0
+    if roll_percent(30):
+        return resources
+    if enemy_count > 0:
+        items = max(1.0, items)
+    num_items = int(math.floor(items))
+    if num_items <= 0:
+        return resources
 
     mapping = {
         2000: ("health", 20),
@@ -681,15 +1350,21 @@ def strict_encounter_resources(
         2003: ("mana", 80),
         2005: ("mana", player.max_mana),
     }
-
-    for item_id, (kind, amount) in mapping.items():
-        tiers = item_tables.consumable_weights.get(item_id)
-        if not tiers:
+    tables = item_drop_tables_for_class(item_tables, depth, class_id)
+    for _ in range(num_items):
+        item_type = game_item_type()
+        if item_type != 2 and item_type != 3:
             continue
-        weight = jitter_weight(tiered_weight(depth, tiers), item_weight_jitter)
-        chance = clamp((weight * max(0.2, item_drop_scale)) / 35.0, 0.0, 0.85)
-        if random.random() < chance:
-            resources[kind].append(amount)
+        item_id = game_weighted_item_pick(tables[item_type])
+        if item_id is None:
+            continue
+        drop = mapping.get(item_id)
+        if drop is None:
+            continue
+        kind, amount = drop
+        if kind == "mana" and player.max_mana <= 0:
+            continue
+        resources[kind].append(amount)
 
     return resources
 
@@ -702,7 +1377,7 @@ def simulate_duel(player: PlayerClass, enemy: Enemy, attrs: Dict[str, int], weap
     resources = estimate_encounter_resources(depth, player)
     health_potions = resources["health"]
     mana_potions = resources["mana"]
-    enemy_damage = calc_damage(enemy.damage, p_defense)
+    enemy_curr_cd = 0
 
     max_turns = 60
     for _ in range(max_turns):
@@ -754,7 +1429,11 @@ def simulate_duel(player: PlayerClass, enemy: Enemy, attrs: Dict[str, int], weap
         if enemy_hp <= 0:
             return True
 
-        player_hp -= enemy_damage
+        if enemy_curr_cd == 0:
+            player_hp -= calc_damage(enemy.damage, p_defense)
+            enemy_curr_cd = enemy.attack_cooldown
+        if enemy_curr_cd > 0:
+            enemy_curr_cd -= 1
         if player_hp <= 0:
             return False
 
@@ -768,17 +1447,17 @@ def simulate_room(
     weapons: List[Item],
     p_defense: float,
     depth: int,
-    resource_mode: str,
+    class_id: int,
+    room_size: int,
     item_tables: Optional[ItemWeightTables],
-    item_weight_jitter: float,
-    item_drop_scale: float,
 ) -> bool:
     player_hp = float(player.max_health)
     player_mana = float(player.current_mana)
     ammo = player.starting_ammo + random.randint(0, max(0, depth // 2))
 
-    if resource_mode == "strict" and item_tables is not None:
-        resources = strict_encounter_resources(depth, player, item_tables, item_weight_jitter, item_drop_scale)
+    spawn_enemy_count = len(room_enemies)
+    if item_tables is not None:
+        resources = strict_encounter_resources(depth, player, class_id, spawn_enemy_count, room_size, item_tables)
     else:
         resources = estimate_encounter_resources(depth, player)
     health_potions = resources["health"]
@@ -786,6 +1465,7 @@ def simulate_room(
 
     max_turns = 160
     turn = 0
+    enemy_curr_cd = [0] * len(room_enemies)
     while turn < max_turns and player_hp > 0 and len(room_enemies) > 0:
         turn += 1
 
@@ -834,10 +1514,15 @@ def simulate_room(
             focused_enemy.max_health -= dealt
             if focused_enemy.max_health <= 0:
                 room_enemies.pop(0)
+                enemy_curr_cd.pop(0)
 
         incoming = 0
-        for enemy in room_enemies:
-            incoming += calc_damage(enemy.damage, p_defense)
+        for i, enemy in enumerate(room_enemies):
+            if enemy_curr_cd[i] == 0:
+                incoming += calc_damage(enemy.damage, p_defense)
+                enemy_curr_cd[i] = enemy.attack_cooldown
+            if enemy_curr_cd[i] > 0:
+                enemy_curr_cd[i] -= 1
         player_hp -= incoming
 
     return player_hp > 0 and len(room_enemies) == 0
@@ -854,22 +1539,21 @@ def simulate(
     class_multipliers: Dict[int, Dict[int, float]],
     strict_realism: bool,
     item_tables: Optional[ItemWeightTables],
-    enemy_count_multiplier: float,
-    enemy_weight_jitter: float,
-    item_weight_jitter: float,
-    enemy_budget_scale_by_depth: List[Dict[str, float]],
-    item_drop_scale_by_depth: List[Dict[str, float]],
     rooms_per_depth_for_progression: int,
     initial_attribute_points: int,
     enemy_depth_scaling: Optional[Dict[str, object]] = None,
+    min_room_size: int = DEFAULT_MIN_ROOM_SIZE,
+    max_room_size: int = DEFAULT_MAX_ROOM_SIZE,
 ) -> Tuple[List[EncounterOutcome], Dict[int, float], Dict[int, float], Dict[int, float], Dict[int, float]]:
     outcomes: List[EncounterOutcome] = []
+    EXPECTED_ROOM_XP_CACHE.clear()
+
+    # Build items_by_id lookup for item progression
+    items_by_id: Dict[int, Item] = {item.id: item for item in items_by_class.values()}
 
     for class_id, player in players.items():
         multipliers = class_multipliers.get(class_id, {})
-        equipped_items = [items_by_class[name] for name in player.starting_items if name in items_by_class]
-        weapons = [x for x in equipped_items if x.kind == "weapon"]
-        armors = [x for x in equipped_items if x.kind == "armor"]
+        starting_equipped = [items_by_class[name] for name in player.starting_items if name in items_by_class]
 
         for depth in depths:
             _, progressed_health, progressed_mana, progressed_attributes = projected_player_for_depth(
@@ -879,12 +1563,11 @@ def simulate(
                 enemies=enemies,
                 enemy_weights=enemy_weights,
                 class_multipliers=class_multipliers,
-                strict_realism=strict_realism,
-                enemy_count_multiplier=enemy_count_multiplier,
-                enemy_budget_scale_by_depth=enemy_budget_scale_by_depth,
                 rooms_per_depth_for_progression=rooms_per_depth_for_progression,
                 initial_attribute_points=initial_attribute_points,
                 enemy_depth_scaling=enemy_depth_scaling,
+                min_room_size=min_room_size,
+                max_room_size=max_room_size,
             )
             progressed_player = PlayerClass(
                 id=player.id,
@@ -901,21 +1584,23 @@ def simulate(
                 level_mana_gain=player.level_mana_gain,
             )
 
+            # Use item progression: better items at deeper depths
+            equipped_items = get_items_for_depth(player, class_id, depth, items_by_class, items_by_id)
+            weapons = [x for x in equipped_items if x.kind == "weapon"]
+            armors = [x for x in equipped_items if x.kind == "armor"]
+
             attrs = apply_item_bonuses(progressed_player.attributes, equipped_items)
             p_defense = compute_player_defense(attrs, armors)
 
             for _ in range(rounds_per_depth):
                 if strict_realism:
-                    depth_budget_scale = value_for_depth(depth, enemy_budget_scale_by_depth, 1.0)
-                    depth_item_drop_scale = value_for_depth(depth, item_drop_scale_by_depth, 1.0)
-                    room_enemy_ids = strict_room_enemy_ids(
+                    room_enemy_ids, room_size = strict_room_enemy_ids(
                         depth=depth,
                         class_id=class_id,
                         enemy_weights=enemy_weights,
                         class_multipliers=class_multipliers,
-                        enemy_count_multiplier=enemy_count_multiplier,
-                        enemy_weight_jitter=enemy_weight_jitter,
-                        enemy_budget_scale=depth_budget_scale,
+                        min_room_size=min_room_size,
+                        max_room_size=max_room_size,
                     )
                     if not room_enemy_ids:
                         continue
@@ -929,6 +1614,7 @@ def simulate(
                                 armor=enemies[eid].armor,
                                 max_health=enemies[eid].max_health,
                                 kill_experience=enemies[eid].kill_experience,
+                                attack_cooldown=enemies[eid].attack_cooldown,
                             ),
                             depth,
                             enemy_depth_scaling or {},
@@ -946,10 +1632,9 @@ def simulate(
                         weapons=weapons,
                         p_defense=p_defense,
                         depth=depth,
-                        resource_mode="strict",
+                        class_id=class_id,
+                        room_size=room_size,
                         item_tables=item_tables,
-                        item_weight_jitter=item_weight_jitter,
-                        item_drop_scale=depth_item_drop_scale,
                     )
                     for enemy_id in room_enemy_ids_snapshot:
                         outcomes.append(EncounterOutcome(class_id=class_id, depth=depth, enemy_id=enemy_id, win=win))
@@ -1113,6 +1798,128 @@ def propose_enemy_specific_weight_adjustments(
     return adjustments
 
 
+def enforce_tier_constraints(
+    item_adjustments: List[Dict[str, object]],
+    items_by_id: Dict[int, "ParsedItem"],
+    min_tier_gap: float = 0.5,
+    max_intra_tier_deviation: float = 0.3,
+) -> List[Dict[str, object]]:
+    """Post-process item adjustments to enforce two rules:
+    1. Each tier's average stat must be at least min_tier_gap higher than the previous tier.
+    2. Items within the same tier must not deviate more than max_intra_tier_deviation from the tier average.
+    """
+    ITEM_ATK_MIN, ITEM_ATK_MAX = 1, 100
+    ITEM_DEF_MIN, ITEM_DEF_MAX = 0, 70
+    # Build lookup: (item_id, field) -> new value from adjustments
+    adj_map: Dict[tuple, int] = {}
+    for adj in item_adjustments:
+        key = (adj["itemId"], adj["field"])
+        adj_map[key] = adj["new"]
+
+    # Get effective stats per item (use adjusted value if present, else original)
+    def get_stat(item_id: int, field: str) -> int:
+        key = (item_id, field)
+        if key in adj_map:
+            return adj_map[key]
+        item = items_by_id.get(item_id)
+        if item is None:
+            return 0
+        return item.attack if field == "attack" else item.defense
+
+    # Group items by tier
+    tier_items: Dict[int, List[int]] = {}
+    for item_id in items_by_id:
+        tier = infer_tier_from_item_id(item_id)
+        if tier is not None:
+            tier_items.setdefault(tier, []).append(item_id)
+
+    # For each tier, compute average of attack and defense separately
+    tier_avg: Dict[int, Dict[str, float]] = {}
+    for tier, item_ids in tier_items.items():
+        attacks = [get_stat(i, "attack") for i in item_ids if items_by_id[i].kind == "weapon" and get_stat(i, "attack") > 0]
+        defenses = [get_stat(i, "defense") for i in item_ids if items_by_id[i].kind == "armor" and get_stat(i, "defense") > 0]
+        tier_avg[tier] = {
+            "attack": sum(attacks) / len(attacks) if attacks else 0,
+            "defense": sum(defenses) / len(defenses) if defenses else 0,
+        }
+
+    # Rule 1: Enforce tier progression (each tier >= previous tier + min_tier_gap)
+    sorted_tiers = sorted(tier_avg.keys())
+    for i in range(1, len(sorted_tiers)):
+        prev_tier = sorted_tiers[i - 1]
+        curr_tier = sorted_tiers[i]
+        for field in ["attack", "defense"]:
+            if tier_avg[curr_tier][field] > 0 and tier_avg[prev_tier][field] > 0:
+                min_required = tier_avg[prev_tier][field] + min_tier_gap
+                if tier_avg[curr_tier][field] < min_required:
+                    # Boost all items in this tier proportionally
+                    boost = min_required / tier_avg[curr_tier][field]
+                    for item_id in tier_items[curr_tier]:
+                        item = items_by_id[item_id]
+                        if field == "attack" and item.kind == "weapon" and item.attack > 0:
+                            old_val = get_stat(item_id, "attack")
+                            new_val = clamp(bounded_int(old_val * boost, 1), ITEM_ATK_MIN, ITEM_ATK_MAX)
+                            if new_val != old_val:
+                                key = (item_id, "attack")
+                                adj_map[key] = new_val
+                        elif field == "defense" and item.kind == "armor" and item.defense > 0:
+                            old_val = get_stat(item_id, "defense")
+                            new_val = clamp(bounded_int(old_val * boost, 0), ITEM_DEF_MIN, ITEM_DEF_MAX)
+                            if new_val != old_val:
+                                key = (item_id, "defense")
+                                adj_map[key] = new_val
+                    # Update tier average
+                    tier_avg[curr_tier][field] = min_required
+
+    # Recompute tier averages after progression enforcement
+    for tier, item_ids in tier_items.items():
+        attacks = [get_stat(i, "attack") for i in item_ids if items_by_id[i].kind == "weapon" and get_stat(i, "attack") > 0]
+        defenses = [get_stat(i, "defense") for i in item_ids if items_by_id[i].kind == "armor" and get_stat(i, "defense") > 0]
+        tier_avg[tier] = {
+            "attack": sum(attacks) / len(attacks) if attacks else 0,
+            "defense": sum(defenses) / len(defenses) if defenses else 0,
+        }
+
+    # Rule 2: Enforce intra-tier consistency (clamp items to tier average +/- deviation)
+    for tier, item_ids in tier_items.items():
+        for field in ["attack", "defense"]:
+            avg = tier_avg[tier][field]
+            if avg <= 0:
+                continue
+            min_val = max(1 if field == "attack" else 0, int(avg * (1 - max_intra_tier_deviation)))
+            max_val = min(ITEM_ATK_MAX if field == "attack" else ITEM_DEF_MAX, int(avg * (1 + max_intra_tier_deviation)))
+            for item_id in item_ids:
+                item = items_by_id[item_id]
+                if field == "attack" and item.kind == "weapon" and item.attack > 0:
+                    old_val = get_stat(item_id, "attack")
+                    new_val = clamp(old_val, min_val, max_val)
+                    if new_val != old_val:
+                        adj_map[(item_id, "attack")] = new_val
+                elif field == "defense" and item.kind == "armor" and item.defense > 0:
+                    old_val = get_stat(item_id, "defense")
+                    new_val = clamp(old_val, min_val, max_val)
+                    if new_val != old_val:
+                        adj_map[(item_id, "defense")] = new_val
+
+    # Rebuild adjustments list from adj_map, comparing to original values
+    result: List[Dict[str, object]] = []
+    for (item_id, field), new_val in adj_map.items():
+        item = items_by_id.get(item_id)
+        if item is None:
+            continue
+        old_val = item.attack if field == "attack" else item.defense
+        if new_val != old_val:
+            result.append({
+                "itemId": item_id,
+                "itemName": item.class_name,
+                "file": str(item.file),
+                "field": field,
+                "old": old_val,
+                "new": new_val,
+            })
+    return result
+
+
 def propose_item_specific_consumable_adjustments(
     workspace: Path,
     depth_win: Dict[int, float],
@@ -1244,7 +2051,7 @@ def tune(
                 })
 
     # Enemy adjustments (depth-segmented, independent stat scaling)
-    DEPTH_SEGMENTS = [(1, 25), (26, 100), (101, 150), (151, 200)]
+    DEPTH_SEGMENTS = [(1, 25), (26, 35), (36, 50), (51, 75), (76, 100), (101, 150), (151, 200)]
     by_enemy_seg: Dict[Tuple[int, int], List[EncounterOutcome]] = {}
     for row in outcomes:
         seg = next((s for s in DEPTH_SEGMENTS if s[0] <= row.depth <= s[1]), DEPTH_SEGMENTS[-1])
@@ -1283,36 +2090,8 @@ def tune(
         if new_armor != enemy.armor:
             adjustments["enemies"].append({"enemyId": enemy_id, "enemyName": enemy.name, "file": str(enemy.file), "field": "armor", "old": enemy.armor, "new": new_armor})
 
-    # Item adjustments by tier pressure (uses depth curve error)
-    tier_delta: Dict[int, float] = {}
-    for depth, actual in depth_win.items():
-        t = depth_target[depth] - actual
-        tier_guess = min(8, max(0, (depth - 1) // 3))
-        tier_delta.setdefault(tier_guess, 0.0)
-        tier_delta[tier_guess] += t
-
-    for tier in list(tier_delta.keys()):
-        count = sum(1 for d in depth_win.keys() if min(8, max(0, (d - 1) // 3)) == tier)
-        if count > 0:
-            tier_delta[tier] = tier_delta[tier] / count
-
-    for item_id, item in items_by_id.items():
-        tier = infer_tier_from_item_id(item_id)
-        if tier is None or tier not in tier_delta:
-            continue
-        delta = tier_delta[tier]
-        if abs(delta) <= tol:
-            continue
-        factor = clamp(1.0 + delta * 0.50, 1 - max_adj, 1 + max_adj)
-
-        if item.kind == "weapon" and item.attack > 0:
-            new_attack = clamp(bounded_int(item.attack * factor, 1), ITEM_ATK_MIN, ITEM_ATK_MAX)
-            if new_attack != item.attack:
-                adjustments["items"].append({"itemId": item_id, "itemName": item.class_name, "file": str(item.file), "field": "attack", "old": item.attack, "new": new_attack})
-        if item.kind == "armor" and item.defense > 0:
-            new_defense = clamp(bounded_int(item.defense * factor, 0), ITEM_DEF_MIN, ITEM_DEF_MAX)
-            if new_defense != item.defense:
-                adjustments["items"].append({"itemId": item_id, "itemName": item.class_name, "file": str(item.file), "field": "defense", "old": item.defense, "new": new_defense})
+    # Item adjustments disabled: items have fixed hand-tuned values per tier.
+    # Enemies are balanced around items, not the other way around.
 
     if strict_realism:
         adjustments["strictTables"].extend(
@@ -1447,6 +2226,11 @@ def write_report(
     depth_win: Dict[int, float],
     depth_target: Dict[int, float],
     adjustments: Dict[str, List[Dict[str, object]]],
+    players: Optional[Dict[int, "ParsedPlayer"]] = None,
+    enemies: Optional[Dict[int, "ParsedEnemy"]] = None,
+    items_by_id: Optional[Dict[int, "ParsedItem"]] = None,
+    enemy_weights: Optional[List[Dict[str, object]]] = None,
+    item_tables: Optional[ItemWeightTables] = None,
 ) -> None:
     out_dir = workspace / "tools/balance"
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -1463,6 +2247,132 @@ def write_report(
     lines = [
         "# Balance Report",
         "",
+        "## Player Classes",
+        "",
+        "| Class | HP | Mana | Strength | Dex | Int | Con | Level HP | Level Mana |",
+        "|---|---:|---:|---:|---:|---:|---:|---:|---:|",
+    ]
+    if players:
+        class_names = {0: "Warrior", 1: "Mage", 2: "Archer", 3: "Nameless", 4: "Paladin", 5: "God"}
+        for cid in sorted(players.keys()):
+            p = players[cid]
+            name = class_names.get(cid, p.class_name)
+            hp = p.max_health
+            mana = p.max_mana if p.max_mana > 0 else "-"
+            attrs = p.attributes
+            str_val = attrs.get("strength", "?")
+            dex_val = attrs.get("dexterity", "?")
+            int_val = attrs.get("intelligence", "?")
+            con_val = attrs.get("constitution", "?")
+            lvl_hp = p.level_health_gain
+            lvl_mp = p.level_mana_gain if p.level_mana_gain > 0 else "-"
+            lines.append(f"| {name} | {hp} | {mana} | {str_val} | {dex_val} | {int_val} | {con_val} | {lvl_hp} | {lvl_mp} |")
+    lines.append("")
+
+    # Enemies table
+    lines += [
+        "## Enemies",
+        "",
+        "| Enemy | HP | Damage | Armor | XP |",
+        "|---|---:|---:|---:|---:|",
+    ]
+    if enemies:
+        for eid in sorted(enemies.keys()):
+            e = enemies[eid]
+            lines.append(f"| {e.name} | {e.max_health} | {e.damage} | {e.armor} | {e.kill_experience} |")
+    lines.append("")
+
+    # Enemy spawn weights per depth tier
+    if enemy_weights:
+
+        def _fmt_weight(value: float) -> str:
+            return str(int(value)) if float(value).is_integer() else f"{value:g}"
+
+        def _weight_at_depth(tiers: List[Tuple[int, float]], depth: int) -> float:
+            for tier_max, weight in tiers:
+                if depth <= tier_max:
+                    return weight
+            return tiers[-1][1]
+
+        tier_maxes = sorted({int(tier_max) for entry in enemy_weights for tier_max, _ in entry["tiers"]})  # type: ignore[index]
+        if tier_maxes:
+            lines += [
+                "## Enemy Spawn Weights",
+                "",
+                "Current `:cost` / `:weight` tables from `EnemySpecificValues.mc` (weight for depth tier).",
+                "",
+                "| Enemy | Cost | " + " | ".join(f"≤{m}" for m in tier_maxes) + " |",
+                "|---|---:|" + "---:|" * len(tier_maxes),
+            ]
+            for entry in sorted(enemy_weights, key=lambda x: int(x["id"])):
+                eid = int(entry["id"])  # type: ignore[arg-type]
+                name = enemies[eid].name if enemies and eid in enemies else str(eid)
+                tiers = entry["tiers"]  # type: ignore[assignment]
+                cells = " | ".join(_fmt_weight(_weight_at_depth(tiers, m)) for m in tier_maxes)
+                lines.append(f"| {name} | {entry['cost']} | {cells} |")  # type: ignore[index]
+            lines.append("")
+
+    # Items table grouped by tier
+    lines += [
+        "## Items",
+        "",
+    ]
+    if items_by_id:
+        tier_names = {0: "Steel", 1: "Bronze", 2: "Fire", 3: "Ice", 4: "Grass", 5: "Water", 6: "Gold", 7: "Demon", 8: "Blood"}
+        for tier_id in range(9):
+            tier_items = [(iid, item) for iid, item in items_by_id.items() if infer_tier_from_item_id(iid) == tier_id]
+            if not tier_items:
+                continue
+            lines.append(f"### Tier {tier_id}: {tier_names.get(tier_id, '?')}")
+            lines.append("")
+            lines.append("| Item | Type | Attack | Defense | Weight |")
+            lines.append("|---|---|---:|---:|---:|")
+            for iid, item in sorted(tier_items):
+                kind = item.kind if hasattr(item, 'kind') else "?"
+                atk = item.attack if hasattr(item, 'attack') else "-"
+                def_val = item.defense if hasattr(item, 'defense') else "-"
+                weight = item.weight if hasattr(item, 'weight') else "-"
+                lines.append(f"| {item.class_name} | {kind} | {atk} | {def_val} | {weight} |")
+            lines.append("")
+
+    # Item drop weights per depth tier
+    if item_tables and item_tables.method_bodies:
+
+        bodies = item_tables.method_bodies
+        consumable_body = bodies.get("buildConsumableWeights", "")
+        cross_tiers = parse_item_inline_tiers(consumable_body)
+        weight_sections = [
+            ("Weapons", bodies.get("buildWeaponWeights", "")),
+            ("Armor", bodies.get("buildArmorWeights", "")),
+            ("Consumables", consumable_body),
+            ("High Quality", bodies.get("buildHighQualityWeights", "")),
+            ("Merchant", bodies.get("buildMerchantWeights", "")),
+        ]
+        rendered_any = False
+        for title, body in weight_sections:
+            rows = parse_item_weight_report(body, cross_tiers=cross_tiers)
+            if not rows:
+                continue
+            if not rendered_any:
+                lines += [
+                    "## Item Drop Weights",
+                    "",
+                    "Current tiered drop weights from `ItemSpecificValues.mc` (`build*Weights`).",
+                    "",
+                ]
+                rendered_any = True
+            lines += [
+                f"### {title}",
+                "",
+                "| Weight | Item IDs | Tiers (depth ≤ max: weight) |",
+                "|---|---|---|",
+            ]
+            for display, ids, tiers_text in rows:
+                ids_text = ", ".join(str(i) for i in ids)
+                lines.append(f"| {display} | {ids_text} | {tiers_text} |")
+            lines.append("")
+
+    lines += [
         "## Class Win Rates",
         "",
         "| Class ID | Actual | Target | Delta |",
@@ -1560,18 +2470,27 @@ def main() -> None:
     random.seed(args.seed)
 
     strict_realism = bool(config.get("strictRealism", False)) or args.strict_realism
-    variation = config.get("variation", {}) if isinstance(config.get("variation", {}), dict) else {}
-    enemy_count_multiplier = float(variation.get("enemyCountMultiplier", 1.0))
-    enemy_weight_jitter = float(variation.get("enemyWeightJitter", 0.0))
-    item_weight_jitter = float(variation.get("itemWeightJitter", 0.0))
-    enemy_budget_scale_by_depth = variation.get("enemyBudgetScaleByDepth", []) if isinstance(variation.get("enemyBudgetScaleByDepth", []), list) else []
-    item_drop_scale_by_depth = variation.get("itemDropScaleByDepth", []) if isinstance(variation.get("itemDropScaleByDepth", []), list) else []
-    rooms_per_depth_for_progression = int(config.get("roomsPerDepthForProgression", 4))
+    room_size_cfg = config.get("roomSizeRange", {}) if isinstance(config.get("roomSizeRange", {}), dict) else {}
+    min_room_size = int(room_size_cfg.get("min", DEFAULT_MIN_ROOM_SIZE))
+    max_room_size = int(room_size_cfg.get("max", DEFAULT_MAX_ROOM_SIZE))
+    rooms_per_depth_for_progression = int(config.get("roomsPerDepthForProgression", 9))
     initial_attribute_points = int(config.get("initialAttributePoints", 5))
     enemy_depth_scaling = config.get("enemyDepthScaling", {}) if isinstance(config.get("enemyDepthScaling", {}), dict) else {}
     depths = resolve_depths(config)
 
     players = parse_player_classes(workspace)
+    start_attr_cfg = config.get("startAttributes", {}) if isinstance(config.get("startAttributes", {}), dict) else {}
+    attr_min = int(start_attr_cfg.get("min", 0))
+    attr_max = int(start_attr_cfg.get("max", 20))
+    attr_sum = int(start_attr_cfg.get("sum", 50))
+    for player in players.values():
+        normalized = normalize_start_attributes(player.attributes, attr_min, attr_max, attr_sum)
+        if normalized != player.attributes:
+            print(
+                f"Normalized start attributes for {player.class_name}: "
+                f"{player.attributes} -> {normalized}"
+            )
+            player.attributes = normalized
     enemies = parse_enemy_files(workspace)
     items_by_class, items_by_id = parse_item_files(workspace)
     enemy_weights = parse_enemy_weights(workspace)
@@ -1589,14 +2508,11 @@ def main() -> None:
         class_multipliers=class_multipliers,
         strict_realism=strict_realism,
         item_tables=item_tables,
-        enemy_count_multiplier=enemy_count_multiplier,
-        enemy_weight_jitter=enemy_weight_jitter,
-        item_weight_jitter=item_weight_jitter,
-        enemy_budget_scale_by_depth=enemy_budget_scale_by_depth,
-        item_drop_scale_by_depth=item_drop_scale_by_depth,
         rooms_per_depth_for_progression=rooms_per_depth_for_progression,
         initial_attribute_points=initial_attribute_points,
         enemy_depth_scaling=enemy_depth_scaling,
+        min_room_size=min_room_size,
+        max_room_size=max_room_size,
     )
 
     adjustments = tune(
@@ -1619,7 +2535,20 @@ def main() -> None:
     if args.apply:
         changed_files = apply_adjustments(adjustments)
 
-    write_report(workspace, config, class_win, class_target, depth_win, depth_target, adjustments)
+    write_report(
+        workspace,
+        config,
+        class_win,
+        class_target,
+        depth_win,
+        depth_target,
+        adjustments,
+        players,
+        enemies,
+        items_by_id,
+        enemy_weights=enemy_weights,
+        item_tables=item_tables,
+    )
 
     print("Balance simulation complete")
     print(f"Encounters simulated: {len(outcomes)}")

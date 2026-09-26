@@ -17,12 +17,12 @@ class FireAxe extends WeaponItem {
             :luck => -2
         };
 
-        attack = 12;
+        attack = 21;
         element = ELEMENT_FIRE;
     }
 
-    function onEquipItem(player as Player) as Void {
-        WeaponItem.onEquipItem(player);
+    function onEquipItem(player as Player, slot as ItemSlot) as Void {
+        WeaponItem.onEquipItem(player, slot);
     }
 
     function onUnequipItem(player as Player) as Void {

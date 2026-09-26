@@ -10,14 +10,14 @@ class BronzeHelmet extends ArmorItem {
 		value = 15;
 		weight = 3.5;
 		slot = HEAD;
-		defense = 4;
+		defense = 8;
 		attribute_bonus = {
 			:constitution => 3
 		};
 	}
 
-	function onEquipItem(player as Player) as Void {
-		ArmorItem.onEquipItem(player);
+	function onEquipItem(player as Player, slot as ItemSlot) as Void {
+		ArmorItem.onEquipItem(player, slot);
 	}
 	// ...existing code...
 	function getSprite() as ResourceId {

@@ -4,7 +4,7 @@ class DemonSpell extends Spell {
 
     function initialize() {
         Spell.initialize();
-        id = 72;
+        id = 76;
         name = "Demon Spell";
         description = "A hellbound grimoire that unleashes AoE waves of abyssal flame when fueled by mana.";
         slot = RIGHT_HAND;
@@ -14,7 +14,7 @@ class DemonSpell extends Spell {
             :wisdom => 10
         };
 
-        attack = 11;
+        attack = 58;
         range = 3;
         cooldown = 1;
         attack_type = INTELLIGENCE;
@@ -36,8 +36,8 @@ class DemonSpell extends Spell {
         range_type = DIRECTIONAL;
     }
 
-    function onEquipItem(player as Player) as Void {
-        Spell.onEquipItem(player);
+    function onEquipItem(player as Player, slot as ItemSlot) as Void {
+        Spell.onEquipItem(player, slot);
     }
 
     function onUnequipItem(player as Player) as Void {

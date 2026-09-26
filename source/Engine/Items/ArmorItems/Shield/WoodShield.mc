@@ -15,12 +15,12 @@ class WoodShield extends ArmorItem {
 			:dexterity => -1
 		};
 
-		defense = 4;
+		defense = 3;
 
 	}
 
-	function onEquipItem(player as Player) as Void {
-		ArmorItem.onEquipItem(player);
+	function onEquipItem(player as Player, slot as ItemSlot) as Void {
+		ArmorItem.onEquipItem(player, slot);
 	}
 	function onUnequipItem(player as Player) as Void {
 		ArmorItem.onUnequipItem(player);

@@ -15,14 +15,14 @@ class BronzeLance extends WeaponItem {
             :luck => 3        
         };
 
-        attack = 12;
+        attack = 18;
         range = 2;
         range_type = LINEAR;
         attack_type = DEXTERITY;
     }
 
-    function onEquipItem(player as Player) as Void {
-        WeaponItem.onEquipItem(player);
+    function onEquipItem(player as Player, slot as ItemSlot) as Void {
+        WeaponItem.onEquipItem(player, slot);
     }
 
     function onUnequipItem(player as Player) as Void {

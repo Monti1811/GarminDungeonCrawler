@@ -16,14 +16,14 @@ class WaterLance extends WeaponItem {
             :luck => 3,
         };
 
-        attack = 7;
+        attack = 45;
         range = 2;
         range_type = LINEAR;
         attack_type = DEXTERITY;
     }
 
-    function onEquipItem(player as Player) as Void {
-        WeaponItem.onEquipItem(player);
+    function onEquipItem(player as Player, slot as ItemSlot) as Void {
+        WeaponItem.onEquipItem(player, slot);
     }
 
     function onUnequipItem(player as Player) as Void {

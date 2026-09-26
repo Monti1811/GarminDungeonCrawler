@@ -10,7 +10,7 @@ class IceBreastPlate extends ArmorItem {
 		value = 100;
 		weight = 10;
 		slot = CHEST;
-		defense = 8;
+		defense = 22;
 		attribute_bonus = {
 			:constitution => 4,
 			:wisdom => 4,
@@ -19,8 +19,8 @@ class IceBreastPlate extends ArmorItem {
 		element = ELEMENT_ICE;
 	}
 
-	function onEquipItem(player as Player) as Void {
-		ArmorItem.onEquipItem(player);
+	function onEquipItem(player as Player, slot as ItemSlot) as Void {
+		ArmorItem.onEquipItem(player, slot);
 	}
 	// ...existing code...
 	function getSprite() as ResourceId {

@@ -10,7 +10,7 @@ class GrassBreastPlate extends ArmorItem {
 		value = 100;
 		weight = 8;
 		slot = CHEST;
-		defense = 6;
+		defense = 30;
 		attribute_bonus = {
 			:constitution => 3,
 			:charisma => 3,
@@ -18,8 +18,8 @@ class GrassBreastPlate extends ArmorItem {
 		};
 	}
 
-	function onEquipItem(player as Player) as Void {
-		ArmorItem.onEquipItem(player);
+	function onEquipItem(player as Player, slot as ItemSlot) as Void {
+		ArmorItem.onEquipItem(player, slot);
 	}
 	// ...existing code...
 	function getSprite() as ResourceId {

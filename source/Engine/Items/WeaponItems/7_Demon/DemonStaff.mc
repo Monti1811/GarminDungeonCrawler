@@ -14,7 +14,7 @@ class DemonStaff extends Staff {
             :intelligence => 10
         };
 
-        attack = 6;
+        attack = 43;
         range = 1;
         range_type = LINEAR;
         attack_type = INTELLIGENCE;
@@ -34,8 +34,8 @@ class DemonStaff extends Staff {
         range = 1;
     }
 
-    function onEquipItem(player as Player) as Void {
-        Staff.onEquipItem(player);
+    function onEquipItem(player as Player, slot as ItemSlot) as Void {
+        Staff.onEquipItem(player, slot);
     }
 
     function onUnequipItem(player as Player) as Void {
@@ -48,7 +48,6 @@ class DemonStaff extends Staff {
 
     function deepcopy() as Item {
         var staff = new DemonStaff();
-        // ...existing code...
         staff.attack = attack;
         staff.range = range;
         staff.range_type = range_type;
@@ -61,5 +60,4 @@ class DemonStaff extends Staff {
         Staff.onLoad(save_data);
     }
 
-    // ...existing code...
 }

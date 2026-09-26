@@ -7,12 +7,12 @@ class Chort extends Enemy {
 		id = 28;
 		name = "Chort";
 		description = "A lesser demon with a fiery temper.";
-		damage = 18;
-		current_health = 150;
+		damage = 44;
+		current_health = 230;
 		maxHealth = current_health;
 		energy_per_turn = 100;
-		armor = 8;
-        kill_experience = 175;
+		armor = 12;
+        kill_experience = 100;
 	}
 
 	function getSprite() as ResourceId {

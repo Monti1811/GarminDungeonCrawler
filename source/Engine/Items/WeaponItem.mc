@@ -25,8 +25,8 @@ class WeaponItem extends EquippableItem {
 		slot = RIGHT_HAND;
 	}
 
-	function onEquipItem(player as Player) as Void {
-		EquippableItem.onEquipItem(player);
+	function onEquipItem(player as Player, slot as ItemSlot) as Void {
+		EquippableItem.onEquipItem(player, slot);
 		if (slot == LEFT_HAND) {
 			var right_hand = player.getEquip(RIGHT_HAND) as WeaponItem?;
 			if (right_hand != null && right_hand.weapon_type == TWOHAND) {
@@ -80,7 +80,7 @@ class WeaponItem extends EquippableItem {
 
 	function getAttack(enemy as Enemy?, weapons_size as Number) as Number {
 		var player = $.getApp().getPlayer();
-		var attribute_modifiers = $.Constants.ATTRIBUTE_WEIGHTS[attack_type] as Dictionary<Symbol, Float>;
+		var attribute_modifiers = $.Constants.ATTACK_ATTRIBUTE_WEIGHTS[attack_type] as Dictionary<Symbol, Float>;
 		var attack = self.getBaseAttack();
 		if (attack == 0) {
 			return 0;

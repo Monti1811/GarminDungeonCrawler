@@ -8,9 +8,7 @@ module Battle {
 	function attackEnemy(attacker as Player, defender as Enemy) as Boolean {
 		var baseDamage = attacker.getAttack(defender);
 		var defense = defender.getDefense(attacker);
-		var reduction = defense.toFloat() / (defense.toFloat() + baseDamage.toFloat());
-		reduction = MathUtil.clamp(reduction, 0.0, 0.90);
-		var damage = MathUtil.ceil(Math.round(baseDamage * (1.0 - reduction)).toNumber(), 1);
+		var damage = getDamage(baseDamage, defense);
 		showAttackString(defender.getPos(), damage);
 		Log.log(attacker.getName() + " attacks " + defender.getName() + " for " + damage + " damage");
 		var death = defender.takeDamage(damage, attacker);
@@ -26,13 +24,21 @@ module Battle {
 	function attackPlayer(attacker as Enemy, defender as Player) as Boolean {
 		var baseDamage = attacker.getAttack(defender);
 		var defense = defender.getDefense(attacker);
-		var reduction = defense.toFloat() / (defense.toFloat() + baseDamage.toFloat());
-		reduction = MathUtil.clamp(reduction, 0.0, 0.90);
-		var damage = MathUtil.ceil(Math.round(baseDamage * (1.0 - reduction)).toNumber(), 1);
+		var damage = getDamage(baseDamage, defense);
 		Log.log(attacker.getName() + " attacks " + defender.getName() + " for " + damage + " damage");
 		var death = defender.takeDamage(damage, attacker);
 		$.Quests.trackDamageTaken(damage);
 		return death;
+	}
+
+	function getDamage(baseDamage as Number, defense as Number) as Number {
+		var reduction = 0;
+		if (defense > 0 || baseDamage > 0 ) {
+			reduction = defense.toFloat() / (defense.toFloat() + baseDamage.toFloat());
+		} 
+		reduction = MathUtil.clamp(reduction, 0.0, 0.90);
+		var damage = MathUtil.ceil(Math.round(baseDamage * (1.0 - reduction)).toNumber(), 1);
+		return damage;
 	}
 
 	function showAttackString(pos as Point2D, damage as Number) as Void {

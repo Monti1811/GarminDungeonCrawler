@@ -9,8 +9,8 @@ class Tentackle extends Enemy {
         description = "A massive tentacled horror from the deep.";
         current_health = 750;
         maxHealth = current_health;
-        damage = 22;
-        armor = 5;
+        damage = 14;
+        armor = 8;
         kill_experience = 500;
         energy_per_turn = 200; 
     }

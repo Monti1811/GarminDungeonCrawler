@@ -14,14 +14,14 @@ class BronzeBow extends Bow {
             :dexterity => 3
         };
 
-        attack = 4;
+        attack = 12;
         range = 3;
         range_type = LINEAR;
         attack_type = DEXTERITY;
     }
 
-    function onEquipItem(player as Player) as Void {
-        Bow.onEquipItem(player);
+    function onEquipItem(player as Player, slot as ItemSlot) as Void {
+        Bow.onEquipItem(player, slot);
     }
 
     function onUnequipItem(player as Player) as Void {

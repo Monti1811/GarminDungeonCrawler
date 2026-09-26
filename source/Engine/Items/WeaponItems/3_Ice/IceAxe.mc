@@ -17,12 +17,12 @@ class IceAxe extends WeaponItem {
             :luck => -2
         };
 
-        attack = 8;
+        attack = 27;
         element = ELEMENT_ICE;
     }
 
-    function onEquipItem(player as Player) as Void {
-        WeaponItem.onEquipItem(player);
+    function onEquipItem(player as Player, slot as ItemSlot) as Void {
+        WeaponItem.onEquipItem(player, slot);
     }
 
     function onUnequipItem(player as Player) as Void {

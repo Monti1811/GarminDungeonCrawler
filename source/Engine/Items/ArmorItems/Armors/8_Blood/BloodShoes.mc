@@ -10,7 +10,7 @@ class BloodShoes extends ArmorItem {
 		value = 1200;
 		weight = 3;
 		slot = FEET;
-		defense = 23;
+		defense = 68;
 		attribute_bonus = {
 			:dexterity => 10,
 			:strength => 7
@@ -18,8 +18,8 @@ class BloodShoes extends ArmorItem {
 		defense_type = CHARISMA;
 	}
 
-	function onEquipItem(player as Player) as Void {
-		ArmorItem.onEquipItem(player);
+	function onEquipItem(player as Player, slot as ItemSlot) as Void {
+		ArmorItem.onEquipItem(player, slot);
 	}
 	// ...existing code...
 	function getSprite() as ResourceId {

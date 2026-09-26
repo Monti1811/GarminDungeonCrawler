@@ -10,7 +10,7 @@ class BloodRing2 extends ArmorItem {
 		slot = ACCESSORY;
 		value = 2500;
 		weight = 0.1;
-		defense = 12;
+		defense = 52;
 		attribute_bonus = {
 			:constitution => 5,
 			:intelligence => 10,
@@ -18,8 +18,8 @@ class BloodRing2 extends ArmorItem {
 		defense_type = WISDOM;
 	}
 
-	function onEquipItem(player as Player) as Void {
-		ArmorItem.onEquipItem(player);
+	function onEquipItem(player as Player, slot as ItemSlot) as Void {
+		ArmorItem.onEquipItem(player, slot);
 	}
 	// ...existing code...
 	function getSprite() as ResourceId {

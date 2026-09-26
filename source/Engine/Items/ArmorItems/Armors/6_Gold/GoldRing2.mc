@@ -10,7 +10,7 @@ class GoldRing2 extends ArmorItem {
 		value = 30;
 		weight = 0.1;
 		slot = ACCESSORY;
-		defense = 7;
+		defense = 36;
 		attribute_bonus = {
 			:intelligence => 9,
 			:wisdom => 8
@@ -18,8 +18,8 @@ class GoldRing2 extends ArmorItem {
 		defense_type = WISDOM;
 	}
 
-	function onEquipItem(player as Player) as Void {
-		ArmorItem.onEquipItem(player);
+	function onEquipItem(player as Player, slot as ItemSlot) as Void {
+		ArmorItem.onEquipItem(player, slot);
 	}
 	// ...existing code...
 	function getSprite() as ResourceId {

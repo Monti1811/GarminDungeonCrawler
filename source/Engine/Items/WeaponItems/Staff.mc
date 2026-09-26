@@ -22,8 +22,8 @@ class Staff extends WeaponItem {
         active = false;
     }
 
-	function onEquipItem(player as Player) as Void {
-		WeaponItem.onEquipItem(player);
+	function onEquipItem(player as Player, slot as ItemSlot) as Void {
+		WeaponItem.onEquipItem(player, slot);
         if (!active && player.getCurrentMana() >= getManaLoss()) {
             activateStaff();
         }

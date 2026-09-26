@@ -15,15 +15,15 @@ class IceBow extends Bow {
             :wisdom => 2
         };
 
-        attack = 5;
+        attack = 20;
         range = 3;
         range_type = LINEAR;
         attack_type = DEXTERITY;
         element = ELEMENT_ICE;
     }
 
-    function onEquipItem(player as Player) as Void {
-        Bow.onEquipItem(player);
+    function onEquipItem(player as Player, slot as ItemSlot) as Void {
+        Bow.onEquipItem(player, slot);
     }
 
     function onUnequipItem(player as Player) as Void {

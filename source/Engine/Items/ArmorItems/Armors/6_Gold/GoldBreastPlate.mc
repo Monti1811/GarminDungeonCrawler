@@ -10,7 +10,7 @@ class GoldBreastPlate extends ArmorItem {
 		value = 500;
 		weight = 15;
 		slot = CHEST;
-		defense = 13;
+		defense = 47;
 		attribute_bonus = {
 			:constitution => 10,
 			:strength => 3,
@@ -18,8 +18,8 @@ class GoldBreastPlate extends ArmorItem {
 		};
 	}
 
-	function onEquipItem(player as Player) as Void {
-		ArmorItem.onEquipItem(player);
+	function onEquipItem(player as Player, slot as ItemSlot) as Void {
+		ArmorItem.onEquipItem(player, slot);
 	}
 	// ...existing code...
 	function getSprite() as ResourceId {

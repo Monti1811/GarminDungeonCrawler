@@ -15,14 +15,14 @@ class BronzeGreatsword extends WeaponItem {
             :dexterity => -3
         };
 
-        attack = 15;
+        attack = 23;
         range = 2;
         weapon_type = TWOHAND;
         cooldown = 1;
     }
 
-    function onEquipItem(player as Player) as Void {
-        WeaponItem.onEquipItem(player);
+    function onEquipItem(player as Player, slot as ItemSlot) as Void {
+        WeaponItem.onEquipItem(player, slot);
         player.unequipItem(LEFT_HAND);
     }
 

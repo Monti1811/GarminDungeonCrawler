@@ -16,15 +16,15 @@ class IceLance extends WeaponItem {
             :wisdom => 2
         };
 
-        attack = 8;
+        attack = 30;
         range = 2;
         range_type = LINEAR;
         attack_type = DEXTERITY;
         element = ELEMENT_ICE;
     }
 
-    function onEquipItem(player as Player) as Void {
-        WeaponItem.onEquipItem(player);
+    function onEquipItem(player as Player, slot as ItemSlot) as Void {
+        WeaponItem.onEquipItem(player, slot);
     }
 
     function onUnequipItem(player as Player) as Void {

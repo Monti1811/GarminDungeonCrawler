@@ -10,7 +10,7 @@ class Frog extends Enemy {
 		name = "Frog";
 		description = "A small magical frog found in dungeon ponds.";
 		energy_per_turn = 50; // every 2 turns
-		damage = 6;
+		damage = 7;
 		current_health = 35;
 		maxHealth = current_health;
 		armor = 0;

@@ -16,14 +16,14 @@ class GrassLance extends WeaponItem {
             :luck => 5
         };
 
-        attack = 6;
+        attack = 37;
         range = 2;
         range_type = LINEAR;
         attack_type = DEXTERITY;
     }
 
-    function onEquipItem(player as Player) as Void {
-        WeaponItem.onEquipItem(player);
+    function onEquipItem(player as Player, slot as ItemSlot) as Void {
+        WeaponItem.onEquipItem(player, slot);
     }
 
     function onUnequipItem(player as Player) as Void {

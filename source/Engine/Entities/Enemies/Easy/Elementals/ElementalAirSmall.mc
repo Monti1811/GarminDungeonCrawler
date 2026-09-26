@@ -7,12 +7,12 @@ class ElementalAirSmall extends Enemy {
 		id = 12;
 		name = "Small Air Elemental";
 		description = "A minor elemental of swirling winds.";
-		damage = 9;
+		damage = 20;
 		current_health = 50;
 		maxHealth = current_health;
 		energy_per_turn = 50;
-		armor = 4;
-        kill_experience = 15;
+		armor = 7;
+        kill_experience = 45;
 	}
 
 	function getSprite() as ResourceId {

@@ -10,15 +10,15 @@ class GoldShoes extends ArmorItem {
 		value = 35;
 		weight = 3;
 		slot = FEET;
-		defense = 7;
+		defense = 47;
 		attribute_bonus = {
 			:dexterity => 8
 		};
 		defense_type = CHARISMA;
 	}
 
-	function onEquipItem(player as Player) as Void {
-		ArmorItem.onEquipItem(player);
+	function onEquipItem(player as Player, slot as ItemSlot) as Void {
+		ArmorItem.onEquipItem(player, slot);
 	}
 	// ...existing code...
 	function getSprite() as ResourceId {

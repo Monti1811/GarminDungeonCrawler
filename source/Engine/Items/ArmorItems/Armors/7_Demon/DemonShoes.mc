@@ -10,7 +10,7 @@ class DemonShoes extends ArmorItem {
 		value = 1200;
 		weight = 3;
 		slot = FEET;
-		defense = 9;
+		defense = 57;
 		attribute_bonus = {
 			:dexterity => 7,
 			:strength => 7,
@@ -19,8 +19,8 @@ class DemonShoes extends ArmorItem {
 		defense_type = CHARISMA;
 	}
 
-	function onEquipItem(player as Player) as Void {
-		ArmorItem.onEquipItem(player);
+	function onEquipItem(player as Player, slot as ItemSlot) as Void {
+		ArmorItem.onEquipItem(player, slot);
 	}
 	// ...existing code...
 	function getSprite() as ResourceId {

@@ -10,7 +10,7 @@ class IceShoes extends ArmorItem {
 		value = 75;
 		weight = 3;
 		slot = FEET;
-		defense = 7;
+		defense = 22;
 		attribute_bonus = {
 			:dexterity => 3,
 			:charisma => 3,

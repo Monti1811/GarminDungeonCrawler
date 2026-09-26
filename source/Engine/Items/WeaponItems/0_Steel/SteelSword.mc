@@ -16,12 +16,12 @@ class SteelSword extends WeaponItem {
 			:constitution => 1
 		};
 
-		attack = 10;
+		attack = 13;
 		range = 1;
 	}
 
-	function onEquipItem(player as Player) as Void {
-		WeaponItem.onEquipItem(player);
+	function onEquipItem(player as Player, slot as ItemSlot) as Void {
+		WeaponItem.onEquipItem(player, slot);
 	}
 	function onUnequipItem(player as Player) as Void {
 		WeaponItem.onUnequipItem(player);

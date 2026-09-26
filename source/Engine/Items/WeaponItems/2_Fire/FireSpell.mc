@@ -16,7 +16,7 @@ class FireSpell extends Spell {
             :strength => 2
         };
 
-        attack = 14;
+        attack = 21;
         range = 3;
         cooldown = 1;
         attack_type = INTELLIGENCE;
@@ -27,20 +27,20 @@ class FireSpell extends Spell {
 
     function activateSpell() as Void {
         Spell.activateSpell();
-        attack = 14;
+        attack = 21;
         range = 3;
         range_type = SURROUNDING;
     }
 
     function deactivateSpell() as Void {
         Spell.deactivateSpell();
-        attack = 3;
+        attack = 21;
         range = 1;
         range_type = DIRECTIONAL;
     }
 
-    function onEquipItem(player as Player) as Void {
-        Spell.onEquipItem(player);
+    function onEquipItem(player as Player, slot as ItemSlot) as Void {
+        Spell.onEquipItem(player, slot);
     }
 
     function onUnequipItem(player as Player) as Void {

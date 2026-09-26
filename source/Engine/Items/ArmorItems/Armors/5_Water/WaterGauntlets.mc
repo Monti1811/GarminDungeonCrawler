@@ -10,7 +10,7 @@ class WaterGauntlets extends ArmorItem {
 		value = 50;
 		weight = 2;
 		slot = EITHER_HAND;
-		defense = 7;
+		defense = 38;
 		attribute_bonus = {
 			:charisma => 3,
 			:intelligence => 3,
@@ -18,8 +18,8 @@ class WaterGauntlets extends ArmorItem {
 		defense_type = CHARISMA;
 	}
 
-	function onEquipItem(player as Player) as Void {
-		ArmorItem.onEquipItem(player);
+	function onEquipItem(player as Player, slot as ItemSlot) as Void {
+		ArmorItem.onEquipItem(player, slot);
 	}
 	// ...existing code...
 	function getSprite() as ResourceId {

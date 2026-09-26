@@ -8,9 +8,9 @@ class Bat extends Enemy {
 		name = "Bat";
 		description = "A swift cave bat with sharp fangs.";
 		current_health = 25;
-		maxHealth = 18;
-		armor = 4;
-        kill_experience = 20;
+		maxHealth = 141;
+		armor = 7;
+        kill_experience = 40;
 	}
 
 	function getSprite() as ResourceId {

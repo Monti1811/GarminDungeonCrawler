@@ -16,13 +16,13 @@ class FireKatana extends WeaponItem {
             :dexterity => 3
         };
 
-        attack = 14;
+        attack = 24;
         element = ELEMENT_FIRE;
         range = 1;
     }
 
-    function onEquipItem(player as Player) as Void {
-        WeaponItem.onEquipItem(player);
+    function onEquipItem(player as Player, slot as ItemSlot) as Void {
+        WeaponItem.onEquipItem(player, slot);
     }
 
     function onUnequipItem(player as Player) as Void {

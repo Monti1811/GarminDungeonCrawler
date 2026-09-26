@@ -15,14 +15,14 @@ class BloodGreatsword extends WeaponItem {
             :dexterity => 8
         };
 
-        attack = 92;
+        attack = 97;
         range = 2;
         weapon_type = TWOHAND;
         cooldown = 1;
     }
 
-    function onEquipItem(player as Player) as Void {
-        WeaponItem.onEquipItem(player);
+    function onEquipItem(player as Player, slot as ItemSlot) as Void {
+        WeaponItem.onEquipItem(player, slot);
         player.unequipItem(LEFT_HAND);
     }
 

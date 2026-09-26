@@ -10,7 +10,7 @@ class GrassGauntlets extends ArmorItem {
 		value = 50;
 		weight = 1.5;
 		slot = EITHER_HAND;
-		defense = 6;
+		defense = 30;
 		attribute_bonus = {
 			:charisma => 5,
 			:luck => 1,
@@ -18,8 +18,8 @@ class GrassGauntlets extends ArmorItem {
 		defense_type = CHARISMA;
 	}
 
-	function onEquipItem(player as Player) as Void {
-		ArmorItem.onEquipItem(player);
+	function onEquipItem(player as Player, slot as ItemSlot) as Void {
+		ArmorItem.onEquipItem(player, slot);
 	}
 	// ...existing code...
 	function getSprite() as ResourceId {

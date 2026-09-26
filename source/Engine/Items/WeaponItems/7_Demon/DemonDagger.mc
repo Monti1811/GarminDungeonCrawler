@@ -15,12 +15,12 @@ class DemonDagger extends WeaponItem {
             :luck => 6
         };
 
-        attack = 16;
+        attack = 49;
         attack_type = DEXTERITY;
     }
 
-    function onEquipItem(player as Player) as Void {
-        WeaponItem.onEquipItem(player);
+    function onEquipItem(player as Player, slot as ItemSlot) as Void {
+        WeaponItem.onEquipItem(player, slot);
     }
 
     function onUnequipItem(player as Player) as Void {

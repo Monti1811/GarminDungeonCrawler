@@ -10,7 +10,7 @@ class GrassHelmet extends ArmorItem {
 		value = 70;
 		weight = 3;
 		slot = HEAD;
-		defense = 6;
+		defense = 30;
 		attribute_bonus = {
 			:constitution => 2,
 			:charisma => 2,
@@ -18,8 +18,8 @@ class GrassHelmet extends ArmorItem {
 		};
 	}
 
-	function onEquipItem(player as Player) as Void {
-		ArmorItem.onEquipItem(player);
+	function onEquipItem(player as Player, slot as ItemSlot) as Void {
+		ArmorItem.onEquipItem(player, slot);
 	}
 	// ...existing code...
 	function getSprite() as ResourceId {

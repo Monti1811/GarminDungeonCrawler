@@ -12,9 +12,9 @@ class Necromancer extends Enemy {
 		id = 6;
 		name = "Necromancer";
 		description = "A dark sorcerer who commands the dead.";
-		damage = 15;
-		current_health = 50;
-		maxHealth = 37;
+		damage = 40;
+		current_health = 190;
+		maxHealth = 190;
 		energy_per_turn = 67; 
         armor = 0;
         kill_experience = 125;

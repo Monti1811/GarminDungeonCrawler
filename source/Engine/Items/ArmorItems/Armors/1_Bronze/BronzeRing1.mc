@@ -10,7 +10,7 @@ class BronzeRing1 extends ArmorItem {
 		slot = ACCESSORY;
 		value = 13;
 		weight = 0.1;
-		defense = 4;
+		defense = 7;
 		attribute_bonus = {
 			:constitution => 3,
 			:wisdom => 3,
@@ -19,8 +19,8 @@ class BronzeRing1 extends ArmorItem {
 		defense_type = WISDOM;
 	}
 
-	function onEquipItem(player as Player) as Void {
-		ArmorItem.onEquipItem(player);
+	function onEquipItem(player as Player, slot as ItemSlot) as Void {
+		ArmorItem.onEquipItem(player, slot);
 	}
 	// ...existing code...
 	function getSprite() as ResourceId {

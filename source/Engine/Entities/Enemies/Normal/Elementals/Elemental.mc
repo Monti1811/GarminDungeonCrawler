@@ -13,7 +13,7 @@ class Elemental extends Enemy {
 		energy_per_turn = 50;
 		energy_per_turn = 50;
 		armor = 10;
-        kill_experience = 125;
+        kill_experience = 110;
 	}
 
 	function findNextMove(map) as Point2D {

@@ -15,15 +15,15 @@ class FireGreatsword extends WeaponItem {
             :dexterity => -4
         };
 
-        attack = 18;
+        attack = 30;
         range = 2;
         weapon_type = TWOHAND;
             element = ELEMENT_FIRE;
         cooldown = 1;
     }
 
-    function onEquipItem(player as Player) as Void {
-        WeaponItem.onEquipItem(player);
+    function onEquipItem(player as Player, slot as ItemSlot) as Void {
+        WeaponItem.onEquipItem(player, slot);
         player.unequipItem(LEFT_HAND);
     }
 

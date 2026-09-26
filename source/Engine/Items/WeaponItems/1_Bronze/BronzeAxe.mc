@@ -16,11 +16,11 @@ class BronzeAxe extends WeaponItem {
             :luck => -1
         };
 
-        attack = 10;
+        attack = 16;
     }
 
-    function onEquipItem(player as Player) as Void {
-        WeaponItem.onEquipItem(player);
+    function onEquipItem(player as Player, slot as ItemSlot) as Void {
+        WeaponItem.onEquipItem(player, slot);
     }
 
     function onUnequipItem(player as Player) as Void {

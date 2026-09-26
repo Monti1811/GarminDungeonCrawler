@@ -10,7 +10,7 @@ class GrassShoes extends ArmorItem {
 		value = 75;
 		weight = 3;
 		slot = FEET;
-		defense = 6;
+		defense = 30;
 		attribute_bonus = {
 			:dexterity => 3,
 			:charisma => 3,
@@ -19,8 +19,8 @@ class GrassShoes extends ArmorItem {
 		defense_type = CHARISMA;
 	}
 
-	function onEquipItem(player as Player) as Void {
-		ArmorItem.onEquipItem(player);
+	function onEquipItem(player as Player, slot as ItemSlot) as Void {
+		ArmorItem.onEquipItem(player, slot);
 	}
 	// ...existing code...
 	function getSprite() as ResourceId {

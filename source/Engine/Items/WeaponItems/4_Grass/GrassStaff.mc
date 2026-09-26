@@ -16,7 +16,7 @@ class GrassStaff extends Staff {
             :luck => 1
         };
 
-        attack = 4;
+        attack = 25;
         range = 1;
         range_type = LINEAR;
         attack_type = INTELLIGENCE;
@@ -26,18 +26,18 @@ class GrassStaff extends Staff {
 
     function activateStaff() as Void {
         Staff.activateStaff();
-        attack = 26;
+        attack = 25;
         range = 3;
     }
 
     function deactivateStaff() as Void {
         Staff.deactivateStaff();
-        attack = 4;
+        attack = 25;
         range = 1;
     }
 
-    function onEquipItem(player as Player) as Void {
-        Staff.onEquipItem(player);
+    function onEquipItem(player as Player, slot as ItemSlot) as Void {
+        Staff.onEquipItem(player, slot);
     }
 
     function onUnequipItem(player as Player) as Void {

@@ -10,18 +10,37 @@ module SimUtil {
         }
     }
 
+    // Buffer room key used during play: buffer_x_y
     function getRoomName(x as Number, y as Number) as String {
+        return "buffer_" + x + "_" + y;
+    }
+
+    // Real room key used only when saving: {chosen_save}_dungeon_{x}_{y}
+    function getRealRoomName(x as Number, y as Number) as String {
         return $.SaveData.chosen_save + "_dungeon_" + x + "_" + y;
     }
 
+    // Parse position from either buffer_x_y or {save}_dungeon_{x}_{y}
     function getPosFromRoomName(room_name as String) as Point2D {
-        var x = room_name.substring(room_name.length() - 3, room_name.length() - 2).toNumber();
-        var y = room_name.substring(room_name.length() - 1, room_name.length()).toNumber();
-        return [x, y];
-        /*return [
-            name_array[name_array.size() - 3].toNumber(), 
-            name_array[name_array.size() - 1].toNumber()
-        ];*/
+        var parts = StringUtil.split(room_name, '_');
+        // buffer_x_y -> parts[1], parts[2]
+        // save_dungeon_x_y -> parts[2], parts[3]
+        if (parts.size() == 3) {
+            return [parts[1].toNumber(), parts[2].toNumber()];
+        }
+        return [parts[2].toNumber(), parts[3].toNumber()];
+    }
+
+    // Convert buffer_x_y -> {chosen_save}_dungeon_{x}_{y}
+    function toRealRoomName(buffer_name as String) as String {
+        var pos = getPosFromRoomName(buffer_name);
+        return getRealRoomName(pos[0], pos[1]);
+    }
+
+    // Convert {save}_dungeon_{x}_{y} (or buffer name) -> buffer_x_y
+    function toBufferRoomName(real_name as String) as String {
+        var pos = getPosFromRoomName(real_name);
+        return getRoomName(pos[0], pos[1]);
     }
 
     function getRandomFromArray(arr) {

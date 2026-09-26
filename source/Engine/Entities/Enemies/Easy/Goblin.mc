@@ -8,10 +8,10 @@ class Goblin extends Enemy {
         name = "Goblin";
         description = "A cunning goblin with quick reflexes.";
         current_health = 35;
-        maxHealth = 26;
-        damage = 6;
+        maxHealth = 241;
+        damage = 12;
         armor = 2;
-        kill_experience = 15;
+        kill_experience = 45;
         energy_per_turn = 100; 
     }
 

@@ -10,7 +10,7 @@ class DemonRing1 extends ArmorItem {
 		slot = ACCESSORY;
 		value = 700;
 		weight = 0.1;
-		defense = 7;
+		defense = 51;
 		attribute_bonus = {
 			:constitution => 5,
 			:strength => 7,
@@ -19,8 +19,8 @@ class DemonRing1 extends ArmorItem {
 		defense_type = WISDOM;
 	}
 
-	function onEquipItem(player as Player) as Void {
-		ArmorItem.onEquipItem(player);
+	function onEquipItem(player as Player, slot as ItemSlot) as Void {
+		ArmorItem.onEquipItem(player, slot);
 	}
 	// ...existing code...
 	function getSprite() as ResourceId {

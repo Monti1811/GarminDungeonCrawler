@@ -14,7 +14,7 @@ class BloodStaff extends Staff {
             :intelligence => 20
         };
 
-        attack = 19;
+        attack = 52;
         range = 1;
         range_type = LINEAR;
         attack_type = INTELLIGENCE;
@@ -34,8 +34,8 @@ class BloodStaff extends Staff {
         range = 1;
     }
 
-    function onEquipItem(player as Player) as Void {
-        Staff.onEquipItem(player);
+    function onEquipItem(player as Player, slot as ItemSlot) as Void {
+        Staff.onEquipItem(player, slot);
     }
 
     function onUnequipItem(player as Player) as Void {

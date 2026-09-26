@@ -15,12 +15,12 @@ class DemonKatana extends WeaponItem {
             :dexterity => 8
         };
 
-        attack = 17;
+        attack = 65;
         range = 1;
     }
 
-    function onEquipItem(player as Player) as Void {
-        WeaponItem.onEquipItem(player);
+    function onEquipItem(player as Player, slot as ItemSlot) as Void {
+        WeaponItem.onEquipItem(player, slot);
     }
 
     function onUnequipItem(player as Player) as Void {

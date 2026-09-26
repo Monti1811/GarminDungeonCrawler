@@ -10,7 +10,7 @@ class DemonHelmet extends ArmorItem {
 		value = 1000;
 		weight = 5;
 		slot = HEAD;
-		defense = 11;
+		defense = 57;
 		attribute_bonus = {
 			:charisma => 10,
 			:strength => 5,
@@ -18,8 +18,8 @@ class DemonHelmet extends ArmorItem {
 		};
 	}
 
-	function onEquipItem(player as Player) as Void {
-		ArmorItem.onEquipItem(player);
+	function onEquipItem(player as Player, slot as ItemSlot) as Void {
+		ArmorItem.onEquipItem(player, slot);
 	}
 	// ...existing code...
 	function getSprite() as ResourceId {

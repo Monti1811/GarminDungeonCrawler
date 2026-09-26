@@ -16,14 +16,14 @@ class SteelGreatsword extends WeaponItem {
 			:dexterity => -2
 		};
 
-		attack = 12;
+		attack = 16;
 		range = 2;
 		weapon_type = TWOHAND;
 		cooldown = 1;
 	}
 
-	function onEquipItem(player as Player) as Void {
-		WeaponItem.onEquipItem(player);
+	function onEquipItem(player as Player, slot as ItemSlot) as Void {
+		WeaponItem.onEquipItem(player, slot);
 		player.unequipItem(LEFT_HAND);
 	}
 	function onUnequipItem(player as Player) as Void {

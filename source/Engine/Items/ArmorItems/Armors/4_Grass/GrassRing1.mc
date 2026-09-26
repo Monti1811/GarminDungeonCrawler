@@ -10,7 +10,7 @@ class GrassRing1 extends ArmorItem {
 		slot = ACCESSORY;
 		value = 50;
 		weight = 0.1;
-		defense = 5;
+		defense = 27;
 		attribute_bonus = {
 			:constitution => 2,
 			:charisma => 6,
@@ -19,8 +19,8 @@ class GrassRing1 extends ArmorItem {
 		defense_type = WISDOM;
 	}
 
-	function onEquipItem(player as Player) as Void {
-		ArmorItem.onEquipItem(player);
+	function onEquipItem(player as Player, slot as ItemSlot) as Void {
+		ArmorItem.onEquipItem(player, slot);
 	}
 	// ...existing code...
 	function getSprite() as ResourceId {

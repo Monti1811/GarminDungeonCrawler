@@ -10,15 +10,15 @@ class WaterBreastPlate extends ArmorItem {
 		value = 100;
 		weight = 8;
 		slot = CHEST;
-		defense = 7;
+		defense = 38;
 		attribute_bonus = {
 			:constitution => 4,
 			:intelligence => 4
 		};
 	}
 
-	function onEquipItem(player as Player) as Void {
-		ArmorItem.onEquipItem(player);
+	function onEquipItem(player as Player, slot as ItemSlot) as Void {
+		ArmorItem.onEquipItem(player, slot);
 	}
 	// ...existing code...
 	function getSprite() as ResourceId {

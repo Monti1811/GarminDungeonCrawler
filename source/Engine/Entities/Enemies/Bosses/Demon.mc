@@ -8,8 +8,8 @@ class Demon extends Enemy {
 		name = "Demon";
 		description = "A powerful demon lord of destruction.";
         attack_cooldown = 0;
-        damage = 21;
-        armor = 11;
+        damage = 12;
+        armor = 12;
         current_health = 750;
         maxHealth = current_health;
 		kill_experience = 1000;

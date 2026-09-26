@@ -10,7 +10,7 @@ class FireBreastPlate extends ArmorItem {
 		value = 100;
 		weight = 8;
 		slot = CHEST;
-		defense = 10;
+		defense = 15;
 		attribute_bonus = {
 			:constitution => 4,
 			:strength => 4,
@@ -18,8 +18,8 @@ class FireBreastPlate extends ArmorItem {
 		element = ELEMENT_FIRE;
 	}
 
-	function onEquipItem(player as Player) as Void {
-		ArmorItem.onEquipItem(player);
+	function onEquipItem(player as Player, slot as ItemSlot) as Void {
+		ArmorItem.onEquipItem(player, slot);
 	}
 	// ...existing code...
 	function getSprite() as ResourceId {

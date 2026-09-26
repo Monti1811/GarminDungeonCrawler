@@ -20,8 +20,8 @@ class SteelRing1 extends ArmorItem {
 		defense_type = WISDOM;
 	}
 
-	function onEquipItem(player as Player) as Void {
-		ArmorItem.onEquipItem(player);
+	function onEquipItem(player as Player, slot as ItemSlot) as Void {
+		ArmorItem.onEquipItem(player, slot);
 	}
 	function onUnequipItem(player as Player) as Void {
 		ArmorItem.onUnequipItem(player);

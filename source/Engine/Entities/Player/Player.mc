@@ -93,7 +93,7 @@ class Player extends Entity {
 			item.amount += equipped[AMMUNITION].amount;
 		}
 		equipped[slot] = item;
-		item.onEquipItem(me);
+		item.onEquipItem(me, slot);
 		return true;
 	}
 
@@ -115,17 +115,69 @@ class Player extends Entity {
 
 	function pickupItem(item as Item) as Boolean {
 		if (item.canBePickedUp(me)) {
-			if (item.slot != NONE && 
+			if (item.slot == EITHER_HAND) {
+				var target_slot = resolveEitherHandSlot(item);
+				if (target_slot != null && equipItem(item, target_slot, false)) {
+					item.onPickupItem(me);
+					return true;
+				}
+			} else if (item.slot != NONE && 
 					equipped[item.slot] == null &&
+					!isTwoHandedEquipped() &&
 					equipItem(item, item.slot, false)) {
 				item.onPickupItem(me);
 				return true;
-			} else if (addInventoryItem(item)) {
+			}
+			if (addInventoryItem(item)) {
 				item.onPickupItem(me);
 				return true;
 			}
 		}
 		return false;
+	}
+
+	function isTwoHandedEquipped() as Boolean {
+		var right_hand = equipped[RIGHT_HAND] as Item?;
+		return right_hand != null && right_hand has :weapon_type && (right_hand as WeaponItem).weapon_type == TWOHAND;
+	}
+
+	function getEquipFailReason(item as Item, slot as ItemSlot) as String? {
+		if (isTwoHandedEquipped() && slot != RIGHT_HAND) {
+			return "Two-handed weapon equipped";
+		}
+		if (inventory.wouldBeFull(item)) {
+			return "Weight limit exceeded";
+		}
+		return null;
+	}
+
+	function resolveEitherHandSlot(item as Item) as ItemSlot? {
+		var right_hand = equipped[RIGHT_HAND] as Item?;
+		var left_hand = equipped[LEFT_HAND] as Item?;
+		var right_is_twohand = right_hand != null && right_hand has :weapon_type && (right_hand as WeaponItem).weapon_type == TWOHAND;
+
+		if (item.type == ARMOR) {
+			// Gauntlets → left hand (but not if two-handed weapon is equipped)
+			if (right_is_twohand) {
+				return null;
+			}
+			if (left_hand == null) {
+				return LEFT_HAND;
+			} else if (right_hand == null) {
+				return RIGHT_HAND;
+			}
+		} else {
+			// Daggers → right hand (but not if two-handed weapon is equipped)
+			if (right_is_twohand) {
+				return null;
+			}
+			if (right_hand == null) {
+				return RIGHT_HAND;
+			} else if (left_hand == null) {
+				return LEFT_HAND;
+			}
+		}
+		return null;
 	}
 
 	function addInventoryItem(item as Item) as Boolean {

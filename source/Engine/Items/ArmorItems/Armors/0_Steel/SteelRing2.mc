@@ -11,7 +11,7 @@ class SteelRing2 extends ArmorItem {
 		value = 5;
 		weight = 0.1;
 		slot = ACCESSORY;
-		defense = 1;
+		defense = 2;
 		attribute_bonus = {
 			:intelligence => 3,
 			:wisdom => 2
@@ -19,8 +19,8 @@ class SteelRing2 extends ArmorItem {
 		defense_type = WISDOM;
 	}
 
-	function onEquipItem(player as Player) as Void {
-		ArmorItem.onEquipItem(player);
+	function onEquipItem(player as Player, slot as ItemSlot) as Void {
+		ArmorItem.onEquipItem(player, slot);
 	}
 	function onUnequipItem(player as Player) as Void {
 		ArmorItem.onUnequipItem(player);

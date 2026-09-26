@@ -10,15 +10,15 @@ class WaterHelmet extends ArmorItem {
 		value = 70;
 		weight = 3;
 		slot = HEAD;
-		defense = 7;
+		defense = 38;
 		attribute_bonus = {
 			:constitution => 3,
 			:intelligence => 3
 		};
 	}
 
-	function onEquipItem(player as Player) as Void {
-		ArmorItem.onEquipItem(player);
+	function onEquipItem(player as Player, slot as ItemSlot) as Void {
+		ArmorItem.onEquipItem(player, slot);
 	}
 	// ...existing code...
 	function getSprite() as ResourceId {

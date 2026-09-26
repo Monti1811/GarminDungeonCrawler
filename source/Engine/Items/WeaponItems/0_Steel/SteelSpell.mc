@@ -15,7 +15,7 @@ class SteelSpell extends Spell {
 			:wisdom => 2
 		};
 
-		attack = 8;
+		attack = 11;
 		range = 1;
 		cooldown = 1;
 		attack_type = INTELLIGENCE;
@@ -38,8 +38,8 @@ class SteelSpell extends Spell {
 	}
 
 
-	function onEquipItem(player as Player) as Void {
-		Spell.onEquipItem(player);
+	function onEquipItem(player as Player, slot as ItemSlot) as Void {
+		Spell.onEquipItem(player, slot);
 	}
 	function onUnequipItem(player as Player) as Void {
 		Spell.onUnequipItem(player);

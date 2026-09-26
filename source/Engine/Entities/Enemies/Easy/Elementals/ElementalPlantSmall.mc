@@ -7,12 +7,12 @@ class ElementalPlantSmall extends Enemy {
 		id = 30;
 		name = "Small Plant Elemental";
 		description = "A minor elemental of thorny vines.";
-		damage = 9;
+		damage = 20;
 		current_health = 50;
 		maxHealth = current_health;
 		energy_per_turn = 50;
-		armor = 4;
-        kill_experience = 15;
+		armor = 7;
+        kill_experience = 45;
 	}
 
 	function getSprite() as ResourceId {
