@@ -16,7 +16,7 @@ class IceGreatsword extends WeaponItem {
             :dexterity => -4
         };
 
-        attack = 9;
+        attack = 38;
         range = 2;
         weapon_type = TWOHAND;
         element = ELEMENT_ICE;

@@ -10,7 +10,7 @@ class BronzeShoes extends ArmorItem {
 		value = 20;
 		weight = 3;
 		slot = FEET;
-		defense = 4;
+		defense = 8;
 		attribute_bonus = {
 			:dexterity => 3
 		};

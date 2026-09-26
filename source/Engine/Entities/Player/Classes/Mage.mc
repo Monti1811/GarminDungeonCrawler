@@ -2,8 +2,8 @@ import Toybox.Lang;
 
 class Mage extends Player {
 
-	var current_mana as Number = 30;
-	var maxMana as Number = 30;
+	var current_mana as Number = 35;
+	var maxMana as Number = 35;
 
 	function initialize(name as String) {
 		Player.initialize();
@@ -14,8 +14,8 @@ class Mage extends Player {
 		self.second_bar = :mana;
 
 		// Set health
-		self.current_health = 38;
-		self.maxHealth = 38;
+		self.current_health = 51;
+		self.maxHealth = 51;
 
 		// Give starting items
 		self.equipItem(new SteelStaff(), RIGHT_HAND, null);
@@ -62,8 +62,8 @@ class Mage extends Player {
 	function onLevelUp() as Void {
 		Player.onLevelUp();
 		// Increase max health and mana
-		maxHealth += 8;
-		maxMana += 5;
+		maxHealth += 3;
+		maxMana += 2;
 	}
 
 	function onNextDungeon() as Void {

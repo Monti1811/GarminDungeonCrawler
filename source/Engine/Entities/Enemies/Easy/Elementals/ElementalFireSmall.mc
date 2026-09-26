@@ -7,11 +7,11 @@ class ElementalFireSmall extends Enemy {
 		id = 14;
 		name = "Small Fire Elemental";
 		description = "A minor elemental of flickering flames.";
-		damage = 9;
+		damage = 20;
 		current_health = 50;
 		maxHealth = current_health;
 		energy_per_turn = 50;
-		armor = 4;
+		armor = 7;
         kill_experience = 15;
 	}
 

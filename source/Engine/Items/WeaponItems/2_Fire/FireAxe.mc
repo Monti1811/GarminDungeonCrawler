@@ -17,7 +17,7 @@ class FireAxe extends WeaponItem {
             :luck => -2
         };
 
-        attack = 12;
+        attack = 21;
         element = ELEMENT_FIRE;
     }
 

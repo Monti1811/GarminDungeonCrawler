@@ -16,7 +16,7 @@ class GrassAxe extends WeaponItem {
             :dexterity => -2,
         };
 
-        attack = 6;
+        attack = 33;
     }
 
     function onEquipItem(player as Player, slot as ItemSlot) as Void {

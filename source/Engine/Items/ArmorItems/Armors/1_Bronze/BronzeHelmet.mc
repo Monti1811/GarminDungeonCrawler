@@ -10,7 +10,7 @@ class BronzeHelmet extends ArmorItem {
 		value = 15;
 		weight = 3.5;
 		slot = HEAD;
-		defense = 4;
+		defense = 8;
 		attribute_bonus = {
 			:constitution => 3
 		};

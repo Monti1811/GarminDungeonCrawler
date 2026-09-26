@@ -7,9 +7,9 @@ class Skeleton extends Enemy {
 		id = 5;
 		name = "Skeleton";
 		description = "An animated skeleton wielding a weapon.";
-		damage = 14;
+		damage = 24;
 		current_health = 50;
-		maxHealth = 35;
+		maxHealth = 95;
 		energy_per_turn = 100;
 		armor = 2;
         kill_experience = 30;

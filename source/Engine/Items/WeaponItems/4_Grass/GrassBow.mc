@@ -16,7 +16,7 @@ class GrassBow extends Bow {
             :luck => 1
         };
 
-        attack = 5;
+        attack = 25;
         range = 3;
         range_type = LINEAR;
         attack_type = DEXTERITY;

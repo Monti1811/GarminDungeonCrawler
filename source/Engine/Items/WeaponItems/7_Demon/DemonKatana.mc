@@ -15,7 +15,7 @@ class DemonKatana extends WeaponItem {
             :dexterity => 8
         };
 
-        attack = 17;
+        attack = 65;
         range = 1;
     }
 

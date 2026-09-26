@@ -10,7 +10,7 @@ class WaterRing1 extends ArmorItem {
 		slot = ACCESSORY;
 		value = 50;
 		weight = 0.1;
-		defense = 5;
+		defense = 34;
 		attribute_bonus = {
 			:constitution => 4,
 			:intelligence => 5,

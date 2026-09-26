@@ -14,7 +14,7 @@ class BronzeStaff extends Staff {
             :intelligence => 3
         };
 
-        attack = 4;
+        attack = 12;
         range = 1;
         range_type = LINEAR;
         attack_type = INTELLIGENCE;
@@ -24,13 +24,13 @@ class BronzeStaff extends Staff {
 
     function activateStaff() as Void {
         Staff.activateStaff();
-        attack = 23;
+        attack = 12;
         range = 3;
     }
 
     function deactivateStaff() as Void {
         Staff.deactivateStaff();
-        attack = 4;
+        attack = 12;
         range = 1;
     }
 

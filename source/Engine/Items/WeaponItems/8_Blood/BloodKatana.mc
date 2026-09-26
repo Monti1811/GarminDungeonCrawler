@@ -15,7 +15,7 @@ class BloodKatana extends WeaponItem {
             :dexterity => 10
         };
 
-        attack = 79;
+        attack = 78;
         range = 1;
     }
 

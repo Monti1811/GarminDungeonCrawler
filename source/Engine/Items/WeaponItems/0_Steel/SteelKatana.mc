@@ -16,7 +16,7 @@ class SteelKatana extends WeaponItem {
 			:dexterity => 2
 		};
 
-		attack = 10;
+		attack = 13;
 		range = 1;
 	}
 

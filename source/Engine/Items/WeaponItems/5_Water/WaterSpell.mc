@@ -15,7 +15,7 @@ class WaterSpell extends Spell {
             :intelligence => 2
         };
 
-        attack = 7;
+        attack = 40;
         range = 3;
         cooldown = 1;
         attack_type = INTELLIGENCE;
@@ -25,14 +25,14 @@ class WaterSpell extends Spell {
 
     function activateSpell() as Void {
         Spell.activateSpell();
-        attack = 14;
+        attack = 40;
         range = 3;
         range_type = SURROUNDING;
     }
 
     function deactivateSpell() as Void {
         Spell.deactivateSpell();
-        attack = 3;
+        attack = 40;
         range = 1;
         range_type = DIRECTIONAL;
     }

@@ -16,7 +16,7 @@ class WaterSword extends WeaponItem {
             :constitution => 2
         };
 
-        attack = 7;
+        attack = 45;
         range = 1;
     }
 

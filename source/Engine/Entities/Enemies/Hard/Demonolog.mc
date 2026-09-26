@@ -12,7 +12,7 @@ class Demonolog extends Enemy {
 		id = 27;
 		name = "Demonolog";
 		description = "A master of dark rituals and summoning.";
-		damage = 14;
+		damage = 29;
 		current_health = 200;
 		maxHealth = current_health;
 		energy_per_turn = 67; 

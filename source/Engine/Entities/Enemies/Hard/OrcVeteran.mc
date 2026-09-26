@@ -7,7 +7,7 @@ class OrcVeteran extends Enemy {
         id = 34;
         name = "Veteran Orc";
         description = "A seasoned orc warrior with countless battles.";
-        damage = 41;
+        damage = 48;
 		current_health = 75;
 		maxHealth = current_health;
 		armor = 0;

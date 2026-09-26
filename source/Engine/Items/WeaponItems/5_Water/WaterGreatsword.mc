@@ -16,7 +16,7 @@ class WaterGreatsword extends WeaponItem {
             :dexterity => -4
         };
 
-        attack = 10;
+        attack = 56;
         range = 2;
         weapon_type = TWOHAND;
         cooldown = 1;

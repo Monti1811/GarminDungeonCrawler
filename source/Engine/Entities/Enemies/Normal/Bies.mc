@@ -7,11 +7,11 @@ class Bies extends Enemy {
 		id = 29;
 		name = "Bies";
 		description = "A demonic entity born of pure malice.";
-		damage = 14;
+		damage = 29;
 		current_health = 250;
 		maxHealth = current_health;
 		energy_per_turn = 67;
-		armor = 16;
+		armor = 25;
         kill_experience = 200;
 	}
 

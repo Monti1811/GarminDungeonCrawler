@@ -10,7 +10,7 @@ class FireRing2 extends ArmorItem {
 		value = 50;
 		weight = 0.1;
 		slot = ACCESSORY;
-		defense = 3;
+		defense = 11;
 		attribute_bonus = {
 			:intelligence => 5,
 			:constitution => 4

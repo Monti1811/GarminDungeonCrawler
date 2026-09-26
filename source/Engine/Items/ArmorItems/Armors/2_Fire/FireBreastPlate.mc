@@ -10,7 +10,7 @@ class FireBreastPlate extends ArmorItem {
 		value = 100;
 		weight = 8;
 		slot = CHEST;
-		defense = 10;
+		defense = 15;
 		attribute_bonus = {
 			:constitution => 4,
 			:strength => 4,

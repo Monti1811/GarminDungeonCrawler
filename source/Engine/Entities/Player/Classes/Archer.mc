@@ -10,8 +10,8 @@ class Archer extends Player {
 		self.description = "An archer character";
 
 		// Set health
-		self.current_health = 30;
-		self.maxHealth = 30;
+		self.current_health = 21;
+		self.maxHealth = 21;
 
 		// Give starting items
 		self.equipItem(new SteelBow(), RIGHT_HAND, null);
@@ -39,7 +39,7 @@ class Archer extends Player {
 	function onLevelUp() as Void {
 		// Increase max health
 		Player.onLevelUp();
-		maxHealth += 11;
+		maxHealth += 3;
 	}
 
 

@@ -7,11 +7,11 @@ class Chort extends Enemy {
 		id = 28;
 		name = "Chort";
 		description = "A lesser demon with a fiery temper.";
-		damage = 18;
+		damage = 34;
 		current_health = 150;
 		maxHealth = current_health;
 		energy_per_turn = 100;
-		armor = 8;
+		armor = 12;
         kill_experience = 175;
 	}
 

@@ -7,9 +7,9 @@ class ZombieSmall extends Enemy {
 		id = 7;
 		name = "Small Zombie";
 		description = "A shambling undead corpse.";
-		damage = 4;
+		damage = 8;
 		current_health = 20;
-		maxHealth = 13;
+		maxHealth = 26;
 		energy_per_turn = 100;
 		armor = 0;
         kill_experience = 10;

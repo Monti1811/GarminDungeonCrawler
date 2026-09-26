@@ -14,7 +14,7 @@ class GoldBow extends Bow {
             :dexterity => 4
         };
 
-        attack = 6;
+        attack = 36;
         range = 3;
         range_type = LINEAR;
         attack_type = DEXTERITY;

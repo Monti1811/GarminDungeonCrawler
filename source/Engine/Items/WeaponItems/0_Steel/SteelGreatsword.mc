@@ -16,7 +16,7 @@ class SteelGreatsword extends WeaponItem {
 			:dexterity => -2
 		};
 
-		attack = 12;
+		attack = 16;
 		range = 2;
 		weapon_type = TWOHAND;
 		cooldown = 1;

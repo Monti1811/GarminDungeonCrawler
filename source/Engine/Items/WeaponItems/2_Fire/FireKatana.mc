@@ -16,7 +16,7 @@ class FireKatana extends WeaponItem {
             :dexterity => 3
         };
 
-        attack = 14;
+        attack = 24;
         element = ELEMENT_FIRE;
         range = 1;
     }

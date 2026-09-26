@@ -111,6 +111,9 @@ def extract_function_body(text: str, function_name: str) -> Optional[str]:
 
 def parse_number_assignment(body: str, key: str, default: int) -> int:
     m = re.search(rf"(?:self\.)?{re.escape(key)}\s*=\s*(-?\d+)\s*;", body)
+    if m:
+        return int(m.group(1))
+    m = re.search(rf"var\s+{re.escape(key)}\s+as\s+\w+\s*=\s*(-?\d+)\s*;", body)
     return int(m.group(1)) if m else default
 
 
@@ -242,7 +245,11 @@ def parse_player_classes(workspace: Path) -> Dict[int, PlayerClass]:
         current_health = parse_number_assignment(body, "current_health", 30)
         max_health = parse_number_assignment(body, "maxHealth", current_health)
         max_mana = parse_number_assignment(body, "maxMana", 0)
+        if max_mana == 0:
+            max_mana = parse_number_assignment(text, "maxMana", 0)
         current_mana = parse_number_assignment(body, "current_mana", max_mana)
+        if current_mana == 0 and max_mana > 0:
+            current_mana = parse_number_assignment(text, "current_mana", max_mana)
         attributes = parse_attributes_dict(body)
         starting_items = re.findall(r"self\.equipItem\(new\s+(\w+)\(\)", body)
         level_up_body = extract_function_body(text, "onLevelUp") or ""
@@ -441,6 +448,129 @@ def expected_enemy_profile_for_depth(
     if total_weight <= 0:
         return 0.0, 1.0
     return weighted_xp / total_weight, max(1.0, weighted_cost / total_weight)
+
+
+# --- Item progression by depth ---
+# Maps item IDs to (name, min_depth) for the best items per slot per tier.
+# One new tier every 10 depths:
+#   Tier 0 Steel:  depth 1+
+#   Tier 1 Bronze: depth 11+
+#   Tier 2 Fire:   depth 21+
+#   Tier 3 Ice:    depth 31+
+#   Tier 4 Grass:  depth 41+
+#   Tier 5 Water:  depth 51+
+#   Tier 6 Gold:   depth 61+
+#   Tier 7 Demon:  depth 71+
+#   Tier 8 Blood:  depth 81+
+
+# Weapon IDs: each tier has 9 weapons (Axe=0, Bow=1, Dagger=2, Greatsword=3,
+# Katana=4, Lance/Spear=5, Spell=6, Staff=7, Sword=8) within a tier block of 10.
+# We pick one representative weapon per tier (Sword = *8).
+TIERED_WEAPONS = [
+    # (item_id, min_depth) – ordered by depth
+    (8,   1),   # SteelSword
+    (18, 11),   # BronzeSword
+    (28, 21),   # FireSword
+    (38, 31),   # IceSword
+    (48, 41),   # GrassSword
+    (58, 51),   # WaterSword
+    (68, 61),   # GoldSword
+    (78, 71),   # DemonSword
+    (88, 81),   # BloodSword
+]
+
+# For Bows (position 1 in each tier block)
+TIERED_BOWS = [
+    (1,   1),   # SteelBow
+    (11, 11),   # BronzeBow
+    (21, 21),   # FireBow
+    (31, 31),   # IceBow
+    (41, 41),   # GrassBow
+    (51, 51),   # WaterBow
+    (61, 61),   # GoldBow
+    (71, 71),   # DemonBow
+    (81, 81),   # BloodBow
+]
+
+# Armor IDs: each tier has 6 armor pieces (Helmet=0, BreastPlate=1, Gauntlets=2,
+# Shoes=3, Ring1=4, Ring2=5) within a tier block of 10, starting at 1000.
+# We pick BreastPlate (defense) and Ring (attribute bonus) per tier.
+TIERED_BREASTPLATES = [
+    (1001,  1),  # SteelBreastPlate
+    (1011, 11),  # BronzeBreastPlate
+    (1021, 21),  # FireBreastPlate
+    (1031, 31),  # IceBreastPlate
+    (1041, 41),  # GrassBreastPlate
+    (1051, 51),  # WaterBreastPlate
+    (1061, 61),  # GoldBreastPlate
+    (1071, 71),  # DemonBreastPlate
+    (1081, 81),  # BloodBreastPlate
+]
+
+TIERED_RINGS = [
+    (1004,  1),  # SteelRing1
+    (1014, 11),  # BronzeRing1
+    (1024, 21),  # FireRing1
+    (1034, 31),  # IceRing1
+    (1044, 41),  # GrassRing1
+    (1054, 51),  # WaterRing1
+    (1064, 61),  # GoldRing1
+    (1074, 71),  # DemonRing1
+    (1084, 81),  # BloodRing1
+]
+
+
+def _best_item_at_depth(table: List[Tuple[int, int]], depth: int, items_by_id: Dict[int, Item]) -> Optional[Item]:
+    """Return the best (highest-ID) item from a tiered table available at the given depth."""
+    best = None
+    for item_id, min_depth in table:
+        if depth >= min_depth and item_id in items_by_id:
+            best = items_by_id[item_id]
+    return best
+
+
+def get_items_for_depth(
+    player: PlayerClass,
+    class_id: int,
+    depth: int,
+    items_by_class: Dict[str, Item],
+    items_by_id: Dict[int, Item],
+) -> List[Item]:
+    """Determine the best equipment a player would have at a given depth.
+
+    Uses starting items as a baseline and upgrades individual slots when
+    better tiered items become available at the current depth.
+    """
+    # Start with the player's starting items
+    equipped = [items_by_class[name] for name in player.starting_items if name in items_by_class]
+
+    # Determine weapon type from starting weapon
+    uses_ranged = any(x.kind == "weapon" and x.uses_ammo for x in equipped)
+    tiered_weapons = TIERED_BOWS if uses_ranged else TIERED_WEAPONS
+
+    # Upgrade weapon
+    best_weapon = _best_item_at_depth(tiered_weapons, depth, items_by_id)
+    if best_weapon is not None:
+        # Replace existing weapon
+        new_equipped = [x for x in equipped if x.kind != "weapon"]
+        new_equipped.append(best_weapon)
+        equipped = new_equipped
+
+    # Upgrade breastplate (best defense)
+    best_bp = _best_item_at_depth(TIERED_BREASTPLATES, depth, items_by_id)
+    if best_bp is not None:
+        new_equipped = [x for x in equipped if not (x.kind == "armor" and x.defense > 0 and x.class_name != "LifeAmulet" and x.class_name != "ManaCrystal")]
+        new_equipped.append(best_bp)
+        equipped = new_equipped
+
+    # Upgrade ring (attribute bonus)
+    best_ring = _best_item_at_depth(TIERED_RINGS, depth, items_by_id)
+    if best_ring is not None:
+        new_equipped = [x for x in equipped if not (x.kind == "armor" and x.class_name in ("SteelRing1", "SteelRing2", "BronzeRing1", "BronzeRing2", "FireRing1", "FireRing2", "IceRing1", "IceRing2", "GrassRing1", "GrassRing2", "WaterRing1", "WaterRing2", "GoldRing1", "GoldRing2", "DemonRing1", "DemonRing2", "BloodRing1", "BloodRing2"))]
+        new_equipped.append(best_ring)
+        equipped = new_equipped
+
+    return equipped
 
 
 def projected_player_for_depth(
@@ -865,11 +995,12 @@ def simulate(
 ) -> Tuple[List[EncounterOutcome], Dict[int, float], Dict[int, float], Dict[int, float], Dict[int, float]]:
     outcomes: List[EncounterOutcome] = []
 
+    # Build items_by_id lookup for item progression
+    items_by_id: Dict[int, Item] = {item.id: item for item in items_by_class.values()}
+
     for class_id, player in players.items():
         multipliers = class_multipliers.get(class_id, {})
-        equipped_items = [items_by_class[name] for name in player.starting_items if name in items_by_class]
-        weapons = [x for x in equipped_items if x.kind == "weapon"]
-        armors = [x for x in equipped_items if x.kind == "armor"]
+        starting_equipped = [items_by_class[name] for name in player.starting_items if name in items_by_class]
 
         for depth in depths:
             _, progressed_health, progressed_mana, progressed_attributes = projected_player_for_depth(
@@ -900,6 +1031,11 @@ def simulate(
                 level_health_gain=player.level_health_gain,
                 level_mana_gain=player.level_mana_gain,
             )
+
+            # Use item progression: better items at deeper depths
+            equipped_items = get_items_for_depth(player, class_id, depth, items_by_class, items_by_id)
+            weapons = [x for x in equipped_items if x.kind == "weapon"]
+            armors = [x for x in equipped_items if x.kind == "armor"]
 
             attrs = apply_item_bonuses(progressed_player.attributes, equipped_items)
             p_defense = compute_player_defense(attrs, armors)
@@ -1113,6 +1249,128 @@ def propose_enemy_specific_weight_adjustments(
     return adjustments
 
 
+def enforce_tier_constraints(
+    item_adjustments: List[Dict[str, object]],
+    items_by_id: Dict[int, "ParsedItem"],
+    min_tier_gap: float = 0.5,
+    max_intra_tier_deviation: float = 0.3,
+) -> List[Dict[str, object]]:
+    """Post-process item adjustments to enforce two rules:
+    1. Each tier's average stat must be at least min_tier_gap higher than the previous tier.
+    2. Items within the same tier must not deviate more than max_intra_tier_deviation from the tier average.
+    """
+    ITEM_ATK_MIN, ITEM_ATK_MAX = 1, 100
+    ITEM_DEF_MIN, ITEM_DEF_MAX = 0, 70
+    # Build lookup: (item_id, field) -> new value from adjustments
+    adj_map: Dict[tuple, int] = {}
+    for adj in item_adjustments:
+        key = (adj["itemId"], adj["field"])
+        adj_map[key] = adj["new"]
+
+    # Get effective stats per item (use adjusted value if present, else original)
+    def get_stat(item_id: int, field: str) -> int:
+        key = (item_id, field)
+        if key in adj_map:
+            return adj_map[key]
+        item = items_by_id.get(item_id)
+        if item is None:
+            return 0
+        return item.attack if field == "attack" else item.defense
+
+    # Group items by tier
+    tier_items: Dict[int, List[int]] = {}
+    for item_id in items_by_id:
+        tier = infer_tier_from_item_id(item_id)
+        if tier is not None:
+            tier_items.setdefault(tier, []).append(item_id)
+
+    # For each tier, compute average of attack and defense separately
+    tier_avg: Dict[int, Dict[str, float]] = {}
+    for tier, item_ids in tier_items.items():
+        attacks = [get_stat(i, "attack") for i in item_ids if items_by_id[i].kind == "weapon" and get_stat(i, "attack") > 0]
+        defenses = [get_stat(i, "defense") for i in item_ids if items_by_id[i].kind == "armor" and get_stat(i, "defense") > 0]
+        tier_avg[tier] = {
+            "attack": sum(attacks) / len(attacks) if attacks else 0,
+            "defense": sum(defenses) / len(defenses) if defenses else 0,
+        }
+
+    # Rule 1: Enforce tier progression (each tier >= previous tier + min_tier_gap)
+    sorted_tiers = sorted(tier_avg.keys())
+    for i in range(1, len(sorted_tiers)):
+        prev_tier = sorted_tiers[i - 1]
+        curr_tier = sorted_tiers[i]
+        for field in ["attack", "defense"]:
+            if tier_avg[curr_tier][field] > 0 and tier_avg[prev_tier][field] > 0:
+                min_required = tier_avg[prev_tier][field] + min_tier_gap
+                if tier_avg[curr_tier][field] < min_required:
+                    # Boost all items in this tier proportionally
+                    boost = min_required / tier_avg[curr_tier][field]
+                    for item_id in tier_items[curr_tier]:
+                        item = items_by_id[item_id]
+                        if field == "attack" and item.kind == "weapon" and item.attack > 0:
+                            old_val = get_stat(item_id, "attack")
+                            new_val = clamp(bounded_int(old_val * boost, 1), ITEM_ATK_MIN, ITEM_ATK_MAX)
+                            if new_val != old_val:
+                                key = (item_id, "attack")
+                                adj_map[key] = new_val
+                        elif field == "defense" and item.kind == "armor" and item.defense > 0:
+                            old_val = get_stat(item_id, "defense")
+                            new_val = clamp(bounded_int(old_val * boost, 0), ITEM_DEF_MIN, ITEM_DEF_MAX)
+                            if new_val != old_val:
+                                key = (item_id, "defense")
+                                adj_map[key] = new_val
+                    # Update tier average
+                    tier_avg[curr_tier][field] = min_required
+
+    # Recompute tier averages after progression enforcement
+    for tier, item_ids in tier_items.items():
+        attacks = [get_stat(i, "attack") for i in item_ids if items_by_id[i].kind == "weapon" and get_stat(i, "attack") > 0]
+        defenses = [get_stat(i, "defense") for i in item_ids if items_by_id[i].kind == "armor" and get_stat(i, "defense") > 0]
+        tier_avg[tier] = {
+            "attack": sum(attacks) / len(attacks) if attacks else 0,
+            "defense": sum(defenses) / len(defenses) if defenses else 0,
+        }
+
+    # Rule 2: Enforce intra-tier consistency (clamp items to tier average +/- deviation)
+    for tier, item_ids in tier_items.items():
+        for field in ["attack", "defense"]:
+            avg = tier_avg[tier][field]
+            if avg <= 0:
+                continue
+            min_val = max(1 if field == "attack" else 0, int(avg * (1 - max_intra_tier_deviation)))
+            max_val = min(ITEM_ATK_MAX if field == "attack" else ITEM_DEF_MAX, int(avg * (1 + max_intra_tier_deviation)))
+            for item_id in item_ids:
+                item = items_by_id[item_id]
+                if field == "attack" and item.kind == "weapon" and item.attack > 0:
+                    old_val = get_stat(item_id, "attack")
+                    new_val = clamp(old_val, min_val, max_val)
+                    if new_val != old_val:
+                        adj_map[(item_id, "attack")] = new_val
+                elif field == "defense" and item.kind == "armor" and item.defense > 0:
+                    old_val = get_stat(item_id, "defense")
+                    new_val = clamp(old_val, min_val, max_val)
+                    if new_val != old_val:
+                        adj_map[(item_id, "defense")] = new_val
+
+    # Rebuild adjustments list from adj_map, comparing to original values
+    result: List[Dict[str, object]] = []
+    for (item_id, field), new_val in adj_map.items():
+        item = items_by_id.get(item_id)
+        if item is None:
+            continue
+        old_val = item.attack if field == "attack" else item.defense
+        if new_val != old_val:
+            result.append({
+                "itemId": item_id,
+                "itemName": item.class_name,
+                "file": str(item.file),
+                "field": field,
+                "old": old_val,
+                "new": new_val,
+            })
+    return result
+
+
 def propose_item_specific_consumable_adjustments(
     workspace: Path,
     depth_win: Dict[int, float],
@@ -1283,36 +1541,8 @@ def tune(
         if new_armor != enemy.armor:
             adjustments["enemies"].append({"enemyId": enemy_id, "enemyName": enemy.name, "file": str(enemy.file), "field": "armor", "old": enemy.armor, "new": new_armor})
 
-    # Item adjustments by tier pressure (uses depth curve error)
-    tier_delta: Dict[int, float] = {}
-    for depth, actual in depth_win.items():
-        t = depth_target[depth] - actual
-        tier_guess = min(8, max(0, (depth - 1) // 3))
-        tier_delta.setdefault(tier_guess, 0.0)
-        tier_delta[tier_guess] += t
-
-    for tier in list(tier_delta.keys()):
-        count = sum(1 for d in depth_win.keys() if min(8, max(0, (d - 1) // 3)) == tier)
-        if count > 0:
-            tier_delta[tier] = tier_delta[tier] / count
-
-    for item_id, item in items_by_id.items():
-        tier = infer_tier_from_item_id(item_id)
-        if tier is None or tier not in tier_delta:
-            continue
-        delta = tier_delta[tier]
-        if abs(delta) <= tol:
-            continue
-        factor = clamp(1.0 + delta * 0.50, 1 - max_adj, 1 + max_adj)
-
-        if item.kind == "weapon" and item.attack > 0:
-            new_attack = clamp(bounded_int(item.attack * factor, 1), ITEM_ATK_MIN, ITEM_ATK_MAX)
-            if new_attack != item.attack:
-                adjustments["items"].append({"itemId": item_id, "itemName": item.class_name, "file": str(item.file), "field": "attack", "old": item.attack, "new": new_attack})
-        if item.kind == "armor" and item.defense > 0:
-            new_defense = clamp(bounded_int(item.defense * factor, 0), ITEM_DEF_MIN, ITEM_DEF_MAX)
-            if new_defense != item.defense:
-                adjustments["items"].append({"itemId": item_id, "itemName": item.class_name, "file": str(item.file), "field": "defense", "old": item.defense, "new": new_defense})
+    # Item adjustments disabled: items have fixed hand-tuned values per tier.
+    # Enemies are balanced around items, not the other way around.
 
     if strict_realism:
         adjustments["strictTables"].extend(
@@ -1447,6 +1677,9 @@ def write_report(
     depth_win: Dict[int, float],
     depth_target: Dict[int, float],
     adjustments: Dict[str, List[Dict[str, object]]],
+    players: Optional[Dict[int, "ParsedPlayer"]] = None,
+    enemies: Optional[Dict[int, "ParsedEnemy"]] = None,
+    items_by_id: Optional[Dict[int, "ParsedItem"]] = None,
 ) -> None:
     out_dir = workspace / "tools/balance"
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -1463,6 +1696,65 @@ def write_report(
     lines = [
         "# Balance Report",
         "",
+        "## Player Classes",
+        "",
+        "| Class | HP | Mana | Strength | Dex | Int | Con | Level HP | Level Mana |",
+        "|---|---:|---:|---:|---:|---:|---:|---:|---:|",
+    ]
+    if players:
+        class_names = {0: "Warrior", 1: "Mage", 2: "Archer", 3: "Nameless", 4: "Paladin", 5: "God"}
+        for cid in sorted(players.keys()):
+            p = players[cid]
+            name = class_names.get(cid, p.class_name)
+            hp = p.max_health
+            mana = p.max_mana if p.max_mana > 0 else "-"
+            attrs = p.attributes
+            str_val = attrs.get("strength", "?")
+            dex_val = attrs.get("dexterity", "?")
+            int_val = attrs.get("intelligence", "?")
+            con_val = attrs.get("constitution", "?")
+            lvl_hp = p.level_health_gain
+            lvl_mp = p.level_mana_gain if p.level_mana_gain > 0 else "-"
+            lines.append(f"| {name} | {hp} | {mana} | {str_val} | {dex_val} | {int_val} | {con_val} | {lvl_hp} | {lvl_mp} |")
+    lines.append("")
+
+    # Enemies table
+    lines += [
+        "## Enemies",
+        "",
+        "| Enemy | HP | Damage | Armor | XP |",
+        "|---|---:|---:|---:|---:|",
+    ]
+    if enemies:
+        for eid in sorted(enemies.keys()):
+            e = enemies[eid]
+            lines.append(f"| {e.name} | {e.max_health} | {e.damage} | {e.armor} | {e.kill_experience} |")
+    lines.append("")
+
+    # Items table grouped by tier
+    lines += [
+        "## Items",
+        "",
+    ]
+    if items_by_id:
+        tier_names = {0: "Steel", 1: "Bronze", 2: "Fire", 3: "Ice", 4: "Grass", 5: "Water", 6: "Gold", 7: "Demon", 8: "Blood"}
+        for tier_id in range(9):
+            tier_items = [(iid, item) for iid, item in items_by_id.items() if infer_tier_from_item_id(iid) == tier_id]
+            if not tier_items:
+                continue
+            lines.append(f"### Tier {tier_id}: {tier_names.get(tier_id, '?')}")
+            lines.append("")
+            lines.append("| Item | Type | Attack | Defense | Weight |")
+            lines.append("|---|---|---:|---:|---:|")
+            for iid, item in sorted(tier_items):
+                kind = item.kind if hasattr(item, 'kind') else "?"
+                atk = item.attack if hasattr(item, 'attack') else "-"
+                def_val = item.defense if hasattr(item, 'defense') else "-"
+                weight = item.weight if hasattr(item, 'weight') else "-"
+                lines.append(f"| {item.class_name} | {kind} | {atk} | {def_val} | {weight} |")
+            lines.append("")
+
+    lines += [
         "## Class Win Rates",
         "",
         "| Class ID | Actual | Target | Delta |",
@@ -1619,7 +1911,7 @@ def main() -> None:
     if args.apply:
         changed_files = apply_adjustments(adjustments)
 
-    write_report(workspace, config, class_win, class_target, depth_win, depth_target, adjustments)
+    write_report(workspace, config, class_win, class_target, depth_win, depth_target, adjustments, players, enemies, items_by_id)
 
     print("Balance simulation complete")
     print(f"Encounters simulated: {len(outcomes)}")

@@ -17,7 +17,7 @@ class IceAxe extends WeaponItem {
             :luck => -2
         };
 
-        attack = 8;
+        attack = 27;
         element = ELEMENT_ICE;
     }
 

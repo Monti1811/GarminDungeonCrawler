@@ -10,7 +10,7 @@ class FireHelmet extends ArmorItem {
 		value = 70;
 		weight = 3;
 		slot = HEAD;
-		defense = 7;
+		defense = 15;
 		attribute_bonus = {
 			:constitution => 3,
 			:strength => 3

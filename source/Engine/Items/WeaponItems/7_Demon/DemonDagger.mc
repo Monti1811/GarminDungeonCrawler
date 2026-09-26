@@ -15,7 +15,7 @@ class DemonDagger extends WeaponItem {
             :luck => 6
         };
 
-        attack = 16;
+        attack = 49;
         attack_type = DEXTERITY;
     }
 

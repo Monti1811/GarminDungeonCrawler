@@ -2,8 +2,8 @@ import Toybox.Lang;
 
 class Nameless extends Player {
 
-	var current_mana as Number = 15;
-	var maxMana as Number = 15;
+	var current_mana as Number = 20;
+	var maxMana as Number = 20;
 
 	function initialize(name as String) {
 		Player.initialize();
@@ -14,8 +14,8 @@ class Nameless extends Player {
 		self.second_bar = :mana;
 
 		// Set health
-		self.current_health = 150;
-		self.maxHealth = 150;
+		self.current_health = 57;
+		self.maxHealth = 57;
 
 		// Give starting items
 		self.equipItem(new SteelDagger(), RIGHT_HAND, null);
@@ -62,8 +62,8 @@ class Nameless extends Player {
 	function onLevelUp() as Void {
 		Player.onLevelUp();
 		// Increase max health and mana
-		maxHealth += 12;
-		maxMana += 4;
+		maxHealth += 3;
+		maxMana += 2;
 	}
 
 	function onNextDungeon() as Void {

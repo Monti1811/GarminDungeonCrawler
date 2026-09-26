@@ -15,7 +15,7 @@ class SteelStaff extends Staff {
 			:intelligence => 2
 		};
 
-		attack = 2;
+		attack = 8;
 		range = 1;
 		range_type = LINEAR;
 		attack_type = INTELLIGENCE;

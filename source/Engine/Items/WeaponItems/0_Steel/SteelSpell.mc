@@ -15,7 +15,7 @@ class SteelSpell extends Spell {
 			:wisdom => 2
 		};
 
-		attack = 8;
+		attack = 11;
 		range = 1;
 		cooldown = 1;
 		attack_type = INTELLIGENCE;

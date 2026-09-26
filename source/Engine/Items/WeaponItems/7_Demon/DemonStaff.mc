@@ -14,7 +14,7 @@ class DemonStaff extends Staff {
             :intelligence => 10
         };
 
-        attack = 6;
+        attack = 43;
         range = 1;
         range_type = LINEAR;
         attack_type = INTELLIGENCE;

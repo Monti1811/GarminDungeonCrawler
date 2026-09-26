@@ -234,6 +234,7 @@ class Turn {
                 var room = $.Game.getCurrentRoom();
                 room.removeEnemy(attackable_enemy);
                 room.dropLoot(attackable_enemy);
+                _view.setForegroundDirty();
             }
             player_attacked = true;
         }

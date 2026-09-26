@@ -15,7 +15,7 @@ class WaterBow extends Bow {
             :intelligence => 2
         };
 
-        attack = 5;
+        attack = 30;
         range = 3;
         range_type = LINEAR;
         attack_type = DEXTERITY;

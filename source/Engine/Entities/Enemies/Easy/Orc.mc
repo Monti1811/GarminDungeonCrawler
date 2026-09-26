@@ -8,8 +8,8 @@ class Orc extends Enemy {
         name = "Orc";
         description = "A brutish orc warrior seeking treasure.";
         current_health = 50;
-        maxHealth = 34;
-        damage = 4;
+        maxHealth = 157;
+        damage = 7;
         armor = 2;
         kill_experience = 10;
         energy_per_turn = 67; // every 2/3 turns
