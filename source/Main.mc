@@ -306,7 +306,7 @@ module Main {
 		var weighted_types = {
 			0 => 20, // Weapons
 			1 => 20, // Armor
-			2 => 50, // Consumables
+			2 => 40, // Consumables (healing potions capped at ~50% of all drops)
 			3 => 5  // High Quality
 		};
 		return MathUtil.weighted_random(weighted_types);

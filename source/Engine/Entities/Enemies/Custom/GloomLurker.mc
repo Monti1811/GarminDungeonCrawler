@@ -11,7 +11,7 @@ class GloomLurker extends Enemy {
         maxHealth = 218;
         damage = 15;
         armor = 6;
-        kill_experience = 16;
+        kill_experience = 48;
         energy_per_turn = 78;
     }
 

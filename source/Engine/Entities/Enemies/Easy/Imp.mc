@@ -12,7 +12,7 @@ class Imp extends Enemy {
 		maxHealth = 108;
 		energy_per_turn = 100;
 		armor = 0;
-        kill_experience = 15;
+        kill_experience = 30;
 	}
 
 	function getSprite() as ResourceId {

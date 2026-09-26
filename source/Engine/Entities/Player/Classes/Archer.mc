@@ -23,13 +23,13 @@ class Archer extends Player {
 
 		// Set attributes
 		self.attributes = {
-			:strength => 14,
-			:constitution => 18,
+			:strength => 8,
+			:constitution => 8,
 			:intelligence => 4,
 			:wisdom => 4,
-			:dexterity => 48,
-			:charisma => 14,
-			:luck => 7
+			:dexterity => 20,
+			:charisma => 3,
+			:luck => 3
 		};
 
 		self.sprite = $.Rez.Drawables.Elf;
@@ -39,7 +39,7 @@ class Archer extends Player {
 	function onLevelUp() as Void {
 		// Increase max health
 		Player.onLevelUp();
-		maxHealth += 3;
+		maxHealth += 4;
 	}
 
 

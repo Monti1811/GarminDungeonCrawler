@@ -4,7 +4,7 @@ class DemonSpell extends Spell {
 
     function initialize() {
         Spell.initialize();
-        id = 72;
+        id = 76;
         name = "Demon Spell";
         description = "A hellbound grimoire that unleashes AoE waves of abyssal flame when fueled by mana.";
         slot = RIGHT_HAND;

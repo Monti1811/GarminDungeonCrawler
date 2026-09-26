@@ -11,7 +11,7 @@ class Orc extends Enemy {
         maxHealth = 157;
         damage = 7;
         armor = 2;
-        kill_experience = 10;
+        kill_experience = 20;
         energy_per_turn = 67; // every 2/3 turns
     }
 

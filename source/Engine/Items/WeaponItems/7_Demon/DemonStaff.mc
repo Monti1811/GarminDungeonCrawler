@@ -48,7 +48,6 @@ class DemonStaff extends Staff {
 
     function deepcopy() as Item {
         var staff = new DemonStaff();
-        // ...existing code...
         staff.attack = attack;
         staff.range = range;
         staff.range_type = range_type;
@@ -61,5 +60,4 @@ class DemonStaff extends Staff {
         Staff.onLoad(save_data);
     }
 
-    // ...existing code...
 }

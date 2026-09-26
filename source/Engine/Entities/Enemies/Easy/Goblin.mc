@@ -11,7 +11,7 @@ class Goblin extends Enemy {
         maxHealth = 241;
         damage = 12;
         armor = 2;
-        kill_experience = 15;
+        kill_experience = 45;
         energy_per_turn = 100; 
     }
 

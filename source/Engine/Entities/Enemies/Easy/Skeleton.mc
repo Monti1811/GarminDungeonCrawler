@@ -12,7 +12,7 @@ class Skeleton extends Enemy {
 		maxHealth = 95;
 		energy_per_turn = 100;
 		armor = 2;
-        kill_experience = 30;
+        kill_experience = 90;
 	}
 
 	function getSprite() as ResourceId {
