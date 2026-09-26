@@ -2,6 +2,8 @@
 
 Item hierarchy, tiers, equipment, and spawn system.
 
+> Current values (stats, images, drop tables): [items-values.md](items-values.md)
+
 ## Item Hierarchy
 
 ```
