@@ -50,7 +50,7 @@ class DungeonCrawlerApp extends Application.AppBase {
 
     function showRoom() as [Views] or [Views, InputDelegates] {
         var roomView = new DCGameView($.Game.getPlayer(), $.Game.getCurrentRoom(), null);
-        var roomDelegate = new DCGameDelegate(roomView);
+        var roomDelegate = new DCGameDelegate();
         return [ roomView, roomDelegate ];
     }
 

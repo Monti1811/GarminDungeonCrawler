@@ -4,6 +4,7 @@ import Toybox.WatchUi;
 class DCCharacterCreationDetailsLoopDelegate extends WatchUi.BehaviorDelegate {
 
     private var _player as Player;
+    private var _confirm_shown as Boolean = false;
 
     function initialize(player as Player) {
         BehaviorDelegate.initialize();
@@ -29,22 +30,33 @@ class DCCharacterCreationDetailsLoopDelegate extends WatchUi.BehaviorDelegate {
     }
 
     function showConfirmation(message as String) {
+        if (_confirm_shown) {
+            return;
+        }
+        _confirm_shown = true;
         var dialog = new WatchUi.Confirmation(message);
-        WatchUi.pushView(dialog, new DCCharacterCreationConfirmDelegate(_player), WatchUi.SLIDE_UP);
+        WatchUi.pushView(dialog, new DCCharacterCreationConfirmDelegate(_player, self), WatchUi.SLIDE_UP);
+    }
+
+    function resetConfirmation() as Void {
+        _confirm_shown = false;
     }
 
 }
 
 class DCCharacterCreationConfirmDelegate extends WatchUi.ConfirmationDelegate {
-
-    private var _player as Player;
     
-    function initialize(player as Player) {
+    private var _player as Player;
+    private var _parent as DCCharacterCreationDetailsLoopDelegate;
+    
+    function initialize(player as Player, parent as DCCharacterCreationDetailsLoopDelegate) {
         ConfirmationDelegate.initialize();
         _player = player;
+        _parent = parent;
     }
 
     public function onResponse(value as Confirm) as Boolean {
+        _parent.resetConfirmation();
         if (value == WatchUi.CONFIRM_YES) {
 
             WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
