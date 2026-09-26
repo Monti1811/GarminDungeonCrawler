@@ -211,9 +211,10 @@ class DCGameView extends WatchUi.View {
         var outer_outline_radius = (min_size * 178 / 360).toNumber();
         var inner_outline_radius = (min_size * 172 / 360).toNumber();
         var marker_radius = (min_size * 175 / 360).toNumber();
-        // Convert Garmin angles (0°=top, clockwise) to screen coords (0°=right, y-down)
-        var end170 = $.MathUtil.getArcCoordinates(center_x, center_y, marker_radius, 170 + 90, 170 + 90) as Array<Array<Number>>;
-        var end100 = $.MathUtil.getArcCoordinates(center_x, center_y, marker_radius, 100 + 90, 100 + 90) as Array<Array<Number>>;
+        // drawArc angles are math style (0°=3 o'clock, positive counter-clockwise),
+        // screen coords are y-down, so screen angle = 360 - arc angle
+        var end170 = $.MathUtil.getArcCoordinates(center_x, center_y, marker_radius, 360 - 170, 360 - 170) as Array<Array<Number>>;
+        var end100 = $.MathUtil.getArcCoordinates(center_x, center_y, marker_radius, 360 - 100, 360 - 100) as Array<Array<Number>>;
         var p170 = end170[0];
         var p100 = end100[0];
         // Tick marks along radius, length 3
@@ -253,9 +254,10 @@ class DCGameView extends WatchUi.View {
         var outer_outline_radius = (min_size * 178 / 360).toNumber();
         var inner_outline_radius = (min_size * 172 / 360).toNumber();
         var marker_radius = (min_size * 175 / 360).toNumber();
-        // Convert Garmin angles (0°=top, clockwise) to screen coords (0°=right, y-down)
-        var end260 = $.MathUtil.getArcCoordinates(center_x, center_y, marker_radius, 260 + 90, 260 + 90) as Array<Array<Number>>;
-        var end190 = $.MathUtil.getArcCoordinates(center_x, center_y, marker_radius, 190 + 90, 190 + 90) as Array<Array<Number>>;
+        // drawArc angles are math style (0°=3 o'clock, positive counter-clockwise),
+        // screen coords are y-down, so screen angle = 360 - arc angle
+        var end260 = $.MathUtil.getArcCoordinates(center_x, center_y, marker_radius, 360 - 260, 360 - 260) as Array<Array<Number>>;
+        var end190 = $.MathUtil.getArcCoordinates(center_x, center_y, marker_radius, 360 - 190, 360 - 190) as Array<Array<Number>>;
         var p260 = end260[0];
         var p190 = end190[0];
         // Tick marks along radius, length 3
