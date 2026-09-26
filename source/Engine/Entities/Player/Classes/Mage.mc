@@ -14,8 +14,8 @@ class Mage extends Player {
 		self.second_bar = :mana;
 
 		// Set health
-		self.current_health = 51;
-		self.maxHealth = 51;
+		self.current_health = 25;
+		self.maxHealth = 25;
 
 		// Give starting items
 		self.equipItem(new SteelStaff(), RIGHT_HAND, null);
@@ -24,13 +24,13 @@ class Mage extends Player {
 
 		// Set attributes
 		self.attributes = {
-			:strength => 2,
-			:constitution => 3,
-			:intelligence => 13,
-			:wisdom => 13,
-			:dexterity => 2,
-			:charisma => 0,
-			:luck => 4
+			:strength => 3,
+			:constitution => 5,
+			:intelligence => 15,
+			:wisdom => 15,
+			:dexterity => 5,
+			:charisma => 2,
+			:luck => 5
 		};
 
 		self.sprite = $.Rez.Drawables.Wizard;
@@ -62,7 +62,7 @@ class Mage extends Player {
 	function onLevelUp() as Void {
 		Player.onLevelUp();
 		// Increase max health and mana
-		maxHealth += 3;
+		maxHealth += 4;
 		maxMana += 2;
 	}
 

@@ -12,7 +12,7 @@ class ZombieSmall extends Enemy {
 		maxHealth = 26;
 		energy_per_turn = 100;
 		armor = 0;
-        kill_experience = 10;
+        kill_experience = 20;
 	}
 
 	function getSprite() as ResourceId {

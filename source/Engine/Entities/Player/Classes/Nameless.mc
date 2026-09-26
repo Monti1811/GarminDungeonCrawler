@@ -14,8 +14,8 @@ class Nameless extends Player {
 		self.second_bar = :mana;
 
 		// Set health
-		self.current_health = 57;
-		self.maxHealth = 57;
+		self.current_health = 30;
+		self.maxHealth = 30;
 
 		// Give starting items
 		self.equipItem(new SteelDagger(), RIGHT_HAND, null);
@@ -24,13 +24,13 @@ class Nameless extends Player {
 
 		// Set attributes
 		self.attributes = {
-			:strength => 13,
-			:constitution => 13,
-			:intelligence => 13,
-			:wisdom => 13,
-			:dexterity => 13,
-			:charisma => 13,
-			:luck => 5
+			:strength => 7,
+			:constitution => 7,
+			:intelligence => 7,
+			:wisdom => 7,
+			:dexterity => 7,
+			:charisma => 7,
+			:luck => 8
 		};
 
 		self.sprite = $.Rez.Drawables.Basic;
@@ -62,7 +62,7 @@ class Nameless extends Player {
 	function onLevelUp() as Void {
 		Player.onLevelUp();
 		// Increase max health and mana
-		maxHealth += 3;
+		maxHealth += 4;
 		maxMana += 2;
 	}
 

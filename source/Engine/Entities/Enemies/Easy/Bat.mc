@@ -10,7 +10,7 @@ class Bat extends Enemy {
 		current_health = 25;
 		maxHealth = 141;
 		armor = 7;
-        kill_experience = 20;
+        kill_experience = 40;
 	}
 
 	function getSprite() as ResourceId {

@@ -7,11 +7,11 @@ class OrcArmored extends Enemy {
         id = 31;
         name = "Armored Orc";
         description = "A heavily armored orc footman.";
-        damage = 32;
-		current_health = 175;
+        damage = 50;
+		current_health = 220;
 		maxHealth = current_health;
 		armor = 35;
-        kill_experience = 300;
+        kill_experience = 100;
 		energy_per_turn = 50;
     }
 

@@ -10,8 +10,8 @@ class Warrior extends Player {
 		self.description = "A warrior character";
 
 		// Set health
-		self.current_health = 22;
-		self.maxHealth = 22;
+		self.current_health = 21;
+		self.maxHealth = 21;
 
 		// Give starting items
 		self.equipItem(new SteelAxe(), RIGHT_HAND, null);
@@ -19,13 +19,13 @@ class Warrior extends Player {
 
 		// Set attributes
 		self.attributes = {
-			:strength => 14,
-			:constitution => 20,
-			:intelligence => 1,
-			:wisdom => 2,
-			:dexterity => 1,
-			:charisma => 3,
-			:luck => 4
+			:strength => 15,
+			:constitution => 15,
+			:intelligence => 2,
+			:wisdom => 3,
+			:dexterity => 6,
+			:charisma => 4,
+			:luck => 5
 		};
 
 		self.sprite = $.Rez.Drawables.KnightBlue;

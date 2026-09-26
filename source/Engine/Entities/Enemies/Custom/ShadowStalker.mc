@@ -11,7 +11,7 @@ class ShadowStalker extends Enemy {
         maxHealth = 199;
         damage = 15;
         armor = 2;
-        kill_experience = 14;
+        kill_experience = 28;
         energy_per_turn = 80;
     }
 

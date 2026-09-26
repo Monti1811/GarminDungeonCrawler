@@ -12,7 +12,7 @@ class ElementalPlantSmall extends Enemy {
 		maxHealth = current_health;
 		energy_per_turn = 50;
 		armor = 7;
-        kill_experience = 15;
+        kill_experience = 45;
 	}
 
 	function getSprite() as ResourceId {

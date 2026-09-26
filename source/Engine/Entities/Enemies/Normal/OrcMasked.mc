@@ -7,9 +7,9 @@ class OrcMasked extends Enemy {
         id = 32;
         name = "Masked Orc";
         description = "A cunning orc assassin hiding behind a mask.";
-        damage = 22;
-		current_health = 125;
-		maxHealth = 205;
+        damage = 44;
+		current_health = 220;
+		maxHealth = 220;
 		energy_per_turn = 100;
 		armor = 2;
         kill_experience = 125;

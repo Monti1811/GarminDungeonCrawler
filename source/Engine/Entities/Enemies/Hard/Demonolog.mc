@@ -12,12 +12,12 @@ class Demonolog extends Enemy {
 		id = 27;
 		name = "Demonolog";
 		description = "A master of dark rituals and summoning.";
-		damage = 29;
-		current_health = 200;
+		damage = 40;
+		current_health = 240;
 		maxHealth = current_health;
 		energy_per_turn = 67; 
         armor = 0;
-        kill_experience = 300;
+        kill_experience = 110;
 	}
 
 	function getSprite() as ResourceId {
