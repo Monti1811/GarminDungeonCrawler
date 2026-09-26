@@ -17,6 +17,7 @@ class DCIntroDelegate extends WatchUi.BehaviorDelegate {
     ];
     private var _font as FontDefinition | FontReference;
     private var index as Number = 0;
+    private var started as Boolean = false;
 
     function initialize(view as DCIntroView, story as Array?, font as FontDefinition | FontReference) {
         BehaviorDelegate.initialize();
@@ -39,6 +40,9 @@ class DCIntroDelegate extends WatchUi.BehaviorDelegate {
     }
 
     function advance() as Boolean {
+        if (started) {
+            return true;
+        }
         if (index < _story.size()) {
             _view.setText(_story[index], _font);
             index++;
@@ -46,6 +50,7 @@ class DCIntroDelegate extends WatchUi.BehaviorDelegate {
             return true;
         }
         // Start game
+        started = true;
         $.Main.startGame();
         return true;
     }
