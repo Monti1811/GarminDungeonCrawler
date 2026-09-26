@@ -15,7 +15,7 @@ A turn-based roguelike for Garmin watches. Guide a hero through randomly generat
 - **Short sessions** -- quick, turn-based moves suited to the watch form factor
 - **Procedural dungeons** -- each run builds new room layouts with enemies, loot, merchants, and stairs
 - **5 hero classes** -- Warrior, Mage, Archer, Nameless, Paladin (plus a debug God class)
-- **165+ items** -- weapons, armor, consumables, treasure chests across 9 elemental tiers
+- **170+ items** -- weapons, armor, consumables, treasure chests across 9 elemental tiers
 - **38 enemy types** -- scaled by depth, with elemental variants and boss encounters
 - **13 dungeon styles** -- visual themes with unique color palettes
 - **Merchants & quests** -- trade gear, accept quests from NPCs, earn rewards
@@ -70,7 +70,7 @@ Enemies use varied tactics: direct pursuit, flanking, strafing (circling), kitin
 
 ## Items
 
-165+ items across 9 elemental tiers:
+170+ items across 9 elemental tiers:
 
 <p align="center">
    <img src="media/iteminfo.png" alt="Item info" width="200" />
@@ -78,7 +78,7 @@ Enemies use varied tactics: direct pursuit, flanking, strafing (circling), kitin
 
 **Weapons** (9 types x 9 tiers): Axe, Bow, Dagger, Greatsword, Katana, Lance, Spell, Staff, Sword
 
-**Elemental Tiers:** Steel, Bronze, Fire, Ice, Nature, Water, Gold, Demon, Blood
+**Elemental Tiers:** Steel, Bronze, Fire, Ice, Grass, Water, Gold, Demon, Blood
 
 **Armor:** Helmets, Breast Plates, Gauntlets, Shoes, Rings, Shields (4 types), Backpacks (expand inventory)
 
@@ -177,7 +177,9 @@ Detailed documentation lives in [`documentations/`](documentations/):
 | [Engine](documentations/engine.md)                 | Game state, maps, turns, combat, entities           |
 | [Player](documentations/player.md)                 | Classes, attributes, leveling, equipment            |
 | [Enemies](documentations/enemies.md)               | Enemy types, AI, spawning, difficulty scaling       |
+| [Enemy Values](documentations/enemies-values.md)   | Current enemy stats, spawn weights, balance status  |
 | [Items](documentations/items.md)                   | Item hierarchy, tiers, equipment slots              |
+| [Item Values](documentations/items-values.md)      | Current item stats, sprites, drop tables            |
 | [Map Generation](documentations/map-generation.md) | Room shapes, wall variants, dungeon styles          |
 | [Frontend](documentations/frontend.md)             | UI layer, views, menus, controls                    |
 | [Save/Load](documentations/save-load.md)           | Serialization, compendium, save slots               |
