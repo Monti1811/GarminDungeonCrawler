@@ -25,6 +25,11 @@ class DCShopDelegate extends WatchUi.Menu2InputDelegate {
         }
     }
 
+    function onBack() as Void {
+        merchant.closeShop();
+        WatchUi.popView(WatchUi.SLIDE_DOWN);
+    }
+
     function showBuyMenu() as Void {
         var items = merchant.getSellableItems();
         var buyMenu = new WatchUi.Menu2({:title=>"Buy"});
@@ -129,6 +134,7 @@ class DCShopBuyOptionsDelegate extends WatchUi.Menu2InputDelegate {
             buyMenu.updateItem(new WatchUi.IconMenuItem(item.getName() + " x" + item.getAmount(), "Cost: " + item.getValue() + " gold", item, new DCItemIcon(item), null), index);
         }
         $.Log.log("Bought " + amount + " x " + item.getName() + " for " + cost + " gold.");
+        merchant.updateShopTitle();
     }
 
     function showInfo(item as Item) {
@@ -204,6 +210,7 @@ class DCShopSellOptionsDelegate extends WatchUi.Menu2InputDelegate {
         } else {
             sellMenu.updateItem(new WatchUi.IconMenuItem(item.getName() + " x" + item.getAmount(), "Value: " + item.getSellValue() + " gold", item, new DCItemIcon(item), null), index);
         }
+        merchant.updateShopTitle();
     }
 
     function showInfo(item as Item) {
