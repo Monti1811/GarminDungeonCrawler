@@ -37,7 +37,9 @@ module Pathfinder {
     }
     
     function pq_dequeue(queue as Array) as Number {
-        return (queue[0] as Array)[1] as Number;
+        var entry = queue[0] as Array;
+        queue.remove(entry);
+        return entry[1] as Number;
     }
 
     // Find the next best movement to reach the target the fastest
@@ -76,7 +78,7 @@ module Pathfinder {
         }
         pq_enqueue(open_queue, min_h, start_num);
 
-        var max_iterations = 200;
+        var max_iterations = 100;
         var iterations = 0;
         while (open_queue.size() > 0) {
             iterations += 1;
@@ -149,7 +151,7 @@ module Pathfinder {
         g_score[start_num] = 0;
         pq_enqueue(open_queue, manhattanHeuristic(start_num, end_num), start_num);
         
-        var max_iterations = 200;
+        var max_iterations = 100;
         var iterations = 0;
         while (open_queue.size() > 0) {
             iterations += 1;
