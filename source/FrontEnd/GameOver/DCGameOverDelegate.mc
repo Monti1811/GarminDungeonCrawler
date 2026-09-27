@@ -31,7 +31,6 @@ class DCGameOverDelegate extends WatchUi.BehaviorDelegate {
         $.SaveData.setSaveData({});
         WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
         WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
-        WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
     }
 
 
