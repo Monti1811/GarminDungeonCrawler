@@ -435,7 +435,7 @@ class Player extends Entity {
 	}
 
 	function getDefense(enemy as Enemy?) as Number {
-		var base_defense = attributes[:constitution];
+		var base_defense = getAttribute(:constitution);
 		var armors_size = 8;
 		for (var i = 0; i < armors_size; i++) {
 			var armor = null as ArmorItem?;
