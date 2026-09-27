@@ -106,10 +106,9 @@ function pqEnqueueMaintainsPriorityOrder(logger as Test.Logger) as Boolean {
 
     // Should dequeue in priority order: 5, 8, 10
     Test.assertEqual(Pathfinder.pq_dequeue(queue), 2);
-    queue.remove(queue[0]);
     Test.assertEqual(Pathfinder.pq_dequeue(queue), 3);
-    queue.remove(queue[0]);
     Test.assertEqual(Pathfinder.pq_dequeue(queue), 1);
+    Test.assertEqual(queue.size(), 0);
     return true;
 }
 
@@ -136,9 +135,7 @@ function pqEnqueueDescendingOrder(logger as Test.Logger) as Boolean {
     Pathfinder.pq_enqueue(queue, 10, 3);
 
     Test.assertEqual(Pathfinder.pq_dequeue(queue), 3);
-    queue.remove(queue[0]);
     Test.assertEqual(Pathfinder.pq_dequeue(queue), 2);
-    queue.remove(queue[0]);
     Test.assertEqual(Pathfinder.pq_dequeue(queue), 1);
     return true;
 }

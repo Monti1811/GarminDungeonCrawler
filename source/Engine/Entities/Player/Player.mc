@@ -48,6 +48,7 @@ class Player extends Entity {
 	var gold as Number = 0;
 	var sprite as ResourceId = $.Rez.Drawables.Player;
 	var pos as Point2D = [0, 0];
+	private var game_over_shown as Boolean = false;
 
 	function initialize() {
 		Entity.initialize();
@@ -245,6 +246,9 @@ class Player extends Entity {
 	}
 
 	function onDeath() as Void {
+		if (game_over_shown) {
+			return;
+		}
 		// Check if a life amulet was equipped
 		var accessory = equipped[ACCESSORY] as Item?;
 		if (accessory != null && accessory.id == 1300) {
@@ -252,6 +256,7 @@ class Player extends Entity {
 			amulet.onDeath(me);
 			return;		
 		}
+		game_over_shown = true;
 		WatchUi.pushView(new DCGameOverView(), new DCGameOverDelegate(), WatchUi.SLIDE_UP);
 	}
 
@@ -430,7 +435,7 @@ class Player extends Entity {
 	}
 
 	function getDefense(enemy as Enemy?) as Number {
-		var base_defense = attributes[:constitution];
+		var base_defense = getAttribute(:constitution);
 		var armors_size = 8;
 		for (var i = 0; i < armors_size; i++) {
 			var armor = null as ArmorItem?;
@@ -547,9 +552,9 @@ class Player extends Entity {
 		}
 	}
 
-	// Restore health up to a quarter of the max health when going to the next dungeon
+	// Restore health up to a half of the max health when going to the next dungeon
 	function onNextDungeon() as Void {
-		self.current_health = MathUtil.ceil(maxHealth / 8, current_health);
+		self.current_health = MathUtil.ceil(maxHealth / 2, current_health);
 	}
 
 	function getId() as Number {

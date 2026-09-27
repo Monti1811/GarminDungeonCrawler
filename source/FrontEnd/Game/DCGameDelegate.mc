@@ -13,20 +13,20 @@ enum WalkDirection {
 
 class DCGameDelegate extends WatchUi.BehaviorDelegate {
 
-    private var _view as DCGameView;
+    private var _confirm_shown as Boolean = false;
 
     private var _up_array = [0, 0, Constants.SCREEN_WIDTH, 0, Constants.SCREEN_WIDTH/2, Constants.SCREEN_HEIGHT/2];
     private var _down_array = [0, Constants.SCREEN_HEIGHT, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, Constants.SCREEN_WIDTH/2, Constants.SCREEN_HEIGHT/2];
     private var _left_array = [0, 0, 0, Constants.SCREEN_HEIGHT, Constants.SCREEN_WIDTH/2, Constants.SCREEN_HEIGHT/2];
     private var _right_array = [Constants.SCREEN_WIDTH, 0, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, Constants.SCREEN_WIDTH/2, Constants.SCREEN_HEIGHT/2];
 
-    function initialize(view as DCGameView) {
+    function initialize() {
         BehaviorDelegate.initialize();
-        _view = view;
     }
 
     function onBack() as Boolean {
-        if (_view.getTurns().isProcessingTurn()) {
+        var turns = $.Game.getTurns();
+        if (turns == null || turns.isProcessingTurn()) {
             return true;
         }
         showConfirmation("Do you want to exit the game?");
@@ -34,12 +34,21 @@ class DCGameDelegate extends WatchUi.BehaviorDelegate {
     }
 
     function showConfirmation(message as String) {
+        if (_confirm_shown) {
+            return;
+        }
+        _confirm_shown = true;
         var dialog = new WatchUi.Confirmation(message);
-        WatchUi.pushView(dialog, new DCGameExitConfirmDelegate(), WatchUi.SLIDE_UP);
+        WatchUi.pushView(dialog, new DCGameExitConfirmDelegate(self), WatchUi.SLIDE_UP);
+    }
+
+    function resetConfirmation() as Void {
+        _confirm_shown = false;
     }
 
     function onKey(keyEvent as KeyEvent) as Boolean {
-        if (_view.getTurns().isProcessingTurn()) {
+        var turns = $.Game.getTurns();
+        if (turns == null || turns.isProcessingTurn()) {
             return true;
         }
         if (keyEvent.getKey() == KEY_ENTER) {
@@ -50,7 +59,8 @@ class DCGameDelegate extends WatchUi.BehaviorDelegate {
 
 
     function onTap(clickEvent as ClickEvent) as Boolean {
-        if (_view.getTurns().isProcessingTurn()) {
+        var turns = $.Game.getTurns();
+        if (turns == null || turns.isProcessingTurn()) {
             return true;
         }
         var coord = clickEvent.getCoordinates() as Array<Number>;
@@ -58,34 +68,34 @@ class DCGameDelegate extends WatchUi.BehaviorDelegate {
         var center_y = Constants.SCREEN_HEIGHT / 2;
         if (coord[0] > center_x && coord[1] > center_y) {
             if (MathUtil.isInTriangleArray(coord, _down_array)) {
-                _view.getTurns().doTurn(DOWN);
+                turns.doTurn(DOWN);
                 return true;
             } else if (MathUtil.isInTriangleArray(coord, _right_array)) {
-                _view.getTurns().doTurn(RIGHT);
+                turns.doTurn(RIGHT);
                 return true;
             }
         } else if (coord[0] < center_x && coord[1] > center_y) {
             if (MathUtil.isInTriangleArray(coord, _down_array)) {
-                _view.getTurns().doTurn(DOWN);
+                turns.doTurn(DOWN);
                 return true;
             } else if (MathUtil.isInTriangleArray(coord, _left_array)) {
-                _view.getTurns().doTurn(LEFT);
+                turns.doTurn(LEFT);
                 return true;
             }
         } else if (coord[0] > center_x && coord[1] < center_y) {
             if (MathUtil.isInTriangleArray(coord, _up_array)) {
-                _view.getTurns().doTurn(UP);
+                turns.doTurn(UP);
                 return true;
             } else if (MathUtil.isInTriangleArray(coord, _right_array)) {
-                _view.getTurns().doTurn(RIGHT);
+                turns.doTurn(RIGHT);
                 return true;
             }
         } else if (coord[0] < center_x && coord[1] < center_y) {
             if (MathUtil.isInTriangleArray(coord, _up_array)) {
-                _view.getTurns().doTurn(UP);
+                turns.doTurn(UP);
                 return true;
             } else if (MathUtil.isInTriangleArray(coord, _left_array)) {
-                _view.getTurns().doTurn(LEFT);
+                turns.doTurn(LEFT);
                 return true;
             }
         }
@@ -121,11 +131,15 @@ class DCGameDelegate extends WatchUi.BehaviorDelegate {
 
 class DCGameExitConfirmDelegate extends WatchUi.ConfirmationDelegate {
     
-    function initialize() {
+    private var _parent as DCGameDelegate;
+
+    function initialize(parent as DCGameDelegate) {
         ConfirmationDelegate.initialize();
+        _parent = parent;
     }
 
     public function onResponse(value as Confirm) as Boolean {
+        _parent.resetConfirmation();
         if (value == WatchUi.CONFIRM_YES) {
             if ($.Settings.settings["save_on_exit"]) {
                 saveGame();

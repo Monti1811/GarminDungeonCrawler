@@ -8,6 +8,7 @@ typedef ItemComparator as NameCompare | WeightCompare | ValueCompare;
 class DCGameMenuDelegate extends WatchUi.Menu2InputDelegate {
 
     private const LOG_AMOUNT = 20;
+    private var _menu_closed as Boolean = false;
     var inventory_filter as Array<ItemType>? = null;
     var inventory_filter_str as String = "All Items";
     var inventory_sort as String = "Name";
@@ -22,6 +23,9 @@ class DCGameMenuDelegate extends WatchUi.Menu2InputDelegate {
     }
 
     function onSelect(item as MenuItem) as Void {
+        if (_menu_closed) {
+            return;
+        }
         var label = item.getId() as Symbol;
         if (label == :player) {
             openPlayerDetails();
@@ -46,6 +50,9 @@ class DCGameMenuDelegate extends WatchUi.Menu2InputDelegate {
 
     //! Handle the back key being pressed
     function onBack() as Void {
+        if (_menu_closed) {
+            return;
+        }
         WatchUi.popView(WatchUi.SLIDE_DOWN);
     }
 
@@ -168,6 +175,10 @@ class DCGameMenuDelegate extends WatchUi.Menu2InputDelegate {
     }
 
     function saveGame() as Void {
+        if (_menu_closed) {
+            return;
+        }
+        _menu_closed = true;
         $.SaveData.saveGame();
         WatchUi.popView(WatchUi.SLIDE_DOWN);
         WatchUi.showToast("Saved game", {:icon=>Rez.Drawables.saveToastIcon});

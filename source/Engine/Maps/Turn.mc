@@ -45,6 +45,11 @@ class Turn {
     }
 
     function doTurn(direction as WalkDirection) as Void {
+        if (_view == null || _player.getHealth() <= 0) {
+            // View was freed (e.g. after stairs) or player is dead:
+            // ignore stale input
+            return;
+        }
         if (_is_processing_turn) {
             return;
         }
@@ -192,10 +197,14 @@ class Turn {
     }
 
     function freeMemory() as Void {
-        _view.freeMemory();
-        _view = null;
-        _combat_timer.stop();
-        _combat_timer = null;
+        if (_view != null) {
+            _view.freeMemory();
+            _view = null;
+        }
+        if (_combat_timer != null) {
+            _combat_timer.stop();
+            _combat_timer = null;
+        }
         _enemy_queue = null;
         _enemy_target_pos = null;
     }

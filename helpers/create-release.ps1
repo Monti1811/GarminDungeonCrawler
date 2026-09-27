@@ -15,7 +15,8 @@ param(
     [switch]$SkipRelease,
     [switch]$DraftRelease,
     [switch]$PreRelease,
-    [switch]$BuildIq
+    [switch]$BuildIq,
+    [switch]$KeepDebugLogger
 )
 
 $ErrorActionPreference = "Stop"
@@ -50,6 +51,77 @@ function Get-ManifestDevices {
     }
 
     return $devices
+}
+
+function Prepare-ReleaseSource {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$RepoRoot,
+
+        [Parameter(Mandatory = $true)]
+        [string]$TargetDir,
+
+        [switch]$StripDebugLogger
+    )
+
+    if (Test-Path $TargetDir) {
+        Remove-Item -Recurse -Force $TargetDir
+    }
+    New-Item -Path $TargetDir -ItemType Directory -Force | Out-Null
+
+    $copyNames = @("manifest.xml", "monkey.jungle", "source", "package.json", "package-lock.json")
+    $copyNames += @(Get-ChildItem -Path $RepoRoot -Directory -Filter "resources*").Name
+
+    foreach ($name in $copyNames) {
+        $src = Join-Path $RepoRoot $name
+        if (-not (Test-Path $src)) {
+            throw "Required build input missing: $src"
+        }
+        Copy-Item -LiteralPath $src -Destination $TargetDir -Recurse -Force
+    }
+
+    $result = @{ Files = 0; Lines = 0 }
+    if (-not $StripDebugLogger) {
+        return $result
+    }
+
+    $moduleFile = Join-Path $TargetDir "source\Engine\Util\DebugLogger.mc"
+    if (Test-Path $moduleFile) {
+        Remove-Item -LiteralPath $moduleFile -Force
+        $result.Files++
+    }
+
+    foreach ($file in (Get-ChildItem -Path (Join-Path $TargetDir "source") -Recurse -Filter *.mc)) {
+        $lines = [System.IO.File]::ReadAllLines($file.FullName)
+        $kept = New-Object System.Collections.Generic.List[string]
+        $changed = $false
+
+        foreach ($line in $lines) {
+            if ($line -notmatch "DebugLogger") {
+                $kept.Add($line)
+                continue
+            }
+            if ($line -notmatch "^\s*DebugLogger\.") {
+                throw "Unexpected DebugLogger reference in '$($file.FullName)': $line"
+            }
+            $result.Lines++
+            $changed = $true
+        }
+
+        if ($changed) {
+            [System.IO.File]::WriteAllLines($file.FullName, $kept)
+            $result.Files++
+        }
+    }
+
+    $leftover = Get-ChildItem -Path (Join-Path $TargetDir "source") -Recurse -Filter *.mc |
+        Select-String -Pattern "DebugLogger"
+    if ($leftover) {
+        $refs = $leftover | Select-Object -First 3 | ForEach-Object { "$($_.Path):$($_.LineNumber)" }
+        throw "DebugLogger references remain after stripping: $($refs -join ', ')"
+    }
+
+    return $result
 }
 
 $scriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
@@ -92,6 +164,18 @@ if (-not (Test-Path $nodeModulesPath)) {
 
 New-Item -Path $OutputDir -ItemType Directory -Force | Out-Null
 
+$releaseSrcDir = Join-Path $repoRoot "release-src"
+Write-Host ""
+Write-Host "Preparing release source copy in $releaseSrcDir ..."
+$stripResult = Prepare-ReleaseSource -RepoRoot $repoRoot -TargetDir $releaseSrcDir -StripDebugLogger:(-not $KeepDebugLogger)
+if ($KeepDebugLogger) {
+    Write-Host "DebugLogger kept (-KeepDebugLogger specified)."
+}
+else {
+    Write-Host "Stripped DebugLogger: $($stripResult.Lines) lines removed from $($stripResult.Files) files."
+}
+Write-Host ""
+
 Push-Location $repoRoot
 try {
     if (-not $SkipRelease) {
@@ -114,7 +198,7 @@ try {
 
     foreach ($device in $Devices) {
         Write-Host "Building optimized $device..."
-        & node "helpers/optimize-build.mjs" $device $OutputDir $keyPath
+        & node "helpers/optimize-build.mjs" $device $OutputDir $keyPath $releaseSrcDir
         if ($LASTEXITCODE -ne 0) {
             throw "Build failed for $device."
         }
@@ -129,7 +213,7 @@ try {
         # Build universal .iq file (once, not per-device)
         # NOTE: This builds for 80 SDK devices and takes 40-60+ minutes
         Write-Host "Building universal .iq file (this may take 40-60 minutes)..."
-        & node "helpers/optimize-build.mjs" iq $OutputDir $keyPath
+        & node "helpers/optimize-build.mjs" iq $OutputDir $keyPath $releaseSrcDir
         if ($LASTEXITCODE -ne 0) {
             throw "Build failed for .iq file."
         }

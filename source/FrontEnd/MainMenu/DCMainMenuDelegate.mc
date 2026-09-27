@@ -18,6 +18,9 @@ class DCMainMenuDelegate extends WatchUi.BehaviorDelegate {
 
     function onKey(keyEvent as KeyEvent) as Boolean {
         if (keyEvent.getKey() == KEY_ENTER) {
+            if (WatchUi.getCurrentView()[0] != _view) {
+                return true;
+            }
             showMenu();
         }
         return true;
@@ -33,6 +36,10 @@ class DCMainMenuDelegate extends WatchUi.BehaviorDelegate {
     }
 
     function onTap(evt as ClickEvent) as Boolean {
+        if (WatchUi.getCurrentView()[0] != _view) {
+            // Stale tap after a view was already pushed on top
+            return true;
+        }
         var tap_coordinates = evt.getCoordinates() as Array<Numeric>;
         
         
@@ -212,7 +219,7 @@ class DCConfirmLoadGame extends WatchUi.ConfirmationDelegate {
             var player = $.Game.getPlayer();
             $.Game.setTimeStarted(Toybox.Time.now());
             var roomView = new DCGameView(player, $.Game.getCurrentRoom(), null);
-            var roomDelegate = new DCGameDelegate(roomView);
+            var roomDelegate = new DCGameDelegate();
             WatchUi.switchToView(roomView, roomDelegate, WatchUi.SLIDE_UP);
             WatchUi.pushView(new EmptyView(), new EmptyDelegate(), WatchUi.SLIDE_UP);
         }

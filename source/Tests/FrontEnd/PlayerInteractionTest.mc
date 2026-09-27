@@ -853,9 +853,9 @@ function playerSetAttributeDirectly(logger as Test.Logger) as Boolean {
 (:test)
 function playerWarriorHasExpectedBaseAttributes(logger as Test.Logger) as Boolean {
     var player = Players.createPlayerFromId(0, "Test");
-    Test.assertEqual(player.getAttribute(:intelligence), 1);
-    Test.assertEqual(player.getAttribute(:charisma), 3);
-    Test.assertEqual(player.getAttribute(:wisdom), 2);
+    Test.assertEqual(player.getAttribute(:intelligence), 2);
+    Test.assertEqual(player.getAttribute(:charisma), 4);
+    Test.assertEqual(player.getAttribute(:wisdom), 3);
     return true;
 }
 

@@ -1,8 +1,10 @@
 import Toybox.Lang;
+import Toybox.WatchUi;
 
 class Merchant extends NPC {
 	
 	var items as Array<Item> = [];
+	var shop_menu as WatchUi.Menu2? = null;
 
 	function initialize() {
 		NPC.initialize();
@@ -59,12 +61,28 @@ class Merchant extends NPC {
 		return $.Rez.Drawables.Merchant;
 	}
 
+	function getShopTitle() as String {
+		return "Shop (" + $.getApp().getPlayer().getGold() + " gold)";
+	}
+
+	function updateShopTitle() as Void {
+		var menu = shop_menu;
+		if (menu != null) {
+			menu.setTitle(getShopTitle());
+		}
+	}
+
+	function closeShop() as Void {
+		shop_menu = null;
+	}
+
 	function onInteract() as Void {
 		DebugLogger.println("Interacting with merchant");
-		var shopMenu = new WatchUi.Menu2({:title=>"Shop"});
+		var shopMenu = new WatchUi.Menu2({:title=>getShopTitle()});
 		shopMenu.addItem(new WatchUi.MenuItem("Buy", "Buy an item", :buy, null));
 		shopMenu.addItem(new WatchUi.MenuItem("Sell", "Sell an item", :sell, null));
 		shopMenu.addItem(new WatchUi.MenuItem("Talk", "Talk with the merchant", :talk, null));
+		shop_menu = shopMenu;
 		WatchUi.pushView(shopMenu, new DCShopDelegate(self), WatchUi.SLIDE_UP);
 	}
 

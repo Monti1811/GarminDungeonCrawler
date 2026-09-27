@@ -3,6 +3,8 @@ import Toybox.WatchUi;
 
 class DCGameOverDelegate extends WatchUi.BehaviorDelegate {
 
+    private var _exited as Boolean = false;
+
     function initialize() {
         BehaviorDelegate.initialize();
     }
@@ -19,11 +21,14 @@ class DCGameOverDelegate extends WatchUi.BehaviorDelegate {
     }
 
     function goToMainMenu() as Void {
+        if (_exited) {
+            return;
+        }
+        _exited = true;
         var app = getApp();
         app.setPlayer(null);
         app.setCurrentDungeon(null);
         $.SaveData.setSaveData({});
-        WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
         WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
         WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
     }
