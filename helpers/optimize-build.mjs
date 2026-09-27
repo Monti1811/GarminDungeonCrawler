@@ -5,8 +5,13 @@ import * as fs from "node:fs";
 
 const args = process.argv.slice(2);
 if (args.length < 2) {
-  console.error("Usage: node optimize-build.mjs <device|iq> <outputDir> [developerKeyPath]");
+  console.error(
+    "Usage: node optimize-build.mjs <device|iq> <outputDir> [developerKeyPath] [sourceWorkspace]"
+  );
   console.error("  'iq' builds the universal .iq file (no device-specific .prg)");
+  console.error(
+    "  sourceWorkspace: optional folder with the sources to build (defaults to cwd)"
+  );
   process.exit(1);
 }
 
@@ -15,9 +20,12 @@ const outputDir = path.resolve(args[1]);
 const developerKeyPath = args[2] ? path.resolve(args[2]) : undefined;
 const buildIqOnly = target === "iq";
 
-const cwd = process.cwd();
-const jungleFiles = path.resolve(cwd, "monkey.jungle");
-const workspace = path.dirname(jungleFiles);
+const workspace = args[3] ? path.resolve(args[3]) : process.cwd();
+const jungleFiles = path.join(workspace, "monkey.jungle");
+if (!fs.existsSync(jungleFiles)) {
+  console.error(`monkey.jungle not found in workspace: ${workspace}`);
+  process.exit(1);
+}
 
 fs.mkdirSync(outputDir, { recursive: true });
 
@@ -29,6 +37,8 @@ const options = {
   developerKeyPath,
   returnCommand: false,
   allowForbiddenOpts: false,
+  releaseBuild: true,
+  simulatorBuild: false,
 };
 
 const configuredOptions = await getConfig(options);
