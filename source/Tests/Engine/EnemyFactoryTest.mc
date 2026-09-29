@@ -299,9 +299,9 @@ function mimicSaveLoadKeepsChestLoot(logger as Test.Logger) as Boolean {
     var loaded = Enemy.load(mimic.save());
 
     Test.assert(loaded instanceof Mimic);
-    var loaded_loot = (loaded as Mimic).getLoot();
-    Test.assert(loaded_loot != null);
-    Test.assertEqual((loaded_loot as Item).amount, 77);
+    var loaded_drops = (loaded as Mimic).getLoot();
+    Test.assertEqual(loaded_drops.size(), 1);
+    Test.assertEqual(loaded_drops[0].amount, 77);
     return true;
 }
 
@@ -312,10 +312,31 @@ function mimicGetLootReturnsChestContents(logger as Test.Logger) as Boolean {
     loot.amount = 42;
     mimic.setLoot(loot);
 
-    var dropped = mimic.getLoot();
+    var drops = mimic.getLoot();
 
+    Test.assertEqual(drops.size(), 1);
+    Test.assertEqual(drops[0].amount, 42);
+    return true;
+}
+
+(:test)
+function mimicDeathDropsChestContentsIntoRoom(logger as Test.Logger) as Boolean {
+    var map = RoomTestHelpers.createTestMap(10, 10);
+    var room = RoomTestHelpers.createTestRoom(map, 0, 9, 0, 9);
+
+    var mimic = new Mimic();
+    mimic.pos = [3, 3] as Point2D;
+    var loot = new Gold();
+    loot.amount = 55;
+    mimic.setLoot(loot);
+    room.getEnemies().put(mimic.pos, mimic);
+
+    room.dropLoot(mimic);
+
+    Test.assertEqual(room.getItems().size(), 1);
+    var dropped = room.getItems()[mimic.pos] as Item;
     Test.assert(dropped != null);
-    Test.assertEqual((dropped as Item).amount, 42);
+    Test.assertEqual(dropped.amount, 55);
     return true;
 }
 

@@ -29,11 +29,11 @@ class Mimic extends Enemy {
         _loot = item;
     }
 
-    function getLoot() as Item? {
+    function getLoot() as Array<Item> {
         var loot = _loot;
         if (loot != null) {
             _loot = null;
-            return loot;
+            return [loot] as Array<Item>;
         }
         return Enemy.getLoot();
     }
