@@ -72,6 +72,7 @@
     <bitmap id="Sage" filename="players/npc_sage.png" packingFormat="png" />
     <bitmap id="Wizard" filename="players/npc_wizzard.png" packingFormat="png" />
     <bitmap id="Wrestler" filename="players/npc_wrestler.png" packingFormat="png" />
+    <bitmap id="blacksmith" filename="players/npc_blacksmith.png" packingFormat="png" />
 
     <!-- Weapons -->
     <bitmap id="steel_sword" filename="items/steel_sword.png" packingFormat="png" />
@@ -290,4 +291,13 @@
     <bitmap id="monster_elemental_gold_short" filename="monsters/monster_elemental_gold_short.png" packingFormat="png" />
     <bitmap id="monster_shadow_stalker" filename="generated/monster_shadow_stalker.png" packingFormat="png" />
     <bitmap id="monster_gloom_lurker" filename="generated/monster_gloom_lurker.png" packingFormat="png" />
+    <bitmap id="steel_ingot" filename="items/steel_ingot.png" packingFormat="png" />
+    <bitmap id="bronze_ingot" filename="items/bronze_ingot.png" packingFormat="png" />
+    <bitmap id="fire_ember" filename="items/fire_ember.png" packingFormat="png" />
+    <bitmap id="ice_crystal" filename="items/ice_crystal.png" packingFormat="png" />
+    <bitmap id="verdant_seed" filename="items/verdant_seed.png" packingFormat="png" />
+    <bitmap id="water_pearl" filename="items/water_pearl.png" packingFormat="png" />
+    <bitmap id="gold_ingot" filename="items/gold_ingot.png" packingFormat="png" />
+    <bitmap id="demon_shard" filename="items/demon_shard.png" packingFormat="png" />
+    <bitmap id="blood_essence" filename="items/blood_essence.png" packingFormat="png" />
 </drawables>

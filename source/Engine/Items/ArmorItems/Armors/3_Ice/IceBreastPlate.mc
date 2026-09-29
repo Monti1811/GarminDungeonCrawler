@@ -30,6 +30,7 @@ class IceBreastPlate extends ArmorItem {
 	function deepcopy() as Item {
 		var breastplate = new IceBreastPlate();
 		// ...existing code...
+		breastplate.upgrade_level = upgrade_level;
 		return breastplate;
 	}
 

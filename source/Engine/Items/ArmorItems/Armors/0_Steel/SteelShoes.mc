@@ -59,6 +59,7 @@ class SteelShoes extends ArmorItem {
 		shoes.equipped = equipped;
 		shoes.in_inventory = in_inventory;
 		shoes.defense = defense;
+		shoes.upgrade_level = upgrade_level;
 		return shoes;
 	}
 

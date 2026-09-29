@@ -14,10 +14,10 @@ class ElementalGold extends Elemental {
 		return $.Rez.Drawables.monster_elemental_gold_tall;
 	}
 
-	function getLoot() as Item? {
+	function getLoot() as Array<Item> {
 		var gold = new Gold();
 		gold.amount = MathUtil.random(50, 100);
-		return gold;
+		return [gold] as Array<Item>;
 	}
 
 }

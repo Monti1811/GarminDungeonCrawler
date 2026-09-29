@@ -128,13 +128,48 @@ class Room {
     }
 
     function dropLoot(enemy as Enemy) as Void {
-        var loot = enemy.getLoot() as Item?;
-        if (loot == null) {
-            return;
+        var drops = enemy.getLoot();
+        var base_pos = enemy.getPos();
+        var used_base = false;
+        for (var i = 0; i < drops.size(); i++) {
+            var drop = drops[i];
+            var drop_pos = base_pos;
+            if (used_base) {
+                var free_pos = getFreeLootPos(base_pos);
+                if (free_pos == null) {
+                    DebugLogger.println("No free position for extra loot, skipping " + drop.getName());
+                    continue;
+                }
+                drop_pos = free_pos;
+            }
+            drop.setPos(drop_pos);
+            addItem(drop);
+            used_base = true;
         }
-        var new_pos = enemy.getPos();
-        loot.setPos(new_pos);
-        addItem(loot);
+    }
+
+    // Finds an adjacent free cell for an additional loot item.
+    function getFreeLootPos(pos as Point2D) as Point2D? {
+        var size = _map.getSize();
+        var x = pos[0];
+        var y = pos[1];
+        if (y > 0 && canPlaceLootAt(x, y - 1)) {
+            return [x, y - 1] as Point2D;
+        }
+        if (x + 1 < size[0] && canPlaceLootAt(x + 1, y)) {
+            return [x + 1, y] as Point2D;
+        }
+        if (y + 1 < size[1] && canPlaceLootAt(x, y + 1)) {
+            return [x, y + 1] as Point2D;
+        }
+        if (x > 0 && canPlaceLootAt(x - 1, y)) {
+            return [x - 1, y] as Point2D;
+        }
+        return null;
+    }
+
+    private function canPlaceLootAt(x as Number, y as Number) as Boolean {
+        return _map.getContent([x, y] as Point2D) == null;
     }
 
     function removeEnemy(enemy as Enemy) as Void {
@@ -325,6 +360,18 @@ class Room {
         $.Game.setRoomWithFlag(room_pos, HAS_QUEST_GIVER, pos);
         _map.setContent(pos, npc);
         addNPC(npc);
+        Map.addWallsAround(_map, pos[0], pos[1]);
+    }
+
+    function addBlacksmith(room_pos as Point2D) as Void {
+        var map_data = getMapData();
+        var coords = MapUtil.getCoordOfRoom(map_data[:size_x], map_data[:size_y]);
+        var pos = MapUtil.getOpenPos(_map, coords[0], coords[1], coords[2], coords[3]);
+        var blacksmith = new Blacksmith();
+        blacksmith.setPos(pos);
+        $.Game.setRoomWithFlag(room_pos, HAS_BLACKSMITH, pos);
+        _map.setContent(pos, blacksmith);
+        addNPC(blacksmith);
         Map.addWallsAround(_map, pos[0], pos[1]);
     }
 

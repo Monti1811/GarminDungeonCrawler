@@ -19,6 +19,7 @@ class IceBolt extends Ammunition {
 	function deepcopy() as Item {
 		var item = new IceBolt();
 		item.amount = amount;
+		item.upgrade_level = upgrade_level;
 		return item;
 	}
 

@@ -11,6 +11,7 @@ module Main {
 			case 1:
 				dungeon.addStairs();
 				dungeon.addMerchant();
+				dungeon.addBlacksmith();
 				break;
 			case 2:
 				dungeon.addQuestGiver();

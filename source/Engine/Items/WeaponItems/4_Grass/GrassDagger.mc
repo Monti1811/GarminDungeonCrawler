@@ -44,6 +44,7 @@ class GrassDagger extends WeaponItem {
         dagger.in_inventory = in_inventory;
         dagger.attack = attack;
         dagger.range = range;
+        dagger.upgrade_level = upgrade_level;
         return dagger;
     }
 

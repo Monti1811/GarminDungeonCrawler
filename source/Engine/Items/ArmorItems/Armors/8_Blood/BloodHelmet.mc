@@ -28,6 +28,7 @@ class BloodHelmet extends ArmorItem {
 	function deepcopy() as Item {
 		var helmet = new BloodHelmet();
 		// ...existing code...
+		helmet.upgrade_level = upgrade_level;
 		return helmet;
 	}
 

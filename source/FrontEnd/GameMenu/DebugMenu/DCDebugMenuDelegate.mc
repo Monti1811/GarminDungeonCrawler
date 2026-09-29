@@ -23,7 +23,16 @@ class DCDebugMenuDelegate extends WatchUi.Menu2InputDelegate {
             case :debug_player:
                 openPlayerStats();
                 break;
+            case :debug_functions:
+                openFunctions();
+                break;
         }
+    }
+
+    function openFunctions() as Void {
+        var menu = new WatchUi.Menu2({:title=>"Functions (Debug)"});
+        menu.addItem(new WatchUi.MenuItem("Materials x6", "6x of each material", :action_materials, null));
+        WatchUi.pushView(menu, new DCDebugFunctionsDelegate(), WatchUi.SLIDE_UP);
     }
 
 	function openEnemyList() as Void {

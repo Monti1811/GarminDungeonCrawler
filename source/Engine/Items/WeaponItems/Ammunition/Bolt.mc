@@ -17,6 +17,7 @@ class Bolt extends Ammunition {
 
 	function deepcopy() as Item {
 		var item = new Bolt();
+		item.upgrade_level = upgrade_level;
 		return item;
 	}
 

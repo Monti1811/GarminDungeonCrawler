@@ -19,6 +19,7 @@ class GoldBolt extends Ammunition {
 	function deepcopy() as Item {
 		var item = new GoldBolt();
 		item.amount = amount;
+		item.upgrade_level = upgrade_level;
 		return item;
 	}
 

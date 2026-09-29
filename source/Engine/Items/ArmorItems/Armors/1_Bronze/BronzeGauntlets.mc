@@ -28,6 +28,7 @@ class BronzeGauntlets extends ArmorItem {
 	function deepcopy() as Item {
 		var gauntlets = new BronzeGauntlets();
 		// ...existing code...
+		gauntlets.upgrade_level = upgrade_level;
 		return gauntlets;
 	}
 

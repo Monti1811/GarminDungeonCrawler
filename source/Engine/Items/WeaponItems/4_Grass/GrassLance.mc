@@ -46,6 +46,7 @@ class GrassLance extends WeaponItem {
         lance.in_inventory = in_inventory;
         lance.attack = attack;
         lance.range = range;
+        lance.upgrade_level = upgrade_level;
         return lance;
     }
 

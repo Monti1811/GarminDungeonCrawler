@@ -58,6 +58,7 @@ class SteelBreastPlate extends ArmorItem {
 		breastplate.equipped = equipped;
 		breastplate.in_inventory = in_inventory;
 		breastplate.defense = defense;
+		breastplate.upgrade_level = upgrade_level;
 		return breastplate;
 	}
 

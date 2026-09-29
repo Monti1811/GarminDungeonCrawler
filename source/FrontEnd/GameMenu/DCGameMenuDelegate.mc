@@ -166,6 +166,7 @@ class DCGameMenuDelegate extends WatchUi.Menu2InputDelegate {
         debugMenu.addItem(new WatchUi.MenuItem("NPCs", "Spawn NPCs", :debug_npcs, null));
         debugMenu.addItem(new WatchUi.MenuItem("Items", "Spawn items", :debug_items, null));
         debugMenu.addItem(new WatchUi.MenuItem("Player Stats", "Modify player state", :debug_player, null));
+        debugMenu.addItem(new WatchUi.MenuItem("Functions", "One-click debug actions", :debug_functions, null));
         WatchUi.pushView(debugMenu, new DCDebugMenuDelegate(), WatchUi.SLIDE_UP);
     }
 
@@ -246,6 +247,9 @@ class DCInventoryDelegate extends WatchUi.Menu2InputDelegate {
         } else if (item.type == KEY) {
             menuitems.add(new WatchUi.MenuItem("Drop", null, :drop, null));
             menuitems.add(new WatchUi.MenuItem("Info", "More information", :info, null));
+        } else if (item.type == MATERIAL) {
+            menuitems.add(new WatchUi.MenuItem("Drop", null, :drop, null));
+            menuitems.add(new WatchUi.MenuItem("Info", "More information", :info, null));
         } else if (item.type == CUSTOM) {
             menuitems.add(new WatchUi.MenuItem("Drop", null, :drop, null));
             menuitems.add(new WatchUi.MenuItem("Info", "More information", :info, null));
@@ -268,6 +272,7 @@ class DCInventoryDelegate extends WatchUi.Menu2InputDelegate {
         inventoryMenu.addItem(new WatchUi.MenuItem("Weapons", null, :weapons, null));
         inventoryMenu.addItem(new WatchUi.MenuItem("Armor", null, :armor, null));
         inventoryMenu.addItem(new WatchUi.MenuItem("Consumables", null, :consumables, null));
+        inventoryMenu.addItem(new WatchUi.MenuItem("Materials", null, :materials, null));
         // Sort 
         inventoryMenu.addItem(new WatchUi.MenuItem("Sort by name", null, :sort_name, null));
         inventoryMenu.addItem(new WatchUi.MenuItem("Sort by weight", null, :sort_weight, null));
@@ -321,6 +326,9 @@ class DCInventoryFilterDelegate extends WatchUi.Menu2InputDelegate {
                 break;
             case :consumables:
                 addInventoryFilter(CONSUMABLE);
+                break;
+            case :materials:
+                addInventoryFilter(MATERIAL);
                 break;
             case :sort_name:
             case :sort_weight:

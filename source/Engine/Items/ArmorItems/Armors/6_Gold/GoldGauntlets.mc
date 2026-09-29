@@ -28,6 +28,7 @@ class GoldGauntlets extends ArmorItem {
 	function deepcopy() as Item {
 		var gauntlets = new GoldGauntlets();
 		// ...existing code...
+		gauntlets.upgrade_level = upgrade_level;
 		return gauntlets;
 	}
 

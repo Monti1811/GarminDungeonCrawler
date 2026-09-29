@@ -36,6 +36,7 @@ class DemonKatana extends WeaponItem {
         // ...existing code...
         katana.attack = attack;
         katana.range = range;
+        katana.upgrade_level = upgrade_level;
         return katana;
     }
 

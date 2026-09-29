@@ -28,6 +28,7 @@ class WaterBreastPlate extends ArmorItem {
 	function deepcopy() as Item {
 		var breastplate = new WaterBreastPlate();
 		// ...existing code...
+		breastplate.upgrade_level = upgrade_level;
 		return breastplate;
 	}
 

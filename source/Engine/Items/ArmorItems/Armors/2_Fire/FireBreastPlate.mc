@@ -29,6 +29,7 @@ class FireBreastPlate extends ArmorItem {
 	function deepcopy() as Item {
 		var breastplate = new FireBreastPlate();
 		// ...existing code...
+		breastplate.upgrade_level = upgrade_level;
 		return breastplate;
 	}
 
