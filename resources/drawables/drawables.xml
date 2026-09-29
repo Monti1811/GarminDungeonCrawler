@@ -290,4 +290,5 @@
     <bitmap id="monster_elemental_gold_short" filename="monsters/monster_elemental_gold_short.png" packingFormat="png" />
     <bitmap id="monster_shadow_stalker" filename="generated/monster_shadow_stalker.png" packingFormat="png" />
     <bitmap id="monster_gloom_lurker" filename="generated/monster_gloom_lurker.png" packingFormat="png" />
+    <bitmap id="monster_mimic" filename="monsters/monster_mimic.png" packingFormat="png" />
 </drawables>

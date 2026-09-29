@@ -268,6 +268,58 @@ function enemyFactoryCreatesGloomLurker(logger as Test.Logger) as Boolean {
 }
 
 (:test)
+function enemyFactoryCreatesMimic(logger as Test.Logger) as Boolean {
+    var enemy = Enemies.createEnemyFromId(38);
+    Test.assert(enemy instanceof Mimic);
+    return true;
+}
+
+(:test)
+function mimicIsNotSpawnedAsDungeonEnemy(logger as Test.Logger) as Boolean {
+    for (var i = 0; i < Enemies.dungeon_enemies.size(); i++) {
+        var entry = Enemies.dungeon_enemies[i] as Dictionary<Symbol, Numeric>;
+        Test.assertNotEqual(entry[:id], 38);
+    }
+    var weights = new EnemySpecificValues(0).getDungeonEnemyWeights()[0] as Array;
+    for (var i = 0; i < weights.size(); i++) {
+        var entry = weights[i] as Dictionary<Symbol, Number>;
+        Test.assertNotEqual(entry[:id], 38);
+    }
+    return true;
+}
+
+(:test)
+function mimicSaveLoadKeepsChestLoot(logger as Test.Logger) as Boolean {
+    var mimic = new Mimic();
+    mimic.pos = [4, 5] as Point2D;
+    var loot = new Gold();
+    loot.amount = 77;
+    mimic.setLoot(loot);
+
+    var loaded = Enemy.load(mimic.save());
+
+    Test.assert(loaded instanceof Mimic);
+    var loaded_loot = (loaded as Mimic).getLoot();
+    Test.assert(loaded_loot != null);
+    Test.assertEqual((loaded_loot as Item).amount, 77);
+    return true;
+}
+
+(:test)
+function mimicGetLootReturnsChestContents(logger as Test.Logger) as Boolean {
+    var mimic = new Mimic();
+    var loot = new Gold();
+    loot.amount = 42;
+    mimic.setLoot(loot);
+
+    var dropped = mimic.getLoot();
+
+    Test.assert(dropped != null);
+    Test.assertEqual((dropped as Item).amount, 42);
+    return true;
+}
+
+(:test)
 function enemyFactoryDefaultIdReturnsFrog(logger as Test.Logger) as Boolean {
     var enemy = Enemies.createEnemyFromId(999);
     Test.assert(enemy instanceof Frog);

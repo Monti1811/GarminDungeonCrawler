@@ -4,7 +4,7 @@ Enemy types, AI behavior, spawning, and difficulty scaling.
 
 > Current values (stats, spawn weights, balance status): [enemies-values.md](enemies-values.md)
 
-## Enemy Roster (38 types)
+## Enemy Roster (39 types)
 
 ### Easy (early depths)
 
@@ -49,6 +49,17 @@ Enemy types, AI behavior, spawning, and difficulty scaling.
 | 2 | Demon |
 | 10 | Ogre |
 | 26 | Tentackle |
+
+### Chest-only
+
+| ID | Name |
+|----|------|
+| 38 | Mimic |
+
+Mimics are never part of the weighted dungeon table. `TreasureChest.onInteract()` rolls
+`MIMIC_SPAWN_CHANCE` (15 %) right after a key was consumed: the chest is removed and a
+mimic takes its place on the same tile, carrying the chest contents. The contents drop
+wherever the mimic dies (any damage source, including periodic damage).
 
 ### Elementals (15 types)
 

@@ -3,6 +3,7 @@ import Toybox.WatchUi;
 
 class TreasureChest extends Item {
     const KEY_ITEM_ID = 3000;
+    const MIMIC_SPAWN_CHANCE = 15;
 
     var id as Number = 6000;
     var name as String = "Treasure Chest";
@@ -40,6 +41,9 @@ class TreasureChest extends Item {
                 return false;
             }
             _opened = true;
+            if (turnIntoMimic(room)) {
+                return true;
+            }
         }
 
         if (_contents != null && !_item_taken) {
@@ -50,6 +54,28 @@ class TreasureChest extends Item {
             }
         }
 
+        return true;
+    }
+
+    // Swallows the chest contents into a mimic standing on the chest tile.
+    // Returns false when the chest should behave normally.
+    private function turnIntoMimic(room as Room) as Boolean {
+        if (room.getEnemies().size() >= $.Constants.MAX_ENEMIES_PER_ROOM) {
+            return false;
+        }
+        if (!MathUtil.isRandomPercent(MIMIC_SPAWN_CHANCE)) {
+            return false;
+        }
+        var mimic = new Mimic();
+        mimic.setLoot(_contents);
+        mimic.setLevel($.Game.depth);
+        mimic.setPos(pos);
+        mimic.register();
+        _contents = null;
+        _item_taken = true;
+        room.removeItem(self);
+        room.addEnemy(mimic);
+        WatchUi.showToast("It's a Mimic!", {:icon=>mimic.getSprite()});
         return true;
     }
 
