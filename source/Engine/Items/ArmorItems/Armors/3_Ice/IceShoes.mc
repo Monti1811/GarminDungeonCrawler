@@ -29,6 +29,7 @@ class IceShoes extends ArmorItem {
 	function deepcopy() as Item {
 		var shoes = new IceShoes();
 		// ...existing code...
+		shoes.upgrade_level = upgrade_level;
 		return shoes;
 	}
 

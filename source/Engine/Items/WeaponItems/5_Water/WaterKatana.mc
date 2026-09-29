@@ -44,6 +44,7 @@ class WaterKatana extends WeaponItem {
         katana.in_inventory = in_inventory;
         katana.attack = attack;
         katana.range = range;
+        katana.upgrade_level = upgrade_level;
         return katana;
     }
 

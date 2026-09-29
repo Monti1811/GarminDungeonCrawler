@@ -40,6 +40,7 @@ class GoldBackpack extends ArmorItem {
 		backpack.pos = pos;
 		backpack.equipped = equipped;
 		backpack.in_inventory = in_inventory;
+		backpack.upgrade_level = upgrade_level;
 		return backpack;
 	}
 

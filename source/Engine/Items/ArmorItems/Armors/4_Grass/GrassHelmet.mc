@@ -29,6 +29,7 @@ class GrassHelmet extends ArmorItem {
 	function deepcopy() as Item {
 		var helmet = new GrassHelmet();
 		// ...existing code...
+		helmet.upgrade_level = upgrade_level;
 		return helmet;
 	}
 

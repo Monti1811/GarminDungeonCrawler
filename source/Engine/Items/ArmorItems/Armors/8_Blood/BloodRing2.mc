@@ -29,6 +29,7 @@ class BloodRing2 extends ArmorItem {
 	function deepcopy() as Item {
 		var ring = new BloodRing2();
 		// ...existing code...
+		ring.upgrade_level = upgrade_level;
 		return ring;
 	}
 

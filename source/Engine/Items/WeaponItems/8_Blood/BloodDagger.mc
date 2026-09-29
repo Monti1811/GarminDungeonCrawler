@@ -36,6 +36,7 @@ class BloodDagger extends WeaponItem {
         // ...existing code...
         dagger.attack = attack;
         dagger.range = range;
+        dagger.upgrade_level = upgrade_level;
         return dagger;
     }
 

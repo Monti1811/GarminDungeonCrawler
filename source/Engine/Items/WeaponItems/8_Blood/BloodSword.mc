@@ -36,6 +36,7 @@ class BloodSword extends WeaponItem {
         // ...existing code...
         sword.attack = attack;
         sword.range = range;
+        sword.upgrade_level = upgrade_level;
         return sword;
     }
 

@@ -114,6 +114,18 @@ class Player extends Entity {
 		return equipped[slot];
 	}
 
+	function getEquippedItems() as Array<Item> {
+		var result = [] as Array<Item>;
+		var equip_keys = equipped.keys() as Array<ItemSlot>;
+		for (var i = 0; i < equip_keys.size(); i++) {
+			var item = equipped[equip_keys[i]];
+			if (item != null) {
+				result.add(item);
+			}
+		}
+		return result;
+	}
+
 	function pickupItem(item as Item) as Boolean {
 		if (item.canBePickedUp(me)) {
 			if (item.slot == EITHER_HAND) {

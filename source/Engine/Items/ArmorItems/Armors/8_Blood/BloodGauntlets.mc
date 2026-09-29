@@ -30,6 +30,7 @@ class BloodGauntlets extends ArmorItem {
 	function deepcopy() as Item {
 		var gauntlets = new BloodGauntlets();
 		// ...existing code...
+		gauntlets.upgrade_level = upgrade_level;
 		return gauntlets;
 	}
 

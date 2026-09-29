@@ -27,6 +27,7 @@ class BronzeHelmet extends ArmorItem {
 	function deepcopy() as Item {
 		var helmet = new BronzeHelmet();
 		// ...existing code...
+		helmet.upgrade_level = upgrade_level;
 		return helmet;
 	}
 

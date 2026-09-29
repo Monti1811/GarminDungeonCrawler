@@ -57,6 +57,7 @@ class WoodShield extends ArmorItem {
 		shield.amount = amount;
 		shield.attribute_bonus = attribute_bonus;
 		shield.defense = defense;
+		shield.upgrade_level = upgrade_level;
 		return shield;
 	}
 }

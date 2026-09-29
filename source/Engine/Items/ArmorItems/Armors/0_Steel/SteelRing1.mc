@@ -61,6 +61,7 @@ class SteelRing1 extends ArmorItem {
 		ring.equipped = equipped;
 		ring.in_inventory = in_inventory;
 		ring.defense = defense;
+		ring.upgrade_level = upgrade_level;
 		return ring;
 	}
 

@@ -45,6 +45,7 @@ class FireAxe extends WeaponItem {
         axe.in_inventory = in_inventory;
         axe.attack = attack;
         axe.range = range;
+        axe.upgrade_level = upgrade_level;
         return axe;
     }
 

@@ -36,6 +36,7 @@ class DemonAxe extends WeaponItem {
         // ...existing code...
         axe.attack = attack;
         axe.range = range;
+        axe.upgrade_level = upgrade_level;
         return axe;
     }
 

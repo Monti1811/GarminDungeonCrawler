@@ -67,6 +67,7 @@ class Staff extends WeaponItem {
 		staff.in_inventory = in_inventory;
 		staff.attack = attack;
 		staff.range = range;
+		staff.upgrade_level = upgrade_level;
 		return staff;
 	}
 

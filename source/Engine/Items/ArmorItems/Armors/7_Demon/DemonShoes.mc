@@ -30,6 +30,7 @@ class DemonShoes extends ArmorItem {
 	function deepcopy() as Item {
 		var shoes = new DemonShoes();
 		// ...existing code...
+		shoes.upgrade_level = upgrade_level;
 		return shoes;
 	}
 

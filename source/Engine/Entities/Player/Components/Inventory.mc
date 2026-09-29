@@ -13,16 +13,25 @@ class Inventory {
 		self.max_weight = max_weight;
 	}
 
+	// Upgraded equipment keeps its own stack per upgrade level.
+	private function getStackKey(item as Item) as Number {
+		if (item instanceof EquippableItem) {
+			return item.id + (item as EquippableItem).upgrade_level * 1000000;
+		}
+		return item.id;
+	}
+
 	function add(item as Item) as Boolean {
 		var item_weight = item.weight * item.amount;
 		if (current_weight < max_weight 
 				&& (current_weight + item_weight <= max_weight)) {
-			var existing_item = items[item.id];
+			var key = getStackKey(item);
+			var existing_item = items[key];
 			if (existing_item != null) {
 				existing_item.amount += item.amount;
 			} else {
 				item.setIsInInventory(true);
-				items[item.id] = item;	
+				items[key] = item;	
 			}
 			current_weight += item_weight;
 			return true;
@@ -31,11 +40,12 @@ class Inventory {
 	}
 
 	function remove(item as Item) as Item? {
-		var existing_item = items[item.id];
+		var key = getStackKey(item);
+		var existing_item = items[key];
 		if (existing_item != null) {
 			existing_item.amount -= 1;
 			if (existing_item.amount <= 0) {
-				items.remove(item.id);
+				items.remove(key);
 			}
 			current_weight -= item.weight;
 			var new_item = item.deepcopy();
@@ -47,12 +57,13 @@ class Inventory {
 	}
 
 	function removeMultiple(item as Item, amount as Number) as Item? {
-		var existing_item = items[item.id];
+		var key = getStackKey(item);
+		var existing_item = items[key];
 		if (existing_item != null) {
 			var dropped_amount = MathUtil.min(amount, existing_item.amount);
 			existing_item.amount -= dropped_amount;
 			if (existing_item.amount <= 0) {
-				items.remove(item.id);
+				items.remove(key);
 			}
 			current_weight -= item.weight * dropped_amount;
 			var new_item = item.deepcopy();
@@ -164,7 +175,7 @@ class Inventory {
 		for (var i = 0; i < item_list.size(); i++) {
 			var item = Item.load(item_list[i]);
 			if (item != null) {
-				items[item.id] = item;
+				items[getStackKey(item)] = item;
 				current_weight += item.weight * item.amount;
 			}
 		}

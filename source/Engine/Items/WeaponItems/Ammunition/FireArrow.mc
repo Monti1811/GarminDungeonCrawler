@@ -18,6 +18,7 @@ class FireArrow extends Ammunition {
 
 	function deepcopy() as Item {
 		var item = new FireArrow();
+		item.upgrade_level = upgrade_level;
 		return item;
 	}
 

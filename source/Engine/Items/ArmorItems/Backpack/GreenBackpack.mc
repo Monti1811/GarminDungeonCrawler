@@ -39,6 +39,7 @@ class GreenBackpack extends ArmorItem {
 		backpack.equipped = equipped;
 		backpack.in_inventory = in_inventory;
 		backpack.defense = defense;
+		backpack.upgrade_level = upgrade_level;
 		return backpack;
 	}
 

@@ -220,6 +220,21 @@ module Items {
             }
         }
 
+        if (id < 5000) {
+            switch (id) {
+                case 4000: return new SteelIngot();
+                case 4001: return new BronzeIngot();
+                case 4002: return new FireEmber();
+                case 4003: return new IceCrystal();
+                case 4004: return new VerdantSeed();
+                case 4005: return new WaterPearl();
+                case 4006: return new GoldIngot();
+                case 4007: return new DemonShard();
+                case 4008: return new BloodEssence();
+                default: return null;
+            }
+        }
+
         if (id < 6000) {
             switch (id) {
                 case 5000: return new Gold();

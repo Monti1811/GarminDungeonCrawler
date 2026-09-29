@@ -178,3 +178,38 @@ function itemFactoryCreateTreasureChestWithLoot(logger as Test.Logger) as Boolea
     Test.assert(chest instanceof TreasureChest);
     return true;
 }
+
+(:test)
+function itemFactoryCreatesAllMaterials(logger as Test.Logger) as Boolean {
+    for (var id = 4000; id <= 4008; id++) {
+        var item = Items.createItemFromId(id);
+        Test.assert(item != null);
+        Test.assert((item as Item).type == MATERIAL);
+    }
+    return true;
+}
+
+(:test)
+function materialUtilMapsWeaponAndArmorTiers(logger as Test.Logger) as Boolean {
+    var steel_sword = Items.createItemFromId(8) as Item;
+    var bronze_sword = Items.createItemFromId(18) as Item;
+    var blood_sword = Items.createItemFromId(88) as Item;
+    var crossbow = Items.createItemFromId(300) as Item;
+    var hell_crossbow = Items.createItemFromId(302) as Item;
+    var steel_helmet = Items.createItemFromId(1000) as Item;
+    var blood_helmet = Items.createItemFromId(1080) as Item;
+    var silver_shield = Items.createItemFromId(1202) as Item;
+    var arrow = Items.createItemFromId(200) as Item;
+    var life_amulet = Items.createItemFromId(1300) as Item;
+    Test.assert(MaterialUtil.getMaterialForItem(steel_sword) == 4000);
+    Test.assert(MaterialUtil.getMaterialForItem(bronze_sword) == 4001);
+    Test.assert(MaterialUtil.getMaterialForItem(blood_sword) == 4008);
+    Test.assert(MaterialUtil.getMaterialForItem(crossbow) == 4000);
+    Test.assert(MaterialUtil.getMaterialForItem(hell_crossbow) == 4007);
+    Test.assert(MaterialUtil.getMaterialForItem(steel_helmet) == 4000);
+    Test.assert(MaterialUtil.getMaterialForItem(blood_helmet) == 4008);
+    Test.assert(MaterialUtil.getMaterialForItem(silver_shield) == 4006);
+    Test.assert(MaterialUtil.getMaterialForItem(arrow) == -1);
+    Test.assert(MaterialUtil.getMaterialForItem(life_amulet) == -1);
+    return true;
+}

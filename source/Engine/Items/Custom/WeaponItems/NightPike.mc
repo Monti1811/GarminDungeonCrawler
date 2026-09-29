@@ -31,6 +31,7 @@ class NightPike extends WeaponItem {
 		nightPike.in_inventory = in_inventory;
 		nightPike.attack = attack;
 		nightPike.range = range;
+		nightPike.upgrade_level = upgrade_level;
 		return nightPike;
 	}
 

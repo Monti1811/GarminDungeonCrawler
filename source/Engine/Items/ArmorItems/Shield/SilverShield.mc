@@ -26,6 +26,7 @@ class SilverShield extends ArmorItem {
 	function deepcopy() as Item {
 		var shield = new SilverShield();
 		shield.amount = amount;
+		shield.upgrade_level = upgrade_level;
 		return shield;
 	}
 }

@@ -61,6 +61,7 @@ class WaterStaff extends Staff {
         staff.range_type = range_type;
         staff.active = active;
         staff.current_cooldown = current_cooldown;
+        staff.upgrade_level = upgrade_level;
         return staff;
     }
 

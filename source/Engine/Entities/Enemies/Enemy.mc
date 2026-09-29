@@ -137,30 +137,36 @@ class Enemy extends Entity {
 		return kill_experience;
 	}
 
-	function getLoot() as Item? {
+	function getLoot() as Array<Item> {
+		var drops = [] as Array<Item>;
 		var player = $.Game.getPlayer();
 		if (player != null && player.id == 2/*ARCHER*/ && MathUtil.isRandomPercent(25)) {
 			var right_hand_equip = player.getEquip(RIGHT_HAND);
 			if (right_hand_equip != null && right_hand_equip.tag == :bow) {
 				var arrows = new Arrow();
 				arrows.amount = MathUtil.random(2, 5);
-				return arrows;
-			}
-			if (right_hand_equip != null && right_hand_equip.tag == :crossbow) {
+				drops.add(arrows);
+			} else if (right_hand_equip != null && right_hand_equip.tag == :crossbow) {
 				var bolts = new Bolt();
 				bolts.amount = MathUtil.random(2, 5);
-				return bolts;
+				drops.add(bolts);
+			} else {
+				var fallback_arrows = new Arrow();
+				fallback_arrows.amount = MathUtil.random(1, 3);
+				drops.add(fallback_arrows);
 			}
-			var arrows = new Arrow();
-			arrows.amount = MathUtil.random(1, 3);
-			return arrows;
-		}
-		if (MathUtil.isRandomPercent(50)) {
+		} else if (MathUtil.isRandomPercent(50)) {
 			var gold = new Gold();
 			gold.amount = MathUtil.random(1, 10);
-			return gold;
+			drops.add(gold);
 		}
-		return null;
+		if (MathUtil.isRandomPercent($.Constants.MATERIAL_DROP_CHANCE)) {
+			var material = Items.createItemFromId(MaterialUtil.pickMaterialForDepth($.Game.depth));
+			if (material != null) {
+				drops.add(material);
+			}
+		}
+		return drops;
 	}
 
 	function findNextMove(map as Map) as Point2D {

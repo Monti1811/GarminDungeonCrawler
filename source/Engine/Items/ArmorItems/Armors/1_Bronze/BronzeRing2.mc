@@ -30,6 +30,7 @@ class BronzeRing2 extends ArmorItem {
 	function deepcopy() as Item {
 		var ring = new BronzeRing2();
 		// ...existing code...
+		ring.upgrade_level = upgrade_level;
 		return ring;
 	}
 
