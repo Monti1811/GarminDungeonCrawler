@@ -73,22 +73,22 @@ class DCItemInfoValuesView extends WatchUi.View {
 		dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_BLACK);
 		dc.clear();
 
-		dc.drawScaledBitmap(_bgX, _bgY, _ref, _ref, _bgBitmap);
+		DrawUtil.drawScaledBitmap(dc, _bgX, _bgY, _ref, _ref, _bgBitmap);
 
-		// Overlays für Waffen/Rüstung zeichnen
+		// Overlays fÃ¼r Waffen/RÃ¼stung zeichnen
 		if (_overlayTop != null) {
 			var top_x = (_bgX + _ref * 164 / 360).toNumber();
 			var top_y = (_bgY + _ref * 28 / 360).toNumber();
 			var top_w = (_overlayTop.getWidth() * _ref / 360).toNumber();
 			var top_h = (_overlayTop.getHeight() * _ref / 360).toNumber();
-			dc.drawScaledBitmap(top_x, top_y, top_w, top_h, _overlayTop);
+			DrawUtil.drawScaledBitmap(dc, top_x, top_y, top_w, top_h, _overlayTop);
 		}
 		if (_overlayBottom != null) {
 			var bot_x = (_bgX + _ref * 159 / 360).toNumber();
 			var bot_y = (_bgY + _ref * 102 / 360).toNumber();
 			var bot_w = (_overlayBottom.getWidth() * _ref / 360).toNumber();
 			var bot_h = (_overlayBottom.getHeight() * _ref / 360).toNumber();
-			dc.drawScaledBitmap(bot_x, bot_y, bot_w, bot_h, _overlayBottom);
+			DrawUtil.drawScaledBitmap(dc, bot_x, bot_y, bot_w, bot_h, _overlayBottom);
 		}
 
 		drawItemIcon(dc);
@@ -115,7 +115,7 @@ class DCItemInfoValuesView extends WatchUi.View {
 		var x = (_bgX + _ref * 68 / 360).toNumber();
 		var y = (_bgY + _ref * 116 / 360).toNumber();
 		var size = (_ref * 64 / 360).toNumber();
-		dc.drawScaledBitmap(x, y, size, size, _itemIcon);
+		DrawUtil.drawScaledBitmap(dc, x, y, size, size, _itemIcon);
 	}
 
 	// --- 3 Stat-Werte rechts (nur Werte) ---
@@ -248,7 +248,7 @@ class DCItemInfoValuesView extends WatchUi.View {
 		dc.drawText(lck_x, y_lck, _small_font, lck_str, Graphics.TEXT_JUSTIFY_RIGHT | Graphics.TEXT_JUSTIFY_VCENTER);
 	}
 
-	// --- Effect Description für Consumables ---
+	// --- Effect Description fÃ¼r Consumables ---
 	function drawEffectDescription(dc) {
 		if (_item_type != CONSUMABLE) {
 			return;
@@ -266,7 +266,7 @@ class DCItemInfoValuesView extends WatchUi.View {
 		dc.drawText(text_x, text_y, _small_font, formatted, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
 	}
 
-	// --- Effect Description für Key Items ---
+	// --- Effect Description fÃ¼r Key Items ---
 	function drawKeyDescription(dc) {
 		if (_item_type != KEY) {
 			return;

@@ -42,7 +42,7 @@ class DCPlayerDetailsEquipmentsView extends WatchUi.View {
 		var res = equipped_res[equipslot];
 		if (res != null) {
 			var new_size = size_rectangles * 3/5;
-			dc.drawScaledBitmap(x - new_size/2, y_start + new_size/2 - size_rectangles/4, new_size, new_size, res);
+			DrawUtil.drawScaledBitmap(dc, x - new_size/2, y_start + new_size/2 - size_rectangles/4, new_size, new_size, res);
 		}
 	}
 

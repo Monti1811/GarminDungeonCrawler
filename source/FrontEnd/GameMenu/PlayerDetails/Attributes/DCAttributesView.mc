@@ -61,7 +61,7 @@ class DCPlayerDetailsAttributesView extends WatchUi.View {
 
 		// Draw background centered
 		if (_bg != null) {
-			dc.drawScaledBitmap(bgX, bgY, ref, ref, _bg as BitmapReference);
+			DrawUtil.drawScaledBitmap(dc, bgX, bgY, ref, ref, _bg as BitmapReference);
 		}
 
 		// Draw hints
