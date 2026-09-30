@@ -44,6 +44,9 @@ class DCDebugSpawnItemDelegate extends WatchUi.Menu2InputDelegate {
             return false;
         }
         var item = $.Items.createItemFromId(item_id);
+        if (item instanceof TreasureChest) {
+            item = $.Items.createTreasureChestWithRandomLoot();
+        }
         item.setPos(spawn_pos);
         room.addItem(item);
         WatchUi.showToast("Spawned " + item.getName(), {:icon=>Rez.Drawables.aboutToastIcon});

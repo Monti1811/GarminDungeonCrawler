@@ -256,6 +256,11 @@ class Turn {
             var item = map_element as Item;
             var success = item.canBePickedUp(_player);
             var interaction = item.onInteract(_player, $.Game.getCurrentRoom());
+            // State of the item changed in place (e.g. a chest was opened) and the player
+            // might not move onto the tile, so the foreground has to be redrawn explicitly.
+            if (interaction) {
+                _view.setForegroundDirty();
+            }
             // If the player successfully interacted with the item and the item can be picked up, move player to position of item
             if (success && interaction) {
                 return true;

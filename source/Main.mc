@@ -346,6 +346,7 @@ module Main {
 					pool_no_tunnel.remove(pool_no_tunnel.size() - 1);
 					pool_no_tunnel.remove(pool_no_tunnel.size() - 1);
 					var chest = Items.createTreasureChestWithLoot(item);
+					chest.setGolden(type == 3);
 					chest.setPos(chest_pos);
 					map.setContent(chest_pos, chest);
 					items.put(chest_pos, chest);
@@ -358,6 +359,7 @@ module Main {
 					pool_normal.remove(pool_normal.size() - 1);
 					pool_normal.remove(pool_normal.size() - 1);
 					var chest2 = Items.createTreasureChestWithLoot(item);
+					chest2.setGolden(type == 3);
 					chest2.setPos(chest_pos2);
 					map.setContent(chest_pos2, chest2);
 					items.put(chest_pos2, chest2);
