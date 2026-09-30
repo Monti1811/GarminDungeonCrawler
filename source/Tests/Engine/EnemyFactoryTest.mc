@@ -268,6 +268,79 @@ function enemyFactoryCreatesGloomLurker(logger as Test.Logger) as Boolean {
 }
 
 (:test)
+function enemyFactoryCreatesMimic(logger as Test.Logger) as Boolean {
+    var enemy = Enemies.createEnemyFromId(38);
+    Test.assert(enemy instanceof Mimic);
+    return true;
+}
+
+(:test)
+function mimicIsNotSpawnedAsDungeonEnemy(logger as Test.Logger) as Boolean {
+    for (var i = 0; i < Enemies.dungeon_enemies.size(); i++) {
+        var entry = Enemies.dungeon_enemies[i] as Dictionary<Symbol, Numeric>;
+        Test.assertNotEqual(entry[:id], 38);
+    }
+    var weights = new EnemySpecificValues(0).getDungeonEnemyWeights()[0] as Array;
+    for (var i = 0; i < weights.size(); i++) {
+        var entry = weights[i] as Dictionary<Symbol, Number>;
+        Test.assertNotEqual(entry[:id], 38);
+    }
+    return true;
+}
+
+(:test)
+function mimicSaveLoadKeepsChestLoot(logger as Test.Logger) as Boolean {
+    var mimic = new Mimic();
+    mimic.pos = [4, 5] as Point2D;
+    var loot = new Gold();
+    loot.amount = 77;
+    mimic.setLoot(loot);
+
+    var loaded = Enemy.load(mimic.save());
+
+    Test.assert(loaded instanceof Mimic);
+    var loaded_drops = (loaded as Mimic).getLoot();
+    Test.assertEqual(loaded_drops.size(), 1);
+    Test.assertEqual(loaded_drops[0].amount, 77);
+    return true;
+}
+
+(:test)
+function mimicGetLootReturnsChestContents(logger as Test.Logger) as Boolean {
+    var mimic = new Mimic();
+    var loot = new Gold();
+    loot.amount = 42;
+    mimic.setLoot(loot);
+
+    var drops = mimic.getLoot();
+
+    Test.assertEqual(drops.size(), 1);
+    Test.assertEqual(drops[0].amount, 42);
+    return true;
+}
+
+(:test)
+function mimicDeathDropsChestContentsIntoRoom(logger as Test.Logger) as Boolean {
+    var map = RoomTestHelpers.createTestMap(10, 10);
+    var room = RoomTestHelpers.createTestRoom(map, 0, 9, 0, 9);
+
+    var mimic = new Mimic();
+    mimic.pos = [3, 3] as Point2D;
+    var loot = new Gold();
+    loot.amount = 55;
+    mimic.setLoot(loot);
+    room.getEnemies().put(mimic.pos, mimic);
+
+    room.dropLoot(mimic);
+
+    Test.assertEqual(room.getItems().size(), 1);
+    var dropped = room.getItems()[mimic.pos] as Item;
+    Test.assert(dropped != null);
+    Test.assertEqual(dropped.amount, 55);
+    return true;
+}
+
+(:test)
 function enemyFactoryDefaultIdReturnsFrog(logger as Test.Logger) as Boolean {
     var enemy = Enemies.createEnemyFromId(999);
     Test.assert(enemy instanceof Frog);

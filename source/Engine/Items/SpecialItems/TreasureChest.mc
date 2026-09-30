@@ -3,6 +3,7 @@ import Toybox.WatchUi;
 
 class TreasureChest extends Item {
     const KEY_ITEM_ID = 3000;
+    const MIMIC_SPAWN_CHANCE = 15;
 
     var id as Number = 6000;
     var name as String = "Treasure Chest";
@@ -11,10 +12,20 @@ class TreasureChest extends Item {
 
     var _opened as Boolean = false;
     var _item_taken as Boolean = false;
+    var _golden as Boolean = false;
     var _contents as Item?;
+    var _cached_sprite_id as ResourceId? = null;
 
     function initialize() {
         Item.initialize();
+    }
+
+    function setGolden(golden as Boolean) as Void {
+        _golden = golden;
+    }
+
+    function isGolden() as Boolean {
+        return _golden;
     }
 
     function setContents(item as Item?) as Void {
@@ -40,6 +51,9 @@ class TreasureChest extends Item {
                 return false;
             }
             _opened = true;
+            if (turnIntoMimic(room)) {
+                return true;
+            }
         }
 
         if (_contents != null && !_item_taken) {
@@ -53,17 +67,54 @@ class TreasureChest extends Item {
         return true;
     }
 
+    // Swallows the chest contents into a mimic standing on the chest tile.
+    // Returns false when the chest should behave normally.
+    private function turnIntoMimic(room as Room) as Boolean {
+        if (room.getEnemies().size() >= $.Constants.MAX_ENEMIES_PER_ROOM) {
+            return false;
+        }
+        if (!MathUtil.isRandomPercent(MIMIC_SPAWN_CHANCE)) {
+            return false;
+        }
+        var mimic = new Mimic();
+        mimic.setLoot(_contents);
+        mimic.setLevel($.Game.depth);
+        mimic.setPos(pos);
+        mimic.register();
+        _contents = null;
+        _item_taken = true;
+        room.removeItem(self);
+        room.addEnemy(mimic);
+        WatchUi.showToast("It's a Mimic!", {:icon=>mimic.getSprite()});
+        return true;
+    }
+
     function getSprite() as ResourceId {
         if (!_opened) {
-            return $.Rez.Drawables.chest_closed;
+            return _golden ? $.Rez.Drawables.chest_golden_closed : $.Rez.Drawables.chest_closed;
+        }
+        if (_golden) {
+            return _item_taken ? $.Rez.Drawables.chest_golden_open_empty : $.Rez.Drawables.chest_golden_open_full;
         }
         return _item_taken ? $.Rez.Drawables.chest_open_empty : $.Rez.Drawables.chest_open_full;
+    }
+
+    // The chest sprite changes while the game is running (closed -> open full -> open empty),
+    // so the base class bitmap cache has to be invalidated whenever the state changes.
+    function getSpriteRef() as Toybox.Graphics.BitmapReference {
+        var sprite_id = getSprite();
+        if (_sprite_ref == null || _cached_sprite_id != sprite_id) {
+            _cached_sprite_id = sprite_id;
+            _sprite_ref = WatchUi.loadResource(sprite_id);
+        }
+        return _sprite_ref;
     }
 
     function save() as Dictionary {
         var data = Item.save();
         data["opened"] = _opened;
         data["item_taken"] = _item_taken;
+        data["golden"] = _golden;
         if (_contents != null) {
             data["contents"] = _contents.save();
         }
@@ -78,6 +129,9 @@ class TreasureChest extends Item {
         if (save_data["item_taken"] != null) {
             _item_taken = save_data["item_taken"] as Boolean;
         }
+        if (save_data["golden"] != null) {
+            _golden = save_data["golden"] as Boolean;
+        }
         if (save_data["contents"] != null) {
             _contents = Item.load(save_data["contents"] as Dictionary);
         }
@@ -89,6 +143,7 @@ class TreasureChest extends Item {
         chest.in_inventory = in_inventory;
         chest._opened = _opened;
         chest._item_taken = _item_taken;
+        chest._golden = _golden;
         if (_contents != null) {
             chest._contents = _contents.deepcopy();
         }

@@ -21,6 +21,8 @@ class Enemy extends Entity {
 	var teleport_move_cooldown as Number = 0;
 	var teleport_move_cooldown_max as Number = 3;
 
+	var _death_resolved as Boolean = false;
+
 	function initialize() {
 		Entity.initialize();
 		entityType = :enemy;
@@ -81,10 +83,40 @@ class Enemy extends Entity {
 		current_health -= damage;
 		if (current_health <= 0) {
 			current_health = 0;
-			self.onDeath();
-			// Track enemy as discovered in compendium
-			$.SaveData.discovered_enemies[id] = true;
+			if (!_death_resolved) {
+				_death_resolved = true;
+				self.onDeath();
+				// Track enemy as discovered in compendium
+				$.SaveData.discovered_enemies[id] = true;
+				resolveDeathInRoom();
+			}
 			return true;
+		}
+		return false;
+	}
+
+	// Single place where a kill is applied to the room, no matter which
+	// damage source finished the enemy (player attack, periodic damage,
+	// on-death effects of another enemy).
+	private function resolveDeathInRoom() as Void {
+		var dungeon = $.Game.getDungeon();
+		if (dungeon == null) {
+			return;
+		}
+		var room = dungeon.getCurrentRoom() as Room?;
+		if (room == null || !isInRoom(room)) {
+			return;
+		}
+		room.removeEnemy(self);
+		room.dropLoot(self);
+	}
+
+	private function isInRoom(room as Room) as Boolean {
+		var enemies = room.getEnemies().values() as Array<Enemy>;
+		for (var i = 0; i < enemies.size(); i++) {
+			if (enemies[i] == self) {
+				return true;
+			}
 		}
 		return false;
 	}
@@ -108,7 +140,7 @@ class Enemy extends Entity {
 	function getLoot() as Array<Item> {
 		var drops = [] as Array<Item>;
 		var player = $.Game.getPlayer();
-		if (player.id == 2/*ARCHER*/ && MathUtil.isRandomPercent(25)) {
+		if (player != null && player.id == 2/*ARCHER*/ && MathUtil.isRandomPercent(25)) {
 			var right_hand_equip = player.getEquip(RIGHT_HAND);
 			if (right_hand_equip != null && right_hand_equip.tag == :bow) {
 				var arrows = new Arrow();

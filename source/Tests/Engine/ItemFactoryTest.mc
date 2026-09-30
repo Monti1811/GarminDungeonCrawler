@@ -180,6 +180,90 @@ function itemFactoryCreateTreasureChestWithLoot(logger as Test.Logger) as Boolea
 }
 
 (:test)
+function treasureChestSpriteVariants(logger as Test.Logger) as Boolean {
+    var chest = new TreasureChest();
+    Test.assert(chest.getSprite() == $.Rez.Drawables.chest_closed);
+    Test.assert(!chest.isGolden());
+
+    chest._opened = true;
+    Test.assert(chest.getSprite() == $.Rez.Drawables.chest_open_full);
+
+    chest._item_taken = true;
+    Test.assert(chest.getSprite() == $.Rez.Drawables.chest_open_empty);
+
+    var golden = new TreasureChest();
+    golden.setGolden(true);
+    Test.assert(golden.isGolden());
+    Test.assert(golden.getSprite() == $.Rez.Drawables.chest_golden_closed);
+
+    golden._opened = true;
+    Test.assert(golden.getSprite() == $.Rez.Drawables.chest_golden_open_full);
+
+    golden._item_taken = true;
+    Test.assert(golden.getSprite() == $.Rez.Drawables.chest_golden_open_empty);
+    return true;
+}
+
+(:test)
+function treasureChestGoldenSurvivesSaveLoad(logger as Test.Logger) as Boolean {
+    var chest = new TreasureChest();
+    chest.setGolden(true);
+    chest._opened = true;
+
+    var loaded = Item.load(chest.save());
+    Test.assert(loaded instanceof TreasureChest);
+    var restored = loaded as TreasureChest;
+    Test.assert(restored.isGolden());
+    Test.assert(restored.getSprite() == $.Rez.Drawables.chest_golden_open_full);
+    return true;
+}
+
+(:test)
+function treasureChestSpriteRefTracksState(logger as Test.Logger) as Boolean {
+    var chest = new TreasureChest();
+    var closed_ref = chest.getSpriteRef();
+    Test.assert(chest._cached_sprite_id == $.Rez.Drawables.chest_closed);
+
+    chest._opened = true;
+    var open_ref = chest.getSpriteRef();
+    Test.assert(chest._cached_sprite_id == $.Rez.Drawables.chest_open_full);
+    Test.assert(open_ref != closed_ref);
+
+    chest._item_taken = true;
+    var empty_ref = chest.getSpriteRef();
+    Test.assert(chest._cached_sprite_id == $.Rez.Drawables.chest_open_empty);
+    Test.assert(empty_ref != open_ref);
+
+    var golden = new TreasureChest();
+    golden.setGolden(true);
+    golden._opened = true;
+    golden.getSpriteRef();
+    Test.assert(golden._cached_sprite_id == $.Rez.Drawables.chest_golden_open_full);
+    return true;
+}
+
+(:test)
+function treasureChestRandomLootIsFilled(logger as Test.Logger) as Boolean {
+    var old_depth = $.Game.depth;
+    var old_weights = $.Items.weights;
+    var old_total_weight = $.Items.total_weight;
+    $.Game.depth = 10;
+    $.Items.init(0);
+
+    for (var i = 0; i < 20; i++) {
+        var chest = $.Items.createTreasureChestWithRandomLoot();
+        Test.assert(chest.hasContents());
+        var expected = chest.isGolden() ? $.Rez.Drawables.chest_golden_closed : $.Rez.Drawables.chest_closed;
+        Test.assert(chest.getSprite() == expected);
+    }
+
+    $.Items.weights = old_weights;
+    $.Items.total_weight = old_total_weight;
+    $.Game.depth = old_depth;
+    return true;
+}
+
+(:test)
 function itemFactoryCreatesAllMaterials(logger as Test.Logger) as Boolean {
     for (var id = 4000; id <= 4008; id++) {
         var item = Items.createItemFromId(id);

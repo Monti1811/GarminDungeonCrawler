@@ -75,6 +75,7 @@ Base stats at depth 1. Scaling with depth (`Enemy.setLevel`):
 |---|---:|---|---:|---:|---:|---:|---:|
 | <img src="../resources/drawables/generated/monster_shadow_stalker.png" width="32" alt="monster_shadow_stalker"> | 36 | Shadow Stalker | 199 | 15 | 2 | 28 | 2 |
 | <img src="../resources/drawables/generated/monster_gloom_lurker.png" width="32" alt="monster_gloom_lurker"> | 37 | Gloom Lurker | 218 | 15 | 6 | 48 | 2 |
+| <img src="../resources/drawables/monsters/monster_mimic.png" width="32" alt="monster_mimic"> | 38 | Mimic | 80 | 12 | 3 | 30 | 2 |
 
 ## Bosses (not spawned)
 

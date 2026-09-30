@@ -227,6 +227,9 @@
     <bitmap id="chest_closed" filename="items/chest_closed.png" packingFormat="png" />
     <bitmap id="chest_open_empty" filename="items/chest_open_empty.png" packingFormat="png" />
     <bitmap id="chest_open_full" filename="items/chest_open_full.png" packingFormat="png" />
+    <bitmap id="chest_golden_closed" filename="items/chest_golden_closed.png" packingFormat="png" />
+    <bitmap id="chest_golden_open_empty" filename="items/chest_golden_open_empty.png" packingFormat="png" />
+    <bitmap id="chest_golden_open_full" filename="items/chest_golden_open_full.png" packingFormat="png" />
 
     <!-- Ammunition -->
     <bitmap id="arrow" filename="items/arrow.png" packingFormat="png" />
@@ -291,6 +294,7 @@
     <bitmap id="monster_elemental_gold_short" filename="monsters/monster_elemental_gold_short.png" packingFormat="png" />
     <bitmap id="monster_shadow_stalker" filename="generated/monster_shadow_stalker.png" packingFormat="png" />
     <bitmap id="monster_gloom_lurker" filename="generated/monster_gloom_lurker.png" packingFormat="png" />
+    <bitmap id="monster_mimic" filename="monsters/monster_mimic.png" packingFormat="png" />
     <bitmap id="steel_ingot" filename="items/steel_ingot.png" packingFormat="png" />
     <bitmap id="bronze_ingot" filename="items/bronze_ingot.png" packingFormat="png" />
     <bitmap id="fire_ember" filename="items/fire_ember.png" packingFormat="png" />

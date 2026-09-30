@@ -254,6 +254,26 @@ module Items {
         return chest;
     }
 
+    (:debug)
+    function createTreasureChestWithRandomLoot() as TreasureChest {
+        var type = MathUtil.random(0, 3);
+        var loot = null as Item?;
+        if (weights != null) {
+            loot = createRandomWeightedItem(type);
+            if (loot == null) {
+                type = 0;
+                loot = createRandomWeightedItem(type);
+            }
+        }
+        if (loot == null || loot instanceof TreasureChest) {
+            type = 0;
+            loot = createRandomItem();
+        }
+        var chest = createTreasureChestWithLoot(loot);
+        chest.setGolden(type == 3);
+        return chest;
+    }
+
     function createRandomItem() as Item {
 		var index = MathUtil.random(0, item_ids.size() - 1);
         var item = createItemFromId(item_ids[index]);
