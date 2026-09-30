@@ -25,7 +25,7 @@ class DCEnemyInfoStatsView extends WatchUi.View {
 		var bgSize = (ref * 360 / 360).toNumber();
 		var bgX = ((Constants.SCREEN_WIDTH - bgSize) / 2).toNumber();
 		var bgY = ((Constants.SCREEN_HEIGHT - bgSize) / 2).toNumber();
-		dc.drawScaledBitmap(bgX, bgY, bgSize, bgSize, _bgBitmap);
+		DrawUtil.drawScaledBitmap(dc, bgX, bgY, bgSize, bgSize, _bgBitmap);
 
 		drawEnemyName(dc);
 		drawEnemyIcon(dc);
@@ -49,7 +49,7 @@ class DCEnemyInfoStatsView extends WatchUi.View {
 		var x = (bgX + ref * 70 / 360).toNumber();
 		var y = (bgY + ref * 128 / 360).toNumber();
 		var size = (ref * 64 / 360).toNumber();
-		dc.drawScaledBitmap(x, y, size, size, _enemyIcon);
+		DrawUtil.drawScaledBitmap(dc, x, y, size, size, _enemyIcon);
 	}
 
 	function drawStats(dc) {

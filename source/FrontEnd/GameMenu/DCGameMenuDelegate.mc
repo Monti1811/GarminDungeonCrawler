@@ -198,7 +198,7 @@ class GameMenuIconDrawable extends WatchUi.Drawable {
         var x = ($.Constants.SCREEN_WIDTH * 15 / 360).toNumber();
         var y = ($.Constants.SCREEN_HEIGHT * 25 / 360).toNumber();
         var s = ($.Constants.SCREEN_WIDTH * 32 / 360).toNumber();
-        dc.drawScaledBitmap(x, y, s, s, _icon);
+        DrawUtil.drawScaledBitmap(dc, x, y, s, s, _icon);
     }
 }
 
@@ -215,7 +215,7 @@ class DCItemIcon extends WatchUi.Drawable {
         var x = ($.Constants.SCREEN_WIDTH * 15 / 360).toNumber();
         var y = ($.Constants.SCREEN_HEIGHT * 25 / 360).toNumber();
         var s = ($.Constants.SCREEN_WIDTH * 32 / 360).toNumber();
-        dc.drawScaledBitmap(x, y, s, s, _icon);
+        DrawUtil.drawScaledBitmap(dc, x, y, s, s, _icon);
     }
 }
 

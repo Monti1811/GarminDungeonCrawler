@@ -75,7 +75,7 @@ class DCCompendiumEnemyIcon extends WatchUi.Drawable {
         var icon_x = (Constants.SCREEN_WIDTH * 15 / 360).toNumber();
         var icon_y = (Constants.SCREEN_HEIGHT * 25 / 360).toNumber();
         var icon_size = (Constants.SCREEN_WIDTH * 32 / 360).toNumber();
-        dc.drawScaledBitmap(icon_x, icon_y, icon_size, icon_size, _icon);
+        DrawUtil.drawScaledBitmap(dc, icon_x, icon_y, icon_size, icon_size, _icon);
     }
 }
 
@@ -92,7 +92,7 @@ class DCCompendiumItemIcon extends WatchUi.Drawable {
         var icon_x = (Constants.SCREEN_WIDTH * 15 / 360).toNumber();
         var icon_y = (Constants.SCREEN_HEIGHT * 25 / 360).toNumber();
         var icon_size = (Constants.SCREEN_WIDTH * 32 / 360).toNumber();
-        dc.drawScaledBitmap(icon_x, icon_y, icon_size, icon_size, _icon);
+        DrawUtil.drawScaledBitmap(dc, icon_x, icon_y, icon_size, icon_size, _icon);
     }
 }
 

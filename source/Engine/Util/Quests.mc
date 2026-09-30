@@ -199,7 +199,7 @@ module Quests {
 		if (info.steps != null) {
 			last_steps = info.steps;
 		}
-		if (info.floorsClimbed != null) {
+		if (info has :floorsClimbed && info.floorsClimbed != null) {
 			last_floors = info.floorsClimbed;
         }
     }
@@ -222,7 +222,7 @@ module Quests {
             }
             last_steps = info.steps;
         }
-        if (info.floorsClimbed != null) {
+        if (info has :floorsClimbed && info.floorsClimbed != null) {
             var delta_floors = info.floorsClimbed - last_floors;
             if (delta_floors < 0) {
                 delta_floors = info.floorsClimbed; // counter reset (new day)
