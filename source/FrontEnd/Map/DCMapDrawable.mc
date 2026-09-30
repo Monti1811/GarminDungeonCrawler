@@ -157,7 +157,7 @@ class DCMapDrawable extends WatchUi.Drawable {
 	function drawFlag(dc as Dc, pos as Point2D, rez_id as ResourceId) {
 		var bitmap = _flag_bitmaps[rez_id] as BitmapReference?;
 		if (bitmap != null) {
-			dc.drawScaledBitmap(
+			DrawUtil.drawScaledBitmap(dc, 
 				pos[0] - size_tile/2, 
 				pos[1] - size_tile/2,
 				size_tile * 2, 
@@ -174,7 +174,7 @@ class DCMapDrawable extends WatchUi.Drawable {
 		var player_pos = player.getPos();
 		var entire_room_x = locX + current_room_pos[0] * size_room;
 		var entire_room_y = locY + current_room_pos[1] * size_room;
-		dc.drawScaledBitmap(
+		DrawUtil.drawScaledBitmap(dc, 
 			player_pos[0] * size_tile + entire_room_x - size_tile, //* 3/2,
 			player_pos[1] * size_tile + entire_room_y - size_tile, //* 3/2,
 			size_tile * 3,

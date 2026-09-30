@@ -42,14 +42,14 @@ class DCPlayerDetailsOverviewView extends WatchUi.View {
 		dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_BLACK);
 		dc.clear();
 
-		dc.drawScaledBitmap(_bgX, _bgY, _ref, _ref, _bgBitmap);
+		DrawUtil.drawScaledBitmap(dc, _bgX, _bgY, _ref, _ref, _bgBitmap);
 
 		if (_statsOverlay != null) {
 			var overlay_x = (_bgX + _ref * 169 / 360).toNumber();
 			var overlay_y = (_bgY + _ref * 104 / 360).toNumber();
 			var overlay_w = (_statsOverlay.getWidth() * _ref / 360).toNumber();
 			var overlay_h = (_statsOverlay.getHeight() * _ref / 360).toNumber();
-			dc.drawScaledBitmap(overlay_x, overlay_y, overlay_w, overlay_h, _statsOverlay);
+			DrawUtil.drawScaledBitmap(dc, overlay_x, overlay_y, overlay_w, overlay_h, _statsOverlay);
 		}
 
 		drawPlayerIcon(dc);
@@ -69,7 +69,7 @@ class DCPlayerDetailsOverviewView extends WatchUi.View {
 		var x = (_bgX + _ref * 70 / 360).toNumber();
 		var y = (_bgY + _ref * 125 / 360).toNumber();
 		var size = (_ref * 64 / 360).toNumber();
-		dc.drawScaledBitmap(x, y, size, size, _playerIcon);
+		DrawUtil.drawScaledBitmap(dc, x, y, size, size, _playerIcon);
 	}
 
 	function drawPlayerName(dc) {

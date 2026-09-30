@@ -33,7 +33,7 @@ class DCQuestDetailView extends WatchUi.View {
         var bgX = (W - ref) / 2;
         var bgY = (H - ref) / 2;
 
-        dc.drawScaledBitmap(bgX, bgY, ref, ref, _bgBitmap);
+        DrawUtil.drawScaledBitmap(dc, bgX, bgY, ref, ref, _bgBitmap);
 
         drawQuestName(dc, bgX, bgY, ref);
         drawDetails(dc, bgX, bgY, ref);
