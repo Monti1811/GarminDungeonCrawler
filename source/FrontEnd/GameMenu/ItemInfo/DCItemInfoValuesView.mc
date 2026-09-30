@@ -36,6 +36,7 @@ class DCItemInfoValuesView extends WatchUi.View {
 		CONSUMABLE => :showConsumableStats,
 		KEY => :showKeyStats,
 		CUSTOM => :showCustomStats,
+		MATERIAL => :showCustomStats,
 	} as Dictionary<ItemType, Symbol>;
 	private var _fn as Method;
 
@@ -106,6 +107,9 @@ class DCItemInfoValuesView extends WatchUi.View {
 		dc.drawText(text_x, name_y, Graphics.FONT_TINY, _item.getName(), Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
 
 		var type_str = $.Constants.ITEMTYPE_TO_STR[_item_type] as String;
+		if (_item instanceof EquippableItem && (_item as EquippableItem).upgrade_level > 0) {
+			type_str = type_str + " +" + (_item as EquippableItem).upgrade_level;
+		}
 		dc.setColor(GOLD_COLOR, Graphics.COLOR_TRANSPARENT);
 		dc.drawText(text_x, type_y, _small_font, type_str, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
 	}

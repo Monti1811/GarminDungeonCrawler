@@ -122,7 +122,7 @@ class Item {
 	}
 
 	function getSellValue() as Number {
-		return value / 4;
+		return getValue() / 4;
 	}
 	
 	function getAmount() as Number {

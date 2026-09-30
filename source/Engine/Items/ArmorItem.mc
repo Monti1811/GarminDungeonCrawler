@@ -41,7 +41,7 @@ class ArmorItem extends EquippableItem {
 	}
 
 	function getBaseDefense() as Number {
-		return (defense * DEFENSE_SCALE).toNumber();
+		return (defense * DEFENSE_SCALE * (1.0 + upgrade_level * $.Constants.UPGRADE_BONUS)).toNumber();
 	}
 
 	function getDefense(enemy as Enemy?, armors_size as Number) as Number {

@@ -59,6 +59,7 @@ class SteelGauntlets extends ArmorItem {
 		gauntlets.equipped = equipped;
 		gauntlets.in_inventory = in_inventory;
 		gauntlets.defense = defense;
+		gauntlets.upgrade_level = upgrade_level;
 		return gauntlets;
 	}
 

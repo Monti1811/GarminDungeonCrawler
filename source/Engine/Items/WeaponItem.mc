@@ -75,7 +75,7 @@ class WeaponItem extends EquippableItem {
 	}
 
 	function getBaseAttack() as Number {
-		return (self.attack * ATTACK_SCALE).toNumber();
+		return (self.attack * ATTACK_SCALE * (1.0 + upgrade_level * $.Constants.UPGRADE_BONUS)).toNumber();
 	}
 
 	function getAttack(enemy as Enemy?, weapons_size as Number) as Number {
@@ -151,6 +151,36 @@ class WeaponItem extends EquippableItem {
 		data["range_type"] = range_type;
 		data["element"] = getElement();
 		return data;
+	}
+
+	function onLoad(save_data as Dictionary) as Void {
+		EquippableItem.onLoad(save_data);
+		if (save_data["attack"] != null) {
+			attack = save_data["attack"] as Number;
+		}
+		if (save_data["range"] != null) {
+			range = save_data["range"] as Numeric;
+		}
+		if (save_data["range_type"] != null) {
+			var range_type_value = save_data["range_type"] as Number;
+			if (range_type_value == 1) {
+				range_type = SURROUNDING;
+			} else if (range_type_value == 2) {
+				range_type = LINEAR;
+			} else {
+				range_type = DIRECTIONAL;
+			}
+		}
+		if (save_data["element"] != null) {
+			var element_value = save_data["element"] as Number;
+			if (element_value == 1) {
+				element = ELEMENT_FIRE;
+			} else if (element_value == 2) {
+				element = ELEMENT_ICE;
+			} else {
+				element = ELEMENT_NONE;
+			}
+		}
 	}
 
 }

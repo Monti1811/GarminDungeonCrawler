@@ -27,6 +27,7 @@ class GoldHelmet extends ArmorItem {
 	function deepcopy() as Item {
 		var helmet = new GoldHelmet();
 		// ...existing code...
+		helmet.upgrade_level = upgrade_level;
 		return helmet;
 	}
 

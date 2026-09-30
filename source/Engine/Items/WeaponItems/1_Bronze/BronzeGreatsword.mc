@@ -46,6 +46,7 @@ class BronzeGreatsword extends WeaponItem {
         greatsword.in_inventory = in_inventory;
         greatsword.attack = attack;
         greatsword.range = range;
+        greatsword.upgrade_level = upgrade_level;
         return greatsword;
     }
 

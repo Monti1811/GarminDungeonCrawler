@@ -62,6 +62,7 @@ class SteelSword extends WeaponItem {
 		sword.in_inventory = in_inventory;
 		sword.attack = attack;
 		sword.range = range;
+		sword.upgrade_level = upgrade_level;
 		return sword;
 	}
 

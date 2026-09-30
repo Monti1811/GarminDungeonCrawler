@@ -30,6 +30,7 @@ class IceGauntlets extends ArmorItem {
 	function deepcopy() as Item {
 		var gauntlets = new IceGauntlets();
 		// ...existing code...
+		gauntlets.upgrade_level = upgrade_level;
 		return gauntlets;
 	}
 

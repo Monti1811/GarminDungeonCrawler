@@ -5,15 +5,17 @@ module NPCs {
 	var npcs as Dictionary<Number, Symbol> = {
 		0 => :createMerchant,
 		1 => :createQuestGiver,
+		2 => :createBlacksmith,
 	};
 
-	var npc_ids as Array<Number> = [0, 1];
+	var npc_ids as Array<Number> = [0, 1, 2];
 
 	var weights as Dictionary<Number, Number> = {
 		0 => 5,
 		1 => 2,
+		2 => 3,
 	};
-	var total_weight = 7;
+	var total_weight = 10;
 
 	function createMerchant() as NPC {
 		return new Merchant();
@@ -21,6 +23,10 @@ module NPCs {
 
 	function createQuestGiver() as NPC {
 		return new QuestGiver();
+	}
+
+	function createBlacksmith() as NPC {
+		return new Blacksmith();
 	}
 
 

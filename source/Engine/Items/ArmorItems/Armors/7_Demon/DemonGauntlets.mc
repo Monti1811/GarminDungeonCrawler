@@ -31,6 +31,7 @@ class DemonGauntlets extends ArmorItem {
 	function deepcopy() as Item {
 		var gauntlets = new DemonGauntlets();
 		// ...existing code...
+		gauntlets.upgrade_level = upgrade_level;
 		return gauntlets;
 	}
 

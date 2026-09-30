@@ -44,6 +44,7 @@ class BronzeBow extends Bow {
         bow.in_inventory = in_inventory;
         bow.attack = attack;
         bow.range = range;
+        bow.upgrade_level = upgrade_level;
         return bow;
     }
 

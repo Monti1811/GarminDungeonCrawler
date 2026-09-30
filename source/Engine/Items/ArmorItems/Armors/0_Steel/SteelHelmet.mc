@@ -58,6 +58,7 @@ class SteelHelmet extends ArmorItem {
 		helmet.equipped = equipped;
 		helmet.in_inventory = in_inventory;
 		helmet.defense = defense;
+		helmet.upgrade_level = upgrade_level;
 		return helmet;
 	}
 

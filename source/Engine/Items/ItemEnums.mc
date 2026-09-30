@@ -15,7 +15,8 @@ enum ItemType {
 	ARMOR,
 	CONSUMABLE,
 	KEY,
-	CUSTOM
+	CUSTOM,
+	MATERIAL
 }
 
 enum ItemSlot {

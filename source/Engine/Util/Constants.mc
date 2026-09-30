@@ -34,7 +34,8 @@ module Constants {
 		WEAPON => "Weapon",
 		ARMOR => "Armor",
 		CONSUMABLE => "Consumable",
-		KEY => "Key Item"
+		KEY => "Key Item",
+		MATERIAL => "Material"
 	};
 
 	public const ATT_SYMBOL_TO_STR = {
@@ -75,6 +76,24 @@ module Constants {
 	public const ENEMY_HEALTH_SCALE = 0.005;
 	public const ENEMY_ARMOR_SCALE = 0.001;
 	public const ENEMY_XP_SCALE = 0.003;
+
+	// Equipment upgrades (blacksmith)
+	public const UPGRADE_MAX_LEVEL = 5;
+	public const UPGRADE_BONUS = 0.10;
+	public const UPGRADE_VALUE_BONUS = 0.25;
+	// Cost per target level (index = target level - 1)
+	public const SMITH_COST_GOLD = [25, 75, 200, 500, 1200] as Array<Number>;
+	public const SMITH_COST_MATERIAL = [2, 4, 8, 16, 32] as Array<Number>;
+	// Material drop chance on kill (percent)
+	public const MATERIAL_DROP_CHANCE = 30;
+	// Demon/blood material drop distribution by depth
+	public const MATERIAL_DEMON_START_DEPTH = 70;
+	public const MATERIAL_DEMON_BASE_CHANCE = 30;
+	public const MATERIAL_BLOOD_START_DEPTH = 80;
+	public const MATERIAL_BLOOD_BASE_CHANCE = 20;
+	public const MATERIAL_DEMON_MAX_CHANCE = 40;
+	public const MATERIAL_BLOOD_MAX_CHANCE = 40;
+	public const MATERIAL_SPECIAL_RAMP_DEPTH = 90;
 
 	public const EQUIPSLOT_TO_STR = {
 		HEAD => "Head",

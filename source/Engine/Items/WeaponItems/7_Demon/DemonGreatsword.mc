@@ -39,6 +39,7 @@ class DemonGreatsword extends WeaponItem {
         // ...existing code...
         greatsword.attack = attack;
         greatsword.range = range;
+        greatsword.upgrade_level = upgrade_level;
         return greatsword;
     }
 

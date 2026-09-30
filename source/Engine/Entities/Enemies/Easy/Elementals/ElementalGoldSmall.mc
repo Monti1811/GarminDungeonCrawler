@@ -23,10 +23,10 @@ class ElementalGoldSmall extends Enemy {
 		return Enemy.followPlayerStrafe(map, true);
     }
 
-	function getLoot() as Item? {
+	function getLoot() as Array<Item> {
 		var gold = new Gold();
 		gold.amount = MathUtil.random(10, 30);
-		return gold;
+		return [gold] as Array<Item>;
 	}
 
 	function onLoad(save_data as Dictionary) as Void {

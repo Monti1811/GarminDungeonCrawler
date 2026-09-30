@@ -65,6 +65,7 @@ class GrassSpell extends Spell {
         spell.range_type = range_type;
         spell.active = active;
         spell.current_cooldown = current_cooldown;
+        spell.upgrade_level = upgrade_level;
         return spell;
     }
 

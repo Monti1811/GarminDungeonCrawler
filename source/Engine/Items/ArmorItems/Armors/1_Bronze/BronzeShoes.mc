@@ -28,6 +28,7 @@ class BronzeShoes extends ArmorItem {
 	function deepcopy() as Item {
 		var shoes = new BronzeShoes();
 		// ...existing code...
+		shoes.upgrade_level = upgrade_level;
 		return shoes;
 	}
 

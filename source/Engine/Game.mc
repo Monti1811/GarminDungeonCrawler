@@ -18,10 +18,11 @@ enum GameFlag {
 	HAS_MERCHANT,
 	HAS_BOSS,
 	HAS_QUEST_GIVER,
+	HAS_BLACKSMITH,
 }
 
 module Game {
-	const FLAG_SLOTS as Number = 4;
+	const FLAG_SLOTS as Number = 5;
 	var difficulty as Difficulty = MEDIUM;
 	var game_mode as GameMode = NORMAL;
 	var player as Player?;

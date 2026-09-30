@@ -37,6 +37,7 @@ class DemonBow extends Bow {
         // ...existing code...
         bow.attack = attack;
         bow.range = range;
+        bow.upgrade_level = upgrade_level;
         return bow;
     }
 

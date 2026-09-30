@@ -51,6 +51,7 @@ class ManaCrystal extends ArmorItem {
 
 	function deepcopy() as Item {
 		var crystal = new ManaCrystal();
+		crystal.upgrade_level = upgrade_level;
 		return crystal;
 	}
 }

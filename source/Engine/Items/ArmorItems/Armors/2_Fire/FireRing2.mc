@@ -26,6 +26,7 @@ class FireRing2 extends ArmorItem {
 	function deepcopy() as Item {
 		var ring = new FireRing2();
 		// ...existing code...
+		ring.upgrade_level = upgrade_level;
 		return ring;
 	}
 

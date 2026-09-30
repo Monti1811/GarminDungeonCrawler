@@ -26,6 +26,7 @@ class SteelShield extends ArmorItem {
 	function deepcopy() as Item {
 		var shield = new SteelShield();
 		shield.amount = amount;
+		shield.upgrade_level = upgrade_level;
 		return shield;
 	}
 }

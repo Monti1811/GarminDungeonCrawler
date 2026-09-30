@@ -222,6 +222,25 @@ class Dungeon {
 		}
 	}
 
+	function addBlacksmith() as Void {
+		if (MathUtil.isRandomPercent(40)) {
+			return;
+		}
+		var max_tries = 100;
+		while (max_tries > 0) {
+			var rand_x = MathUtil.random(0, _size[0] - 1);
+			var rand_y = MathUtil.random(0, _size[1] - 1);
+			var room_name = _rooms[rand_x][rand_y];
+			if (room_name != null) {
+				var room = loadRoom(room_name);
+				room.addBlacksmith([rand_x, rand_y]);
+				saveRoom(room_name, room);
+				return;
+			}
+			max_tries -= 1;
+		}
+	}
+
 	function getRoom(index as Point2D) as String {
 		return _rooms[index[0]][index[1]];
 	}

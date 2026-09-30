@@ -29,6 +29,7 @@ class WaterGauntlets extends ArmorItem {
 	function deepcopy() as Item {
 		var gauntlets = new WaterGauntlets();
 		// ...existing code...
+		gauntlets.upgrade_level = upgrade_level;
 		return gauntlets;
 	}
 

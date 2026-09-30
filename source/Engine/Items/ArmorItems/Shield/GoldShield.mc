@@ -27,6 +27,7 @@ class GoldShield extends ArmorItem {
 	function deepcopy() as Item {
 		var shield = new GoldShield();
 		shield.amount = amount;
+		shield.upgrade_level = upgrade_level;
 		return shield;
 	}
 }

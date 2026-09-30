@@ -26,6 +26,7 @@ class WaterShoes extends ArmorItem {
 	function deepcopy() as Item {
 		var shoes = new WaterShoes();
 		// ...existing code...
+		shoes.upgrade_level = upgrade_level;
 		return shoes;
 	}
 

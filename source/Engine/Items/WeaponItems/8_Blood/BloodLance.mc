@@ -38,6 +38,7 @@ class BloodLance extends WeaponItem {
         // ...existing code...
         lance.attack = attack;
         lance.range = range;
+        lance.upgrade_level = upgrade_level;
         return lance;
     }
 

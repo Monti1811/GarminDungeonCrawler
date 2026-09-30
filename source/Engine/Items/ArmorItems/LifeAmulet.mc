@@ -30,6 +30,7 @@ class LifeAmulet extends ArmorItem {
 
 	function deepcopy() as Item {
 		var amulet = new LifeAmulet();
+		amulet.upgrade_level = upgrade_level;
 		return amulet;
 	}
 }

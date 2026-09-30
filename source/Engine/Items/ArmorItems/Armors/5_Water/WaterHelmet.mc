@@ -28,6 +28,7 @@ class WaterHelmet extends ArmorItem {
 	function deepcopy() as Item {
 		var helmet = new WaterHelmet();
 		// ...existing code...
+		helmet.upgrade_level = upgrade_level;
 		return helmet;
 	}
 
