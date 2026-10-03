@@ -27,11 +27,11 @@ class DCDebugPlayerStatsDelegate extends WatchUi.Menu2InputDelegate {
             pushNumberPicker("Health", 0, 9999, 1, player.getHealth(), new Lang.Method(self, :onHealthPicked));
         } else if (id == :set_max_health) {
             pushNumberPicker("Max Health", 1, 9999, 1, player.getMaxHealth(), new Lang.Method(self, :onMaxHealthPicked));
-        } else if (id == :set_mana) {
-            var max_mana = player.getMaxMana();
-            pushNumberPicker("Mana", 0, MathUtil.max(max_mana, 1), 1, player.getCurrentMana(), new Lang.Method(self, :onManaPicked));
-        } else if (id == :set_max_mana) {
-            pushNumberPicker("Max Mana", 0, 9999, 1, player.getMaxMana(), new Lang.Method(self, :onMaxManaPicked));
+        } else if (id == :set_second_bar) {
+            var max_bar = player.getMaxSecondBar();
+            pushNumberPicker(player.getSecondBarName(), 0, MathUtil.max(max_bar, 1), 1, player.getCurrentSecondBar(), new Lang.Method(self, :onSecondBarPicked));
+        } else if (id == :set_max_second_bar) {
+            pushNumberPicker("Max " + player.getSecondBarName(), 0, 9999, 1, player.getMaxSecondBar(), new Lang.Method(self, :onMaxSecondBarPicked));
         } else if (id == :set_gold) {
             pushNumberPicker("Gold", 0, 50000, 10, player.getGold(), new Lang.Method(self, :onGoldPicked));
         } else if (id == :attribute_points) {
@@ -53,12 +53,12 @@ class DCDebugPlayerStatsDelegate extends WatchUi.Menu2InputDelegate {
         setMaxHealth(value);
     }
 
-    function onManaPicked(value as Number) {
-        setMana(value);
+    function onSecondBarPicked(value as Number) {
+        setSecondBar(value);
     }
 
-    function onMaxManaPicked(value as Number) {
-        setMaxMana(value);
+    function onMaxSecondBarPicked(value as Number) {
+        setMaxSecondBar(value);
     }
 
     function onGoldPicked(value as Number) {
@@ -100,33 +100,27 @@ class DCDebugPlayerStatsDelegate extends WatchUi.Menu2InputDelegate {
         WatchUi.showToast("Max health set to " + bounded, {:icon=>Rez.Drawables.aboutToastIcon});
     }
 
-    function setMana(value as Number) as Void {
+    function setSecondBar(value as Number) as Void {
         var player = $.getApp().getPlayer();
-        if (player != null && (player has :getCurrentMana)) {
-			var bounded = $.MathUtil.clamp(value, 0, player.getMaxMana());
-			if (player has :doManaDelta) {
-				var delta = bounded - player.getCurrentMana();
-				player.doManaDelta(delta);
-			} else if (player has :current_mana) {
-				player.current_mana = bounded;
-			}
-			WatchUi.showToast("Mana set to " + bounded, {:icon=>Rez.Drawables.aboutToastIcon});
-		}
+        if (player == null || player.second_bar == null) {
+            return;
+        }
+        var bounded = $.MathUtil.clamp(value, 0, player.getMaxSecondBar());
+        player.doSecondBarDelta(bounded - player.getCurrentSecondBar());
+        WatchUi.showToast(player.getSecondBarName() + " set to " + bounded, {:icon=>Rez.Drawables.aboutToastIcon});
     }
 
-    function setMaxMana(value as Number) as Void {
+    function setMaxSecondBar(value as Number) as Void {
         var player = $.getApp().getPlayer();
-        if (player == null || !(player has :getMaxMana)) {
+        if (player == null || player.second_bar == null) {
             return;
         }
         var bounded = $.MathUtil.clamp(value, 0, $.Constants.MAX_INT);
-        if (player has :maxMana) {
-            player.maxMana = bounded;
+        player.max_second_bar = bounded;
+        if (player.getCurrentSecondBar() > bounded) {
+            player.doSecondBarDelta(bounded - player.getCurrentSecondBar());
         }
-        if (player.getCurrentMana() > bounded) {
-            setMana(bounded);
-        }
-        WatchUi.showToast("Max mana set to " + bounded, {:icon=>Rez.Drawables.aboutToastIcon});
+        WatchUi.showToast("Max " + player.getSecondBarName() + " set to " + bounded, {:icon=>Rez.Drawables.aboutToastIcon});
     }
 
     function setGold(value as Number) as Void {

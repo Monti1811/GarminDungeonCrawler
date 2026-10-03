@@ -170,10 +170,7 @@ class DCGameView extends WatchUi.View {
         var second_bar = player.second_bar as Symbol?;
         var second_bar_percent = null as Numeric?;
         if (second_bar != null) {
-            if (second_bar == :mana) {
-                var bar_values = drawManaBar(player);
-                second_bar_percent = bar_values[1];
-            }
+            second_bar_percent = 70 * player.getSecondBarPercent();
         }
 
         if (_last_health_percent == null ||
@@ -272,8 +269,8 @@ class DCGameView extends WatchUi.View {
         var line2_y2 = p190[1] + (p190[1] - center_y) * tick_len / marker_radius;
 
         var bar_values = [0, 0] as [Numeric, Numeric];
-        if (player.second_bar == :mana) {
-            bar_values = drawManaBar(player);
+        if (player.second_bar != null) {
+            bar_values = [player.getSecondBarColor(), 70 * player.getSecondBarPercent()] as [Numeric, Numeric];
         }
         // Draw second bar
         dc.setColor(bar_values[0], Graphics.COLOR_BLACK);
@@ -289,13 +286,6 @@ class DCGameView extends WatchUi.View {
         dc.drawLine(line2_x1, line2_y1, line2_x2, line2_y2);
     }
 
-    function drawManaBar(player as Player) as [Numeric, Numeric] {
-        player = player as Mage;
-        var mana_percent = player.getManaPercent();
-        var bar_percent = (70 * mana_percent);
-        return [Graphics.COLOR_DK_BLUE as Number, bar_percent];
-        
-    }
     function addPlayerDamage() as Boolean {
         var player = getApp().getPlayer();
         var player_pos = player.getPos();

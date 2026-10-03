@@ -158,9 +158,9 @@ class DCDebugMenuDelegate extends WatchUi.Menu2InputDelegate {
         var menu = new WatchUi.Menu2({:title=>"Player Stats (:debug)"});
         menu.addItem(new WatchUi.MenuItem("Health", player.getHealth() + "/" + player.getMaxHealth(), :set_health, null));
         menu.addItem(new WatchUi.MenuItem("Max Health", player.getMaxHealth().toString(), :set_max_health, null));
-        if (player.getMaxMana() > 0) {
-            menu.addItem(new WatchUi.MenuItem("Mana", player.getCurrentMana() + "/" + player.getMaxMana(), :set_mana, null));
-            menu.addItem(new WatchUi.MenuItem("Max Mana", player.getMaxMana().toString(), :set_max_mana, null));
+        if (player.getMaxSecondBar() > 0) {
+            menu.addItem(new WatchUi.MenuItem(player.getSecondBarName(), player.getCurrentSecondBar() + "/" + player.getMaxSecondBar(), :set_second_bar, null));
+            menu.addItem(new WatchUi.MenuItem("Max " + player.getSecondBarName(), player.getMaxSecondBar().toString(), :set_max_second_bar, null));
         }
         menu.addItem(new WatchUi.MenuItem("Gold", player.getGold().toString(), :set_gold, null));
 

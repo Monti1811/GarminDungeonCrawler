@@ -105,7 +105,7 @@ class DCGameDelegate extends WatchUi.BehaviorDelegate {
 
     function showMenu() as Void {
         var actionMenu = new WatchUi.Menu2({:title=>"Game Menu"});
-        actionMenu.addItem(new WatchUi.IconMenuItem(getApp().getPlayer().getName(), "Show details", :player, new GameMenuIconDrawable(WatchUi.loadResource($.Rez.Drawables.gameMenuPlayer) as Graphics.BitmapReference), null));
+        actionMenu.addItem(new WatchUi.IconMenuItem(getApp().getPlayer().getName(), "Show details", :player, new GameMenuIconDrawable(getApp().getPlayer().getSpriteRef()), null));
         actionMenu.addItem(new WatchUi.IconMenuItem("Inventory", "Show inventory", :inventory, new GameMenuIconDrawable(WatchUi.loadResource($.Rez.Drawables.gameMenuInventory) as Graphics.BitmapReference), null));
         actionMenu.addItem(new WatchUi.IconMenuItem("Quests", "Show active quests", :quests, new GameMenuIconDrawable(WatchUi.loadResource($.Rez.Drawables.gameMenuQuests) as Graphics.BitmapReference), null));
         actionMenu.addItem(new WatchUi.IconMenuItem("Map", "Show map", :map, new GameMenuIconDrawable(WatchUi.loadResource($.Rez.Drawables.gameMenuMap) as Graphics.BitmapReference), null));

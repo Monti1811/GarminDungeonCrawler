@@ -83,7 +83,7 @@ class DCMainMenuDelegate extends WatchUi.BehaviorDelegate {
         var characters = $.Players.createAllPossibleCharacters();
         for (var i = 0; i < characters.size(); i++) {
             var character = characters[i] as Player;
-            var character_item = new WatchUi.MenuItem(character.getName(), character.getDescription(), character, null);
+            var character_item = new WatchUi.IconMenuItem(character.getName(), character.getDescription(), character, new DCPlayerIcon(character), null);
             characterMenu.addItem(character_item);
         }
         WatchUi.pushView(characterMenu, new DCCharacterCreationDelegate(), WatchUi.SLIDE_UP);
