@@ -2,9 +2,6 @@ import Toybox.Lang;
 
 class God extends Player {
 
-	var current_mana as Number = 15;
-	var maxMana as Number = 1000;
-
 	function initialize(name as String) {
 		Player.initialize();
 		self.id = 999;
@@ -15,6 +12,11 @@ class God extends Player {
 		self.experience = 124;
 		self.second_bar = :mana;
 		self.next_level_experience = 130;
+
+		// Second bar
+		self.current_second_bar = 15;
+		self.max_second_bar = 1000;
+
 		self.attributes = {
 			:strength => 100,
 			:constitution => 100,
@@ -69,48 +71,5 @@ class God extends Player {
 		current_health += 50;
 		maxHealth += 50;
 	}
-
-	function getCurrentMana() as Number {
-		return current_mana;
-	}
-
-	function getMaxMana() as Number {
-		return maxMana;
-	}
-
-	function getManaPercent() as Float {
-		return current_mana.toFloat() / maxMana.toFloat();
-	}
-
-	function doManaDelta(delta as Number) as Void {
-		current_mana += delta;
-		if (current_mana < 0) {
-			current_mana = 0;
-		}
-		if (current_mana > maxMana) {
-			current_mana = maxMana;
-		}
-	}
-
-
-	function save() as Dictionary {
-		var save_data = Player.save();
-		save_data["current_mana"] = current_mana;
-		save_data["maxMana"] = maxMana;
-		return save_data;
-	}
-
-
-	function onLoad(save_data as Dictionary) as Void {
-		Player.onLoad(save_data);
-		if (save_data["current_mana"] != null) {
-			self.current_mana = save_data["current_mana"];
-		}
-		if (save_data["maxMana"] != null) {
-			self.maxMana = save_data["maxMana"];
-		}
-	}
-
-	
 
 }

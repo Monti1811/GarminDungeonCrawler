@@ -24,7 +24,7 @@ class Spell extends WeaponItem {
 
 	function onEquipItem(player as Player, slot as ItemSlot) as Void {
 		WeaponItem.onEquipItem(player, slot);
-        if (!active && player.getCurrentMana() >= getManaLoss()) {
+        if (!active && player.hasSecondBarResource(:mana) && player.getCurrentSecondBar() >= getManaLoss()) {
             activateSpell();
         }
 	}
@@ -38,9 +38,11 @@ class Spell extends WeaponItem {
 	function onTurnDone() as Void {
 		WeaponItem.onTurnDone();
         var player = $.getApp().getPlayer();
-        if (active && player.getCurrentMana() < getManaLoss()) {
+        if (!player.hasSecondBarResource(:mana)) {
             deactivateSpell();
-        } else if (!active && player.getCurrentMana() >= getManaLoss()) {
+        } else if (active && player.getCurrentSecondBar() < getManaLoss()) {
+            deactivateSpell();
+        } else if (!active && player.getCurrentSecondBar() >= getManaLoss()) {
 			activateSpell();
 		}
     }
@@ -48,7 +50,9 @@ class Spell extends WeaponItem {
     function onDamageDone(damage as Number, enemy as Enemy?) {
         WeaponItem.onDamageDone(damage, enemy);
         var player = $.getApp().getPlayer();
-        player.doManaDelta(-getManaLoss());
+        if (player.hasSecondBarResource(:mana)) {
+            player.doSecondBarDelta(-getManaLoss());
+        }
     }
 
 	function save() as Dictionary {

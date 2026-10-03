@@ -494,6 +494,38 @@ private function buildArmorWeights(depth as Number) as Dictionary<Number, Numeri
                 break;
             case 3: // Nameless balanced
                 break;
+            case 5: // Barbarian: axes and greatswords above all, no staves or mana potions
+                addMultipliers(m, [0,3,10,13,20,23,30,33,40,43,50,53,60,63,70,73,80,83], 3.0); // Axes/greatswords
+                addMultipliers(m, [2,4,5,8,12,14,15,18,22,24,25,28,32,34,35,38,42,44,45,48,52,54,55,58,62,64,65,68,72,74,75,78,82,84,85,88], 1.4); // Other melee
+                addMultipliers(m, [6,7,16,17,26,27,36,37,46,47,56,57,66,67,76,77,86,87], 0); // Staves/spells
+                addMultipliers(m, [1,11,21,31,41,51,61,71,81], 0.1); // Bows rare
+                addMultipliers(m, [200,201,202,203,250,251,252,253,300,301,302], 0.1); // Ammo rare
+                addMultipliers(m, [1200,1201,1202,1203], 0.5); // No shields
+                addMultipliers(m, [1001,1011,1021,1031,1041,1051,1061,1071,1081], 1.3); // Breastplates
+                addMultipliers(m, [2001,2003,2005], 0); // No mana -> no mana potions
+                addMultipliers(m, [2000,2002,2004], 1.2); // Healing up
+                break;
+            case 6: // Trickster: daggers, bows and light gear, no heavy armor
+                addMultipliers(m, [2,12,22,32,42,52,62,72,82], 2.5); // Daggers
+                addMultipliers(m, [1,11,21,31,41,51,61,71,81], 2.0); // Bows
+                addMultipliers(m, [200,201,202,203,250,251,252,253,300,301,302], 2.0); // Ammo/crossbows
+                addMultipliers(m, [8,18,28,38,48,58,68,78,88], 1.2); // Swords
+                addMultipliers(m, [0,3,10,13,20,23,30,33,40,43,50,53,60,63,70,73,80,83], 0.3); // Axes/greatswords down
+                addMultipliers(m, [4,5,14,15,24,25,34,35,44,45,54,55,64,65,74,75,84,85], 0.5); // Katanas/lances down
+                addMultipliers(m, [6,7,16,17,26,27,36,37,46,47,56,57,66,67,76,77,86,87], 0); // No magic
+                addMultipliers(m, [1001,1011,1021,1031,1041,1051,1061,1071,1081], 0); // Heavy breastplates
+                addMultipliers(m, [1200,1201,1202,1203], 0.4); // Shields down
+                addMultipliers(m, [1004,1005,1014,1015,1024,1025,1034,1035,1044,1045,1054,1055,1064,1065,1074,1075,1084,1085], 1.3); // Rings
+                addMultipliers(m, [2001,2003,2005], 0); // No mana -> no mana potions
+                break;
+            case 7: // Dragonoid: fire/gold weapons and rings, no mana potions
+                addMultipliers(m, [20,21,22,23,24,25,28,60,61,62,63,64,65,68], 1.6); // Fire/gold weapons
+                addMultipliers(m, [1020,1021,1022,1023,1060,1061,1062,1063], 1.3); // Fire/gold armor
+                addMultipliers(m, [1024,1025,1064,1065,1004,1005,1014,1015,1034,1035,1044,1045,1054,1055,1074,1075,1084,1085], 1.3); // Rings
+                addMultipliers(m, [6,7,16,17,26,27,36,37,46,47,56,57,66,67,76,77,86,87], 0.3); // Staves/spells down
+                addMultipliers(m, [2001,2003,2005], 0); // No mana -> no mana potions
+                addMultipliers(m, [2000,2002,2004], 1.1); // Healing slight up
+                break;
             case 999: // God
                 addMultipliers(m, [60,63,65,68,70,73,75,78,80,83,85,88,1060,1061,1062,1063,1070,1071,1072,1073,1080,1081,1082,1083,2004,2005], 1.15);
                 break;

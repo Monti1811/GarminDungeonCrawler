@@ -2,7 +2,7 @@ import Toybox.Lang;
 
 module Players {
 
-    var player_ids as Array<Number> = [0, 1, 2, 3, 4, 999];
+    var player_ids as Array<Number> = [0, 1, 2, 3, 4, 5, 6, 7, 999];
 
     function createPlayerFromId(id as Number, name as String?) as Player {
         switch (id) {
@@ -21,6 +21,15 @@ module Players {
             case 4:
                 if (name == null) { name = "Paladin"; }
                 return new Paladin(name);
+            case 5:
+                if (name == null) { name = "Barbarian"; }
+                return new Barbarian(name);
+            case 6:
+                if (name == null) { name = "Trickster"; }
+                return new Trickster(name);
+            case 7:
+                if (name == null) { name = "Dragonoid"; }
+                return new Dragonoid(name);
             case 999:
                 if (name == null) { name = "God"; }
                 return new God(name);

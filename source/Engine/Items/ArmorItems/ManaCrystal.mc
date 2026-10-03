@@ -22,9 +22,12 @@ class ManaCrystal extends ArmorItem {
 
 	function onTurnDone() as Void {
 		var player = $.getApp().getPlayer();
-		var diff = player.getMaxMana() - player.getCurrentMana();
+		if (!player.hasSecondBarResource(:mana)) {
+			return;
+		}
+		var diff = player.getMaxSecondBar() - player.getCurrentSecondBar();
 		if (diff > 0) {
-			player.doManaDelta(1);
+			player.doSecondBarDelta(1);
 			remaining_mana -= 1;
 			if (remaining_mana <= 0) {
 				player.equipped.remove(ACCESSORY);

@@ -12,7 +12,8 @@ class DCPlayerDetailsOverviewView extends WatchUi.View {
 	private var _rightTopHint as WatchUi.Bitmap?;
 	private var _rightBottomHint as WatchUi.Bitmap?;
 
-	private var _hasMana as Boolean;
+	private var _hasSecondBar as Boolean;
+	private var _barLabelBitmap as BitmapReference?;
 	private var _ref as Number;
 	private var _bgX as Number;
 	private var _bgY as Number;
@@ -22,11 +23,14 @@ class DCPlayerDetailsOverviewView extends WatchUi.View {
 		_player = player;
 		_playerIcon = WatchUi.loadResource(_player.getSprite());
 		_bgBitmap = WatchUi.loadResource($.Rez.Drawables.characterInfoRoundNoStats) as BitmapReference;
-		_hasMana = _player.second_bar == :mana;
-		if (_hasMana) {
-			_statsOverlay = WatchUi.loadResource($.Rez.Drawables.characterInfoStatsMana) as BitmapReference;
-		} else {
+		_hasSecondBar = _player.second_bar != null;
+		_barLabelBitmap = null;
+		if (!_hasSecondBar) {
 			_statsOverlay = WatchUi.loadResource($.Rez.Drawables.characterInfoStatsNoMana) as BitmapReference;
+		} else {
+			// Strip with an empty row 4 - the matching bar label bitmap is drawn on top
+			_statsOverlay = WatchUi.loadResource($.Rez.Drawables.characterInfoStatsBar) as BitmapReference;
+			_barLabelBitmap = WatchUi.loadResource(getSecondBarLabelId()) as BitmapReference;
 		}
 		_small_font = WatchUi.loadResource($.Rez.Fonts.small) as FontResource;
 		_ref = Constants.SCREEN_WIDTH < Constants.SCREEN_HEIGHT ? Constants.SCREEN_WIDTH : Constants.SCREEN_HEIGHT;
@@ -36,6 +40,19 @@ class DCPlayerDetailsOverviewView extends WatchUi.View {
 			_rightTopHint = $.HintHelper.createRightTopHint($.Rez.Drawables.rightTopAccept);
 			_rightBottomHint = $.HintHelper.createRightBottomHint($.Rez.Drawables.rightBottomCancel);
 		}
+	}
+
+	function getSecondBarLabelId() as ResourceId {
+		if (_player.hasSecondBarResource(:rage)) {
+			return $.Rez.Drawables.characterInfoLabelRage;
+		}
+		if (_player.hasSecondBarResource(:energy)) {
+			return $.Rez.Drawables.characterInfoLabelEnergy;
+		}
+		if (_player.hasSecondBarResource(:heat)) {
+			return $.Rez.Drawables.characterInfoLabelHeat;
+		}
+		return $.Rez.Drawables.characterInfoLabelMana;
 	}
 
 	function onUpdate(dc) {
@@ -50,6 +67,12 @@ class DCPlayerDetailsOverviewView extends WatchUi.View {
 			var overlay_w = (_statsOverlay.getWidth() * _ref / 360).toNumber();
 			var overlay_h = (_statsOverlay.getHeight() * _ref / 360).toNumber();
 			DrawUtil.drawScaledBitmap(dc, overlay_x, overlay_y, overlay_w, overlay_h, _statsOverlay);
+			if (_barLabelBitmap != null) {
+				// Row 4 of the strip starts at y=60 in strip coordinates (scale = _ref / 360)
+				var label_y = overlay_y + (_ref * 60 / 360).toNumber();
+				var label_h = (_ref * 20 / 360).toNumber();
+				DrawUtil.drawScaledBitmap(dc, overlay_x, label_y, overlay_w, label_h, _barLabelBitmap);
+			}
 		}
 
 		drawPlayerIcon(dc);
@@ -96,9 +119,9 @@ class DCPlayerDetailsOverviewView extends WatchUi.View {
 		// HP
 		dc.drawText(x_val, y_start + row_dist * (counter + 2), _small_font, _player.getHealth() + "/" + _player.getMaxHealth(), Graphics.TEXT_JUSTIFY_RIGHT | Graphics.TEXT_JUSTIFY_VCENTER);
 
-		// MANA
-		if (_hasMana) {
-			dc.drawText(x_val, y_start + row_dist * (counter + 3), _small_font, _player.getCurrentMana() + "/" + _player.getMaxMana(), Graphics.TEXT_JUSTIFY_RIGHT | Graphics.TEXT_JUSTIFY_VCENTER);
+		// SECOND BAR
+		if (_hasSecondBar) {
+			dc.drawText(x_val, y_start + row_dist * (counter + 3), _small_font, _player.getCurrentSecondBar() + "/" + _player.getMaxSecondBar(), Graphics.TEXT_JUSTIFY_RIGHT | Graphics.TEXT_JUSTIFY_VCENTER);
 			counter += 1;
 		}
 

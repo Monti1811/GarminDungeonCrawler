@@ -807,31 +807,42 @@ function playerGetArmorItemReturnsNullWhenEmpty(logger as Test.Logger) as Boolea
 }
 
 (:test)
-function playerGetCurrentManaZero(logger as Test.Logger) as Boolean {
+function playerGetCurrentSecondBarZero(logger as Test.Logger) as Boolean {
     var player = Players.createPlayerFromId(0, "Test");
-    Test.assertEqual(player.getCurrentMana(), 0);
+    Test.assertEqual(player.getCurrentSecondBar(), 0);
     return true;
 }
 
 (:test)
-function playerGetMaxManaZero(logger as Test.Logger) as Boolean {
+function playerGetMaxSecondBarZero(logger as Test.Logger) as Boolean {
     var player = Players.createPlayerFromId(0, "Test");
-    Test.assertEqual(player.getMaxMana(), 0);
+    Test.assertEqual(player.getMaxSecondBar(), 0);
     return true;
 }
 
 (:test)
-function playerGetManaPercentZero(logger as Test.Logger) as Boolean {
+function playerGetSecondBarPercentZero(logger as Test.Logger) as Boolean {
     var player = Players.createPlayerFromId(0, "Test");
-    Test.assertEqual(player.getManaPercent(), 0.0);
+    Test.assertEqual(player.getSecondBarPercent(), 0.0);
     return true;
 }
 
 (:test)
-function playerDoManaDeltaNoOp(logger as Test.Logger) as Boolean {
+function playerDoSecondBarDeltaNoOp(logger as Test.Logger) as Boolean {
     var player = Players.createPlayerFromId(0, "Test");
-    player.doManaDelta(10);
-    Test.assertEqual(player.getCurrentMana(), 0);
+    player.doSecondBarDelta(10);
+    Test.assertEqual(player.getCurrentSecondBar(), 0);
+    return true;
+}
+
+(:test)
+function playerSecondBarNameAndColor(logger as Test.Logger) as Boolean {
+    var mage = Players.createPlayerFromId(1, "Test");
+    Test.assertEqual(mage.getSecondBarName(), "Mana");
+    Test.assert(mage.hasSecondBarResource(:mana));
+    var warrior = Players.createPlayerFromId(0, "Test");
+    Test.assertEqual(warrior.getSecondBarName(), "");
+    Test.assert(!warrior.hasSecondBarResource(:mana));
     return true;
 }
 

@@ -15,8 +15,12 @@ class GreaterManaPotion extends ConsumableItem {
 	}
 
 	function onUseItem(player as Player) as Void {
+		if (!player.hasSecondBarResource(:mana)) {
+			WatchUi.showToast("No mana", {:icon=>$.Rez.Drawables.aboutToastIcon});
+			return;
+		}
 		ConsumableItem.onUseItem(player);
-		player.doManaDelta(80);
+		player.doSecondBarDelta(80);
 	}
 	function onPickupItem(player as Player) as Void {
 		ConsumableItem.onPickupItem(player);

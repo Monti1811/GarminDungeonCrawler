@@ -2,12 +2,15 @@ import Toybox.Lang;
 import Toybox.Math;
 import Toybox.Time;
 import Toybox.WatchUi;
+import Toybox.Graphics;
 
 class Player extends Entity {
 
 	var current_health as Number = 30;
 	var maxHealth as Number = 30;
 	var second_bar as Symbol?;
+	var current_second_bar as Number = 0;
+	var max_second_bar as Number = 0;
 	var name as String = "Player";
 	var description as String = "The player character";
 	
@@ -308,19 +311,62 @@ class Player extends Entity {
 		return next_level_experience - experience;
 	}
 
-	function getCurrentMana() as Number {
-		return 0;
+	function getCurrentSecondBar() as Number {
+		return current_second_bar;
 	}
 
-	function getMaxMana() as Number {
-		return 0;
+	function getMaxSecondBar() as Number {
+		return max_second_bar;
 	}
 
-	function getManaPercent() as Float {
-		return 0.0;
+	function getSecondBarPercent() as Float {
+		if (max_second_bar <= 0) {
+			return 0.0;
+		}
+		return current_second_bar.toFloat() / max_second_bar.toFloat();
 	}
 
-	function doManaDelta(amount as Number) as Void {
+	function doSecondBarDelta(amount as Number) as Void {
+		current_second_bar += amount;
+		if (current_second_bar < 0) {
+			current_second_bar = 0;
+		}
+		if (current_second_bar > max_second_bar) {
+			current_second_bar = max_second_bar;
+		}
+	}
+
+	function hasSecondBarResource(resource_symbol as Symbol) as Boolean {
+		return second_bar == resource_symbol;
+	}
+
+	function getSecondBarName() as String {
+		if (second_bar == :rage) {
+			return "Rage";
+		}
+		if (second_bar == :energy) {
+			return "Energy";
+		}
+		if (second_bar == :heat) {
+			return "Heat";
+		}
+		if (second_bar == :mana) {
+			return "Mana";
+		}
+		return "";
+	}
+
+	function getSecondBarColor() as Number {
+		if (second_bar == :rage) {
+			return Graphics.COLOR_ORANGE;
+		}
+		if (second_bar == :energy) {
+			return Graphics.COLOR_YELLOW;
+		}
+		if (second_bar == :heat) {
+			return Graphics.COLOR_RED;
+		}
+		return Graphics.COLOR_DK_BLUE;
 	}
 
 	function onGainHealth(amount as Number) as Void {
@@ -625,6 +671,10 @@ class Player extends Entity {
 			"equipped" => {},
 			"gold" => gold
 		};
+		if (second_bar != null) {
+			save_data["current_second_bar"] = current_second_bar;
+			save_data["max_second_bar"] = max_second_bar;
+		}
 		for (var i = 0; i < equipped.size(); i++) {
 			var slot = equipped.keys()[i];
 			var item = equipped[slot];
@@ -667,6 +717,22 @@ class Player extends Entity {
 		}
 		if (save_data["attribute_points"] != null) {
 			attribute_points = save_data["attribute_points"] as Number;
+		}
+		if (second_bar != null) {
+			var cur_bar = save_data["current_second_bar"];
+			if (cur_bar == null) {
+				cur_bar = save_data["current_mana"];
+			}
+			if (cur_bar != null) {
+				current_second_bar = cur_bar as Number;
+			}
+			var max_bar = save_data["max_second_bar"];
+			if (max_bar == null) {
+				max_bar = save_data["maxMana"];
+			}
+			if (max_bar != null) {
+				max_second_bar = max_bar as Number;
+			}
 		}
 		if (save_data["inventory"] != null) {
 			inventory = Inventory.load(save_data["inventory"] as Dictionary);

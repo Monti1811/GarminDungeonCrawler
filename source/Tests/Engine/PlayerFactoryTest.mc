@@ -50,6 +50,33 @@ function playerFactoryCreatesGod(logger as Test.Logger) as Boolean {
 }
 
 (:test)
+function playerFactoryCreatesBarbarian(logger as Test.Logger) as Boolean {
+    var player = Players.createPlayerFromId(5, "TestBarbarian");
+    Test.assert(player instanceof Barbarian);
+    Test.assertEqual(player.name, "TestBarbarian");
+    Test.assertEqual(player.getSprite(), $.Rez.Drawables.Barbarian);
+    return true;
+}
+
+(:test)
+function playerFactoryCreatesTrickster(logger as Test.Logger) as Boolean {
+    var player = Players.createPlayerFromId(6, "TestTrickster");
+    Test.assert(player instanceof Trickster);
+    Test.assertEqual(player.name, "TestTrickster");
+    Test.assertEqual(player.getSprite(), $.Rez.Drawables.Trickster);
+    return true;
+}
+
+(:test)
+function playerFactoryCreatesDragonoid(logger as Test.Logger) as Boolean {
+    var player = Players.createPlayerFromId(7, "TestDragonoid");
+    Test.assert(player instanceof Dragonoid);
+    Test.assertEqual(player.name, "TestDragonoid");
+    Test.assertEqual(player.getSprite(), $.Rez.Drawables.Dragonoid);
+    return true;
+}
+
+(:test)
 function playerFactoryDefaultIdCreatesWarrior(logger as Test.Logger) as Boolean {
     var player = Players.createPlayerFromId(9999, "Test");
     Test.assert(player instanceof Warrior);

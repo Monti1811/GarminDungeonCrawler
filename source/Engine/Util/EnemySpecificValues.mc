@@ -156,6 +156,45 @@ class EnemySpecificValues {
 					2 => 1.05, // Demon
 					27 => 1.05  // Demonolog
 				};
+			case 5: // Barbarian: more melee brutes, fewer fliers
+				return {
+					1 => 0.85, // Bat
+					4 => 0.9, // Imp
+					3 => 1.1, // Orc
+					5 => 1.1, // Skeleton
+					10 => 1.2, // Ogre
+					11 => 1.2, // DarkKnight
+					25 => 1.1, // Goblin
+					31 => 1.15, // OrcArmored
+					34 => 1.2, // OrcVeteran
+					35 => 1.1  // Rokita
+				};
+			case 6: // Trickster: more agile/swarm foes, fewer armored tanks
+				return {
+					1 => 1.2, // Bat
+					4 => 1.2, // Imp
+					9 => 1.1, // Wogol
+					25 => 1.15, // Goblin
+					36 => 1.15, // ShadowStalker
+					37 => 1.15, // GloomLurker
+					10 => 0.85, // Ogre
+					11 => 0.9, // DarkKnight
+					31 => 0.85, // OrcArmored
+					34 => 0.85, // OrcVeteran
+					35 => 0.9  // Rokita
+				};
+			case 7: // Dragonoid: more undead/fire/demons, fewer armored tanks
+				return {
+					2 => 1.1, // Demon
+					6 => 1.15, // Necromancer
+					14 => 1.2, // ElementalFireSmall
+					20 => 1.2, // ElementalFire
+					27 => 1.1, // Demonolog
+					28 => 1.1, // Chort
+					10 => 0.9, // Ogre
+					31 => 0.9, // OrcArmored
+					34 => 0.9  // OrcVeteran
+				};
 			case 999: // God: slightly more high-tier threats
 				return {
 					2 => 1.1, // Demon

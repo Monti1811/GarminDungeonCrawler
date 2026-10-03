@@ -2,9 +2,6 @@ import Toybox.Lang;
 
 class Nameless extends Player {
 
-	var current_mana as Number = 20;
-	var maxMana as Number = 20;
-
 	function initialize(name as String) {
 		Player.initialize();
 		self.id = 3;
@@ -12,6 +9,10 @@ class Nameless extends Player {
 		self.name = name;
 		self.description = "A nameless character, with no backstory";
 		self.second_bar = :mana;
+
+		// Second bar
+		self.current_second_bar = 20;
+		self.max_second_bar = 20;
 
 		// Set health
 		self.current_health = 30;
@@ -37,53 +38,16 @@ class Nameless extends Player {
 
 	}
 
-	function getCurrentMana() as Number {
-		return current_mana;
-	}
-
-	function getMaxMana() as Number {
-		return maxMana;
-	}
-
-	function getManaPercent() as Float {
-		return current_mana.toFloat() / maxMana.toFloat();
-	}
-
-	function doManaDelta(delta as Number) as Void {
-		current_mana += delta;
-		if (current_mana < 0) {
-			current_mana = 0;
-		}
-		if (current_mana > maxMana) {
-			current_mana = maxMana;
-		}
-	}
-
 	function onLevelUp() as Void {
 		Player.onLevelUp();
-		// Increase max health and mana
+		// Increase max health and second bar
 		maxHealth += 4;
-		maxMana += 2;
+		max_second_bar += 2;
 	}
 
 	function onNextDungeon() as Void {
 		Player.onNextDungeon();
-		current_mana = MathUtil.ceil(maxMana / 2, current_mana);
+		current_second_bar = MathUtil.ceil(max_second_bar / 2, current_second_bar);
 	}
-
-	function save() as Dictionary {
-		var save_data = Player.save();
-		save_data["current_mana"] = current_mana;
-		save_data["maxMana"] = maxMana;
-		return save_data;
-	}
-
-
-	function onLoad(save_data as Dictionary) as Void {
-		Player.onLoad(save_data);
-		current_mana = save_data["current_mana"];
-		maxMana = save_data["maxMana"];
-	}
-	
 
 }
