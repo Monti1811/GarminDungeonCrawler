@@ -36,7 +36,7 @@ class DCItemInfoValuesView extends WatchUi.View {
 		CONSUMABLE => :showConsumableStats,
 		KEY => :showKeyStats,
 		CUSTOM => :showCustomStats,
-		MATERIAL => :showCustomStats,
+		MATERIAL => :showMaterialStats,
 	} as Dictionary<ItemType, Symbol>;
 	private var _fn as Method;
 
@@ -57,8 +57,14 @@ class DCItemInfoValuesView extends WatchUi.View {
 			_bgBitmap = WatchUi.loadResource($.Rez.Drawables.itemInfoMenuEmptyRound) as BitmapReference;
 			_overlayTop = WatchUi.loadResource($.Rez.Drawables.itemInfoMenuShieldIcon) as BitmapReference;
 			_overlayBottom = WatchUi.loadResource($.Rez.Drawables.itemInfoMenuShieldIcon) as BitmapReference;
-		} else if (_item_type == KEY) {
+		} else if (_item_type == KEY || _item_type == MATERIAL) {
+			// Gemeinsamer Hintergrund, oben steht je nach Typ das Key- oder Material-Symbol
 			_bgBitmap = WatchUi.loadResource($.Rez.Drawables.itemInfoMenuKeyItem) as BitmapReference;
+			if (_item_type == KEY) {
+				_overlayTop = WatchUi.loadResource($.Rez.Drawables.itemInfoMenuKeyIcon) as BitmapReference;
+			} else {
+				_overlayTop = WatchUi.loadResource($.Rez.Drawables.itemInfoMenuMaterialIcon) as BitmapReference;
+			}
 		} else {
 			_bgBitmap = WatchUi.loadResource($.Rez.Drawables.itemInfoMenu) as BitmapReference;
 		}
@@ -76,7 +82,7 @@ class DCItemInfoValuesView extends WatchUi.View {
 
 		DrawUtil.drawScaledBitmap(dc, _bgX, _bgY, _ref, _ref, _bgBitmap);
 
-		// Overlays fÃ¼r Waffen/RÃ¼stung zeichnen
+		// Symbol oben (Waffe/Schild/Key/Amboss) und optionales Symbol unten
 		if (_overlayTop != null) {
 			var top_x = (_bgX + _ref * 164 / 360).toNumber();
 			var top_y = (_bgY + _ref * 28 / 360).toNumber();
@@ -163,9 +169,9 @@ class DCItemInfoValuesView extends WatchUi.View {
 			dc.drawText(x_val, y2, Graphics.FONT_XTINY, "" + consumable.getValue(), Graphics.TEXT_JUSTIFY_RIGHT | Graphics.TEXT_JUSTIFY_VCENTER);
 			// Zeile 3: Weight
 			dc.drawText(x_val, y3, Graphics.FONT_XTINY, "" + consumable.getWeight(), Graphics.TEXT_JUSTIFY_RIGHT | Graphics.TEXT_JUSTIFY_VCENTER);
-		} else if (_item_type == KEY) {
+		} else if (_item_type == KEY || _item_type == MATERIAL) {
 			var delta = (_ref * 12 / 360).toNumber();
-			dc.drawText(x_val, y1 + delta, Graphics.FONT_XTINY, _item.getValue(), Graphics.TEXT_JUSTIFY_RIGHT | Graphics.TEXT_JUSTIFY_VCENTER);
+			dc.drawText(x_val, y1 + delta, Graphics.FONT_XTINY, "" + _item.getValue(), Graphics.TEXT_JUSTIFY_RIGHT | Graphics.TEXT_JUSTIFY_VCENTER);
 			dc.drawText(x_val, y2 + delta, Graphics.FONT_XTINY, "" + _item.getWeight(), Graphics.TEXT_JUSTIFY_RIGHT | Graphics.TEXT_JUSTIFY_VCENTER);
 		}
 	}
@@ -270,13 +276,12 @@ class DCItemInfoValuesView extends WatchUi.View {
 		dc.drawText(text_x, text_y, _small_font, formatted, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
 	}
 
-	// --- Effect Description fÃ¼r Key Items ---
-	function drawKeyDescription(dc) {
-		if (_item_type != KEY) {
+	// --- Description fuer Key Items und Materials ---
+	function drawDescription(dc) {
+		if (_item_type != KEY && _item_type != MATERIAL) {
 			return;
 		}
-		var key_item = _item as KeyItem;
-		var effect = key_item.getDescription();
+		var effect = _item.getDescription();
 
 		var text_x = (Constants.SCREEN_WIDTH / 2).toNumber();
 		var text_y = (_bgY + _ref * 265 / 360).toNumber();
@@ -310,7 +315,12 @@ class DCItemInfoValuesView extends WatchUi.View {
 
 	function showKeyStats(dc) {
 		drawStats(dc);
-		drawKeyDescription(dc);
+		drawDescription(dc);
+	}
+
+	function showMaterialStats(dc) {
+		drawStats(dc);
+		drawDescription(dc);
 	}
 
 	function showCustomStats(dc) {
