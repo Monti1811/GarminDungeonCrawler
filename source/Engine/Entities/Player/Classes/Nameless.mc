@@ -8,6 +8,7 @@ class Nameless extends Player {
 		// Set name
 		self.name = name;
 		self.description = "A nameless character, with no backstory";
+		self.ability_text = "Mana is your second bar: spells and staves drain it with every hit. Potions refill it; it is restored to half on each new floor.";
 		self.second_bar = :mana;
 
 		// Second bar

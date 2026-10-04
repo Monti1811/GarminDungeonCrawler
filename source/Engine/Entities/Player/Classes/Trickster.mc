@@ -8,6 +8,7 @@ class Trickster extends Player {
 		// Set name
 		self.name = name;
 		self.description = "A fast and lucky backstabber";
+		self.ability_text = "Energy is your second bar: it regenerates 5 each turn. While full, every hit deals double damage until 25 energy is spent - chain attacks to keep it filled.";
 		self.second_bar = :energy;
 
 		// Second bar (energy)

@@ -11,6 +11,7 @@ class Dragonoid extends Player {
 		// Set name
 		self.name = name;
 		self.description = "A dragon blooded brawler";
+		self.ability_text = "Heat is your second bar: each hit adds 25. At 100 your next attack bursts for +50%, empties the bar and overheats you for one turn (-25%). Heat fades 5 per turn.";
 		self.second_bar = :heat;
 
 		// Second bar (heat)

@@ -13,6 +13,7 @@ class Player extends Entity {
 	var max_second_bar as Number = 0;
 	var name as String = "Player";
 	var description as String = "The player character";
+	var ability_text as String = "";
 	
 	var level as Number = 1;
 	var experience as Number = 0;
@@ -621,6 +622,11 @@ class Player extends Entity {
 
 	function getDescription() as String {
 		return description;
+	}
+
+	// Kurz-Text, was diese Klasse kann (zweite Bar + Kernfaehigkeit)
+	function getAbilityText() as String {
+		return ability_text;
 	}
 
 	function toString() as String {

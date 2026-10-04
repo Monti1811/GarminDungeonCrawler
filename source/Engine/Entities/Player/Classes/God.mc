@@ -8,6 +8,7 @@ class God extends Player {
 		// Set name
 		self.name = name;
 		self.description = "A god character";
+		self.ability_text = "Mana is your second bar: spells and staves drain it with every hit - and you carry a lifetime supply of it.";
 		self.level = 100;
 		self.experience = 124;
 		self.second_bar = :mana;

@@ -10,6 +10,7 @@ class Barbarian extends Player {
 		// Set name
 		self.name = name;
 		self.description = "A rage fueled berserker";
+		self.ability_text = "Rage is your second bar: every point you deal or take fills it. At 50 you hit +10%, at 100 +25% and you steal 10% of your damage as life. It only fades in rounds without a hit.";
 		self.second_bar = :rage;
 
 		// Second bar (rage)

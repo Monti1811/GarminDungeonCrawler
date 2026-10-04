@@ -8,6 +8,7 @@ class Mage extends Player {
 		// Set name
 		self.name = name;
 		self.description = "A mage character";
+		self.ability_text = "Mana is your second bar: your staff drains it with every hit and stays powered while you can pay. Potions refill it; it is restored to 3/4 on each new floor.";
 		self.second_bar = :mana;
 
 		// Second bar

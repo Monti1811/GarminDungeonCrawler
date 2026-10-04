@@ -238,3 +238,23 @@ function secondBarClassNamesAndColors(logger as Test.Logger) as Boolean {
     Test.assert(!dragonoid.hasSecondBarResource(:mana));
     return true;
 }
+
+(:test)
+function abilityTextForEveryClass(logger as Test.Logger) as Boolean {
+    var players = Players.createAllPossibleCharacters();
+    for (var i = 0; i < players.size(); i++) {
+        var player = players[i];
+        Test.assert(player.getDescription().length() > 0);
+        // Kurz-Text vorhanden und kurz genug fuer die Info-Seite
+        Test.assert(player.getAbilityText().length() > 0);
+        Test.assert(player.getAbilityText().length() < 300);
+        if (player.second_bar != null) {
+            // Der Text erklaert die zweite Bar und nennt sie beim Namen
+            Test.assert(player.getAbilityText().find(player.getSecondBarName()) >= 0);
+        } else {
+            // Klassen ohne zweite Bar sagen das ausdruecklich
+            Test.assert(player.getAbilityText().find("No second bar") >= 0);
+        }
+    }
+    return true;
+}

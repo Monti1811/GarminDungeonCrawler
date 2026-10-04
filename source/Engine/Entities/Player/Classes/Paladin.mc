@@ -8,6 +8,7 @@ class Paladin extends Player {
 		// Set name
 		self.name = name;
 		self.description = "A paladin character";
+		self.ability_text = "No second bar. Shield and breastplate make you hard to bring down - win the war of attrition and let enemies break on your defense.";
 
 		// Set health
 		self.current_health = 21;

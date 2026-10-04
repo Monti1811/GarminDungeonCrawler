@@ -8,6 +8,7 @@ class Warrior extends Player {
 		// Set name
 		self.name = name;
 		self.description = "A warrior character";
+		self.ability_text = "No second bar. A heavy axe, strong armor and high Strength carry you - simply outlast everything in front of you.";
 
 		// Set health
 		self.current_health = 21;

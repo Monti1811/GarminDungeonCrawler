@@ -8,6 +8,7 @@ class Archer extends Player {
 		// Set name
 		self.name = name;
 		self.description = "An archer character";
+		self.ability_text = "Dexterity and your bow deal the damage - keep arrows equipped and strike before the enemy reaches you.";
 
 		// Set health
 		self.current_health = 21;
