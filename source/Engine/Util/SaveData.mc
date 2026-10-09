@@ -119,6 +119,7 @@ module SaveData {
 	}
 
 	public function saveGame() as Void {
+		$.Achievements.flush();
 		var player = $.Game.getPlayer();
 		if (Storage.getValue(chosen_save) == null) {
 			Storage.setValue("save_num", current_save_num);

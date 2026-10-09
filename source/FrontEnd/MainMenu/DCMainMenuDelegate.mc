@@ -31,6 +31,7 @@ class DCMainMenuDelegate extends WatchUi.BehaviorDelegate {
         settingsMenu.addItem(new WatchUi.MenuItem("Room settings", null, :rooms, null));
         settingsMenu.addItem(new WatchUi.MenuItem("Save settings", null, :save, null));
         settingsMenu.addItem(new WatchUi.MenuItem("Movement", $.Settings.getStepsPerTurnString($.Settings.settings["steps_per_turn"] as Number), :movement, null));
+        settingsMenu.addItem(new WatchUi.MenuItem("Achievements", "View unlocked achievements", :achievements, null));
 
         WatchUi.pushView(settingsMenu, new DCSettingsMenuDelegate(settingsMenu), SLIDE_UP);
     }

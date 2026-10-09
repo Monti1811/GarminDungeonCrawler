@@ -22,7 +22,7 @@ class Item {
 	function onEquipItem(player as Player, slot as ItemSlot) as Void {
 		self.equipped = true;
 		self.equipped_slot = slot;
-		$.SaveData.discovered_items[id] = true;
+		$.Achievements.discoverItem(id);
 	}
 	function onUnequipItem(player as Player) as Void {
 		self.equipped = false;
@@ -38,7 +38,9 @@ class Item {
 		WatchUi.showToast(text, {:icon=>self.getSprite()});
 		$.Log.log(text);
 		// Track item as discovered in compendium
-		$.SaveData.discovered_items[id] = true;
+		$.Achievements.discoverItem(id);
+		$.Achievements.bump("items_picked", 1);
+		$.Achievements.bump("room_items", 1);
 	}
 	function onDropItem(player as Player) as Void;
 	function onSellItem(player as Player) as Void;

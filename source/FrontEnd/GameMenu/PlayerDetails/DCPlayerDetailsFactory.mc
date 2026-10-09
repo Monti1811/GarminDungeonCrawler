@@ -22,6 +22,7 @@ class DCPlayerDetailsFactory extends WatchUi.ViewLoopFactory {
                 var view = new $.DCPlayerDetailsEquipmentsView(_player, true, false);
                 return [view, new DCPlayerDetailsEquipmentDelegate()];
             case 3:
+                $.Achievements.unlock("read_the_manual");
                 return [new $.DCPlayerDetailsAbilitiesView(_player), new WatchUi.BehaviorDelegate()];
         }
         return [new $.DCPlayerDetailsOverviewView(_player, false), new WatchUi.BehaviorDelegate()];

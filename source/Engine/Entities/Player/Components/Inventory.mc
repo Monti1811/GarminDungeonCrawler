@@ -21,6 +21,16 @@ class Inventory {
 		return item.id;
 	}
 
+	// Gauge for pack_rat: total item units held right now.
+	private function updateMaxItemsHeld() as Void {
+		var item_list = items.values() as Array<Item>;
+		var total = 0;
+		for (var i = 0; i < item_list.size(); i++) {
+			total += item_list[i].amount;
+		}
+		$.Achievements.setGauge("max_items_held", total);
+	}
+
 	function add(item as Item) as Boolean {
 		var item_weight = item.weight * item.amount;
 		if (current_weight < max_weight 
@@ -34,6 +44,7 @@ class Inventory {
 				items[key] = item;	
 			}
 			current_weight += item_weight;
+			updateMaxItemsHeld();
 			return true;
 		}
 		return false;
@@ -179,6 +190,7 @@ class Inventory {
 				current_weight += item.weight * item.amount;
 			}
 		}
+		updateMaxItemsHeld();
 	}
 
 }

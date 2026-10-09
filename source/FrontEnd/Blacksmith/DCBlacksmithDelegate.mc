@@ -223,6 +223,10 @@ class DCBlacksmithOptionsDelegate extends WatchUi.Menu2InputDelegate {
 
         inventory.removeMultiple(mat_item as Item, mat_cost);
         equipp.upgrade_level += 1;
+        $.Achievements.bump("upgrades", 1);
+        if (equipp.upgrade_level >= $.Constants.SMITH_COST_GOLD.size()) {
+            $.Achievements.unlock("masterwork");
+        }
         WatchUi.showToast(equipp.getName() + " upgraded!", {:icon => _target.getSprite()});
 
         _smith.updateForgeTitle();

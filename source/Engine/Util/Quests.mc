@@ -137,7 +137,9 @@ class Quest {
 module Quests {
     const MAX_ACTIVE as Number = 3;
 
-    var active_quests as Array<Quest> = new Array<Quest>[MAX_ACTIVE];
+    // Empty by default: new Array<Quest>[MAX_ACTIVE] would contain null entries
+    // and crash addProgress() before init() runs.
+    var active_quests as Array<Quest> = [];
     var next_id as Number = 1;
     var last_fitness_check as Number = 0; // epoch seconds of last fitness sync
     var last_steps as Number = 0;
@@ -490,6 +492,7 @@ module Quests {
         if (steps <= 0) {
             return;
         }
+        $.Achievements.bump("steps", steps);
         addProgress(WALK_STEPS, steps);
     }
 
@@ -514,11 +517,13 @@ module Quests {
 				
                 total_gold += quest.reward_gold;
                 total_exp += quest.reward_exp;
+                $.Achievements.mark("quest_types", quest.getTitle());
             } else {
                 remaining.add(quest);
             }
         }
         if (claimed > 0) {
+            $.Achievements.bump("quests_done", claimed);
             player.doGoldDelta(total_gold.toNumber());
             player.onGainExperience(total_exp.toNumber());
         }

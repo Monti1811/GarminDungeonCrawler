@@ -58,6 +58,7 @@ module Game {
 		difficulty = MEDIUM;
 		game_mode = NORMAL;
 		map = [];
+		$.Achievements.resetFloor();
 	}
 
 	function initModules(player_id as Number) as Void {
@@ -138,6 +139,8 @@ module Game {
 
 	function addToDepth(amount as Number) as Void {
 		depth += amount;
+		$.Achievements.setGauge("depth", depth);
+		$.Achievements.resetFloor();
 	}
 
 	function getTimePlayed() as Number {

@@ -14,7 +14,16 @@ class DCDebugFunctionsDelegate extends WatchUi.Menu2InputDelegate {
             case :action_materials:
                 giveAllMaterials();
                 break;
+            case :reset_achievements:
+                resetAchievements();
+                break;
         }
+    }
+
+    function resetAchievements() as Void {
+        $.Achievements.resetAchievements();
+        WatchUi.showToast("Achievements reset", {:icon=>Rez.Drawables.aboutToastIcon});
+        WatchUi.popView(WatchUi.SLIDE_DOWN);
     }
 
     function giveAllMaterials() as Void {

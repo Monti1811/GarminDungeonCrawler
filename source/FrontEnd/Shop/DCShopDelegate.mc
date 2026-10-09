@@ -125,7 +125,11 @@ class DCShopBuyOptionsDelegate extends WatchUi.Menu2InputDelegate {
         player.addInventoryItem(purchased_item);
         purchased_item.onBuyItem(player);
         item.setAmount(item.getAmount() - amount);
-        $.SaveData.discovered_items[item.id] = true;
+        $.Achievements.discoverItem(item.id);
+        $.Achievements.bump("buys", amount);
+        if (cost >= 500) {
+            $.Achievements.unlock("big_spender");
+        }
         var index = buyMenu.findItemById(item);
         if (item.getAmount() == 0) {
             buyMenu.deleteItem(index);

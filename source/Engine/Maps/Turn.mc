@@ -127,6 +127,7 @@ class Turn {
         _view.setForegroundDirty();
         var room_pos = $.Game.getCurrentRoomPosition();
         $.Game.setRoomAsVisited(room_pos);
+        $.Achievements.resetRoom();
     }
 
     private function getNewPlayerPosInNextRoom(next_pos as Point2D, direction as WalkDirection, room as Room) as Point2D {
@@ -210,6 +211,8 @@ class Turn {
     }
 
     function goToNextDungeon() as Void {
+        $.Achievements.checkFloorComplete();
+        $.Achievements.bump("stairs", 1);
         $.Game.setDungeon(null);
         $.Game.addToDepth(1);
         var progressBar = new WatchUi.ProgressBar(

@@ -131,7 +131,16 @@ class Entity {
 			player.takeDamage(dmg, null);
 		} else if (self.entityType == :enemy) {
 			var enemy = self as Enemy;
-			enemy.takeDamage(dmg, null);
+			// Fire effects on enemies only come from player weapons, so ticks and
+			// tick kills count as player damage/kills.
+			$.Quests.trackDamageDealt(dmg);
+			$.Achievements.bump("damage_dealt", dmg);
+			var died = enemy.takeDamage(dmg, null);
+			if (died) {
+				$.Achievements.bump("kills", 1);
+				$.Achievements.bump("floor_kills", 1);
+				$.Quests.trackKill(enemy);
+			}
 		}
 	}
 

@@ -10,6 +10,16 @@ module Constants {
 	public const MIN_ENERGY_PER_TURN = 100;
 	public const MAX_ENEMIES_PER_ROOM = 15;
 
+	// Achievement targets for "discover everything" (release builds, no debug spawn):
+	// Items: 165 item_ids - TreasureChest (6000, never picked up) + 9 materials (4000-4008) = 173.
+	// Shields (1200-1203) and backpacks (1250-1252) drop in dungeons and are sold by merchants,
+	// so every item id except the treasure chest is discoverable.
+	// Enemies: enemy_ids 0-38 = 39 (Mimic spawns from chests, still killable).
+	public const ACHV_ITEMS_TOTAL = 173;
+	public const ACHV_ENEMIES_TOTAL = 39;
+	// Floor achievements (pacifist, not a scratch) only count from this depth on
+	public const ACHV_FLOOR_MIN_DEPTH = 20;
+
 	public const SCREEN_WIDTH = Toybox.System.getDeviceSettings().screenWidth;
 	public const SCREEN_HEIGHT = Toybox.System.getDeviceSettings().screenHeight;
 	public const TILE_SIZE = 16;

@@ -29,6 +29,7 @@ module Main {
 		switch(state) {
 			case 1:
 				$.Game.init(player.getId());
+				$.Achievements.onRunStart(player);
 				var app = getApp();
 				app.setPlayer(player);
 				progress_bar.setProgress(10.0);

@@ -43,6 +43,7 @@ class DCDebugMenuDelegate extends WatchUi.Menu2InputDelegate {
     function openFunctions() as Void {
         var menu = new WatchUi.Menu2({:title=>"Functions (Debug)"});
         menu.addItem(new WatchUi.MenuItem("Materials x6", "6x of each material", :action_materials, null));
+        menu.addItem(new WatchUi.MenuItem("Reset Achievements", "Clear achievement progress", :reset_achievements, null));
         WatchUi.pushView(menu, new DCDebugFunctionsDelegate(), WatchUi.SLIDE_UP);
     }
 

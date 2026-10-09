@@ -87,7 +87,7 @@ class Enemy extends Entity {
 				_death_resolved = true;
 				self.onDeath();
 				// Track enemy as discovered in compendium
-				$.SaveData.discovered_enemies[id] = true;
+				$.Achievements.discoverEnemy(id);
 				resolveDeathInRoom();
 			}
 			return true;

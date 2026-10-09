@@ -11,6 +11,7 @@ class DungeonCrawlerApp extends Application.AppBase {
         AppBase.initialize();
         SaveData.init();
         Settings.init();
+        Achievements.init();
         StepGate.init();
     }
 

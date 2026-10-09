@@ -99,6 +99,12 @@ class Player extends Entity {
 		}
 		equipped[slot] = item;
 		item.onEquipItem(me, slot);
+		if (equipped[HEAD] != null && equipped[CHEST] != null && equipped[BACK] != null
+				&& equipped[LEGS] != null && equipped[FEET] != null
+				&& equipped[LEFT_HAND] != null && equipped[RIGHT_HAND] != null
+				&& equipped[ACCESSORY] != null && equipped[AMMUNITION] != null) {
+			$.Achievements.unlock("all_slots");
+		}
 		return true;
 	}
 
@@ -255,6 +261,7 @@ class Player extends Entity {
 		experience -= next_level_experience;
 		next_level_experience = level * 100;
 		attribute_points += 5;
+		$.Achievements.setGauge("level", level);
 	}
 
 	function getLevel() as Number {
@@ -273,6 +280,7 @@ class Player extends Entity {
 			return;		
 		}
 		game_over_shown = true;
+		$.Achievements.bump("deaths", 1);
 		WatchUi.pushView(new DCGameOverView(), new DCGameOverDelegate(), WatchUi.SLIDE_UP);
 	}
 
@@ -328,12 +336,16 @@ class Player extends Entity {
 	}
 
 	function doSecondBarDelta(amount as Number) as Void {
+		var before = current_second_bar;
 		current_second_bar += amount;
 		if (current_second_bar < 0) {
 			current_second_bar = 0;
 		}
 		if (current_second_bar > max_second_bar) {
 			current_second_bar = max_second_bar;
+		}
+		if (amount > 0 && max_second_bar > 0 && before < max_second_bar && current_second_bar == max_second_bar) {
+			$.Achievements.bump("second_bar_max", 1);
 		}
 	}
 
@@ -545,6 +557,12 @@ class Player extends Entity {
 	}
 
 	function takeDamage(damage as Number, enemy as Enemy?) as Boolean {
+		if (damage > 0) {
+			// Count every damage source (melee, spells, DoT) exactly once.
+			$.Quests.trackDamageTaken(damage);
+			$.Achievements.bump("damage_taken", damage);
+			$.Achievements.bump("floor_damage", damage);
+		}
 		onLoseHealth(damage);
 		self.damage_received += damage;
 		if (current_health == 0) {
@@ -573,6 +591,11 @@ class Player extends Entity {
 			return false;
 		}
 		gold += amount;
+		if (amount > 0) {
+			$.Achievements.bump("gold_earned", amount);
+		} else if (amount < 0) {
+			$.Achievements.bump("gold_spent", -amount);
+		}
 		return true;
 	}
 

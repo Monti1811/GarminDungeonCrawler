@@ -18,6 +18,8 @@ class DCGameMenuDelegate extends WatchUi.Menu2InputDelegate {
 
     function initialize() {
         Menu2InputDelegate.initialize();
+        // Keep step-based achievements in sync even if the quest menu is never opened.
+        $.Quests.updateFitnessProgress();
         item_list = getApp().getPlayer().getInventory().getItems();
         inventory_sort_comparator = new NameCompare(true);
     }
@@ -155,6 +157,7 @@ class DCGameMenuDelegate extends WatchUi.Menu2InputDelegate {
         settingsMenu.addItem(new WatchUi.MenuItem("Room settings", null, :rooms, null));
         settingsMenu.addItem(new WatchUi.MenuItem("Save settings", null, :save, null));
         settingsMenu.addItem(new WatchUi.MenuItem("Movement", $.Settings.getStepsPerTurnString($.Settings.settings["steps_per_turn"] as Number), :movement, null));
+        settingsMenu.addItem(new WatchUi.MenuItem("Achievements", "View unlocked achievements", :achievements, null));
 
         WatchUi.pushView(settingsMenu, new DCSettingsMenuDelegate(settingsMenu), WatchUi.SLIDE_UP);
     }

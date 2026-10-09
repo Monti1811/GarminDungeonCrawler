@@ -23,8 +23,34 @@ class DCSettingsMenuDelegate extends WatchUi.Menu2InputDelegate {
             case :movement:
                 showMovementSettings();
                 break;
+            case :achievements:
+                showAchievements();
+                break;
 
         }
+    }
+
+    function showAchievements() as Void {
+        var menu = new WatchUi.Menu2({:title=>"Achievements"});
+        var summary = $.Achievements.getUnlockedCount().toString() + "/" + $.Achievements.getDefinitions().size().toString()
+            + " · Hidden: " + $.Achievements.getHiddenCount().toString() + "/" + $.Achievements.getHiddenTotal().toString();
+        menu.addItem(new WatchUi.MenuItem("Progress", summary, :summary, null));
+        var defs = $.Achievements.getVisibleDefinitions();
+        for (var i = 0; i < defs.size(); i++) {
+            var def = defs[i];
+            var unlocked = $.Achievements.isUnlocked(def["id"] as String);
+            var mode = def["mode"] as Symbol;
+            var subtitle = "";
+            if (unlocked) {
+                subtitle = (def["hidden"] as Boolean) ? "Secret unlocked" : "Done";
+            } else if (mode == :flag) {
+                subtitle = "Locked";
+            } else {
+                subtitle = $.Achievements.getProgress(def).toString() + "/" + (def["target"] as Number).toString();
+            }
+            menu.addItem(new WatchUi.MenuItem(def["title"] as String, subtitle, def["id"] as String, null));
+        }
+        WatchUi.pushView(menu, new DCAchievementListDelegate(menu), WatchUi.SLIDE_UP);
     }
 
     function showRoomsSettings() as Void {
