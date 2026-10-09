@@ -185,6 +185,13 @@ private function buildArmorWeights(depth as Number) as Dictionary<Number, Numeri
         var demon_ring = tieredWeight(depth, [ { :max => 70, :weight => 0 }, { :max => 78, :weight => 7 }, { :max => 999, :weight => 7 } ]);
         var blood_armor = tieredWeight(depth, [ { :max => 80, :weight => 0 }, { :max => 88, :weight => 8 }, { :max => 999, :weight => 8 } ]);
         var blood_ring = tieredWeight(depth, [ { :max => 80, :weight => 0 }, { :max => 88, :weight => 7 }, { :max => 999, :weight => 7 } ]);
+        var wood_shield = tieredWeight(depth, [ { :max => 6, :weight => 8 }, { :max => 12, :weight => 6 }, { :max => 18, :weight => 4 }, { :max => 999, :weight => 2 } ]);
+        var steel_shield = tieredWeight(depth, [ { :max => 6, :weight => 9 }, { :max => 12, :weight => 7 }, { :max => 18, :weight => 5 }, { :max => 999, :weight => 3 } ]);
+        var silver_shield = tieredWeight(depth, [ { :max => 12, :weight => 0 }, { :max => 24, :weight => 7 }, { :max => 999, :weight => 5 } ]);
+        var gold_shield = tieredWeight(depth, [ { :max => 40, :weight => 0 }, { :max => 58, :weight => 7 }, { :max => 999, :weight => 6 } ]);
+        var green_backpack = tieredWeight(depth, [ { :max => 8, :weight => 7 }, { :max => 20, :weight => 6 }, { :max => 999, :weight => 4 } ]);
+        var purple_backpack = tieredWeight(depth, [ { :max => 20, :weight => 0 }, { :max => 45, :weight => 6 }, { :max => 999, :weight => 5 } ]);
+        var gold_backpack = tieredWeight(depth, [ { :max => 45, :weight => 0 }, { :max => 70, :weight => 6 }, { :max => 999, :weight => 5 } ]);
 
         var armor_weights = {
             // Steel Armor
@@ -250,6 +257,15 @@ private function buildArmorWeights(depth as Number) as Dictionary<Number, Numeri
             1083 => blood_armor,
             1084 => blood_ring,
             1085 => blood_ring,
+            // Shields (LEFT_HAND)
+            1200 => wood_shield,
+            1201 => steel_shield,
+            1202 => silver_shield,
+            1203 => gold_shield,
+            // Backpacks (BACK)
+            1250 => green_backpack,
+            1251 => purple_backpack,
+            1252 => gold_backpack,
         } as Dictionary<Number, Numeric>;
         return armor_weights;
     }
@@ -341,6 +357,13 @@ private function buildArmorWeights(depth as Number) as Dictionary<Number, Numeri
         var water_ring = tieredWeight(depth, [ { :max => 50, :weight => 0 }, { :max => 58, :weight => 5 }, { :max => 999, :weight => 5 } ]);
         var gold_armor = tieredWeight(depth, [ { :max => 60, :weight => 0 }, { :max => 68, :weight => 8 }, { :max => 999, :weight => 7 } ]);
         var gold_ring = tieredWeight(depth, [ { :max => 60, :weight => 0 }, { :max => 68, :weight => 7 }, { :max => 999, :weight => 7 } ]);
+        var wood_shield = tieredWeight(depth, [ { :max => 6, :weight => 8 }, { :max => 12, :weight => 6 }, { :max => 18, :weight => 4 }, { :max => 999, :weight => 2 } ]);
+        var steel_shield = tieredWeight(depth, [ { :max => 6, :weight => 9 }, { :max => 12, :weight => 7 }, { :max => 18, :weight => 5 }, { :max => 999, :weight => 3 } ]);
+        var silver_shield = tieredWeight(depth, [ { :max => 12, :weight => 0 }, { :max => 24, :weight => 7 }, { :max => 999, :weight => 5 } ]);
+        var gold_shield = tieredWeight(depth, [ { :max => 40, :weight => 0 }, { :max => 58, :weight => 7 }, { :max => 999, :weight => 6 } ]);
+        var green_backpack = tieredWeight(depth, [ { :max => 8, :weight => 7 }, { :max => 20, :weight => 6 }, { :max => 999, :weight => 4 } ]);
+        var purple_backpack = tieredWeight(depth, [ { :max => 20, :weight => 0 }, { :max => 45, :weight => 6 }, { :max => 999, :weight => 5 } ]);
+        var gold_backpack = tieredWeight(depth, [ { :max => 45, :weight => 0 }, { :max => 70, :weight => 6 }, { :max => 999, :weight => 5 } ]);
         // var demon_armor = tieredWeight(depth, [ { :max => 70, :weight => 0 }, { :max => 78, :weight => 8 }, { :max => 999, :weight => 8 } ]);
         // var demon_ring = tieredWeight(depth, [ { :max => 70, :weight => 0 }, { :max => 78, :weight => 7 }, { :max => 999, :weight => 7 } ]);
         // var blood_armor = tieredWeight(depth, [ { :max => 80, :weight => 0 }, { :max => 88, :weight => 8 }, { :max => 999, :weight => 8 } ]);
@@ -416,6 +439,13 @@ private function buildArmorWeights(depth as Number) as Dictionary<Number, Numeri
             1063 => gold_armor,
             1064 => gold_ring,
             1065 => gold_ring,
+            1200 => wood_shield,
+            1201 => steel_shield,
+            1202 => silver_shield,
+            1203 => gold_shield,
+            1250 => green_backpack,
+            1251 => purple_backpack,
+            1252 => gold_backpack,
         } as Dictionary<Number, Numeric>;
     }
 
